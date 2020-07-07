@@ -23,12 +23,51 @@
         margin-bottom: 1.5 rem;
         padding-left: 3rem;
         }
-    .bold{
+    #bold{
         font-weight: bold;
         }
+
+    .filter{
+        background-color: rgba(255, 194, 129, 0.3);
+        margin: 0rem;
+        padding-top: 1rem;
+        padding-left: 3rem;
+        padding-bottom: 1rem;
+        }
+<!--    #bar1{-->
+<!--        color: orange;-->
+<!--        }-->
+      .column{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        margin: 0rem;
+        }
+        .btn1 {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+<!--  -webkit-user-select: none;-->
+<!--  -moz-user-select: none;-->
+<!--  -ms-user-select: none;-->
+<!--  user-select: none;-->
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+<!--  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;-->
+}}
+
+
     </style>
 </head>
 <body>
+<!-- Heading Bar of Webpage-->
 <div class="jumbotron">
     <div class="row">
         <div class="column-lg-4">
@@ -37,7 +76,8 @@
     </div>
 </div>
 
-<div class="container">
+<!--Image adding opacity with a positive quote-->
+<section class="container">
     <div class="imgbox">
     <img class="center-fit" src="../static/img/Untitled.png" alt="Vaccine">
         <div class="centered">
@@ -48,13 +88,82 @@
         </blockquote>
         </div>
     </div>
+</section>
+
+<!--Heading - Question-->
+<div class="heading">
+    <h1 id="bold">Who will be the first to develop a vaccine?</h1>
 </div>
 
-<div class="heading">
-    <h1 class="bold">Who is the first to develop a vaccine?</h1>
+<!--Filter Data-->
+<div class="filter">
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <div class="btn1" id="bold">
+                    Filter
+                </div>
+            </div>
+<!--            Stages-->
+            <div class="column">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Stages
+                    </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Pre-Clinical</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Phase I</a>
+                      <a class="dropdown-item" href="#">Phase II</a>
+                      <a class="dropdown-item" href="#">Phase III</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Approval</a>
+                  </div>
+                </div>
+            </div>
+<!--            Country-->
+            <div class="column">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Country
+                    </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">United States</a>
+                      <a class="dropdown-item" href="#">United Kingdom</a>
+                      <a class="dropdown-item" href="#">China</a>
+                      <a class="dropdown-item" href="#">Japan</a>
+                      <a class="dropdown-item" href="#">Germany</a>
+                      <a class="dropdown-item" href="#">India</a>
+                      <a class="dropdown-item" href="#">South Korea</a>
+                      <a class="dropdown-item" href="#">France</a>
+                      <a class="dropdown-item" href="#">Russia</a>
+                      <a class="dropdown-item" href="#">Switzerland</a>
+                      <a class="dropdown-item" href="#">Australia</a>
+                      <a class="dropdown-item" href="#">Canada</a>
+                  </div>
+                </div>
+            </div>
+<!--            Vaccine Types-->
+            <div class="column">
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Vaccine Types
+                    </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Genetic Vaccines</a>
+                      <a class="dropdown-item" href="#">Protein-Based Vaccines</a>
+                      <a class="dropdown-item" href="#">Viral Vector Vaccines</a>
+                      <a class="dropdown-item" href="#">Whole-Virus Vaccines</a>
+                      <a class="dropdown-item" href="#">Others</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
+<script src="../static/js/index.js" type="text/javascript"></script>
 </html>
 
 
