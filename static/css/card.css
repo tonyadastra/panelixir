@@ -1,0 +1,83 @@
+.institutions {
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 30px;
+}
+
+.wrapper{
+    margin: 0 10px 50px 10px;
+    background-color: #eee2dc;
+    box-shadow: 4px 7px #bbb8b8;
+}
+
+.wrapper * {
+    margin: 10px;
+}
+
+
+.progress {
+  background-color: #ddd;
+  padding: 0;
+  margin-right: 10px !important;
+  /* height: 40px; */
+}
+
+.progress-bar {
+  width: 20%;
+  /* text-align: right; */
+  /* line-height: 60px;  */
+  color: white; 
+  margin: 0;
+  padding: 0;
+  font-size: large;
+}
+
+#pbar1 {
+    background-color: #c1c8e4;
+}
+
+#pbar2 {
+    background-color: #84ceeb;
+}
+
+#pbar3 {
+    background-color: #5ab9ea;
+}
+
+#pbar4 {
+    background-color: #88bdbc;
+}
+
+#pbar5 {
+    background-color: #3aafa9;
+}
+
+.intro {
+    padding: 0;
+}
+
+.collapsible {
+  background-color: #84ceeb;
+  color: #444;
+  cursor: pointer;
+  padding: 5px;
+  width: 20%;
+  line-height: 35px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on */
+.active, .collapsible:hover {
+  background-color: #5ab9ea;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 50px 10px 50px;
+  display: none;
+  overflow: hidden;
+  width: 100%;
+}
