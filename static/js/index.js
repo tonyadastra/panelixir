@@ -1,17 +1,3 @@
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
+//$(document).on('click','.dropdown-menu a',function(){
+//  $(this).parent().parent().find('.dropdown-toggle').html($(this).html()  + ' <span class="fa fa-caret-down"></span>');
+//});
