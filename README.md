@@ -1,10 +1,11 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
-   + July 10, 2020 - Database Format Confirmed + Remote Database Creation
-   + July 9, 2020 - UI Version 2 + Bug Fixes
-   + July 8, 2020 - Initial UI Design Completed, website combined
-   + June 26, 2020 - Project Group Formed
++ July 11, 2020 - Database Updates and Company Introductions
++ July 10, 2020 - Database Format Confirmed + Remote Database Creation
++ July 9, 2020 - UI Version 2 + Bug Fixes
++ July 8, 2020 - Initial UI Design Completed, website combined
++ June 26, 2020 - Project Group Formed
 
 **Quick Access:**
 1. [Google Docs Project Plan](https://docs.google.com/document/d/1deIU2SzWKDxPKVcOjmgND0dqXN83Fx7WdhrB9ZfNttE/edit?usp=sharing)
