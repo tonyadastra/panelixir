@@ -1,6 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 12, 2020 - New Table "companies" linked to Table "info" using foreign key
 + July 11, 2020 - Database Updates and Company Introductions
 + July 10, 2020 - Database Format Confirmed + Remote Database Creation
 + July 9, 2020 - UI Version 2 + Bug Fixes
