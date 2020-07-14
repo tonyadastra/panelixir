@@ -88,6 +88,7 @@ def FilterVaccines_Country_UnitedKingdom():
     cur.execute("rollback")
     return render_template("index.html", data=data)
 
+
 # China
 def FilterVaccines_Country_China():
     cur.execute("SELECT * FROM info WHERE country LIKE '%China%';")
