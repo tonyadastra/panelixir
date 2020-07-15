@@ -2,20 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>COVID-19 Vaccine and Treatment Tracker</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Styles -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="../static/css/card.css">
-   
-
 <!--    <script src="../static/js/index.js" type="text/javascript"></script>-->
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="../static/js/card.js"></script>
+
     <style>
     </style>
 </head>
@@ -60,65 +60,65 @@
                 </div>
                 <!--            Stages-->
                 <div class="column">
-                    
-                    <div class="btn-group">
-                        <form id="form1" action="/" method="POST" enctype="multipart/form-data">
+                    <div class="dropdown">
+                        <form action="/" method="POST" enctype="multipart/form-data">
                             <button type="button" class="btn btn-primary dropdown-toggle"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Stages
                             </button>
-                            <div class="dropdown-menu"  aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item" type="submit" name="stages" value="test">Pre-Clinical</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item" type="submit" name="stage" value="Pre-clinical">Pre-Clinical</button>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Phase I</a>
-                                <a class="dropdown-item" href="#">Phase II</a>
-                                <a class="dropdown-item" href="#">Phase III</a>
+                                <button class="dropdown-item" type="submit" name="stage" value="Phase I">Phase I</button>
+                                <button class="dropdown-item" type="submit" name="stage" value="Phase II">Phase II</button>
+                                <button class="dropdown-item" type="submit" name="stage" value="Phase III">Phase III</button>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Approval</a>
+                                <button class="dropdown-item" type="submit" name="stage" value="Approval">Approval</button>
                             </div>
-                            <!-- <input type="submit" value="Submit"> -->
                         </form>
                     </div>
                 </div>
                 <!--            Country-->
                 <div class="column">
                     <div class="dropdown">
-                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Country
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">United States</a>
-                            <a class="dropdown-item" href="#">United Kingdom</a>
-                            <a class="dropdown-item" href="#">China</a>
-                            <a class="dropdown-item" href="#">Japan</a>
-                            <a class="dropdown-item" href="#">Germany</a>
-                            <a class="dropdown-item" href="#">India</a>
-                            <a class="dropdown-item" href="#">South Korea</a>
-                            <a class="dropdown-item" href="#">France</a>
-                            <a class="dropdown-item" href="#">Australia</a>
-                            <a class="dropdown-item" href="#">Russia</a>
-                            <a class="dropdown-item" href="#">Canada</a>
-<!--                            <a class="dropdown-item" href="#">Switzerland</a>-->
-                            <a class="dropdown-item" href="#">Austria</a>
-
-                        </div>
+                        <form action="/" method="POST" enctype="multipart/form-data">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Country
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item" type="submit" name="country" value="United States">United States</button>
+                                <button class="dropdown-item" type="submit" name="country" value="United Kingdom">United Kingdom</button>
+                                <button class="dropdown-item" type="submit" name="country" value="China">China</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Japan">Japan</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Germany">Germany</button>
+                                <button class="dropdown-item" type="submit" name="country" value="India">India</button>
+                                <button class="dropdown-item" type="submit" name="country" value="South Korea">South Korea</button>
+                                <button class="dropdown-item" type="submit" name="country" value="France">France</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Australia">Australia</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Russia">Russia</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Canada">Canada</button>
+                                <button class="dropdown-item" type="submit" name="country" value="Austria">Austria</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <!--            Vaccine Types-->
                 <div class="column">
                     <div class="dropdown">
-                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vaccine Types
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Genetic Vaccines</a>
-                            <a class="dropdown-item" href="#">Protein-Based Vaccines</a>
-                            <a class="dropdown-item" href="#">Viral Vector Vaccines</a>
-                            <a class="dropdown-item" href="#">Whole-Virus Vaccines</a>
-                            <a class="dropdown-item" href="#">Others</a>
-                        </div>
+                        <form action="/" method="POST" enctype="multipart/form-data">
+                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Vaccine Types
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item" name="type" value="Genetic">Genetic Vaccines</button>
+                                <button class="dropdown-item" name="type" value="Viral Vector">Viral Vector Vaccines</button>
+                                <button class="dropdown-item" name="type" value="Protein-Based">Protein-Based Vaccines</button>
+                                <button class="dropdown-item" name="type" value="Whole-Virus">Whole-Virus Vaccines</button>
+                                <button class="dropdown-item" name="type" value="Others">Others</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -135,33 +135,21 @@
         <my-card img='../static/img/img2.png'></my-card>
         <!-- <img src="../static/img/img2.png"> -->
     </div>
-    <!-- {% if car_brand is defined %}
-    You have selected: {{ car_brand }}
-    {% endif %} -->
-    <!-- {{id}}
-    {{website}}
-    {{stage}} -->
+<!--{{ data }}-->
+<!--{{ website }}-->
+<!--{{ stage }}-->
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-<!-- <script src="../static/js/index.js" type="text/javascript"></script> -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script src="../static/js/card.js"></script>
+<script>
+      $(document).on('click','.dropdown-menu a',function(){
+          $(this).parent().parent().find('.dropdown-toggle').html($(this).html()  + ' <span class="fa fa-caret-down"></span>');
+      });
+</script>
 
-    <script>
-        $(document).on('click', '.dropdown-menu a', function () {
-            $(this).parent().parent().find('.dropdown-toggle').html($(this).html() + ' <span class="fa fa-caret-down"></span>');
-        });
-    </script>
 </body>
-
 
 
 </html>
