@@ -1,31 +1,35 @@
 class myCard extends HTMLElement {
-   constructor(){
-        super();
+    connectedCallback(){
         const shadow = this.attachShadow({ mode: 'open' });
+       console.log(this.getAttribute("img"))
 
         // link css
         const linkElem1 = document.createElement('link');
         linkElem1.setAttribute('rel', 'stylesheet');
         linkElem1.setAttribute('href', '../static/css/card.css');
+       shadow.appendChild(linkElem1);
 
         const linkElem2 = document.createElement('link');
         linkElem2.setAttribute('rel', 'stylesheet');
         linkElem2.setAttribute('href', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css');
-
+       shadow.appendChild(linkElem2);
 
         // link bootsrap js and jquery
         const linkElem3 = document.createElement('script');
         linkElem3.setAttribute('src', 'https://code.jquery.com/jquery-3.5.1.slim.min.js');
+       shadow.appendChild(linkElem3);
 
         const linkElem4 = document.createElement('script');
         linkElem4.setAttribute('src', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js');
-
+       shadow.appendChild(linkElem4);
         // the outter most div
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
-
+       
+   
         // logo image
         let imgUrl;
+        console.log(this)
     //    imgUrl = this.geAttribute('img');
         if (this.hasAttribute('img')) {
             imgUrl = this.getAttribute('img');
@@ -48,31 +52,49 @@ class myCard extends HTMLElement {
         pbar1.setAttribute('class', 'progress-bar');
         pbar1.setAttribute('id', 'pbar1');
         pbar1.innerHTML='PRECLICNICAL';
-        bar_wrapper.appendChild(pbar1);
+        
 
         var pbar2 = document.createElement('div');
         pbar2.setAttribute('class', 'progress-bar');
         pbar2.setAttribute('id', 'pbar2');
         pbar2.innerHTML = 'PHASE I';
-        bar_wrapper.appendChild(pbar2);
 
         var pbar3 = document.createElement('div');
         pbar3.setAttribute('class', 'progress-bar');
         pbar3.setAttribute('id', 'pbar3');
         pbar3.innerHTML = 'PHASE II';
-        bar_wrapper.appendChild(pbar3);
 
         var pbar4 = document.createElement('div');
         pbar4.setAttribute('class', 'progress-bar');
         pbar4.setAttribute('id', 'pbar4'); 
         pbar4.innerHTML = 'PHASE III';
-        bar_wrapper.appendChild(pbar4);
 
         var pbar5 = document.createElement('div');
         pbar5.setAttribute('class', 'progress-bar');
         pbar5.setAttribute('id', 'pbar5');
-       pbar5.innerHTML = 'APPROVAL';
-        bar_wrapper.appendChild(pbar5);
+        pbar5.innerHTML = 'APPROVAL';
+
+        if (this.getAttribute('data-stage') == 0) { 
+            bar_wrapper.appendChild(pbar1);
+        } else if (this.getAttribute('data-stage') == 1) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+        } else if (this.getAttribute('data-stage') == 2) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+        } else if (this.getAttribute('data-stage') == 3) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+            bar_wrapper.appendChild(pbar4);
+        } else if (this.getAttribute('data-stage') == 4) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+            bar_wrapper.appendChild(pbar4);
+            bar_wrapper.appendChild(pbar5);
+        } 
 
         wrapper.appendChild(bar_wrapper);
 
@@ -90,8 +112,13 @@ class myCard extends HTMLElement {
         btn.setAttribute('type', 'button');
         btn.innerHTML='Learn More';
 
-        var content= document.createElement('p');
-        content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+        var content= document.createElement('a');
+        
+        var url = this.getAttribute('data-expand');
+        console.log(url);
+        content.setAttribute("href",url);
+        content.innerHTML= url;
+        // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
         content.setAttribute('class', 'content');
         wrapper.appendChild(btn);
         wrapper.appendChild(content);
@@ -109,10 +136,6 @@ class myCard extends HTMLElement {
 
 
         shadow.appendChild(wrapper);
-        shadow.appendChild(linkElem1);
-        shadow.appendChild(linkElem2);
-        shadow.appendChild(linkElem3);
-        shadow.appendChild(linkElem4);
         // this.attachShadow({ mode: 'close' });
     }
     
