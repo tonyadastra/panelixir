@@ -1,6 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 14, 2020 - Database Update - Company Introductions and Logos
 + July 13, 2020 - Database communication with HTML through Python
 + July 12, 2020 - New Table "companies" linked to Table "info" using foreign key
 + July 11, 2020 - Database Updates and Company Introductions
