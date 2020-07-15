@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 # from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
-import pandas as pd
+# import pandas as pd
 
 # from modules.userform import UserForm, UserIDForm, UpdateUserForm
 # import random
