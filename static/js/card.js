@@ -37,11 +37,11 @@ class myCard extends HTMLElement {
         let imgUrl;
     //    imgUrl = this.geAttribute('img');
         if (this.hasAttribute('img')) {
-            imgUrl = "data:image/png;base64," + btoa(unescape(encodeURIComponent(this.getAttribute('img'))));
+            // imgUrl = "data:image/png;base64," + btoa(unescape(encodeURIComponent(this.getAttribute('img'))));
         } else {
             
         }
-        // imgUrl = '../static/img/1-1.png';
+        imgUrl = '../static/img/1-1.png';
         const img = document.createElement('img');
         img.setAttribute('width','20%');
         console.log(imgUrl);
