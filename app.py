@@ -13,16 +13,16 @@ app = Flask(__name__)
 # Quote following line to run at local
 # heroku = Heroku(app)
 # Unquote following line to run at local
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-app.secret_key = "ILoveNewYork"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Db.init_app(app)
-conn = psycopg2.connect("dbname=vaccinedb user=postgres")
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-# app.secret_key = "lola980109"
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+# app.secret_key = "ILoveNewYork"
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# conn = psycopg2.connect("dbname=covid19_db user=lola")
+# # Db.init_app(app)
+# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+app.secret_key = "lola980109"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 
 cur = conn.cursor()
@@ -59,7 +59,7 @@ def index():
                 "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-        return render_template("index.html", data=data)
+        return render_template("index.html", data=data, scrollToAnchor="TagIWantToLoadTo")
 
 
 
