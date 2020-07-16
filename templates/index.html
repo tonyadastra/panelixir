@@ -129,10 +129,11 @@
     <!-- list institutions -->
     <div class="institutions">
         {% for entry in data %}
-        <my-card img='../static/img/img1.png' data-expand={{entry[1]}} data-stage={{entry[2]}}></my-card>
+        {{entry[3]}}
+        <my-card data-stage={{entry[1]}} data-expand={{entry[2]}} img='{{entry[3][1]}}' data-intro='{{entry[4]}}'></my-card>
         {% endfor %}
         
-        <my-card img='../static/img/img2.png'></my-card>
+        <!-- <my-card img='../static/img/img2.png'></my-card> -->
         <!-- <img src="../static/img/img2.png"> -->
     </div>
 <!--{{ data }}-->
