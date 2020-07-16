@@ -68,13 +68,13 @@
                                 Stages
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item" type="submit" name="stage" value="Pre-clinical">Pre-Clinical</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="Pre-clinical">Pre-Clinical</button>
                                 <div class="dropdown-divider"></div>
-                                <button class="dropdown-item" type="submit" name="stage" value="Phase I">Phase I</button>
-                                <button class="dropdown-item" type="submit" name="stage" value="Phase II">Phase II</button>
-                                <button class="dropdown-item" type="submit" name="stage" value="Phase III">Phase III</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="Phase I">Phase I</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="Phase II">Phase II</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="Phase III">Phase III</button>
                                 <div class="dropdown-divider"></div>
-                                <button class="dropdown-item" type="submit" name="stage" value="Approval">Approval</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="Approval">Approval</button>
                             </div>
                         </form>
                     </div>
@@ -82,7 +82,7 @@
                 <!--            Country-->
                 <div class="column">
                     <div class="dropdown">
-                        <form action="/" method="POST" enctype="multipart/form-data">
+                        <form id="form1" action="/" method="POST" enctype="multipart/form-data">
                             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Country
@@ -133,9 +133,12 @@
         <my-card img='../static/img/img2.png'></my-card>
         <!-- <img src="../static/img/img2.png"> -->
     </div>
-<!--{{ data }}-->
-<!--{{ website }}-->
-<!--{{ stage }}-->
+
+<!--{{ stages }}-->
+
+<!--    {{ country }}-->
+<!--    {{ types }}-->
+<!--        {{ data }}-->
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

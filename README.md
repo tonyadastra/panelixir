@@ -1,8 +1,9 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 15, 2020 - Database communication with HTML - passing data to html when dropdown item is clicked
 + July 14, 2020 - Database Update - Company Introductions and Logos
-+ July 13, 2020 - Database communication with HTML through Python
++ July 13, 2020 - Database communication with HTML through Python - Initialize
 + July 12, 2020 - New Table "companies" linked to Table "info" using foreign key
 + July 11, 2020 - Database Updates and Company Introductions
 + July 10, 2020 - Database Format Confirmed + Remote Database Creation
