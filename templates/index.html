@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="../static/css/card.css">
 <!--    <script src="../static/js/index.js" type="text/javascript"></script>-->
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> --> -->
     <script src="../static/js/card.js"></script>
+    
 
     <style>
     </style>
@@ -67,13 +69,13 @@
                                 Stages
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item" type="submit" name="stages" value="Pre-clinical">Pre-Clinical</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="0">Pre-Clinical</button>
                                 <div class="dropdown-divider"></div>
-                                <button class="dropdown-item" type="submit" name="stages" value="Phase I">Phase I</button>
-                                <button class="dropdown-item" type="submit" name="stages" value="Phase II">Phase II</button>
-                                <button class="dropdown-item" type="submit" name="stages" value="Phase III">Phase III</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="1">Phase I</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="2">Phase II</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="3">Phase III</button>
                                 <div class="dropdown-divider"></div>
-                                <button class="dropdown-item" type="submit" name="stages" value="Approval">Approval</button>
+                                <button class="dropdown-item" type="submit" name="stages" value="4">Approval</button>
                             </div>
                         </form>
                     </div>
@@ -82,7 +84,7 @@
                 <div class="column">
                     <div class="dropdown">
                         <form id="form1" action="/" method="POST" enctype="multipart/form-data">
-                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            <button id="dropdownMenuButton"  class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Country
                             </button>
@@ -107,7 +109,7 @@
                 <div class="column">
                     <div class="dropdown">
                         <form action="/" method="POST" enctype="multipart/form-data">
-                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                            <button id="dropdownMenuButton" class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Vaccine Types
                             </button>
@@ -116,7 +118,7 @@
                                 <button class="dropdown-item" name="type" value="Viral Vector">Viral Vector Vaccines</button>
                                 <button class="dropdown-item" name="type" value="Protein-Based">Protein-Based Vaccines</button>
                                 <button class="dropdown-item" name="type" value="Whole-Virus">Whole-Virus Vaccines</button>
-                                <button class="dropdown-item" name="type" value="Others">Others</button>
+                                <button class="dropdown-item" name="type" value="Repurposed">Others</button>
                             </div>
                         </form>
                     </div>
@@ -129,7 +131,6 @@
     <!-- list institutions -->
     <div class="institutions">
         {% for entry in data %}
-        {{entry[3]}}
         <my-card data-stage={{entry[1]}} data-expand={{entry[2]}} img='{{entry[3][1]}}' data-intro='{{entry[4]}}'></my-card>
         {% endfor %}
         
@@ -143,15 +144,15 @@
 <!--    {{ types }}-->
 <!--        {{ data }}-->
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-<script>
-      $(document).on('click','.dropdown-menu a',function(){
-          $(this).parent().parent().find('.dropdown-toggle').html($(this).html()  + ' <span class="fa fa-caret-down"></span>');
-      });
-</script>
+    <script>
+        $(document).on('click','.dropdown-menu button',function(){
+            $(this).parent().parent().find('.dropdown-toggle').html($(this).html()  + ' <span class="fa fa-caret-down"></span>');
+        });
+    </script>
 
 </body>
 
