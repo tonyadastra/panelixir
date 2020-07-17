@@ -59,7 +59,8 @@ def index():
                 "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-        return render_template("index.html", data=data, scrollToAnchor="TagIWantToLoadTo")
+        return render_template("index.html", data=data, stages=stages, country=country, types=types, 
+            scrollToAnchor="TagIWantToLoadTo")
 
 
 
