@@ -1,43 +1,51 @@
+function hexToBase64(str) {
+    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+}
+// function hexToBase64(str) {
+//     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+// }
+
 class myCard extends HTMLElement {
-   constructor(){
-        super();
+    connectedCallback(){
         const shadow = this.attachShadow({ mode: 'open' });
 
         // link css
         const linkElem1 = document.createElement('link');
         linkElem1.setAttribute('rel', 'stylesheet');
         linkElem1.setAttribute('href', '../static/css/card.css');
+       shadow.appendChild(linkElem1);
 
         const linkElem2 = document.createElement('link');
         linkElem2.setAttribute('rel', 'stylesheet');
         linkElem2.setAttribute('href', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css');
-
-
-        // link bootsrap js and jquery
-        const linkElem3 = document.createElement('script');
-        linkElem3.setAttribute('src', 'https://code.jquery.com/jquery-3.5.1.slim.min.js');
-
-        const linkElem4 = document.createElement('script');
-        linkElem4.setAttribute('src', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js');
-
+       shadow.appendChild(linkElem2);
+        
         // the outter most div
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
-
+       
+   
         // logo image
-        let imgUrl;
-    //    imgUrl = this.geAttribute('img');
-        if (this.hasAttribute('img')) {
-            imgUrl = this.getAttribute('img');
+        // let imgUrl;
+        // console.log(this.getAttribute('data-img'))
+        if (this.hasAttribute('data-img')) {
+            const imgUrlArr = this.getAttribute('data-img').split(',')
+            imgUrlArr.forEach((imgUrl) => {
+                imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
+                const img = document.createElement('img');
+                img.setAttribute('height', '60px');
+                img.src = imgUrl;
+                wrapper.appendChild(img);
+            })
         } else {
-            imgUrl = '../static/img/img1.png';
+            let imgUrl = '../static/img/Untitled.png';
+            const img = document.createElement('img');
+            img.setAttribute('height', '40px');
+            img.src = imgUrl;
+            wrapper.appendChild(img);
         }
         
-        const img = document.createElement('img');
-        img.setAttribute('width','20%');
-        
-        img.src = imgUrl;
-        wrapper.appendChild(img);
+       
 
         // progress bar
         var bar_wrapper = document.createElement('div');
@@ -48,40 +56,60 @@ class myCard extends HTMLElement {
         pbar1.setAttribute('class', 'progress-bar');
         pbar1.setAttribute('id', 'pbar1');
         pbar1.innerHTML='PRECLICNICAL';
-        bar_wrapper.appendChild(pbar1);
+        
 
         var pbar2 = document.createElement('div');
         pbar2.setAttribute('class', 'progress-bar');
         pbar2.setAttribute('id', 'pbar2');
         pbar2.innerHTML = 'PHASE I';
-        bar_wrapper.appendChild(pbar2);
 
         var pbar3 = document.createElement('div');
         pbar3.setAttribute('class', 'progress-bar');
         pbar3.setAttribute('id', 'pbar3');
         pbar3.innerHTML = 'PHASE II';
-        bar_wrapper.appendChild(pbar3);
 
         var pbar4 = document.createElement('div');
         pbar4.setAttribute('class', 'progress-bar');
         pbar4.setAttribute('id', 'pbar4'); 
         pbar4.innerHTML = 'PHASE III';
-        bar_wrapper.appendChild(pbar4);
 
         var pbar5 = document.createElement('div');
         pbar5.setAttribute('class', 'progress-bar');
         pbar5.setAttribute('id', 'pbar5');
-       pbar5.innerHTML = 'APPROVAL';
-        bar_wrapper.appendChild(pbar5);
+        pbar5.innerHTML = 'APPROVAL';
+
+        if (this.getAttribute('data-stage') == 0) { 
+            bar_wrapper.appendChild(pbar1);
+        } else if (this.getAttribute('data-stage') == 1) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+        } else if (this.getAttribute('data-stage') == 2) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+        } else if (this.getAttribute('data-stage') == 3) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+            bar_wrapper.appendChild(pbar4);
+        } else if (this.getAttribute('data-stage') == 4) {
+            bar_wrapper.appendChild(pbar1);
+            bar_wrapper.appendChild(pbar2);
+            bar_wrapper.appendChild(pbar3);
+            bar_wrapper.appendChild(pbar4);
+            bar_wrapper.appendChild(pbar5);
+        } 
 
         wrapper.appendChild(bar_wrapper);
 
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
-        text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
-    //    var info = this.getAttribute('data-text');
-    //    text.innerHTML= info;
+
+        // text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
+        var intro = this.getAttribute('data-intro');
+        // console.log(intro);
+        text.innerHTML= intro;
         wrapper.appendChild(text);
 
         // button to learn more 
@@ -90,8 +118,12 @@ class myCard extends HTMLElement {
         btn.setAttribute('type', 'button');
         btn.innerHTML='Learn More';
 
-        var content= document.createElement('p');
-        content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+        var content= document.createElement('a');
+        
+        var url = this.getAttribute('data-expand');
+        content.setAttribute("href",url);
+        content.innerHTML= url;
+        // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
         content.setAttribute('class', 'content');
         wrapper.appendChild(btn);
         wrapper.appendChild(content);
@@ -109,10 +141,6 @@ class myCard extends HTMLElement {
 
 
         shadow.appendChild(wrapper);
-        shadow.appendChild(linkElem1);
-        shadow.appendChild(linkElem2);
-        shadow.appendChild(linkElem3);
-        shadow.appendChild(linkElem4);
         // this.attachShadow({ mode: 'close' });
     }
     
