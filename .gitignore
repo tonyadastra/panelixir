@@ -2,3 +2,4 @@
 .idea
 .DS_store
 test.py
+__pycache__
