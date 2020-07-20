@@ -19,34 +19,33 @@ class myCard extends HTMLElement {
         linkElem2.setAttribute('rel', 'stylesheet');
         linkElem2.setAttribute('href', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css');
        shadow.appendChild(linkElem2);
-
-        // link bootsrap js and jquery
-        const linkElem3 = document.createElement('script');
-        linkElem3.setAttribute('src', 'https://code.jquery.com/jquery-3.5.1.slim.min.js');
-       shadow.appendChild(linkElem3);
-
-        const linkElem4 = document.createElement('script');
-        linkElem4.setAttribute('src', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js');
-       shadow.appendChild(linkElem4);
+        
         // the outter most div
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
        
    
         // logo image
-        let imgUrl;
-    //    imgUrl = this.geAttribute('img');
-        if (this.hasAttribute('img')) {
-            // imgUrl = "data:image/png;base64," + btoa(unescape(encodeURIComponent(this.getAttribute('img'))));
+        // let imgUrl;
+        // console.log(this.getAttribute('data-img'))
+        if (this.hasAttribute('data-img')) {
+            const imgUrlArr = this.getAttribute('data-img').split(',')
+            imgUrlArr.forEach((imgUrl) => {
+                imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
+                const img = document.createElement('img');
+                img.setAttribute('height', '60px');
+                img.src = imgUrl;
+                wrapper.appendChild(img);
+            })
         } else {
-            
+            let imgUrl = '../static/img/Untitled.png';
+            const img = document.createElement('img');
+            img.setAttribute('height', '40px');
+            img.src = imgUrl;
+            wrapper.appendChild(img);
         }
-        imgUrl = '../static/img/1-1.png';
-        const img = document.createElement('img');
-        img.setAttribute('width','20%');
-        console.log(imgUrl);
-        img.src = imgUrl;
-        wrapper.appendChild(img);
+        
+       
 
         // progress bar
         var bar_wrapper = document.createElement('div');
