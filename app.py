@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
+import json
+import csv
 # import sys
 # import pandas as pd
 # from modules.userform import UserForm, UserIDForm, UpdateUserForm
@@ -78,6 +80,20 @@ def load_data():
         del vaccine_info['_sa_instance_state']
         vaccines_json['vaccines'].append(vaccine_info)
     return jsonify(vaccines_json)
+
+
+@app.route('/data/map.json', methods=['GET'])
+def load_string():
+    with open('data/map.json') as json_file:
+        data = json.load(json_file)
+    return jsonify(data)
+
+
+# @app.route('/data/world-country-names.tsv', methods=['GET'])
+# def load_country():
+#     tsv_file = open("data/world-country-names.tsv")
+#     read_tsv = csv.reader(tsv_file, delimiter="\t")
+#     return read_tsv
 
 
 if __name__ == '__main__':
