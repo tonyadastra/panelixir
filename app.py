@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
-import sys
-from flask import jsonify
+# import sys
 # import pandas as pd
 # from modules.userform import UserForm, UserIDForm, UpdateUserForm
 # import random
@@ -17,7 +16,7 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
 # app.secret_key = "ILoveNewYork"
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# # Db.init_app(app)
+# Db.init_app(app)
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
@@ -60,172 +59,7 @@ def index():
                 "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-        return render_template("index.html", data=data, stages=stages, country=country, types=types, 
-                               jdata=jsonify(data), scrollToAnchor="TagIWantToLoadTo")
-
-
-
-        # if stages == "Pre-clinical":
-        #     # Stages Filtering
-        #     # Preclinical (Preclinical --> 0)
-        #     cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM info "
-        #                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE stage=0;")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, stages=stages)
-
-        # if stages == "Phase I":
-        #     # Stage I (Stage I --> 1)
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-        #         "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=1;")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, stages=stages)
-        # if stages == "Phase II":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-        #         "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=2;")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, stages=stages)
-        # if stages == "Phase III":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-        #         "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=3;")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, stages=stages)
-        # if stages == "Approval":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-        #         "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=4;")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, stages=stages)
-
-        # Country Filtering  
-        # if country == "United States":
-        # statement = "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id WHERE country LIKE '%United States%';"
-        # cur.execute(statement)
-        # print(statement, file=sys.stdout)
-        # data = np.array(cur.fetchall())
-        # cur.execute("rollback")
-        # return render_template("index.html", data=data, country=country)
-        # if country == "United Kingdom":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%United Kingdom%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "China":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%China%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Japan":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Japan%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Germany":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Germany%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "India":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%India%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "South Korea":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%South Korea%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "France":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%France%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Australia":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Australia%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Russia":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Russia%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Canada":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Canada%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-        # if country == "Austria":
-        #     cur.execute(
-        #         "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN "
-        #         "companies ON info.vac_id = companies.vac_id WHERE country LIKE '%Austria%';")
-        #     data = np.array(cur.fetchall())
-        #     cur.execute("rollback")
-        #     return render_template("index.html", data=data, country=country)
-
-        # Types Filtering
-    #     if types == "Genetic":
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro FROM info "
-    #             "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='Genetic';")
-    #         data = np.array(cur.fetchall())
-    #         cur.execute("rollback")
-    #         return render_template("index.html", data=data, types=types)
-    #     if types == "Viral Vector":
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro FROM info "
-    #             "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='Viral Vector';")
-    #         data = np.array(cur.fetchall())
-    #         cur.execute("rollback")
-    #         return render_template("index.html", data=data, types=types)
-    #     if types == "Protein-Based":
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro FROM info "
-    #             "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='Protein-Based';")
-    #         data = np.array(cur.fetchall())
-    #         cur.execute("rollback")
-    #         return render_template("index.html", data=data, types=types)
-    #     if types == "Whole-Virus":
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro FROM info "
-    #             "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='Whole-Virus';")
-    #         data = np.array(cur.fetchall())
-    #         cur.execute("rollback")
-    #         return render_template("index.html", data=data, types=types)
-    #     if types == "Others":
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro FROM info "
-    #             "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='Repurposed';")
-    #         data = np.array(cur.fetchall())
-    #         cur.execute("rollback")
-    #         return render_template("index.html", data=data, types=types)
+        return render_template("index.html", data=data, stages=stages, country=country, types=types, scrollToAnchor="TagIWantToLoadTo")
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
@@ -234,8 +68,17 @@ def index():
         cur.execute("rollback")
         return render_template("index.html", data=data)
 
-# cur.close()
-# conn.close()
+
+@app.route('/load_data', methods=['GET'])
+def load_data():
+    vaccines_json = {'vaccines': []}
+    vaccines = Vaccine.query.all()
+    for vaccine in vaccines:
+        vaccine_info = vaccine.__dict__
+        del vaccine_info['_sa_instance_state']
+        vaccines_json['vaccines'].append(vaccine_info)
+    return jsonify(vaccines_json)
+
 
 # @app.route('/data')
 # def send_data():
@@ -248,3 +91,7 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# cur.close()
+# conn.close()
