@@ -3,6 +3,7 @@ from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
 import sys
+from flask import jsonify
 # import pandas as pd
 # from modules.userform import UserForm, UserIDForm, UpdateUserForm
 # import random
@@ -60,7 +61,7 @@ def index():
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
         return render_template("index.html", data=data, stages=stages, country=country, types=types, 
-            scrollToAnchor="TagIWantToLoadTo")
+                               jdata=jsonify(data), scrollToAnchor="TagIWantToLoadTo")
 
 
 
@@ -235,6 +236,15 @@ def index():
 
 # cur.close()
 # conn.close()
+
+# @app.route('/data')
+# def send_data():
+#     con = psycopg2.connect("host='localhost' dbname='mydb' user='postgres' password='Password'")  
+#     cur = con.cursor()
+#     cur.execute("""select * from  data_lc""")
+#     data = [col for col in cur]
+#     cur.close()
+#     return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
