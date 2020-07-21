@@ -89,11 +89,15 @@ def load_string():
     return jsonify(data)
 
 
-# @app.route('/data/world-country-names.tsv', methods=['GET'])
-# def load_country():
-#     tsv_file = open("data/world-country-names.tsv")
-#     read_tsv = csv.reader(tsv_file, delimiter="\t")
-#     return read_tsv
+@app.route('/data/world-country-names.tsv', methods=['GET'])
+def load_country():
+    data = {}
+    with open('data/world-country-names.csv') as csvFile:
+        csvReader = csv.DictReader(csvFile)
+        for rows in csvReader:
+            id = rows['id']
+            data[id] = rows
+    return jsonify(data)
 
 
 if __name__ == '__main__':
