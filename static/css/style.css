@@ -6,6 +6,34 @@
     width: 100vw;
 }
 
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.fill {
+  fill: #f2f2f2;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.land {
+  fill: darkgrey;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+
 p.q {
       font-family: Futura;
       font-size: 8px;
