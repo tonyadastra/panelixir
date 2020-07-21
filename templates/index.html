@@ -16,6 +16,10 @@
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"
     defer></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-queue.v1.min.js"></script>
+<!--<script src="//d3js.org/topojson.v1.min.js"></script>-->
+<!--<script src="//d3js.org/queue.v1.min.js"></script>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script src="../static/js/card.js"></script>
 <script src="../static/js/worldmap.js"></script>
@@ -41,7 +45,7 @@
     <!-- Heading Bar of Webpage-->
     <div class="jumbotron">
         <div class="row">
-            <div class="column-lg-4">
+            <div class="col">
                 <h3>Coronavirus Vaccine and Treatment Tracker</h3>
             </div>
         </div>
@@ -49,8 +53,9 @@
 
    
     <!-- Data Visualizations-->
-<!--    <div id="vis1" class="vis"></div>-->
-
+    <div class="slide">
+        <div id="vis1" class="vis"></div>
+    </div>
 
     <div class="ctr text-center">
         <div class="jumbotron">
@@ -93,8 +98,8 @@
         <div class="container">
             <div class="row">
                 <div class="column">
-                    <div class="btn1" id="bold">
-                        Filter
+                    <div class="btn1">
+                        <b>Filter Vaccines</b>
                     </div>
                 </div>
                 <!--            Stages-->
