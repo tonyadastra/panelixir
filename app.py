@@ -12,6 +12,7 @@ import csv
 # Quote following line to run at local
 # from flask_heroku import Heroku
 app = Flask(__name__)
+app.static_url_path = '/static'
 # Quote following line to run at local
 # heroku = Heroku(app)
 # Unquote following line to run at local
@@ -24,6 +25,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
 app.secret_key = "lola980109"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+Db.init_app(app)
 conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 
