@@ -94,6 +94,7 @@ function ready(error, world, names) {
     land = topojson.feature(world, world.objects.land),
     countries = topojson.feature(world, world.objects.countries).features,
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
+  console.log(land)
 
   countries = countries.filter(function(d) {
     return names.some(function(n) {
