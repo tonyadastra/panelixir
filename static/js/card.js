@@ -27,7 +27,7 @@ class myCard extends HTMLElement {
    
         // logo image
         // let imgUrl;
-        console.log(this.getAttribute('data-img'))
+        // console.log(this.getAttribute('data-img'))
         if (this.hasAttribute('data-img')) {
             const imgUrlArr = this.getAttribute('data-img').split(',')
             imgUrlArr.forEach((imgUrl) => {
