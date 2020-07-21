@@ -11,5 +11,6 @@ d3.json('/load_data').then(d => {
 
     // Instantiate Graph
     worldmap = new Worldmap(data, 'vis1')
+    console.log(worldmap)
 
 }).catch(err => console.log(err));
