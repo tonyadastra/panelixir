@@ -12,7 +12,6 @@ import csv
 # Quote following line to run at local
 # from flask_heroku import Heroku
 app = Flask(__name__)
-app.static_url_path = '/static'
 # Quote following line to run at local
 # heroku = Heroku(app)
 # Unquote following line to run at local
