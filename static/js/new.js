@@ -10,15 +10,16 @@ class Worldmap {
   names = [];
 
   // Configs
-  svgW = 950;
-  svgH = 700;
+  svgW = 700;
+  svgH = 500;
   gMargin = { top: 0, right: 0, bottom: 0, left: 0 };
   gW = this.svgW - (this.gMargin.right + this.gMargin.left);
   gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
 
   // Tools
   projection = d3.geoOrthographic()
-    .scale(300)
+    .scale(250)
+    .rotate([100.5728366920307, -48])
     .translate([this.svgW / 2, this.svgH / 2])
     .clipAngle(90)
     .precision(10);
@@ -128,7 +129,6 @@ class Worldmap {
     }
     console.log(vac_map);
 
-
     // console.log(vis.data);
 
     var files = ["/data/map.json", "/data/world-country-names.tsv"];
@@ -157,17 +157,12 @@ class Worldmap {
         .attr("class", "land")
         .attr("d", vis.path);
 
-      // console.log()
-      // console.log(vis.names[0])
-      // console.log(countries.length)
-      let prev_color = vis.colors.p2;
-      
       for (let i = 0; i < Object.values(vis.names).length; i++) {
-        // console.log("outter loop")
         for (let j = 0; j < countries.length; j++) {
-          // console.log("inner loop")
+          // console.log("inner loop");
 
           if (countries[j].id == Object.values(vis.names)[i].id) {
+
             let curr_color = vis.colors.clickable;
             let curr_stage = -1;
             if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
@@ -175,19 +170,6 @@ class Worldmap {
               // console.log(curr_stage);
               // console.log(Object.values(vis.names)[i].name);
             }
-            
-            
-            // if (prev_stage == 0) {
-            //   prev_color = vis.colors.p0;
-            // } else if (prev_stage == 1) {
-            //   prev_color = vis.colors.p1;
-            // } else if (prev_stage == 2) {
-            //   prev_color = vis.colors.p2;
-            // } else if (prev_stage == 3) {
-            //   prev_color = vis.colors.p3;
-            // } else if (prev_stage == 4) {
-            //   prev_color = vis.colors.p4;
-            // }
 
             if (curr_stage == 0) {
               curr_color = vis.colors.p0;
@@ -200,36 +182,64 @@ class Worldmap {
             } else if (curr_stage == 4) {
               curr_color = vis.colors.p4;
             }
-            // console.log(curr_color)
-           
+            // console.log(j, Object.values(vis.names)[i].name);
 
-            vis.map.insert("path", ".graticule")
+
+            var display = vis.map.insert("path", ".graticule")
               .datum(countries[j])
               .attr("fill", curr_color)
               .attr("d", vis.path)
               .attr("class", "clickable")
               .attr("data-country-id", j)
-              .on("click", function () {
-                d3.selectAll(".clicked")
-                  .classed("clicked", false)
-                  .attr("fill", curr_color);
-                d3.select(this)
-                  .classed("clicked", true)
-                  .attr("fill", vis.colors.clicked);
+              .attr("countryname", Object.values(vis.names)[i].name)
 
-                (function transition() {
-                  d3.select(".clicked").transition()
-                    .duration(1250)
-                    .tween("rotate", function () {
-                      var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
-                        r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
-                      return function (t) {
-                        vis.projection.rotate(r(t));
-                        vis.map.selectAll("path").attr("d", vis.path);
-                      }
-                    });
-                })();
-              })
+            display.on("click", function () {
+              let prev_color = vis.colors.clickable;
+              let prev_stage = -1;
+              let temp;
+
+              d3.selectAll(".clicked")
+                .classed("clicked", false)
+                .select(function () {
+                  // console.log(this)
+                  // console.log(d3.select(this).attr("countryname"));
+                  temp = vac_map.get(d3.select(this).attr("countryname"));
+                  prev_stage = temp === undefined ? -1 : temp;
+
+                  if (prev_stage == 0) {
+                    prev_color = vis.colors.p0;
+                  } else if (prev_stage == 1) {
+                    prev_color = vis.colors.p1;
+                  } else if (prev_stage == 2) {
+                    prev_color = vis.colors.p2;
+                  } else if (prev_stage == 3) {
+                    prev_color = vis.colors.p3;
+                  } else if (prev_stage == 4) {
+                    prev_color = vis.colors.p4;
+                  }
+                  d3.select(this).attr("fill", prev_color);
+                  // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                })
+
+              d3.select(this)
+                .classed("clicked", true)
+                .attr("fill", vis.colors.clicked);
+              // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
+
+              (function transition() {
+                d3.select(".clicked").transition()
+                  .duration(1250)
+                  .tween("rotate", function () {
+                    var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
+                      r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
+                    console.log([-p[0], -p[1]])
+                    return function (t) {
+                      vis.projection.rotate(r(t));
+                      vis.map.selectAll("path").attr("d", vis.path);
+                    }
+                  });
+              })();
+            })
               .on("mousemove", function () {
                 var c = d3.select(this);
                 if (c.classed("clicked")) {
@@ -237,20 +247,25 @@ class Worldmap {
                 } else {
                   c.attr("fill", vis.colors.hover);
                 }
+                // console.log("mouse move", Object.values(vis.names)[i].name);
               })
               .on("mouseout", function () {
                 var c = d3.select(this);
+                // console.log(vac_map);
+
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clicked);
+                  console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
+                  console.log("unclicked mouse out", Object.values(vis.names)[i].name)
                   d3.select(this).attr("fill", curr_color);
+
                 }
+                // console.log("mouse out");
+
               });
-             
-            // prev_color = curr_color;
-            // console.log(prev_color);  
           }
-          
+
         }
       }
       vis.map.insert("path", ".graticule")
