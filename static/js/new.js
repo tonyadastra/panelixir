@@ -103,8 +103,6 @@ class Worldmap {
     //     var width = 950,
     // height = 700;
 
-
-
     var files = ["/data/map.json", "/data/world-country-names.tsv"];
 
     Promise.all(files.map(url => d3.json(url))).then(function (values) {
