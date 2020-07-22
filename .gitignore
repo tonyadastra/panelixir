@@ -3,3 +3,4 @@
 .DS_store
 test.py
 __pycache__
+static/js/example.ts
