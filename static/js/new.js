@@ -2,32 +2,33 @@
  * @class Template
  */
 class Worldmap {
+
+  // Elements
+  svg = null;
+  g = null;
+
+  // Configs
+  svgW = 950;
+  svgH = 700;
+  gMargin = { top: 0, right: 0, bottom: 0, left: 0 };
+  gW = this.svgW - (this.gMargin.right + this.gMargin.left);
+  gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
+
+  // Tools
+  projection = d3.geoOrthographic()
+    .scale(300)
+    .translate([this.svgW / 2, this.svgH / 2])
+    .clipAngle(90)
+    .precision(10);
+  path = d3.geoPath()
+    .projection(this.projection);
+  graticule = d3.geoGraticule();
+  colors = { clickable: 'darkgrey', hover: 'grey', clicked: "red", clickhover: "darkred" };
+
   /*
   Constructor
    */
   constructor(_data, _target) {
-    // Elements
-    svg = null;
-    g = null;
-
-    // Configs
-    svgW = 950;
-    svgH = 700;
-    gMargin = { top: 0, right: 0, bottom: 0, left: 0 };
-    gW = this.svgW - (this.gMargin.right + this.gMargin.left);
-    gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
-
-    // Tools
-    projection = d3.geoOrthographic()
-      .scale(300)
-      .translate([this.svgW / 2, this.svgH / 2])
-      .clipAngle(90)
-      .precision(10);
-    path = d3.geoPath()
-      .projection(this.projection);
-    graticule = d3.geoGraticule();
-    colors = { clickable: 'darkgrey', hover: 'grey', clicked: "red", clickhover: "darkred" };
-
     // Assign parameters as object fields
     this.data = _data;
     this.target = _target;
