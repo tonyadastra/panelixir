@@ -137,7 +137,7 @@ class Worldmap {
       vis.world = values[0]
       // console.log(values)
       vis.names = values[1]
-      // console.log(vis.world)
+      console.log(vis.world)
       var globe = { type: "Sphere" },
         land = topojson.feature(vis.world, vis.world.objects.land),
         countries = topojson.feature(vis.world, vis.world.objects.countries).features,
@@ -232,7 +232,6 @@ class Worldmap {
                   .tween("rotate", function () {
                     var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
                       r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
-                    console.log([-p[0], -p[1]])
                     return function (t) {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);
@@ -255,9 +254,9 @@ class Worldmap {
 
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clicked);
-                  console.log("clicked mouse out", Object.values(vis.names)[i].name)
+                  // console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
-                  console.log("unclicked mouse out", Object.values(vis.names)[i].name)
+                  // console.log("unclicked mouse out", Object.values(vis.names)[i].name)
                   d3.select(this).attr("fill", curr_color);
 
                 }
