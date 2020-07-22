@@ -25,7 +25,11 @@ class Worldmap {
   path = d3.geoPath()
     .projection(this.projection);
   graticule = d3.geoGraticule();
-  colors = { clickable: 'darkgrey', hover: 'grey', clicked: "red", clickhover: "darkred" };
+  colors = {
+    clickable: '#e3e2df', hover: '#bab2b5', clicked: "#895061",
+    clickhover: '#bab2b5', p0: '#c1c8e4', p1: '#84ceeb',
+    p2: '#5ab9ea', p3: '#88bdbc', p4: '#3aafa9'
+  };
 
   /*
   Constructor
@@ -103,7 +107,29 @@ class Worldmap {
     //     var width = 950,
     // height = 700;
 
+    vis.vac_country = vis.data.map(d => d.country);
+    vis.vac_stage = vis.data.map(d => d.stage);
 
+    // filter unique countries with highest stage
+    let vac_map = new Map();
+    for (var i = 0; i < vis.vac_country.length; i++) {
+      if (vis.vac_country[i].includes(",")) {
+        let arr = vis.vac_country[i].split(",")
+        arr.forEach(function (elem) {
+          if (!vac_map.get(elem.trim()) || vac_map.get(elem.trim()) < vis.vac_stage[i]) {
+            vac_map.set(elem.trim(), vis.vac_stage[i]);
+          }
+        });
+      } else {
+        if (!vac_map.get(vis.vac_country[i]) || vac_map.get(vis.vac_country[i]) < vis.vac_stage[i]) {
+          vac_map.set(vis.vac_country[i], vis.vac_stage[i]);
+        }
+      }
+    }
+    console.log(vac_map);
+
+
+    // console.log(vis.data);
 
     var files = ["/data/map.json", "/data/world-country-names.tsv"];
 
@@ -134,21 +160,59 @@ class Worldmap {
       // console.log()
       // console.log(vis.names[0])
       // console.log(countries.length)
+      let prev_color = vis.colors.p2;
+      
       for (let i = 0; i < Object.values(vis.names).length; i++) {
+        // console.log("outter loop")
         for (let j = 0; j < countries.length; j++) {
-          // for (k < data.countries.length)  
+          // console.log("inner loop")
+
           if (countries[j].id == Object.values(vis.names)[i].id) {
-            // if (data[k].stage == 3 && data[k].name== countries[j].name) 
+            let curr_color = vis.colors.clickable;
+            let curr_stage = -1;
+            if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
+              curr_stage = vac_map.get(Object.values(vis.names)[i].name);
+              // console.log(curr_stage);
+              // console.log(Object.values(vis.names)[i].name);
+            }
+            
+            
+            // if (prev_stage == 0) {
+            //   prev_color = vis.colors.p0;
+            // } else if (prev_stage == 1) {
+            //   prev_color = vis.colors.p1;
+            // } else if (prev_stage == 2) {
+            //   prev_color = vis.colors.p2;
+            // } else if (prev_stage == 3) {
+            //   prev_color = vis.colors.p3;
+            // } else if (prev_stage == 4) {
+            //   prev_color = vis.colors.p4;
+            // }
+
+            if (curr_stage == 0) {
+              curr_color = vis.colors.p0;
+            } else if (curr_stage == 1) {
+              curr_color = vis.colors.p1;
+            } else if (curr_stage == 2) {
+              curr_color = vis.colors.p2;
+            } else if (curr_stage == 3) {
+              curr_color = vis.colors.p3;
+            } else if (curr_stage == 4) {
+              curr_color = vis.colors.p4;
+            }
+            // console.log(curr_color)
+           
+
             vis.map.insert("path", ".graticule")
               .datum(countries[j])
-              .attr("fill", vis.colors.clickable)
+              .attr("fill", curr_color)
               .attr("d", vis.path)
               .attr("class", "clickable")
               .attr("data-country-id", j)
               .on("click", function () {
                 d3.selectAll(".clicked")
                   .classed("clicked", false)
-                  .attr("fill", vis.colors.clickable);
+                  .attr("fill", curr_color);
                 d3.select(this)
                   .classed("clicked", true)
                   .attr("fill", vis.colors.clicked);
@@ -179,10 +243,14 @@ class Worldmap {
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clicked);
                 } else {
-                  d3.select(this).attr("fill", vis.colors.clickable);
+                  d3.select(this).attr("fill", curr_color);
                 }
               });
+             
+            // prev_color = curr_color;
+            // console.log(prev_color);  
           }
+          
         }
       }
       vis.map.insert("path", ".graticule")
@@ -208,4 +276,6 @@ class Worldmap {
     d3.select(self.frameElement).style("height", vis.svgH + "px");
 
   }
+
+
 }
