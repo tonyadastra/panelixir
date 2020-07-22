@@ -275,17 +275,6 @@ class Worldmap {
       // return (vis.world, vis.names)
 
     });
-    // queue()
-    //     .defer(d3.json, "/data/map.json")
-    //     .defer(d3.tsv, "/data/world-country-names.tsv")
-    //     .await(ready);
-
-    // function ready(error, world, names) {
-    //   if (error) throw error;
-
-
-
-    // };
 
     d3.select(self.frameElement).style("height", vis.svgH + "px");
 

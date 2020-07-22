@@ -84,7 +84,7 @@ map.append("path")
 
 queue()
     .defer(d3.json, "../data/map.json")
-    .defer(d3.tsv, "../data/world-country-names.tsv")
+    .defer(d3.csv, "../data/world-country-names.csv")
     .await(ready);
 
 function ready(error, world, names) {
@@ -96,13 +96,13 @@ function ready(error, world, names) {
     borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; });
   console.log(land)
 
-  // countries = countries.filter(function(d) {
-  //   return names.some(function(n) {
-  //     if (d.id == n.id) return d.name = n.name;
-  //   });
-  // }).sort(function(a, b) {
-  //   return a.name.localeCompare(b.name);
-  // });
+  countries = countries.filter(function(d) {
+    return names.some(function(n) {
+      if (d.id == n.id) return d.name = n.name;
+    });
+  }).sort(function(a, b) {
+    return a.name.localeCompare(b.name);
+  });
 
   map.insert("path", ".graticule")
       .datum(topojson.feature(world, world.objects.land))
