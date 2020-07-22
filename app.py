@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
-import sys
+import json
+import csv
+# import sys
 # import pandas as pd
 # from modules.userform import UserForm, UserIDForm, UpdateUserForm
 # import random
@@ -13,16 +15,17 @@ app = Flask(__name__)
 # Quote following line to run at local
 # heroku = Heroku(app)
 # Unquote following line to run at local
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-app.secret_key = "ILoveNewYork"
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+# app.secret_key = "ILoveNewYork"
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Db.init_app(app)
+# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+app.secret_key = "lola980109"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
-conn = psycopg2.connect("dbname=vaccinedb user=postgres")
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-# app.secret_key = "lola980109"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# conn = psycopg2.connect("dbname=covid19_db user=lola")
+conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 
 cur = conn.cursor()
@@ -32,7 +35,7 @@ cur = conn.cursor()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # cur.execute(
-    #     "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
+    #     "SELECT info.xvac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
     # data = np.array(cur.fetchall())
     # cur.execute("SELECT  FROM companies;")
     # if request.method == 'GET':
@@ -45,8 +48,8 @@ def index():
         if stages != None:
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages+
-                " ORDER BY co_name, partner_name;" )
+                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
+                " ORDER BY co_name, partner_name;")
         elif country != None:
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info "
@@ -78,6 +81,24 @@ def load_data():
         del vaccine_info['_sa_instance_state']
         vaccines_json['vaccines'].append(vaccine_info)
     return jsonify(vaccines_json)
+
+
+@app.route('/data/map.json', methods=['GET'])
+def load_string():
+    with open('data/map.json') as json_file:
+        data = json.load(json_file)
+    return jsonify(data)
+
+
+@app.route('/data/world-country-names.tsv', methods=['GET'])
+def load_country():
+    data = {}
+    with open('data/world-country-names.csv') as csvFile:
+        csvReader = csv.DictReader(csvFile)
+        for rows in csvReader:
+            id = rows['id']
+            data[id] = rows
+    return jsonify(data)
 
 
 if __name__ == '__main__':
