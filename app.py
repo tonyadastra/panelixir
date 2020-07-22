@@ -35,7 +35,7 @@ cur = conn.cursor()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # cur.execute(
-    #     "SELECT info.vac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
+    #     "SELECT info.xvac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
     # data = np.array(cur.fetchall())
     # cur.execute("SELECT  FROM companies;")
     # if request.method == 'GET':
@@ -48,8 +48,8 @@ def index():
         if stages != None:
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages+
-                " ORDER BY co_name, partner_name;" )
+                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
+                " ORDER BY co_name, partner_name;")
         elif country != None:
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info "
