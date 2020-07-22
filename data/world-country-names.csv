@@ -111,14 +111,14 @@ id,name
 372,Ireland
 376,Israel
 380,Italy
-384,Côte d'Ivoire
+384,Côte d'Ivoires
 388,Jamaica
 392,Japan
 398,Kazakhstan
 400,Jordan
 404,Kenya
 408,"Korea, Democratic People's Republic of"
-410,"Korea, Republic of"
+410,South Korea
 414,Kuwait
 417,Kyrgyzstan
 418,Lao People's Democratic Republic
@@ -186,7 +186,7 @@ id,name
 634,Qatar
 638,Réunion
 642,Romania
-643,Russian Federation
+643,Russia
 646,Rwanda
 652,Saint Barthélemy
 654,"Saint Helena, Ascension and Tristan da Cunha"
