@@ -142,7 +142,8 @@ class Worldmap {
         land = topojson.feature(vis.world, vis.world.objects.land),
         countries = topojson.feature(vis.world, vis.world.objects.countries).features,
         borders = topojson.mesh(vis.world, vis.world.objects.countries, function (a, b) { return a !== b; });
-      // console.log(vis.world.objects.land)
+      console.log(vis.world.objects.countries)
+      // console.log(vis.world.objects.properties.name)
 
       // countries = countries.filter(function(d) {
       //   return vis.names.some(function(n) {
@@ -248,7 +249,7 @@ class Worldmap {
 
               (function transition() {
                 d3.select(".clicked").transition()
-                  .duration(1250)
+                  .duration(1000)
                   .tween("rotate", function () {
                     var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
                       r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
@@ -284,7 +285,6 @@ class Worldmap {
 
               });
           }
-
         }
       }
       vis.map.insert("path", ".graticule")
@@ -299,6 +299,5 @@ class Worldmap {
     d3.select(self.frameElement).style("height", vis.svgH + "px");
 
   }
-
 
 }
