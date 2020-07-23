@@ -45,11 +45,7 @@
 {% block content %}
 <!-- Heading Bar of Webpage-->
 <div class="jumbotron">
-    <div class="row">
-        <div class="col">
-            <h3>Coronavirus Vaccine and Treatment Tracker</h3>
-        </div>
-    </div>
+    <h3>Coronavirus Vaccine and Treatment Tracker</h3>
 </div>
 
 
@@ -90,8 +86,6 @@
 
 </div>
 
-
-
 <!--Heading - Question-->
 <!--<div class="heading">-->
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
@@ -119,7 +113,10 @@
                             <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
                             <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
                             <div class="dropdown-divider"></div>
-                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>
+<!--                            Disabled-->
+                            <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
+<!--                            Enabled-->
+<!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
                         </div>
                     </form>
                 </div>
@@ -132,7 +129,7 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Country
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
                             <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
                                 States</button>
                             <button class="dropdown-item-ctry" type="submit" name="country" value="United Kingdom">United
