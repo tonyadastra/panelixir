@@ -83,7 +83,7 @@ def load_data():
 
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
-    with open('data/map.json') as json_file:
+    with open('data/worldcountries.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
 
