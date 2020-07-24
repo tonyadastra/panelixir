@@ -109,6 +109,7 @@ function ready(error, world, names) {
       .attr("class", "land")
       .attr("d", path);
 
+
   for(i = 0; i < names.length; i++) {
     for (j = 0; j < countries.length; j++) {
       if (countries[j].id == names[i].id) {
@@ -126,9 +127,10 @@ function ready(error, world, names) {
               .classed("clicked", true)
               .attr("fill", colors.clicked);
 
-            (function transition() {
+            (function transition(t) {
               d3.select(".clicked").transition()
-              .duration(1250)
+              .duration(1000)
+                  // .ease(d3.easeCubic(t))
               .tween("rotate", function() {
                 var p = d3.geo.centroid(countries[d3.select(this).attr("data-country-id")]),
                     r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
