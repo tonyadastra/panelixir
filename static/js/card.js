@@ -1,6 +1,7 @@
 function hexToBase64(str) {
     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 }
+
 // function hexToBase64(str) {
 //     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 // }
@@ -50,7 +51,8 @@ class myCard extends HTMLElement {
         // country tag
         // #e37222'
         const countryArr = this.getAttribute('data-country').split(',')
-        countryArr.forEach((country) => {
+        const countryArr_ordered = countryArr.reverse()
+        countryArr_ordered.forEach((country) => {
             // country = country.trim();
             var country_tag = document.createElement('span');
             country_tag.setAttribute('class', 'country_tag');
