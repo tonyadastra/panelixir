@@ -44,8 +44,7 @@ class myCard extends HTMLElement {
             img.src = imgUrl;
             wrapper.appendChild(img);
         }
-        
-       
+
 
         // progress bar
         var bar_wrapper = document.createElement('div');

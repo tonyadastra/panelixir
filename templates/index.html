@@ -94,17 +94,17 @@
 <!--Filter Data-->
 <div id="TagIWantToLoadTo" class="filter">
     <div class="container">
-        <div class="row">
-            <div class="column filtertext">
-                <b>Filter Vaccines</b>
-            </div>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="column filtertext">
+                    <b>Filter Vaccines</b>
+                </div>
             <!--            Stages-->
-            <div class="column">
-                <div class="dropdown">
-                    <form action="/" method="POST" enctype="multipart/form-data">
+                <div class="column">
+                    <div class="dropdown">
                         <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Stages
+                            aria-haspopup="true" aria-expanded="false" name="stages" value="Stages">
+                            {{ stages }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
@@ -118,16 +118,16 @@
 <!--                            Enabled-->
 <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
                         </div>
-                    </form>
+<!--                    </form>-->
+                    </div>
                 </div>
-            </div>
             <!-- Country-->
-            <div class="column">
-                <div class="dropdown">
-                    <form id="form1" action="/" method="POST" enctype="multipart/form-data">
+                <div class="column">
+                    <div class="dropdown">
+<!--                    <form id="form1" action="/" method="POST" enctype="multipart/form-data">-->
                         <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Country
+                            {{ country }}
                         </button>
                         <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
                             <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
@@ -148,16 +148,16 @@
                             <button class="dropdown-item-ctry" type="submit" name="country" value="Austria">Austria</button>
                             <button class="dropdown-item-ctry" type="submit" name="country" value="Singapore">Singapore</button>
                         </div>
-                    </form>
+<!--                    </form>-->
+                    </div>
                 </div>
-            </div>
             <!--            Vaccine Types-->
-            <div class="column">
-                <div class="dropdown">
-                    <form action="/" method="POST" enctype="multipart/form-data">
+                <div class="column">
+                    <div class="dropdown">
+<!--                    <form action="/" method="POST" enctype="multipart/form-data">-->
                         <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vaccine Types
+                            {{ types }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button class="dropdown-item-type" name="type" value="Genetic">Genetic Vaccines</button>
@@ -168,10 +168,16 @@
                             <button class="dropdown-item-type" name="type" value="Whole-Virus">Whole-Virus Vaccines</button>
                             <button class="dropdown-item-type" name="type" value="Repurposed">Others</button>
                         </div>
-                    </form>
+<!--                    </form>-->
+                    </div>
+                </div>
+                <div class="column" style="float: right">
+                    <button class="btn btn-warning align-right" style="background-color: white; border: None" name="status" value="clear">
+                        <b><u style="color: darkblue">Clear Filter</u></b>
+                    </button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <!-- list institutions -->
