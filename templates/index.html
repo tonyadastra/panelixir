@@ -23,6 +23,7 @@
 <!-- <script src="//d3js.org/queue.v1.min.js"></script> -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
+<script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
@@ -54,11 +55,11 @@
     </div>
     <div class="col" style="padding: 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
-            <button class="btn btn-info button-font">World</button>
-            <button class="btn btn-info button-font">North America</button>
-            <button class="btn btn-info button-font">Europe</button>
-            <button class="btn btn-info button-font">Asia</button>
-            <button class="btn btn-info button-font">Oceania</button>
+            <button class="btn btn-info button-font" onclick="displayWorld()">World</button>
+            <button class="btn btn-info button-font" onclick="displayNorthAmerica()">North America</button>
+            <button class="btn btn-info button-font" onclick="displayEurope()">Europe</button>
+            <button class="btn btn-info button-font" onclick="displayAsia()">Asia</button>
+            <button class="btn btn-info button-font" onclick="displayOceania()">Oceania</button>
         </div>
 
         <div class="interactive-progress row">
@@ -67,7 +68,7 @@
 <!--            Bar1-->
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar stage0">
-                    <div class="bar-data">1</div>
+                    <div class="bar-data" id="stage0">1</div>
                 </div>
             </div>
 <!--            Arrow1-->
@@ -75,7 +76,7 @@
 <!--            Bar2-->
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar stage1">
-                    <div class="bar-data">1</div>
+                    <div class="bar-data" id="stage1">1</div>
                 </div>
             </div>
 <!--            Arrow2-->
@@ -83,7 +84,7 @@
 <!--            Bar3-->
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar stage2">
-                    <div class="bar-data">1</div>
+                    <div class="bar-data" id="stage2">1</div>
                 </div>
             </div>
 <!--            Arrow3-->
@@ -91,7 +92,7 @@
 <!--            Bar4-->
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar stage3">
-                    <div class="bar-data">1</div>
+                    <div class="bar-data" id="stage3">1</div>
                 </div>
             </div>
 <!--            Arrow4-->
@@ -99,7 +100,7 @@
 <!--            Bar5-->
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar stage4">
-                    <div class="bar-data">1</div>
+                    <div class="bar-data" id="stage4">1</div>
                 </div>
             </div>
 <!--            Arrow5-->
