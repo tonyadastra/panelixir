@@ -52,7 +52,7 @@ def index():
         if stages != "Stages":
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
-                " JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
+                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=" + stages +
                 " ORDER BY co_name, partner_name;")
             # if country != "Country":
             #     cur.execute(
@@ -85,7 +85,7 @@ def index():
         stages = "Stages"
         country = "Country"
         types = "Vaccine Types"
-        cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM "
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall())
