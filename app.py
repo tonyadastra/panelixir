@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
@@ -32,7 +32,7 @@ cur = conn.cursor()
 # W/O Filtering
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    status = "status"
+    # status = "status"
     # cur.execute(
     #     "SELECT info.xvac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
     # data = np.array(cur.fetchall())
@@ -40,20 +40,19 @@ def index():
     # if request.method == 'GET':
     #     return render_template("index.html")
     if request.method == 'POST':
+        if 'stages' in session:
+
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
         types = request.form.get("type", "Vaccine Type")
         status = request.form.get("status", "status")
 
-        if status == "clear":
-            cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
-                        "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                        "ORDER BY stage DESC, co_name, partner_name;")
         if stages != "Stages":
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id WHERE stage=" + stages +
                 " ORDER BY co_name, partner_name;")
+            session['stages'] = stages
             # if country != "Country":
             #     cur.execute(
             #         "select info.vac_id, stage, website, logo, intro from info inner join companies c on info.vac_id = c.vac_id where stage="+stages+" and country like '%"+country+"%'ORDER BY stage DESC, co_name, partner_name;")
@@ -78,6 +77,11 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='"+types+"' "
                 "ORDER BY stage DESC, co_name, partner_name;")
+
+        if status == "clear":
+            cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+                        "info INNER JOIN companies ON info.vac_id = companies.vac_id "
+                        "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
         return render_template("index.html", data=data, stages=stages, country=country, types=types, scrollToAnchor="TagIWantToLoadTo")
@@ -88,6 +92,7 @@ def index():
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, co_name, partner_name;")
+
         data = np.array(cur.fetchall())
         cur.execute("rollback")
         return render_template("index.html", data=data, stages=stages, country=country, types=types)
