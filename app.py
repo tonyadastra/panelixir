@@ -51,52 +51,55 @@ def index():
         types_dis = types
 
         if status == "clear":
+            stages_dis = "Stages"
+            country_dis = "Country"
+            types_dis = "Vaccine Types"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                         "ORDER BY stage DESC, co_name, partner_name;")
-
-        if stages == "Stages":
-            if prev_stages != "Stages":
-                stages = prev_stages
-            else:
-                stages = "_"
-
-        if country == "Country":
-            if prev_country != "Country":
-                country = prev_country
-                country_dis = prev_country
-            else:
-                country = ""
-                country_dis = "Country"
-
-        if types == "Vaccine Types":
-            if prev_types != "Vaccine Types":
-                types = prev_types
-                types_dis = prev_types
-            else:
-                types = ""
-                types_dis = "Vaccine Types"
-
-        cur.execute(
-            "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
-            "JOIN companies ON info.vac_id = companies.vac_id "
-            "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                "AND country LIKE '%" + country + "%' "
-                                                                                                  "AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                   "ORDER BY stage DESC, co_name, partner_name;")
-
-        if stages == "0":
-            stages_dis = "Pre-Clinical"
-        elif stages == "1":
-            stages_dis = "Phase I"
-        elif stages == "2":
-            stages_dis = "Phase II"
-        elif stages == "3":
-            stages_dis = "Phase III"
-        elif stages == "4":
-            stages_dis = "Approval"
         else:
-            stages_dis = "Stages"
+            if stages == "Stages":
+                if prev_stages != "Stages":
+                    stages = prev_stages
+                else:
+                    stages = "_"
+
+            if country == "Country":
+                if prev_country != "Country":
+                    country = prev_country
+                    country_dis = prev_country
+                else:
+                    country = ""
+                    country_dis = "Country"
+
+            if types == "Vaccine Types":
+                if prev_types != "Vaccine Types":
+                    types = prev_types
+                    types_dis = prev_types
+                else:
+                    types = ""
+                    types_dis = "Vaccine Types"
+
+            cur.execute(
+                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+                "JOIN companies ON info.vac_id = companies.vac_id "
+                "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
+                "AND country LIKE '%" + country + "%' "
+                "AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name;")
+
+            if stages == "0":
+                stages_dis = "Pre-Clinical"
+            elif stages == "1":
+                stages_dis = "Phase I"
+            elif stages == "2":
+                stages_dis = "Phase II"
+            elif stages == "3":
+                stages_dis = "Phase III"
+            elif stages == "4":
+                stages_dis = "Approval"
+            else:
+                stages_dis = "Stages"
 
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
