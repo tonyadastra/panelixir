@@ -32,12 +32,6 @@ cur = conn.cursor()
 # W/O Filtering
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # cur.execute(
-    #     "SELECT info.xvac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
-    # data = np.array(cur.fetchall())
-    # cur.execute("SELECT  FROM companies;")
-    # if request.method == 'GET':
-    #     return render_template("index.html")
     if request.method == 'POST':
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
@@ -46,7 +40,7 @@ def index():
 
         prev_stages = request.form.get("prev_stages", "Stages")
         prev_country = request.form.get("prev_country", "Country")
-        prev_types = request.form.get("prev_type", "Vaccine Types")
+        prev_types = request.form.get("prev_types", "Vaccine Types")
         country_dis = country
         types_dis = types
 
@@ -68,6 +62,8 @@ def index():
                 if prev_country != "Country":
                     country = prev_country
                     country_dis = prev_country
+                    if prev_country == "":
+                        country_dis = "Country"
                 else:
                     country = ""
                     country_dis = "Country"
@@ -76,6 +72,8 @@ def index():
                 if prev_types != "Vaccine Types":
                     types = prev_types
                     types_dis = prev_types
+                    if prev_types == "":
+                        types_dis = "Vaccine Types"
                 else:
                     types = ""
                     types_dis = "Vaccine Types"
