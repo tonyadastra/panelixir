@@ -23,10 +23,18 @@
 <!-- <script src="//d3js.org/queue.v1.min.js"></script> -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
+<script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
 <script src="../static/js/index.js"></script>
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
+
+<script>
+    $(".button-font").on('click', function() {
+    $(".button-font").removeClass('active');
+    $(this).addClass('active');
+})
+</script>
 
 {% if scrollToAnchor %}
 <script>
@@ -56,7 +64,7 @@
     <div class="col" style="padding: 0;">
         <div id="vis1" class="vis"></div>
     </div>
-    <div class="col" style="padding: 0;">
+    <div class="col" style="padding: 0 0.1rem 0 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
             <button class="btn btn-info button-font" data-value="World">World</button>
             <button class="btn btn-info button-font" data-value="North America">North America</button>
@@ -69,7 +77,7 @@
         <div class="interactive-progress row">
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar">
-                    <div class="bar-tag text-stage0">Pre-clinical</div>
+                    <div class="bar-tag text-stage0">Pre-Clinical</div>
                 </div>
             </div>
             <div class="col" style="padding: 0;">
@@ -97,7 +105,6 @@
 </div>
 
 <!--</div>-->
-
 
 <div class="ctr text-center">
     <div class="jumbotron">
