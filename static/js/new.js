@@ -1,3 +1,4 @@
+
 /**
  * @class Template
  */
@@ -137,12 +138,13 @@ class Worldmap {
       vis.world = values[0]
       // console.log(values)
       vis.names = values[1]
-      // console.log(vis.world)
+      console.log(vis.world)
       var globe = { type: "Sphere" },
         land = topojson.feature(vis.world, vis.world.objects.land),
         countries = topojson.feature(vis.world, vis.world.objects.countries).features,
         borders = topojson.mesh(vis.world, vis.world.objects.countries, function (a, b) { return a !== b; });
-      // console.log(vis.world.objects.land)
+      console.log(vis.world.objects.countries)
+      // console.log(vis.world.objects.properties.name)
 
       // countries = countries.filter(function(d) {
       //   return vis.names.some(function(n) {
@@ -168,7 +170,7 @@ class Worldmap {
             if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
               curr_stage = vac_map.get(Object.values(vis.names)[i].name);
               // console.log(curr_stage);
-              // console.log(Object.values(vis.names)[i].name);
+              console.log(Object.values(vis.names)[i].name);
             }
 
             if (curr_stage == 0) {
@@ -223,16 +225,35 @@ class Worldmap {
 
               d3.select(this)
                 .classed("clicked", true)
-                .attr("fill", vis.colors.clicked);
+                .select(function () {
+                  // console.log(this)
+                  // console.log(d3.select(this).attr("countryname"));
+                  temp = vac_map.get(d3.select(this).attr("countryname"));
+                  prev_stage = temp === undefined ? -1 : temp;
+
+                  if (prev_stage == 0) {
+                    prev_color = vis.colors.p0;
+                  } else if (prev_stage == 1) {
+                    prev_color = vis.colors.p1;
+                  } else if (prev_stage == 2) {
+                    prev_color = vis.colors.p2;
+                  } else if (prev_stage == 3) {
+                    prev_color = vis.colors.p3;
+                  } else if (prev_stage == 4) {
+                    prev_color = vis.colors.p4;
+                  }
+                  d3.select(this).attr("fill", curr_color);
+                  // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                });
+                // .attr("fill", vis.colors.clicked);
               // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
 
               (function transition() {
                 d3.select(".clicked").transition()
-                  .duration(1250)
+                  .duration(1000)
                   .tween("rotate", function () {
                     var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
                       r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
-                    console.log([-p[0], -p[1]])
                     return function (t) {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);
@@ -254,10 +275,10 @@ class Worldmap {
                 // console.log(vac_map);
 
                 if (c.classed("clicked")) {
-                  c.attr("fill", vis.colors.clicked);
-                  console.log("clicked mouse out", Object.values(vis.names)[i].name)
+                  c.attr("fill", curr_color);
+                  // console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
-                  console.log("unclicked mouse out", Object.values(vis.names)[i].name)
+                  // console.log("unclicked mouse out", Object.values(vis.names)[i].name)
                   d3.select(this).attr("fill", curr_color);
 
                 }
@@ -265,7 +286,6 @@ class Worldmap {
 
               });
           }
-
         }
       }
       vis.map.insert("path", ".graticule")
@@ -280,6 +300,5 @@ class Worldmap {
     d3.select(self.frameElement).style("height", vis.svgH + "px");
 
   }
-
 
 }

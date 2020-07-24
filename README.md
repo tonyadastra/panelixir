@@ -1,7 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
-+ July 22, 2020 - Map-colors and Latest Database Update
++ July 22, 2020 - Map-colors and Latest Database Update, Resolve Singapore Issue
 + July 16-21, 2020 - Orthographic Map Design, Logo → Transparent
 + July 15, 2020 - Database communication with HTML - passing data to html when dropdown item is clicked
 + July 14, 2020 - Database Update - Company Introductions and Logos
