@@ -46,12 +46,12 @@ def index():
         status = request.form.get("status", "status")
 
         if status == "clear":
-            cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM "
+            cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                         "ORDER BY stage DESC, co_name, partner_name;")
         if stages != "Stages":
             cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
+                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
                 " ORDER BY co_name, partner_name;")
             # if country != "Country":
@@ -70,12 +70,12 @@ def index():
 
         elif country != "Country":
             cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro FROM info "
+                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE country LIKE '%"+country+"%'"
                 "ORDER BY stage DESC, co_name, partner_name;")
         elif types != "Vaccine Types":
             cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro FROM info "
+                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='"+types+"' "
                 "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall(), dtype=object)

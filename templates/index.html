@@ -181,11 +181,14 @@
     </div>
 </div>
 <!-- list institutions -->
+<!-- list institutions -->
 <div class="institutions">
     {% for entry in data %}
-    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'>
+    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
+     data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
     </my-card>
     {% endfor %}
+</div>
 
     <!-- <my-card img='../static/img/img2.png'></my-card> -->
     <!-- <img src="../static/img/img2.png"> -->
