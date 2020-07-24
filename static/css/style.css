@@ -206,6 +206,12 @@ span.highlight {
   background-color: #fff;
 }
 
+.overflow {
+   height: 15rem;
+   overflow-y: auto;
+}
+
+
 .btn-types {
   color: #fff;
   background-color: #b683ec;
@@ -284,4 +290,14 @@ span.highlight {
 .column {
     padding: 1rem 2rem;
     margin: 0;
+}
+
+.align-right{
+    position: absolute;
+    right: 20%;
+}
+
+.clear-filter{
+    color: transparent;
+    border-bottom: darkslateblue
 }

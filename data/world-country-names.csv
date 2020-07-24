@@ -1,37 +1,37 @@
 id,name
--1,Northern Cyprus
--2,Kosovo
--3,Somaliland
-4,Afghanistan
-8,Albania
-10,Antarctica
-12,Algeria
-16,American Samoa
-20,Andorra
-24,Angola
-28,Antigua and Barbuda
-31,Azerbaijan
-32,Argentina
-36,Australia
-40,Austria
-44,Bahamas
-48,Bahrain
-50,Bangladesh
-51,Armenia
-52,Barbados
-56,Belgium
-60,Bermuda
-64,Bhutan
-68,"Bolivia, Plurinational State of"
-70,Bosnia and Herzegovina
-72,Botswana
-74,Bouvet Island
-76,Brazil
-84,Belize
-86,British Indian Ocean Territory
-90,Solomon Islands
-92,"Virgin Islands, British"
-96,Brunei Darussalam
+-001,Northern Cyprus
+-002,Kosovo
+-003,Somaliland
+004,Afghanistan
+008,Albania
+010,Antarctica
+012,Algeria
+016,American Samoa
+020,Andorra
+024,Angola
+028,Antigua and Barbuda
+031,Azerbaijan
+032,Argentina
+036,Australia
+040,Austria
+044,Bahamas
+048,Bahrain
+050,Bangladesh
+051,Armenia
+052,Barbados
+056,Belgium
+060,Bermuda
+064,Bhutan
+068,"Bolivia, Plurinational State of"
+070,Bosnia and Herzegovina
+072,Botswana
+074,Bouvet Island
+076,Brazil
+084,Belize
+086,British Indian Ocean Territory
+090,Solomon Islands
+092,"Virgin Islands, British"
+096,Brunei Darussalam
 100,Bulgaria
 104,Myanmar
 108,Burundi
@@ -101,7 +101,6 @@ id,name
 334,Heard Island and McDonald Islands
 336,Holy See (Vatican City State)
 340,Honduras
-344,Hong Kong
 348,Hungary
 352,Iceland
 356,India
