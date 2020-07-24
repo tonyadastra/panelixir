@@ -1,19 +1,18 @@
 .institutions {
-    width: 70%;
-    margin-left: 15%;
-    margin-top: 30px;
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 30px;
 }
 
-.wrapper{
-    margin: 0 10px 50px 10px;
-    background-color: #eee2dc;
-    box-shadow: 4px 7px #bbb8b8;
+.wrapper {
+  margin: 0 10px 50px 10px;
+  background-color: #eee2dc;
+  box-shadow: 4px 7px #bbb8b8;
 }
 
 .wrapper * {
-    margin: 10px;
+  margin: 10px;
 }
-
 
 .progress {
   background-color: #ddd;
@@ -27,34 +26,34 @@
   width: 20%;
   /* text-align: right; */
   /* line-height: 60px;  */
-  color: white; 
+  color: white;
   margin: 0;
   padding: 0;
   font-size: large;
 }
 
 #pbar1 {
-    background-color: #c1c8e4;
+  background-color: #c1c8e4;
 }
 
 #pbar2 {
-    background-color: #84ceeb;
+  background-color: #84ceeb;
 }
 
 #pbar3 {
-    background-color: #5ab9ea;
+  background-color: #5ab9ea;
 }
 
 #pbar4 {
-    background-color: #88bdbc;
+  background-color: #88bdbc;
 }
 
 #pbar5 {
-    background-color: #3aafa9;
+  background-color: #3aafa9;
 }
 
 .intro {
-    padding: 0;
+  padding: 0;
 }
 
 .collapsible {
@@ -71,14 +70,47 @@
 }
 
 /* Add a background color to the button if it is clicked on */
+
 .active, .collapsible:hover {
   background-color: #5ab9ea;
 }
 
 /* Style the collapsible content. Note: hidden by default */
+
 .content {
   padding: 0 50px 10px 50px;
   display: none;
   overflow: hidden;
   width: 100%;
+}
+
+.country_tag {
+  font-family: sans-serif;
+  font-size: 14px;
+  margin: 0 0 5px 5px;
+  padding: 5px 8px!important;
+  border-radius: 0.2rem;
+  height: 30px;
+  color: white;
+  float: right;
+  /* clear: both; */
+}
+
+.vac_tag {
+  font-family: sans-serif;
+  font-size: 14px;
+  margin: 0 0 5px 5px;
+  padding: 5px 12px!important;
+  border-radius: 0.2rem;
+  height: 30px;
+  color: white;
+  float: right;
+  clear: both;
+}
+
+.tag_wrapper {
+  float: right;
+  position: relative;
+  margin-bottom: 0 !important;
+  clear: both;
 }
