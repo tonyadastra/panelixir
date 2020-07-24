@@ -32,6 +32,7 @@ cur = conn.cursor()
 # W/O Filtering
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    status = "status"
     # cur.execute(
     #     "SELECT info.xvac_id, stage, website, logo, intro FROM info INNER JOIN companies ON info.vac_id = companies.vac_id;")
     # data = np.array(cur.fetchall())
@@ -39,21 +40,40 @@ def index():
     # if request.method == 'GET':
     #     return render_template("index.html")
     if request.method == 'POST':
-        stages = request.form.get("stages", None)
-        country = request.form.get("country", None)
-        types = request.form.get("type", None)
+        stages = request.form.get("stages", "Stages")
+        country = request.form.get("country", "Country")
+        types = request.form.get("type", "Vaccine Type")
+        status = request.form.get("status", "status")
 
-        if stages != None:
+        if status == "clear":
+            cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM "
+                        "info INNER JOIN companies ON info.vac_id = companies.vac_id "
+                        "ORDER BY stage DESC, co_name, partner_name;")
+        if stages != "Stages":
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info INNER "
-                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
+                " JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
                 " ORDER BY co_name, partner_name;")
-        elif country != None:
+            # if country != "Country":
+            #     cur.execute(
+            #         "select info.vac_id, stage, website, logo, intro from info inner join companies c on info.vac_id = c.vac_id where stage="+stages+" and country like '%"+country+"%'ORDER BY stage DESC, co_name, partner_name;")
+            if stages == "0":
+                stages = "Pre-Clinical"
+            elif stages == "1":
+                stages = "Phase I"
+            elif stages == "2":
+                stages = "Phase II"
+            elif stages == "3":
+                stages = "Phase III"
+            elif stages == "4":
+                stages = "Approval"
+
+        elif country != "Country":
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE country LIKE '%"+country+"%'"
                 "ORDER BY stage DESC, co_name, partner_name;")
-        elif types != None:
+        elif types != "Vaccine Types":
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='"+types+"' "
@@ -62,12 +82,15 @@ def index():
         cur.execute("rollback")
         return render_template("index.html", data=data, stages=stages, country=country, types=types, scrollToAnchor="TagIWantToLoadTo")
     else:
+        stages = "Stages"
+        country = "Country"
+        types = "Vaccine Types"
         cur.execute("SELECT info.vac_id, stage, website, logo, intro FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall())
         cur.execute("rollback")
-        return render_template("index.html", data=data)
+        return render_template("index.html", data=data, stages=stages, country=country, types=types)
 
 
 @app.route('/load_data', methods=['GET'])

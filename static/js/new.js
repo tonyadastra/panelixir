@@ -65,7 +65,8 @@ class Worldmap {
     vis.map.append("defs").append("path")
       .datum({ type: "Sphere" })
       .attr("id", "sphere")
-      .attr("d", vis.path);
+      .attr("d", vis.path)
+        .style("transform", "translate3d(0, 0, 0)");
 
     vis.map.append("use")
       .attr("class", "stroke")
@@ -226,9 +227,10 @@ class Worldmap {
                 .classed("clicked", true)
                 .attr("fill", vis.colors.clicked);
               // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
-
-              (function transition() {
-                d3.select(".clicked").transition()
+    console.log(d3.select(".clicked"))
+              // (function transition() {
+                d3.select(".clicked")
+                    .transition()
                   .duration(1000)
                   .tween("rotate", function () {
                     var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
@@ -238,8 +240,8 @@ class Worldmap {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);
                     }
-                  });
-              })();
+                  })
+              // })();
             })
               .on("mousemove", function () {
                 var c = d3.select(this);
