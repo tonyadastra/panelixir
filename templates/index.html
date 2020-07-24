@@ -28,6 +28,13 @@
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
 
+<script>
+    $(".button-font").on('click', function() {
+    $(".button-font").removeClass('active');
+    $(this).addClass('active');
+})
+</script>
+
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -55,7 +62,7 @@
     </div>
     <div class="col" style="padding: 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
-            <button class="btn btn-outline-primary button-font" onclick="displayWorld()" autofocus>World</button>
+            <button class="btn btn-outline-primary button-font active" onclick="displayWorld()">World</button>
             <button class="btn btn-outline-secondary button-font" onclick="displayNorthAmerica()">North America</button>
             <button class="btn btn-outline-secondary button-font" onclick="displayEurope()">Europe</button>
             <button class="btn btn-outline-secondary button-font" onclick="displayAsia()">Asia</button>
