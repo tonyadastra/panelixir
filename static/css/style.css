@@ -13,15 +13,6 @@
 }
 
 
-/* Map Slide */
-.slide {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly;
-    margin: 100px 0 0 0;
-    width: 100vw;
-}
-
 /* World Map */
 .stroke {
   fill: none;
@@ -73,16 +64,6 @@
   }
 }
 
-
-.container {
-    position: relative;
-    text-align: center;
-    width: 100%;
-    max-width: none;
-    padding: 0;
-    margin: 0;
-}
-
     /*Vaccine Introduction*/
 #title{
     font-family: Garamond, EB Garamond, Georgia, serif;
@@ -103,23 +84,23 @@ span.highlight {
     border-radius: 0.2rem;
     color: white;
 }
-#stage0 {
+.stage0 {
     background-color: #c1c8e4;
 }
 
-#stage1 {
+.stage1 {
     background-color: #84ceeb;
 }
 
-#stage2 {
+.stage2 {
     background-color: #5ab9ea;
 }
 
-#stage3 {
+.stage3 {
     background-color: #88bdbc;
 }
 
-#stage4 {
+.stage4 {
     background-color: #3aafa9;
 }
 

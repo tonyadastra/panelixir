@@ -1,0 +1,87 @@
+.interactive-progress {
+  background-color: #ffffff;
+  padding: 0;
+  margin-top: 0;
+    width: 720px;
+  margin-right: 10px !important;
+    border-radius: 0.2rem;
+  /* height: 40px; */
+}
+
+.button-font{
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+.interactive-bar{
+    text-align: center;
+}
+
+.bar-tag{
+
+}
+
+.bar-data{
+    color: white;
+    font-size: 4rem;
+}
+
+.text-stage0 {
+    color: #c1c8e4;
+}
+.arrow-right-stage0 {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #c1c8e4;
+	border-bottom: 48px solid transparent;
+}
+
+.text-stage1 {
+    color: #84ceeb;
+}
+.arrow-right-stage1 {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #84ceeb;
+	border-bottom: 48px solid transparent;
+}
+
+.text-stage2 {
+    color: #5ab9ea;
+}
+.arrow-right-stage2 {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #5ab9ea;
+	border-bottom: 48px solid transparent;
+}
+
+.text-stage3 {
+    color: #88bdbc;
+}
+.arrow-right-stage3 {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #88bdbc;
+	border-bottom: 48px solid transparent;
+}
+
+.text-stage4 {
+    color: #3aafa9;
+}
+.arrow-right-stage4 {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #3aafa9;
+	border-bottom: 48px solid transparent;
+}
+
+
+
+
+
+
