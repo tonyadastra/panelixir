@@ -10,7 +10,7 @@ d3.json('/load_data').then(d => {
     data = d.vaccines;
 
     // Instantiate Graph
-    worldmap = new Worldmap(data, 'vis1')
-    console.log(worldmap)
+    worldmap = new Worldmap(data, 'vis1');
+    console.log(worldmap);
 
 }).catch(err => console.log(err));
