@@ -56,7 +56,7 @@ class myCard extends HTMLElement {
             // country = country.trim();
             var country_tag = document.createElement('span');
             country_tag.setAttribute('class', 'country_tag');
-            country_tag.setAttribute('style', 'background-color:#e24e42');
+            country_tag.setAttribute('style', 'background-color:rgba(236, 112, 30, 0.74)');
             country_tag.innerHTML = country.trim();
             tag_wrapper.appendChild(country_tag);
         })
@@ -66,7 +66,7 @@ class myCard extends HTMLElement {
         var vac_tag = document.createElement('span');
         vac_tag.setAttribute('class', 'vac_tag');
         // vac_tag.setAttribute('padding-top','30px');
-        vac_tag.setAttribute('style', 'background-color:#a239ca');
+        vac_tag.setAttribute('style', 'background-color:rgba(182, 131, 236, 0.74)');
         vac_tag.innerHTML = this.getAttribute('data-vactype')+" Vaccine";
         tag_wrapper.appendChild(vac_tag);
 

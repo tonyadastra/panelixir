@@ -5,6 +5,7 @@
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link rel="stylesheet" href="../static/css/style.css">
 <link rel="stylesheet" href="../static/css/card.css">
+<link rel="stylesheet" href="../static/css/interactive.css">
 {% endblock %}
 
 
@@ -26,11 +27,6 @@
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
 
-<!--<script>-->
-<!--    $(document).on('click','.dropdown-menu button',function(){-->
-<!--        $(this).parent().parent().find('.dropdown-toggle').html($(this).html()  + ' <span class="fa fa-caret-down"></span>');-->
-<!--    });-->
-<!--</script>-->
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -52,7 +48,96 @@
 
 
 <!-- Data Visualizations-->
-<div id="vis1" class="vis"></div>
+<div class="row">
+    <div class="col" style="padding: 0;">
+        <div id="vis1" class="vis"></div>
+    </div>
+    <div class="col" style="padding: 0;">
+        <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
+            <button class="btn btn-info button-font">World</button>
+            <button class="btn btn-info button-font">North America</button>
+            <button class="btn btn-info button-font">Europe</button>
+            <button class="btn btn-info button-font">Asia</button>
+            <button class="btn btn-info button-font">Oceania</button>
+        </div>
+
+        <div class="interactive-progress row">
+<!--            Extended Length of Bar1-->
+            <div class="stage0" style="width: 18px"></div>
+<!--            Bar1-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage0">
+                    <div class="bar-data">1</div>
+                </div>
+            </div>
+<!--            Arrow1-->
+            <div class="arrow-right-stage0 stage1"></div>
+<!--            Bar2-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage1">
+                    <div class="bar-data">1</div>
+                </div>
+            </div>
+<!--            Arrow2-->
+            <div class="arrow-right-stage1 stage2"></div>
+<!--            Bar3-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage2">
+                    <div class="bar-data">1</div>
+                </div>
+            </div>
+<!--            Arrow3-->
+            <div class="arrow-right-stage2 stage3"></div>
+<!--            Bar4-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage3">
+                    <div class="bar-data">1</div>
+                </div>
+            </div>
+<!--            Arrow4-->
+            <div class="arrow-right-stage3 stage4"></div>
+<!--            Bar5-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage4">
+                    <div class="bar-data">1</div>
+                </div>
+            </div>
+<!--            Arrow5-->
+            <div class="arrow-right-stage4"></div>
+        </div>
+
+        <div class="interactive-progress row">
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar">
+                    <div class="bar-tag text-stage0">Pre-clinical</div>
+                </div>
+            </div>
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar">
+                    <div class="bar-tag text-stage1">Phase I</div>
+                </div>
+            </div>
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar">
+                    <div class="bar-tag text-stage2">Phase II</div>
+                </div>
+            </div>
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar">
+                    <div class="bar-tag text-stage3">Phase III</div>
+                </div>
+            </div>
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar">
+                    <div class="bar-tag text-stage4">Approval</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--</div>-->
+
 
 <div class="ctr text-center">
     <div class="jumbotron">
@@ -60,27 +145,27 @@
     </div>
     <div class="row">
         <div class="col border-left border-info">
-            <span class="highlight" id="stage0">Preclinical</span>
+            <span class="highlight stage0">Preclinical</span>
             <p class="black">In the Preclinical stage, the vaccine is <b>given to animals</b> to identify potential
                 safety concerns and test if it triggers an immune response.</p>
         </div>
         <div class="col border-left border-info">
-            <span class="highlight" id="stage1">Phase I</span>
+            <span class="highlight stage1">Phase I</span>
             <p class="black">In Phase I trials, the vaccine is <b>given to small groups of people</b> (approximately 20
                 to 80) to test its safety and confirm that it stimulates the immune system.</p>
         </div>
         <div class="col border-left border-info">
-            <span class="highlight" id="stage2">Phase II</span>
+            <span class="highlight stage2">Phase II</span>
             <p class="black">In Phase II trials, the vaccine is <b>given to several hundred people</b>, especially
                 people of different ages, to test its effectiveness.</p>
         </div>
         <div class="col border-left border-info">
-            <span class="highlight" id="stage3">Phase III</span>
+            <span class="highlight stage3">Phase III</span>
             <p class="black">In Phase III trials, the vaccine is <b>given to several thousand people</b> to confirm and
                 expand on safety and effectiveness results from previous trials.</p>
         </div>
         <div class="col border-left border-right border-info">
-            <span class="highlight" id="stage4">Approval</span>
+            <span class="highlight stage4">Approval</span>
             <p class="black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
                     approve the vaccine or not</b>.</p>
         </div>
@@ -95,7 +180,7 @@
 
 <!--Filter Data-->
 <div id="TagIWantToLoadTo" class="filter">
-    <div class="container">
+<!--    <div class="container">-->
         <form action="/" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="column filtertext">
@@ -185,7 +270,7 @@
         </div>
         </form>
         
-    </div>
+<!--    </div>-->
 </div>
 <!-- list institutions -->
 <div class="institutions">

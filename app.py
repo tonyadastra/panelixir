@@ -112,7 +112,7 @@ def index():
         data = np.array(cur.fetchall())
         cur.execute("rollback")
         stages_dis = "Stages"
-        country_dis="Country"
+        country_dis = "Country"
         types_dis = "Vaccine Types"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages", country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
