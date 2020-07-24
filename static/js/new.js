@@ -1,3 +1,4 @@
+
 /**
  * @class Template
  */
@@ -65,8 +66,7 @@ class Worldmap {
     vis.map.append("defs").append("path")
       .datum({ type: "Sphere" })
       .attr("id", "sphere")
-      .attr("d", vis.path)
-        .style("transform", "translate3d(0, 0, 0)");
+      .attr("d", vis.path);
 
     vis.map.append("use")
       .attr("class", "stroke")
@@ -138,7 +138,7 @@ class Worldmap {
       vis.world = values[0]
       // console.log(values)
       vis.names = values[1]
-      // console.log(vis.world)
+      console.log(vis.world)
       var globe = { type: "Sphere" },
         land = topojson.feature(vis.world, vis.world.objects.land),
         countries = topojson.feature(vis.world, vis.world.objects.countries).features,
@@ -170,7 +170,7 @@ class Worldmap {
             if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
               curr_stage = vac_map.get(Object.values(vis.names)[i].name);
               // console.log(curr_stage);
-              // console.log(Object.values(vis.names)[i].name);
+              console.log(Object.values(vis.names)[i].name);
             }
 
             if (curr_stage == 0) {
@@ -225,23 +225,41 @@ class Worldmap {
 
               d3.select(this)
                 .classed("clicked", true)
-                .attr("fill", vis.colors.clicked);
+                .select(function () {
+                  // console.log(this)
+                  // console.log(d3.select(this).attr("countryname"));
+                  temp = vac_map.get(d3.select(this).attr("countryname"));
+                  prev_stage = temp === undefined ? -1 : temp;
+
+                  if (prev_stage == 0) {
+                    prev_color = vis.colors.p0;
+                  } else if (prev_stage == 1) {
+                    prev_color = vis.colors.p1;
+                  } else if (prev_stage == 2) {
+                    prev_color = vis.colors.p2;
+                  } else if (prev_stage == 3) {
+                    prev_color = vis.colors.p3;
+                  } else if (prev_stage == 4) {
+                    prev_color = vis.colors.p4;
+                  }
+                  d3.select(this).attr("fill", prev_color);
+                  // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                });
+                // .attr("fill", vis.colors.clicked);
               // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
-    console.log(d3.select(".clicked"))
-              // (function transition() {
-                d3.select(".clicked")
-                    .transition()
+
+              (function transition() {
+                d3.select(".clicked").transition()
                   .duration(1000)
                   .tween("rotate", function () {
                     var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
                       r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
-                    // console.log([-p[0], -p[1]])
                     return function (t) {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);
                     }
-                  })
-              // })();
+                  });
+              })();
             })
               .on("mousemove", function () {
                 var c = d3.select(this);
@@ -257,10 +275,10 @@ class Worldmap {
                 // console.log(vac_map);
 
                 if (c.classed("clicked")) {
-                  c.attr("fill", vis.colors.clicked);
-                  console.log("clicked mouse out", Object.values(vis.names)[i].name)
+                  c.attr("fill", curr_color);
+                  // console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
-                  console.log("unclicked mouse out", Object.values(vis.names)[i].name)
+                  // console.log("unclicked mouse out", Object.values(vis.names)[i].name)
                   d3.select(this).attr("fill", curr_color);
 
                 }
