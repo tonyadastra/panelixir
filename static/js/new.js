@@ -242,7 +242,7 @@ class Worldmap {
                   } else if (prev_stage == 4) {
                     prev_color = vis.colors.p4;
                   }
-                  d3.select(this).attr("fill", prev_color);
+                  d3.select(this).attr("fill", curr_color);
                   // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                 });
                 // .attr("fill", vis.colors.clicked);

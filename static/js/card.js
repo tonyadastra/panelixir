@@ -1,4 +1,3 @@
-
 function hexToBase64(str) {
     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 }
@@ -44,10 +43,10 @@ class myCard extends HTMLElement {
             wrapper.appendChild(img);
         }
 
-        // tag wrapper
+        // tag wrapper 
         var tag_wrapper = document.createElement('div');
         tag_wrapper.setAttribute('class', 'tag_wrapper');
-
+        
         // country tag
         // #e37222'
         const countryArr = this.getAttribute('data-country').split(',')
@@ -105,24 +104,24 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-stage') >= 0) {
             bar_wrapper.appendChild(pbar1);
-        }
-
+        } 
+        
         if (this.getAttribute('data-stage') >= 1) {
             // bar_wrapper.appendChild(pbar1);
             bar_wrapper.appendChild(pbar2);
         }
-
+        
         if (this.getAttribute('data-stage') >= 2) {
             // bar_wrapper.appendChild(pbar1);
             // bar_wrapper.appendChild(pbar2);
             bar_wrapper.appendChild(pbar3);
-        }
+        } 
         if (this.getAttribute('data-stage') >= 3) {
             // bar_wrapper.appendChild(pbar1);
             // bar_wrapper.appendChild(pbar2);
             // bar_wrapper.appendChild(pbar3);
             bar_wrapper.appendChild(pbar4);
-        }
+        } 
         if (this.getAttribute('data-stage') == 4) {
             // bar_wrapper.appendChild(pbar1);
             // bar_wrapper.appendChild(pbar2);
@@ -143,7 +142,7 @@ class myCard extends HTMLElement {
         text.innerHTML = intro;
         wrapper.appendChild(text);
 
-        // button to learn more
+        // button to learn more 
         var btn = document.createElement('button');
         btn.setAttribute('class', 'collapsible');
         btn.setAttribute('type', 'button');
@@ -192,3 +191,5 @@ customElements.define('my-card', myCard);
 //     }
 // }
 // customElements.define('my-expandInfo', instDetail, { extends: "ul" });
+
+
