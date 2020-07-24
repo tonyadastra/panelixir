@@ -1,10 +1,53 @@
+/* Interactive Button*/
+
+.btn-outline-primary {
+	color: #208bff;
+	background-color: transparent;
+	background-image: none;
+	border-color: #007bff;
+}
+.btn-outline-primary:hover {
+	color: #fff;
+	background-color: #208bff;
+	border-color: #208bff;
+}
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+	color: #fff;
+	background-color: #208bff;
+	border-color: #208bff;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.btn-outline-secondary {
+	color: #6c757d;
+	background-color: transparent;
+	background-image: none;
+	border-color: #6c757d;
+}
+.btn-outline-secondary:hover {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+.btn-outline-secondary:focus,
+.btn-outline-secondary.focus {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+	box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
+
+/* Interactive Progress */
+
 .interactive-progress {
-  background-color: #ffffff;
-  padding: 0;
-  margin-top: 0;
-    width: 720px;
-  margin-right: 10px !important;
-    border-radius: 0.2rem;
+	background-color: #ffffff;
+	padding: 0;
+	margin-top: 0;
+	width: 720px;
+	margin-right: 10px !important;
+	border-radius: 0.2rem;
   /* height: 40px; */
 }
 
@@ -79,7 +122,6 @@
 	border-left: 18px solid #3aafa9;
 	border-bottom: 48px solid transparent;
 }
-
 
 
 
