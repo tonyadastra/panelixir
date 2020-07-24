@@ -35,8 +35,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.location.hash = '#{{ scrollToAnchor }}';
+        // document.URL="/";
     });
 </script>
+
 {% endif %}
 
 {% endblock %}
@@ -94,96 +96,105 @@
 <!--Filter Data-->
 <div id="TagIWantToLoadTo" class="filter">
     <div class="container">
+        <form action="/" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="column filtertext">
                 <b>Filter Vaccines</b>
             </div>
             <!--            Stages-->
+
             <div class="column">
                 <div class="dropdown">
-                    <form action="/" method="POST" enctype="multipart/form-data">
-                        <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Stages
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
-                            <div class="dropdown-divider"></div>
-                            <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
-                            <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
-                            <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
-                            <div class="dropdown-divider"></div>
-<!--                            Disabled-->
-                            <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
-<!--                            Enabled-->
-<!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
-                        </div>
-                    </form>
+                    <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        {{stages_dis}}
+
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
+                        <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
+                        <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
+                        <div class="dropdown-divider"></div>
+                        <!--                            Disabled-->
+                        <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
+                        <!--                            Enabled-->
+                        <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
+                    </div>
                 </div>
             </div>
             <!-- Country-->
             <div class="column">
                 <div class="dropdown">
-                    <form id="form1" action="/" method="POST" enctype="multipart/form-data">
-                        <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Country
-                        </button>
-                        <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
-                                States</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="United Kingdom">United
-                                Kingdom</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="China">China</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Japan">Japan</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Germany">Germany</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="India">India</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="South Korea">South
-                                Korea</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="France">France</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country"
-                                value="Australia">Australia</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Russia">Russia</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Canada">Canada</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Austria">Austria</button>
-                            <button class="dropdown-item-ctry" type="submit" name="country" value="Singapore">Singapore</button>
-                        </div>
-                    </form>
+                    <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{country_dis}}
+                    </button>
+                    <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
+                            States</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="United Kingdom">United
+                            Kingdom</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="China">China</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Japan">Japan</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Germany">Germany</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="India">India</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="South Korea">South
+                            Korea</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="France">France</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country"
+                            value="Australia">Australia</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Russia">Russia</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Canada">Canada</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Austria">Austria</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country"
+                            value="Singapore">Singapore</button>
+                    </div>
                 </div>
             </div>
             <!--            Vaccine Types-->
             <div class="column">
                 <div class="dropdown">
-                    <form action="/" method="POST" enctype="multipart/form-data">
-                        <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Vaccine Types
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item-type" name="type" value="Genetic">Genetic Vaccines</button>
-                            <button class="dropdown-item-type" name="type" value="Viral Vector">Viral Vector
-                                Vaccines</button>
-                            <button class="dropdown-item-type" name="type" value="Protein-Based">Protein-Based
-                                Vaccines</button>
-                            <button class="dropdown-item-type" name="type" value="Whole-Virus">Whole-Virus Vaccines</button>
-                            <button class="dropdown-item-type" name="type" value="Repurposed">Others</button>
-                        </div>
-                    </form>
+                    <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{types_dis}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
+                            Genetic Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
+                            Viral Vector Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Protein-Based">
+                            Protein-Based Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Whole-Virus">
+                            Whole-Virus Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Repurposed">
+                            Others</button>
+                    </div>
                 </div>
             </div>
+            <input type="hidden" id ="prev_stages" name="prev_stages" value="{{stages}}">
+            <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
+            <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
+
         </div>
+        </form>
+        
     </div>
+
 </div>
 <!-- list institutions -->
 <div class="institutions">
-    {% for entry in data %}
-    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
-     data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-    </my-card>
-    {% endfor %}
-
-    <!-- <my-card img='../static/img/img2.png'></my-card> -->
-    <!-- <img src="../static/img/img2.png"> -->
+    {% if data|length %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+    {% else %}
+        <p> No Results. </p>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -39,35 +39,76 @@ def index():
     # if request.method == 'GET':
     #     return render_template("index.html")
     if request.method == 'POST':
-        stages = request.form.get("stages", None)
-        country = request.form.get("country", None)
-        types = request.form.get("type", None)
+        stages = request.form.get("stages", "Stages")
+        country = request.form.get("country", "Country")
+        types = request.form.get("type", "Vaccine Types")
 
-        if stages != None:
-            cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
-                "JOIN companies ON info.vac_id = companies.vac_id WHERE stage="+stages +
-                " ORDER BY co_name, partner_name;")
-        elif country != None:
-            cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info "
-                "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE country LIKE '%"+country+"%'"
-                "ORDER BY stage DESC, co_name, partner_name;")
-        elif types != None:
-            cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info "
-                "INNER JOIN companies ON info.vac_id = companies.vac_id WHERE vac_type='"+types+"' "
-                "ORDER BY stage DESC, co_name, partner_name;")
+        prev_stages = request.form.get("prev_stages", "Stages")
+        prev_country = request.form.get("prev_country", "Country")
+        prev_types = request.form.get("prev_type", "Vaccine Types")
+        country_dis = country
+        types_dis = types
+
+        if stages == "Stages":
+            if prev_stages != "Stages":
+                stages = prev_stages
+            else:
+                stages = "_"
+
+        if country == "Country":
+            if prev_country != "Country":
+                country = prev_country
+                country_dis = prev_country
+            else:
+                country = ""
+                country_dis="Country"
+                
+
+        if types == "Vaccine Types":
+            if prev_types != "Vaccine Types":
+                types = prev_types
+                types_dis = prev_types
+            else:
+                types = ""
+                types_dis = "Vaccine Types"
+       
+        cur.execute(
+            "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+            "JOIN companies ON info.vac_id = companies.vac_id "
+            "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
+            "AND country LIKE '%"+country+"%' "
+            "AND vac_type LIKE '%"+types+"%' "
+            "ORDER BY stage DESC, co_name, partner_name;")
+
+        
+        if stages == "0":
+            stages_dis = "Pre-Clinical"
+        elif stages == "1":
+            stages_dis = "Phase I"
+        elif stages == "2":
+            stages_dis = "Phase II"
+        elif stages == "3":
+            stages_dis = "Phase III"
+        elif stages == "4":
+            stages_dis = "Approval"
+        else:
+            stages_dis = "Stages"
+
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-        return render_template("index.html", data=data, stages=stages, country=country, types=types, scrollToAnchor="TagIWantToLoadTo")
+        
+        return render_template("index.html", data=data, stages_dis=stages_dis, stages=stages, country=country, 
+            country_dis=country_dis, types=types, types_dis=types_dis, scrollToAnchor="TagIWantToLoadTo")
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, co_name, partner_name;")
         data = np.array(cur.fetchall())
         cur.execute("rollback")
-        return render_template("index.html", data=data)
+        stages_dis = "Stages"
+        country_dis="Country"
+        types_dis = "Vaccine Types"
+        return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages", country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
 @app.route('/load_data', methods=['GET'])
