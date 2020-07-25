@@ -157,7 +157,8 @@ class Worldmap {
         .datum(topojson.feature(vis.world, vis.world.objects.land))
         .attr("class", "land")
         .attr("d", vis.path);
-
+      
+      
       for (let i = 0; i < Object.values(vis.names).length; i++) {
         for (let j = 0; j < countries.length; j++) {
           // console.log("inner loop");
@@ -169,7 +170,7 @@ class Worldmap {
             if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
               curr_stage = vac_map.get(Object.values(vis.names)[i].name);
               // console.log(curr_stage);
-              console.log(Object.values(vis.names)[i].name);
+              // console.log(Object.values(vis.names)[i].name);
             }
 
             if (curr_stage == 0) {
@@ -248,11 +249,26 @@ class Worldmap {
               // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
 
               (function transition() {
+
+                // // Store the current rotation and scale:
+                // var currentRotate = projection.rotate();
+                // var currentScale = projection.scale();
+
+                // // Calculate the future bounding box after applying a rotation:
+                // projection.rotate([-p[0], -p[1]]);
+                // path.projection(projection);
+
+                // // calculate the scale and translate required:
+                // var b = path.bounds(d);
+                // var nextScale = currentScale * 1 / Math.max((b[1][0] - b[0][0]) / (width / 2), (b[1][1] - b[0][1]) / (height / 2));
+                // var nextRotate = projection.rotate();
+
                 d3.select(".clicked").transition()
                   .duration(1000)
+                  
                   .tween("rotate", function () {
-                    var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]),
-                      r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
+                    var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
+                    var r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
                     return function (t) {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);
