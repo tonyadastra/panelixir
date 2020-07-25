@@ -1,9 +1,9 @@
 /* Header */
 
 .jumbotron {
-  padding: 2rem 2rem 1rem 3rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
   margin-bottom: 20px;
-  background-color: #ffffff;
+  background-color: #f3f1f1;
   border-radius: 0.2rem;
 }
 

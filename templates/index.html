@@ -25,7 +25,7 @@
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
-<script src="../static/js/index.js"></script>
+<script src="../static/js/bars.js"></script>
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
 
@@ -57,15 +57,13 @@
 <!-- {{continent_data}} -->
 
 
-
-
 <!-- Data Visualizations-->
 <div class="row">
     <div class="col" style="padding: 0;">
         <div id="vis1" class="vis"></div>
     </div>
     <div class="col" style="margin: 0 0.1rem 0 0;">
-        <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
+        <div class="row" style="margin-bottom: 0rem;">
             <button class="btn btn-outline-primary button-font active" data-value="World">World</button>
             <button class="btn btn-outline-secondary button-font" data-value="North America">North America</button>
             <button class="btn btn-outline-secondary button-font" data-value="Europe">Europe</button>
@@ -101,13 +99,14 @@
                 </div>
             </div>
         </div>
+        <div id="vis2" class="vis"></div>
     </div>
 </div>
 
 <!--</div>-->
 
 <div class="ctr text-center">
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color: transparent;">
         <h3 id="title">The Developing Process of a <i>Coronavirus Vaccine</i></h3>
     </div>
     <div class="row">
