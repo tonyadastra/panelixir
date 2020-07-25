@@ -13,6 +13,10 @@
   padding-left: 3rem;
 }
 
+.row{
+  margin-right: 0;
+}
+
 /* World Map */
 
 .stroke {
@@ -118,7 +122,7 @@ span.highlight {
   background-color: rgba(255, 194, 129, 0.25);
   margin-top: 0.5rem;
   padding-top: 1rem;
-  padding-left: 3rem;
+  padding-left: 2rem;
   padding-bottom: 1rem;
 }
 
