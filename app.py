@@ -15,49 +15,21 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # User - Tony
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-# app.secret_key = "ILoveNewYork"
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+app.secret_key = "ILoveNewYork"
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 
 # User - Lola
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-app.secret_key = "lola980109"
-conn = psycopg2.connect("dbname=covid19_db user=lola")
-
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+# app.secret_key = "lola980109"
+# conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
 
 
-@app.route("/update_continent")
-def update_continent():
-    continent = str(request.args.get('continent'))
-    if request.args.get('continent') is None or continent == "World":
-        continent = ""
-
-    cur.execute("SELECT stage, COUNT(stage) as count "
-                "FROM info "
-                "WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage ORDER BY stage")
-    continent_data = np.array(cur.fetchall(), dtype=object)
-    cur.execute("rollback")
-    data_arr = []
-    # print(continent_data)
-    for i in range(5):  
-        found = False
-        for j in continent_data:
-            if i == j[0]:
-                data_arr.append(j[1])
-                found = True
-        if (not found):   
-            data_arr.append(0)
-    # print(data_arr)
-    return render_template('update_continent.html', continent_data=data_arr)
-
-
-# W/O Filtering
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # if request.method == 'GET':
@@ -141,7 +113,6 @@ def index():
 
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-
         return render_template("index.html", data=data, stages_dis=stages_dis, stages=stages,
                                country=country, country_dis=country_dis, types=types, types_dis=types_dis,
                                scrollToAnchor="TagIWantToLoadTo")
@@ -156,6 +127,32 @@ def index():
         types_dis = "Vaccine Types"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
+
+
+@app.route("/update_continent")
+def update_continent():
+    continent = str(request.args.get('continent'))
+    if request.args.get('continent') is None or continent == "World":
+        continent = ""
+
+    cur.execute("SELECT stage, COUNT(stage) as count "
+                "FROM info "
+                "WHERE continent LIKE '%" + continent + "%' "
+                "GROUP BY stage ORDER BY stage")
+    continent_data = np.array(cur.fetchall(), dtype=object)
+    cur.execute("rollback")
+    data_arr = []
+    # print(continent_data)
+    for i in range(5):
+        found = False
+        for j in continent_data:
+            if i == j[0]:
+                data_arr.append(j[1])
+                found = True
+        if not found:
+            data_arr.append(0)
+    # print(data_arr)
+    return render_template('update_continent.html', continent_data=data_arr)
 
 
 @app.route('/load_data', methods=['GET'])

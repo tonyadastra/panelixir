@@ -3,6 +3,7 @@
 // Init variables
 let data = [];
 let worldmap = null;
+let bars = null;
 
 d3.json('/load_data').then(d => {
 
@@ -11,6 +12,7 @@ d3.json('/load_data').then(d => {
 
     // Instantiate Graph
     worldmap = new Worldmap(data, 'vis1');
-    console.log(worldmap);
+    bars = new Bars(data, 'vis2')
 
 }).catch(err => console.log(err));
+

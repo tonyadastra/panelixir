@@ -8,6 +8,8 @@ class Worldmap {
   g = null;
   world = [];
   names = [];
+  vac_country = [];
+  vac_stage = [];
 
   // Configs
   svgW = 700;
@@ -113,7 +115,7 @@ class Worldmap {
 
     // filter unique countries with highest stage
     let vac_map = new Map();
-    for (var i = 0; i < vis.vac_country.length; i++) {
+    for (let i = 0; i < vis.vac_country.length; i++) {
       if (vis.vac_country[i].includes(",")) {
         let arr = vis.vac_country[i].split(",")
         arr.forEach(function (elem) {

@@ -6,7 +6,7 @@ $(document).ready(function () {
         type: "get",
         data: { continent: continent },
         success: function (response) {
-            console.log(response)
+            // console.log(response)
             $("#progressbar").html(response);
             // window.location.replace('/');
         },
