@@ -13,7 +13,7 @@ class Bars {
     yAxisG = null;
 
     // Configs
-    svgW = 360;
+    svgW = 700;
     svgH = 360;
     gMargin = {top: 50, right: 25, bottom: 75, left: 75};
     gW = this.svgW - (this.gMargin.right + this.gMargin.left);
