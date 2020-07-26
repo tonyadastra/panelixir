@@ -5,6 +5,7 @@ let data = [];
 let bars_data = [];
 let worldmap = null;
 let bars = null;
+let clear = null;
 
 d3.json('/load_data').then(d => {
 
@@ -25,3 +26,4 @@ d3.json('/get_bars_data').then(d => {
     bars = new Bars(bars_data, 'vis2')
 
 }).catch(err => console.log(err));
+

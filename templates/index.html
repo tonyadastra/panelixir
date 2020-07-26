@@ -23,11 +23,11 @@
 <!-- <script src="//d3js.org/queue.v1.min.js"></script> -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
-<script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
 <script src="../static/js/bars.js"></script>
 <script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
+<script src="../static/js/index.js"></script>
 
 <script>
     $(".button-font").on('click', function() {
@@ -64,11 +64,11 @@
     </div>
     <div class="col" style="margin: 0 0.1rem 0 0;">
         <div class="row" style="margin-bottom: 0;">
-            <button class="btn btn-outline-primary button-font active send" data-value="World">World</button>
-            <button class="btn btn-outline-secondary button-font send" data-value="North America">North America</button>
-            <button class="btn btn-outline-secondary button-font send" data-value="Europe">Europe</button>
-            <button class="btn btn-outline-secondary button-font send" data-value="Asia">Asia</button>
-            <button class="btn btn-outline-secondary button-font send" data-value="Oceania">Oceania</button>
+            <button class="btn btn-outline-primary button-font active" id="World" data-value="World">World</button>
+            <button class="btn btn-outline-secondary button-font" id="NorthAmerica" data-value="North America">North America</button>
+            <button class="btn btn-outline-secondary button-font" id="Europe" data-value="Europe">Europe</button>
+            <button class="btn btn-outline-secondary button-font" id="Asia" data-value="Asia">Asia</button>
+            <button class="btn btn-outline-secondary button-font" id="Oceania" data-value="Oceania">Oceania</button>
         </div>
 
         <div id="progressbar"></div>
@@ -100,6 +100,7 @@
             </div>
         </div>
         <div id="vis2" class="vis"></div>
+        <div id="vis3" class="vis"></div>
     </div>
 </div>
 
