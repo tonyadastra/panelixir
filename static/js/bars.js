@@ -3,14 +3,21 @@
  */
 class Bars {
 
-    // Vars
-    data_bins = [];
+    // Variables
+    flagMap = [];
+    companyMap = []
+    stageMap = [];
 
     // Elements
     svg = null;
     g = null;
     xAxisG = null;
     yAxisG = null;
+    Rank1 = null;
+    Rank2 = null;
+    Rank3 = null;
+    Rank4 = null;
+    Rank5 = null;
 
     // Configs
     svgW = 700;
@@ -25,8 +32,19 @@ class Bars {
     scY = d3.scaleLinear()
             .range([this.gH, 0]);
     histogram = d3.histogram();
-    yAxis = d3.axisLeft().ticks(5);
+    yAxis = d3.axisLeft()
     xAxis = d3.axisBottom();
+
+    // Colors
+
+    states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
+    currentState = 'Approval'
+    segmentWidth = 95;
+
+	colorScale = d3.scaleOrdinal()
+		.domain(this.states)
+		.range(['#c1c8e4', '#84ceeb', '#5ab9ea',
+                '#88bdbc', '#3aafa9']);
 
     /*
     Constructor
@@ -58,22 +76,54 @@ class Bars {
             .attr('class', 'container')
             .style('transform', `translate(${vis.gMargin.left}px, ${vis.gMargin.top}px)`);
 
-        // Append axes
-        vis.xAxisG = vis.g.append('g')
-            .attr('class', 'axis axisX')
-            .style('transform', `translateY(${vis.gH + 15}px)`);
-        vis.xAxisG.append('text')
-            .attr('class', 'label labelX')
-            .style('transform', `translate(${vis.gW / 2}px, 40px)`)
-            .text('Age');
-        vis.yAxisG = vis.g.append('g')
-            .attr('class', 'axis axisY')
-            .style('transform', 'translateX(-15px)');
-        vis.yAxisG.append('text')
-            .attr('class', 'label labelY')
-            .style('transform', `rotate(-90deg) translate(-${vis.gH / 2}px, -30px)`)
-            .text('Total Number of People');
 
+        // vis.svg.append('rect')
+        //     .attr('class', 'rank-2')
+        //     .attr('rx', 10)
+        //     .attr('ry', 10)
+        //     .attr('fill', 'gray')
+        //     .attr('height', 15)
+        //     .attr('width', function(){
+        //         return vis.segmentWidth * vis.states.length;
+        //     })
+		//     .attr('x', 100)
+        //     .attr('y', 110);
+
+        // vis.svg.append('rect')
+        //     .attr('class', 'rank-3')
+        //     .attr('rx', 10)
+        //     .attr('ry', 10)
+        //     .attr('fill', 'gray')
+        //     .attr('height', 15)
+        //     .attr('width', function(){
+        //         return vis.segmentWidth * vis.states.length;
+        //     })
+		//     .attr('x', 40)
+        //     .attr('y', 170);
+        //
+        // vis.svg.append('rect')
+        //     .attr('class', 'rank-4')
+        //     .attr('rx', 10)
+        //     .attr('ry', 10)
+        //     .attr('fill', 'gray')
+        //     .attr('height', 15)
+        //     .attr('width', function(){
+        //         return vis.segmentWidth * vis.states.length;
+        //     })
+		//     .attr('x', 40)
+        //     .attr('y', 230);
+        //
+        // vis.svg.append('rect')
+        //     .attr('class', 'rank-5')
+        //     .attr('rx', 10)
+        //     .attr('ry', 10)
+        //     .attr('fill', 'gray')
+        //     .attr('height', 15)
+        //     .attr('width', function(){
+        //         return vis.segmentWidth * vis.states.length;
+        //     })
+		//     .attr('x', 40)
+        //     .attr('y', 290);
 
         // Now wrangle
         vis.wrangle();
@@ -88,9 +138,74 @@ class Bars {
         // Define this vis
         const vis = this;
 
+
         // Map ages
-        const flagMap = vis.data.map(d => d.flag);
-        console.log(flagMap)
+        vis.flagMap = vis.data.map(d => d.flag);
+        vis.companyMap = vis.data.map(d => d.company)
+        vis.stageMap = vis.data.map(d => d.stage)
+        console.log(vis.stageMap)
+
+
+        for (let i = 0; i < vis.stageMap.length; i++){
+            if (vis.stageMap[i] === 0) {
+                vis.currentState = 'Pre-Clinical'
+            } else if (vis.stageMap[i] === 1){
+                vis.currentState = 'Phase I'
+            } else if (vis.stageMap[i] === 2){
+                vis.currentState = 'Phase II'
+            } else if (vis.stageMap[i] === 3){
+                vis.currentState = 'Phase III'
+            } else if (vis.stageMap[i] === 4) {
+                vis.currentState = 'Approval'
+            }
+
+        vis.svg.append('rect')
+            .attr('class', 'progress-rect')
+            .attr('fill', function(){
+                return vis.colorScale(vis.currentState);
+            })
+            .attr('height', 15)
+            .attr('width', function(){
+                const index = vis.states.indexOf(vis.currentState);
+                console.log(index)
+                return (index + 1) * vis.segmentWidth;
+            })
+            .attr('rx', 10)
+            .attr('ry', 10)
+            .attr('x', 100)
+            .attr('y', 50 + 60 * i);
+
+        // vis.svg.append('svg:image')
+        //     .attr({
+        //       'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
+        //     })
+        //     .attr('height', 20)
+        //     .attr('x', function(){
+        //         const index = vis.states.indexOf(vis.currentState);
+        //         return (index + 1) * vis.segmentWidth + 5;
+        //     })
+        //     .attr('y', 50 + 60 * i);
+
+            }
+
+
+
+        vis.svg.append('rect')
+            .attr('class', 'border')
+            .attr('rx', 10)
+            .attr('ry', 10)
+            .attr('fill', 'orange')
+            .attr('height', 350)
+            .attr('width', 10)
+		    .attr('x', 95)
+            .attr('y', 10);
+
+        //     vis.selectAll
+
+            // console.log(color)
+
+        // }
+
         //
         // // Use histogram() to place in bins
         // vis.data_bins = vis.histogram(ageMap);
@@ -115,6 +230,46 @@ class Bars {
     render() {
         // Define this vis
         const vis = this;
+        // if (this.hasAttribute('data-img')) {
+        //     const imgUrlArr = this.getAttribute('data-img').split(',')
+        //     imgUrlArr.forEach((imgUrl) => {
+        //         imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
+        //         const img = document.createElement('img');
+        //         img.setAttribute('height', '60px');
+        //         img.src = imgUrl;
+        //         wrapper.appendChild(img);
+        //     })
+        // } else {
+        //     let imgUrl = '../static/img/Untitled.png';
+        //     const img = document.createElement('img');
+        //     img.setAttribute('height', '40px');
+        //     img.src = imgUrl;
+        //     wrapper.appendChild(img);
+        // }
+
+
+
+
+
+    //     vis.Rank1.transition()
+    //         .duration(1000)
+    //         .attr('width', function(){
+    //             var index = vis.states.indexOf(vis.currentState);
+    //             return (index + 1) * vis.segmentWidth;
+    //         });
+    //     function moveRank1(state){
+	// 	vis.Rank1.transition()
+	// 		.duration(1000)
+	// 		.attr('fill', function(){
+	// 			return vis.colorScale(state);
+	// 		})
+	// 		.attr('width', function(){
+	// 			var index = vis.states.indexOf(state);
+	// 			return (index + 1) * vis.segmentWidth;
+	// 		});
+	// }
+	// moveRank1(3)
+
 
         // Build bars
         // vis.g.selectAll('.barG')
@@ -146,8 +301,6 @@ class Bars {
             // );
 
         // Update axis
-        // vis.xAxisG.call(vis.xAxis);
-        // vis.yAxisG.call(vis.yAxis);
 
     }
 }

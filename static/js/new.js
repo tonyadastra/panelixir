@@ -165,25 +165,25 @@ class Worldmap {
         for (let j = 0; j < countries.length; j++) {
           // console.log("inner loop");
 
-          if (countries[j].id == Object.values(vis.names)[i].id) {
+          if (countries[j].id === Object.values(vis.names)[i].id) {
 
             let curr_color = vis.colors.clickable;
             let curr_stage = -1;
-            if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
+            if (vac_map.get(Object.values(vis.names)[i].name) !== undefined) {
               curr_stage = vac_map.get(Object.values(vis.names)[i].name);
               // console.log(curr_stage);
               // console.log(Object.values(vis.names)[i].name);
             }
 
-            if (curr_stage == 0) {
+            if (curr_stage === 0) {
               curr_color = vis.colors.p0;
-            } else if (curr_stage == 1) {
+            } else if (curr_stage === 1) {
               curr_color = vis.colors.p1;
-            } else if (curr_stage == 2) {
+            } else if (curr_stage === 2) {
               curr_color = vis.colors.p2;
-            } else if (curr_stage == 3) {
+            } else if (curr_stage === 3) {
               curr_color = vis.colors.p3;
-            } else if (curr_stage == 4) {
+            } else if (curr_stage === 4) {
               curr_color = vis.colors.p4;
             }
             // console.log(j, Object.values(vis.names)[i].name);
@@ -210,15 +210,15 @@ class Worldmap {
                   temp = vac_map.get(d3.select(this).attr("countryname"));
                   prev_stage = temp === undefined ? -1 : temp;
 
-                  if (prev_stage == 0) {
+                  if (prev_stage === 0) {
                     prev_color = vis.colors.p0;
-                  } else if (prev_stage == 1) {
+                  } else if (prev_stage === 1) {
                     prev_color = vis.colors.p1;
-                  } else if (prev_stage == 2) {
+                  } else if (prev_stage === 2) {
                     prev_color = vis.colors.p2;
-                  } else if (prev_stage == 3) {
+                  } else if (prev_stage === 3) {
                     prev_color = vis.colors.p3;
-                  } else if (prev_stage == 4) {
+                  } else if (prev_stage === 4) {
                     prev_color = vis.colors.p4;
                   }
                   d3.select(this).attr("fill", prev_color);
@@ -233,15 +233,15 @@ class Worldmap {
                   temp = vac_map.get(d3.select(this).attr("countryname"));
                   prev_stage = temp === undefined ? -1 : temp;
 
-                  if (prev_stage == 0) {
+                  if (prev_stage === 0) {
                     prev_color = vis.colors.p0;
-                  } else if (prev_stage == 1) {
+                  } else if (prev_stage === 1) {
                     prev_color = vis.colors.p1;
-                  } else if (prev_stage == 2) {
+                  } else if (prev_stage === 2) {
                     prev_color = vis.colors.p2;
-                  } else if (prev_stage == 3) {
+                  } else if (prev_stage === 3) {
                     prev_color = vis.colors.p3;
-                  } else if (prev_stage == 4) {
+                  } else if (prev_stage === 4) {
                     prev_color = vis.colors.p4;
                   }
                   d3.select(this).attr("fill", curr_color);

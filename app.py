@@ -1,6 +1,5 @@
-import random
-import string
-from flask import Flask, render_template, request, jsonify, session
+import random, string, re
+from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
@@ -18,7 +17,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
 app.secret_key = "ILoveNewYork"
 conn = psycopg2.connect("dbname=vaccinedb user=postgres")
-
 
 # User - Lola
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
@@ -94,9 +92,9 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id "
                 "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                "AND country LIKE '%" + country + "%' "
-                "AND vac_type LIKE '%" + types + "%' "
-                "ORDER BY stage DESC, co_name, partner_name;")
+                                                                    "AND country LIKE '%" + country + "%' "
+                                                                                                      "AND vac_type LIKE '%" + types + "%' "
+                                                                                                                                       "ORDER BY stage DESC, co_name, partner_name;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -132,12 +130,14 @@ def index():
 @app.route("/update_continent")
 def update_continent():
     continent = str(request.args.get('continent'))
+    print(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
 
+    cur.execute("rollback")
     cur.execute("SELECT stage, COUNT(stage) as count "
-                "FROM info "
-                "WHERE continent LIKE '%" + continent + "%' "
+                " FROM info "
+                " WHERE continent LIKE '%"+continent+"%' "
                 "GROUP BY stage ORDER BY stage")
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
@@ -153,6 +153,35 @@ def update_continent():
             data_arr.append(0)
     # print(data_arr)
     return render_template('update_continent.html', continent_data=data_arr)
+
+
+@app.route("/get_bars_data")
+def getBarsData():
+    continent = str(request.args.get('continent'))
+    print(request.args.get('continent'))
+    if request.args.get('continent') is None or continent == "World":
+        continent = ""
+    cur.execute("rollback")
+    cur.execute("SELECT json_agg(json_build_object('company', company, "
+                "'stage', stage,"
+                " 'country', country,"
+                " 'flag', flag ))"
+                "FROM info "
+                " INNER JOIN companies ON info.vac_id = companies.vac_id "
+                " WHERE continent LIKE '%"+continent+"%' "
+                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+    bars_data = cur.fetchall()
+    cur.execute("rollback")
+    print(len(bars_data))
+    bars_data_json = {'bars_data': []}
+    if len(bars_data) < 5:
+        for i in range(len(bars_data)):
+            bars_data_json['bars_data'].append(bars_data[i][0][0])
+    else:
+        for i in range(5):
+            bars_data_json['bars_data'].append(bars_data[i][0][0])
+    # print(bars_data_json)
+    return jsonify(bars_data_json)
 
 
 @app.route('/load_data', methods=['GET'])
@@ -192,7 +221,6 @@ if __name__ == '__main__':
     app.secret_key = ''.join(random.choice(string.printable)
                              for _ in range(20))
     app.run(debug=True)
-
 
 # cur.close()
 # conn.close()
