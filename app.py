@@ -5,6 +5,7 @@ import psycopg2
 import numpy as np
 import json
 import csv
+import time
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -87,7 +88,7 @@ def index():
                 else:
                     types = ""
                     types_dis = "Vaccine Types"
-
+            cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id "
@@ -161,6 +162,7 @@ def getBarsData():
     print(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
+        time.sleep(0.2)
     cur.execute("rollback")
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"

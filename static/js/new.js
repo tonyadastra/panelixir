@@ -24,7 +24,7 @@ class Worldmap {
     .rotate([100.5728366920307, -48])
     .translate([this.svgW / 2, this.svgH / 2])
     .clipAngle(90)
-    .precision(10);
+    .precision(0.7);
   path = d3.geoPath()
     .projection(this.projection);
   graticule = d3.geoGraticule();
