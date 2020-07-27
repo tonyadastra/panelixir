@@ -13,6 +13,7 @@ class Vaccine(Db.Model):
     stage = Db.Column(Db.Integer, nullable=False)
     website = Db.Column(Db.String(300), nullable=True)
     company = Db.Column(Db.String(200), nullable=True)
+    flag = Db.Column(Db.Text)
 
     # # toString
     # def toString(self):

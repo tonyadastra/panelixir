@@ -1,7 +1,6 @@
 .sublime-workspace
 .idea
 .DS_store
-test.py
-__pycache__
-static/js/example.ts
-static/img/.DS_Store
+nyu.py
+/templates/test.html
+/templates/test2.html
