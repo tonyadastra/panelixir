@@ -128,31 +128,31 @@ def index():
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
-@app.route("/update_continent")
-def update_continent():
-    continent = str(request.args.get('continent'))
-    # print(request.args.get('continent'))
-    if request.args.get('continent') is None or continent == "World":
-        continent = ""
-
-    cur.execute("rollback")
-    cur.execute("SELECT stage, COUNT(stage) as count "
-                " FROM info "
-                " WHERE continent LIKE '%"+continent+"%' "
-                "GROUP BY stage ORDER BY stage")
-    continent_data = np.array(cur.fetchall(), dtype=object)
-    cur.execute("rollback")
-    data_arr = []
-    for i in range(5):
-        found = False
-        for j in continent_data:
-            if i == j[0]:
-                data_arr.append(j[1])
-                found = True
-        if not found:
-            data_arr.append(0)
-    # print(data_arr)
-    return jsonify(data_arr)
+# @app.route("/update_continent")
+# def update_continent():
+#     continent = str(request.args.get('continent'))
+#     # print(request.args.get('continent'))
+#     if request.args.get('continent') is None or continent == "World":
+#         continent = ""
+#
+#     cur.execute("rollback")
+#     cur.execute("SELECT stage, COUNT(stage) as count "
+#                 " FROM info "
+#                 " WHERE continent LIKE '%"+continent+"%' "
+#                 "GROUP BY stage ORDER BY stage")
+#     continent_data = np.array(cur.fetchall(), dtype=object)
+#     cur.execute("rollback")
+#     data_arr = []
+#     for i in range(5):
+#         found = False
+#         for j in continent_data:
+#             if i == j[0]:
+#                 data_arr.append(j[1])
+#                 found = True
+#         if not found:
+#             data_arr.append(0)
+#     # print(data_arr)
+#     return jsonify(data_arr)
 
 
 @app.route("/get_bars_data")
@@ -165,17 +165,33 @@ def getBarsData():
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"
                 " 'country', country,"
-                " 'flag', flag ))"
-                "FROM info "
+                " 'flag', flag )) "
+                " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE continent LIKE '%"+continent+"%' "
                 "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
+    cur.execute("SELECT stage, COUNT(stage) as count "
+                " FROM info "
+                " WHERE continent LIKE '%" + continent + "%' "
+                                                         "GROUP BY stage ORDER BY stage")
+    continent_data = np.array(cur.fetchall(), dtype=object)
+    cur.execute("rollback")
+    data_arr = []
+    for i in range(5):
+        found = False
+        for j in continent_data:
+            if i == j[0]:
+                data_arr.append(j[1])
+                found = True
+        if not found:
+            data_arr.append(0)
     bars_data_json = {'bars_data': []}
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
-    return jsonify(bars_data_json)
+    # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
+    return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
 
 
 @app.route('/load_data', methods=['GET'])
