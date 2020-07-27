@@ -42,7 +42,7 @@ class Worldmap {
     .projection(this.projection);
   graticule = d3.geoGraticule();
   colors = {
-    clickable: '#e3e2df', hover: '#bab2b5', clicked: "#895061",
+    clickable: '#e3e2df', hover: '#bab2b5', clicked: "peachpuff",
     clickhover: '#bab2b5', p0: '#c1c8e4', p1: '#84ceeb',
     p2: '#5ab9ea', p3: '#88bdbc', p4: '#3aafa9'
   };
@@ -253,22 +253,23 @@ class Worldmap {
                     // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                   })
 
-                // d3.select(this)
-                //   .classed("clicked", true)
-                //   .select(function () {
-                    // d3.select(this).attr("fill", curr_color);
-                    // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                  // });
-                // .attr("fill", vis.colors.clicked);
+
                 // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
 
                 map.continent = continent;
                 d3.selectAll("path").filter(function (d) {
-                  console.log(d3.select(this).attr("continent"))
+                  // console.log(d3.select(this).attr("continent"))
                   return d3.select(this).attr("continent") == continent;
                 })
-                  .attr("fill", vis.colors.clicked)
-                  .classed("clicked", true);
+                  // .attr("fill", vis.colors.hover);
+                    .classed("clicked", true);
+
+                d3.select(this)
+                  .select(function () {
+                    d3.select(this).attr("fill", curr_color);
+                    console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                  });
+                // .attr("fill", vis.colors.clicked);
 
                 (function transition() {
 
@@ -303,7 +304,15 @@ class Worldmap {
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clickhover);
                 } else {
-                  c.attr("fill", vis.colors.hover);
+                  d3.selectAll("path").filter(function (d) {
+                    console.log(d3.select(this).attr("continent"))
+                    return d3.select(this).attr("continent") == continent;
+              
+                  })
+                    .attr("fill", vis.colors.hover);
+                            // && d3.select(this).attr("data-country-id") != countries[j].id;
+                    // .classed("clicked", true);
+                  // c.attr("fill", vis.colors.hover);
                 }
                 // console.log("mouse move", Object.values(vis.names)[i].name);
               })
