@@ -158,16 +158,32 @@ $(document).ready(function () {
                                     });
                                 }
 
-                                // svg.append('svg:image')
-                                //     .attr({
-                                //       'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
-                                //     })
-                                //     .attr('height', 20)
-                                //     .attr('x', function(){
-                                //         const index = states.indexOf(currentState);
-                                //         return (index + 1) * segmentWidth + 5;
-                                //     })
-                                //     .attr('y', 50 + 60 * i);
+                                for (let a = 0; a < flagMap[i].length; a++) {
+                                    // if flagMap[i][a] is undefined
+                                    if (flagMap[i][a] !== '.') {
+                                        for (let j = 0; j < flagMap[i][a].length; j++) {
+                                            svg.append('svg:image')
+                                                .attr('xlink:href', flagMap[i][a])
+                                                .attr('height', 20)
+                                                .attr('x', function () {
+                                                    const index = states.indexOf(currentState);
+                                                    // Add x values for multiple images
+                                                    return (index + 1) * segmentWidth + progressStart + 5 + a * 50;
+                                                })
+                                                .attr('y', 47.5 + 60 * i);
+                                        }
+                                    }
+                                }
+                                // If single country
+                                svg.append('svg:image')
+                                    .attr('xlink:href', flagMap[i])
+                                    .attr('height', 20)
+                                    .attr('x', function () {
+                                        const index = states.indexOf(currentState);
+                                        return (index + 1) * segmentWidth + progressStart + 5;
+                                    })
+                                    .attr('y', 47.5 + 60 * i);
+
 
                             }
                             // Append orange bar on the left
@@ -333,16 +349,33 @@ $('.button-font').on('click', function () {
                             });
                         }
 
-                        // svg.append('svg:image')
-                        //     .attr({
-                        //       'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
-                        //     })
-                        //     .attr('height', 20)
-                        //     .attr('x', function(){
-                        //         const index = states.indexOf(currentState);
-                        //         return (index + 1) * segmentWidth + 5;
-                        //     })
-                        //     .attr('y', 50 + 60 * i);
+                        // Append Flag Image
+                        // If multiple countries
+                        for (let a = 0; a < flagMap[i].length; a++) {
+                            // if flagMap[i][a] is undefined
+                            if (flagMap[i][a] !== '.') {
+                                for (let j = 0; j < flagMap[i][a].length; j++) {
+                                    svg.append('svg:image')
+                                        .attr('xlink:href', flagMap[i][a])
+                                        .attr('height', 20)
+                                        .attr('x', function () {
+                                            const index = states.indexOf(currentState);
+                                            // Add x values for multiple images
+                                            return (index + 1) * segmentWidth + progressStart + 5 + a * 50;
+                                        })
+                                        .attr('y', 47.5 + 60 * i);
+                                }
+                            }
+                        }
+                        // If single country
+                        svg.append('svg:image')
+                            .attr('xlink:href', flagMap[i])
+                            .attr('height', 20)
+                            .attr('x', function () {
+                                const index = states.indexOf(currentState);
+                                return (index + 1) * segmentWidth + progressStart + 5;
+                            })
+                            .attr('y', 47.5 + 60 * i);
 
                     }
                     svg.append('rect')
