@@ -1,6 +1,8 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)
++ July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
 + July 24, 2020 - Database + Region, Interactive Button and Progress Bar-v1
 + July 23, 2020 - Multiple form submission, Country and Vaccine tags, Dropdown Title Display
 + July 22, 2020 - Map coloring and Latest Database Update, Resolve Singapore Issue
@@ -15,10 +17,15 @@
 + July 8, 2020 - Initial UI Design Completed, website combined
 + June 26, 2020 - Project Group Formed
 
+**Links to Solve Existing Problems**
+1. [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url)
+2. [TextTween](https://observablehq.com/@d3/transition-texttween)
+
 **Quick Access:**
 1. [Google Docs Project Plan](https://docs.google.com/document/d/1deIU2SzWKDxPKVcOjmgND0dqXN83Fx7WdhrB9ZfNttE/edit?usp=sharing)
 2. [Google Sheets Database](https://docs.google.com/spreadsheets/d/1uizkQFCIkAH1fuDuj_N01xJogvwoTmTiQziaBz1Xtvs/edit#gid=0)
 3. [Google Slides UI Design](https://docs.google.com/presentation/d/1ibjxRnj7LZTH4G1Zy0rOL-0un8sc1Ab3FwR-Z1zx1uU/edit#slide=id.p)
+4. [D3 API Reference(Wiki)](https://github.com/d3/d3/blob/master/API.md)
 
 **Resources**
 1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)

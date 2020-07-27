@@ -33,7 +33,7 @@ class myCard extends HTMLElement {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
                 const img = document.createElement('img');
                 img.setAttribute('height', '60px');
-                img.src = imgUrl;
+                img.src = imgUrl; 
                 wrapper.appendChild(img);
             })
         } else {
@@ -157,13 +157,12 @@ class myCard extends HTMLElement {
         content.innerHTML = url;
         // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
         content.setAttribute('class', 'content');
-        wrapper.appendChild(btn);
-        wrapper.appendChild(content);
+        // wrapper.appendChild(btn);
+        // wrapper.appendChild(content);
 
         //toggle
         btn.addEventListener("click", function () {
             this.classList.toggle("active");
-            // var content = this.nextElementSibling;
             if (content.style.display === "block") {
                 content.style.display = "none";
             } else {
