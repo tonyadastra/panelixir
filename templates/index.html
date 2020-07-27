@@ -23,17 +23,16 @@
 <!-- <script src="//d3js.org/queue.v1.min.js"></script> -->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
+<script src="../static/js/new.js"></script>
 <script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
-<script src="../static/js/index.js"></script>
-<script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
 
 <script>
-    $(".button-font").on('click', function() {
-    $(".button-font").removeClass('active');
-    $(this).addClass('active');
-})
+    $(".button-font").on('click', function () {
+        $(".button-font").removeClass('active');
+        $(this).addClass('active');
+    })
 </script>
 
 {% if scrollToAnchor %}
@@ -43,7 +42,6 @@
         // document.URL="/";
     });
 </script>
-
 {% endif %}
 
 {% endblock %}
@@ -52,7 +50,7 @@
 {% block content %}
 <!-- Heading Bar of Webpage-->
 <div class="jumbotron">
-    <h3 >Coronavirus Vaccine and Treatment Tracker</h3>
+    <h3>Coronavirus Vaccine and Treatment Tracker</h3>
 </div>
 <!-- {{continent_data}} -->
 
@@ -67,10 +65,10 @@
     <div class="col" style="margin: 0 0.1rem 0 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
             <button class="btn btn-outline-primary button-font active" data-value="World">World</button>
-            <button class="btn btn-outline-secondary button-font" data-value="North America">North America</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Europe">Europe</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Asia">Asia</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Oceania">Oceania</button>
+            <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Oceania" value="Oceania">Oceania</button>
         </div>
 
         <div id="progressbar"></div>

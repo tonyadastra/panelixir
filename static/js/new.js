@@ -1,3 +1,17 @@
+map = {
+  aInternal: 10,
+  aListener: function (val) { },
+  set continent(val) {
+    this.aInternal = val;
+    this.aListener(val);
+  },
+  get continent() {
+    return this.aInternal;
+  },
+  registerListener: function (listener) {
+    this.aListener = listener;
+  }
+}
 /**
  * @class Template
  */
@@ -20,6 +34,7 @@ class Worldmap {
   projection = d3.geoOrthographic()
     .scale(250)
     .rotate([100.5728366920307, -48])
+    // .duration(1000)
     .translate([this.svgW / 2, this.svgH / 2])
     .clipAngle(90)
     .precision(10);
@@ -127,29 +142,35 @@ class Worldmap {
         }
       }
     }
-    console.log(vac_map);
+    // console.log(vac_map);
 
     // console.log(vis.data);
 
-    var files = ["/data/map.json", "/data/world-country-names.tsv"];
+    var files = ["/data/map.json", "/data/world-country-names.tsv", "/data/custom_geo.json"];
 
     Promise.all(files.map(url => d3.json(url))).then(function (values) {
       vis.world = values[0]
-      // console.log(values)
+      // console.log("map", values[0])
       vis.names = values[1]
-      console.log(vis.world)
+      vis.world_continent = values[2].features
+      // console.log(vis.world)
+      // console.log("custom", vis.world_continent)
       var globe = { type: "Sphere" },
         land = topojson.feature(vis.world, vis.world.objects.land),
         countries = topojson.feature(vis.world, vis.world.objects.countries).features,
         borders = topojson.mesh(vis.world, vis.world.objects.countries, function (a, b) { return a !== b; });
-      console.log(vis.world.objects.countries)
+      // var continent = topojson.feature(vis.world_continent, vis.world_continent).features;
+      // console.log(continent)
+      // console.log("countries", vis.world.objects.countries)
+      // console.log(vis.world_continent.features[200].properties.continent)
+      // console.log(vis.world_continent.features[200].properties.name)
       // console.log(vis.world.objects.properties.name)
 
-      // countries = countries.filter(function(d) {
-      //   return vis.names.some(function(n) {
+      // countries = countries.filter(function (d) {
+      //   return vis.names.some(function (n) {
       //     if (d.id == n.id) return d.name = n.name;
       //   });
-      // }).sort(function(a, b) {
+      // }).sort(function (a, b) {
       //   return a.name.localeCompare(b.name);
       // });
 
@@ -157,13 +178,21 @@ class Worldmap {
         .datum(topojson.feature(vis.world, vis.world.objects.land))
         .attr("class", "land")
         .attr("d", vis.path);
-      
-      
+
+
       for (let i = 0; i < Object.values(vis.names).length; i++) {
         for (let j = 0; j < countries.length; j++) {
-          // console.log("inner loop");
 
+          let continent;
           if (countries[j].id == Object.values(vis.names)[i].id) {
+            // get continent
+            vis.world_continent.forEach(function (elem) {
+              if (elem.properties.name == Object.values(vis.names)[i].name) {
+                continent = elem.properties.continent;
+              }
+            });
+
+            // console.log(continent);
 
             let curr_color = vis.colors.clickable;
             let curr_stage = -1;
@@ -187,95 +216,88 @@ class Worldmap {
             // console.log(j, Object.values(vis.names)[i].name);
 
 
-            var display = vis.map.insert("path", ".graticule")
+            vis.map.insert("path", ".graticule")
               .datum(countries[j])
               .attr("fill", curr_color)
               .attr("d", vis.path)
               .attr("class", "clickable")
               .attr("data-country-id", j)
+              .attr("continent", continent)
               .attr("countryname", Object.values(vis.names)[i].name)
 
-            display.on("click", function () {
-              let prev_color = vis.colors.clickable;
-              let prev_stage = -1;
-              let temp;
+              .on("click", function () {
+                let prev_color = vis.colors.clickable;
+                let prev_stage = -1;
+                let temp;
 
-              d3.selectAll(".clicked")
-                .classed("clicked", false)
-                .select(function () {
-                  // console.log(this)
-                  // console.log(d3.select(this).attr("countryname"));
-                  temp = vac_map.get(d3.select(this).attr("countryname"));
-                  prev_stage = temp === undefined ? -1 : temp;
+                d3.selectAll(".clicked")
+                  .classed("clicked", false)
+                  .select(function () {
+                    // console.log(this)
+                    // console.log(d3.select(this).attr("countryname"));
+                    temp = vac_map.get(d3.select(this).attr("countryname"));
+                    prev_stage = temp === undefined ? -1 : temp;
 
-                  if (prev_stage == 0) {
-                    prev_color = vis.colors.p0;
-                  } else if (prev_stage == 1) {
-                    prev_color = vis.colors.p1;
-                  } else if (prev_stage == 2) {
-                    prev_color = vis.colors.p2;
-                  } else if (prev_stage == 3) {
-                    prev_color = vis.colors.p3;
-                  } else if (prev_stage == 4) {
-                    prev_color = vis.colors.p4;
-                  }
-                  d3.select(this).attr("fill", prev_color);
-                  // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                })
-
-              d3.select(this)
-                .classed("clicked", true)
-                .select(function () {
-                  // console.log(this)
-                  // console.log(d3.select(this).attr("countryname"));
-                  temp = vac_map.get(d3.select(this).attr("countryname"));
-                  prev_stage = temp === undefined ? -1 : temp;
-
-                  if (prev_stage == 0) {
-                    prev_color = vis.colors.p0;
-                  } else if (prev_stage == 1) {
-                    prev_color = vis.colors.p1;
-                  } else if (prev_stage == 2) {
-                    prev_color = vis.colors.p2;
-                  } else if (prev_stage == 3) {
-                    prev_color = vis.colors.p3;
-                  } else if (prev_stage == 4) {
-                    prev_color = vis.colors.p4;
-                  }
-                  d3.select(this).attr("fill", curr_color);
-                  // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                });
-                // .attr("fill", vis.colors.clicked);
-              // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
-
-              (function transition() {
-
-                // // Store the current rotation and scale:
-                // var currentRotate = projection.rotate();
-                // var currentScale = projection.scale();
-
-                // // Calculate the future bounding box after applying a rotation:
-                // projection.rotate([-p[0], -p[1]]);
-                // path.projection(projection);
-
-                // // calculate the scale and translate required:
-                // var b = path.bounds(d);
-                // var nextScale = currentScale * 1 / Math.max((b[1][0] - b[0][0]) / (width / 2), (b[1][1] - b[0][1]) / (height / 2));
-                // var nextRotate = projection.rotate();
-
-                d3.select(".clicked").transition()
-                  .duration(1000)
-                  
-                  .tween("rotate", function () {
-                    var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
-                    var r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
-                    return function (t) {
-                      vis.projection.rotate(r(t));
-                      vis.map.selectAll("path").attr("d", vis.path);
+                    if (prev_stage == 0) {
+                      prev_color = vis.colors.p0;
+                    } else if (prev_stage == 1) {
+                      prev_color = vis.colors.p1;
+                    } else if (prev_stage == 2) {
+                      prev_color = vis.colors.p2;
+                    } else if (prev_stage == 3) {
+                      prev_color = vis.colors.p3;
+                    } else if (prev_stage == 4) {
+                      prev_color = vis.colors.p4;
                     }
-                  });
-              })();
-            })
+                    d3.select(this).attr("fill", prev_color);
+                    // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                  })
+
+                // d3.select(this)
+                //   .classed("clicked", true)
+                //   .select(function () {
+                    // d3.select(this).attr("fill", curr_color);
+                    // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                  // });
+                // .attr("fill", vis.colors.clicked);
+                // console.log("clicked", clicked, Object.values(vis.names)[i].name, prev_stage, prev_color);
+
+                map.continent = continent;
+                d3.selectAll("path").filter(function (d) {
+                  console.log(d3.select(this).attr("continent"))
+                  return d3.select(this).attr("continent") == continent;
+                })
+                  .attr("fill", vis.colors.clicked)
+                  .classed("clicked", true);
+
+                (function transition() {
+
+                  // // Store the current rotation and scale:
+                  // var currentRotate = projection.rotate();
+                  // var currentScale = projection.scale();
+
+                  // // Calculate the future bounding box after applying a rotation:
+                  // projection.rotate([-p[0], -p[1]]);
+                  // path.projection(projection);
+
+                  // // calculate the scale and translate required:
+                  // var b = path.bounds(d);
+                  // var nextScale = currentScale * 1 / Math.max((b[1][0] - b[0][0]) / (width / 2), (b[1][1] - b[0][1]) / (height / 2));
+                  // var nextRotate = projection.rotate();
+
+                  d3.select(".clicked").transition()
+                    .duration(1000)
+                    .tween("rotate", function () {
+                      var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
+                      var r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
+                      return function (t) {
+                        vis.projection.rotate(r(t));
+                        vis.map.selectAll("path").attr("d", vis.path);
+                      }
+                    });
+                })();
+              })
+
               .on("mousemove", function () {
                 var c = d3.select(this);
                 if (c.classed("clicked")) {
@@ -285,20 +307,22 @@ class Worldmap {
                 }
                 // console.log("mouse move", Object.values(vis.names)[i].name);
               })
+
               .on("mouseout", function () {
                 var c = d3.select(this);
-                // console.log(vac_map);
 
                 if (c.classed("clicked")) {
-                  c.attr("fill", curr_color);
+                  // c.attr("fill", vis.colors.clicked);
+                  d3.selectAll("path").filter(function (d) {
+                    return d3.select(this).attr("continent") == continent;
+                  })
+                    .attr("fill", vis.colors.clicked);
                   // console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
                   // console.log("unclicked mouse out", Object.values(vis.names)[i].name)
                   d3.select(this).attr("fill", curr_color);
-
                 }
                 // console.log("mouse out");
-
               });
           }
         }
@@ -314,6 +338,11 @@ class Worldmap {
 
     d3.select(self.frameElement).style("height", vis.svgH + "px");
 
-  }
+    // window.addEventListener(window.continent, function (e) {
+    //   // map_continent = localStorage.getItem('continent');
+    //   map_continent = window.continent;
+    //   console.log("update", map_continent);
+    // });
 
+  }
 }
