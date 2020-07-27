@@ -62,7 +62,7 @@
 
 /* Interactive Progress */
 .interactive-progress {
-	background-color: transparent;
+	background-color: transparent !important;
 	padding: 0;
 	margin-top: 0;
 	margin-right: 10px !important;

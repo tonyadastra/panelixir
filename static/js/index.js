@@ -11,15 +11,45 @@ $(document).ready(function () {
             console.log(response[0])
             // $("#progressbar").html(response);
            d3.selectAll('#progress0')
-               .text(response[0])
-            d3.selectAll('#progress1')
-                .text(response[1])
-            d3.selectAll('#progress2')
-                .text(response[2])
-            d3.selectAll('#progress3')
-                .text([response[3]])
-            d3.selectAll('#progress4')
-                .text(response[4])
+            .transition()
+            .duration(100)
+            .textTween(function () {
+                return d3.interpolateRound(0, response[0])
+
+            })
+            .ease(d3.easePolyOut.exponent(3))
+        d3.selectAll('#progress1')
+            .transition()
+            .duration(100)
+            .textTween(function () {
+                return d3.interpolateRound(0, response[1])
+
+            })
+            .ease(d3.easePolyOut.exponent(3))
+        d3.selectAll('#progress2')
+            .transition()
+            .duration(100)
+            .textTween(function () {
+                return d3.interpolateRound(0, response[2])
+
+            })
+            .ease(d3.easePolyOut.exponent(3))
+        d3.selectAll('#progress3')
+            .transition()
+            .duration(100)
+            .textTween(function () {
+                return d3.interpolateRound(0, response[3])
+
+            })
+            .ease(d3.easePolyOut.exponent(3))
+        d3.selectAll('#progress4')
+            .transition()
+            .duration(100)
+            .textTween(function () {
+                return d3.interpolateRound(0, response[4])
+
+            })
+            .ease(d3.easePolyOut.exponent(3))
 
             setTimeout(function () {
                 if (!processing) {
@@ -223,6 +253,7 @@ $('.button-font').on('click', function () {
                             return d3.interpolateRound(0, response[0])
 
                         })
+                        .ease(d3.easePolyOut.exponent(3))
                     d3.selectAll('#progress1')
                         .transition()
                         .duration(774)
@@ -230,6 +261,7 @@ $('.button-font').on('click', function () {
                             return d3.interpolateRound(0, response[1])
 
                         })
+                        .ease(d3.easePolyOut.exponent(3))
                     d3.selectAll('#progress2')
                         .transition()
                         .duration(774)
@@ -237,6 +269,7 @@ $('.button-font').on('click', function () {
                             return d3.interpolateRound(0, response[2])
 
                         })
+                        .ease(d3.easePolyOut.exponent(3))
                     d3.selectAll('#progress3')
                         .transition()
                         .duration(774)
@@ -244,6 +277,7 @@ $('.button-font').on('click', function () {
                             return d3.interpolateRound(0, response[3])
 
                         })
+                        .ease(d3.easePolyOut.exponent(3))
                     d3.selectAll('#progress4')
                         .transition()
                         .duration(774)
@@ -251,6 +285,7 @@ $('.button-font').on('click', function () {
                             return d3.interpolateRound(0, response[4])
 
                         })
+                        .ease(d3.easePolyOut.exponent(3))
                 }
             })
         }
