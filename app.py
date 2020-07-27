@@ -162,7 +162,7 @@ def getBarsData():
     print(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
-        time.sleep(0.2)
+        time.sleep(0.1)
     cur.execute("rollback")
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"

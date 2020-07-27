@@ -267,10 +267,9 @@ class Worldmap {
 
                 d3.select(".clicked").transition()
                   .duration(1000)
-                  
                   .tween("rotate", function () {
-                    var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
-                    var r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
+                    const p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
+                    const r = d3.interpolate(vis.projection.rotate(), [-p[0], -p[1]]);
                     return function (t) {
                       vis.projection.rotate(r(t));
                       vis.map.selectAll("path").attr("d", vis.path);

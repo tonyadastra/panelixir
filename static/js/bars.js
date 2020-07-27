@@ -13,7 +13,7 @@ class Bars {
     g = null;
     xAxisG = null;
     yAxisG = null;
-    Rank1 = null;
+    progress = null;
     Rank2 = null;
     Rank3 = null;
     Rank4 = null;
@@ -26,20 +26,20 @@ class Bars {
     gW = this.svgW - (this.gMargin.right + this.gMargin.left);
     gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
 
+    // Progress Configs
+    progressStart = 130;
+    segmentWidth = 95;
+
+
     // Tools
-    scX = d3.scaleLinear()
-            .range([0, this.gW]);
-    scY = d3.scaleLinear()
-            .range([this.gH, 0]);
-    histogram = d3.histogram();
-    yAxis = d3.axisLeft()
-    xAxis = d3.axisBottom();
+    t = d3.transition()
+        .ease(d3.easeLinear)
 
     // Colors
 
     states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
-    currentState = 'Approval'
-    segmentWidth = 95;
+    currentState = 'Pre-Clinical'
+
 
 	colorScale = d3.scaleOrdinal()
 		.domain(this.states)
@@ -67,7 +67,6 @@ class Bars {
         // Define this vis
         const vis = this;
 
-
         // Set up the svg/g work space
         vis.svg = d3.select(`#${vis.target}`)
             .append('svg')
@@ -76,56 +75,6 @@ class Bars {
         vis.g = vis.svg.append('g')
             .attr('class', 'container')
             .style('transform', `translate(${vis.gMargin.left}px, ${vis.gMargin.top}px)`);
-
-
-        // vis.svg.append('rect')
-        //     .attr('class', 'rank-2')
-        //     .attr('rx', 10)
-        //     .attr('ry', 10)
-        //     .attr('fill', 'gray')
-        //     .attr('height', 15)
-        //     .attr('width', function(){
-        //         return vis.segmentWidth * vis.states.length;
-        //     })
-		//     .attr('x', 100)
-        //     .attr('y', 110);
-
-        // vis.svg.append('rect')
-        //     .attr('class', 'rank-3')
-        //     .attr('rx', 10)
-        //     .attr('ry', 10)
-        //     .attr('fill', 'gray')
-        //     .attr('height', 15)
-        //     .attr('width', function(){
-        //         return vis.segmentWidth * vis.states.length;
-        //     })
-		//     .attr('x', 40)
-        //     .attr('y', 170);
-        //
-        // vis.svg.append('rect')
-        //     .attr('class', 'rank-4')
-        //     .attr('rx', 10)
-        //     .attr('ry', 10)
-        //     .attr('fill', 'gray')
-        //     .attr('height', 15)
-        //     .attr('width', function(){
-        //         return vis.segmentWidth * vis.states.length;
-        //     })
-		//     .attr('x', 40)
-        //     .attr('y', 230);
-        //
-        // vis.svg.append('rect')
-        //     .attr('class', 'rank-5')
-        //     .attr('rx', 10)
-        //     .attr('ry', 10)
-        //     .attr('fill', 'gray')
-        //     .attr('height', 15)
-        //     .attr('width', function(){
-        //         return vis.segmentWidth * vis.states.length;
-        //     })
-		//     .attr('x', 40)
-        //     .attr('y', 290);
-
         // Now wrangle
         vis.wrangle();
     }
@@ -146,37 +95,101 @@ class Bars {
         console.log(vis.stageMap)
 
 
-        for (let i = 0; i < vis.stageMap.length; i++){
+        for (let i = 0; i < vis.stageMap.length; i++) {
             if (vis.stageMap[i] === 0) {
-                vis.currentState = 'Pre-Clinical'
-            } else if (vis.stageMap[i] === 1){
-                vis.currentState = 'Phase I'
-            } else if (vis.stageMap[i] === 2){
-                vis.currentState = 'Phase II'
-            } else if (vis.stageMap[i] === 3){
-                vis.currentState = 'Phase III'
-            } else if (vis.stageMap[i] === 4) {
-                vis.currentState = 'Approval'
+                    vis.currentState = 'Pre-Clinical'
+                        // moveProgressBar(vis.currentState)
+                } else if (vis.stageMap[i] === 1){
+                    vis.currentState = 'Phase I'
+                        // moveProgressBar(vis.currentState)
+                } else if (vis.stageMap[i] === 2){
+                    vis.currentState = 'Phase II'
+                        // moveProgressBar(vis.currentState)
+                } else if (vis.stageMap[i] === 3){
+                    vis.currentState = 'Phase III'
+                        // moveProgressBar(vis.currentState)
+                } else if (vis.stageMap[i] === 4) {
+                    vis.currentState = 'Approval'
+                        // moveProgressBar(vis.currentState)
+                }
+
+            vis.progress = vis.svg.append('rect')
+                .attr('class', 'progress-rect')
+                .attr('fill', function () {
+                    return vis.colorScale('Pre-Clinical');
+                })
+                .attr('height', 15)
+                .attr('width', function () {
+                    const index = vis.states.indexOf('Pre-Clinical');
+                    // console.log(index)
+                    return (index + 1) * vis.segmentWidth;
+                })
+                .attr('rx', 10)
+                .attr('ry', 10)
+                .attr('x', vis.progressStart)
+                .attr('y', 50 + 60 * i)
+                .transition()
+                .duration(2000)
+                .attr('fill', function () {
+                    return vis.colorScale(vis.currentState);
+                })
+                .attr('width', function () {
+                    var index = vis.states.indexOf(vis.currentState);
+                    return (index + 1) * vis.segmentWidth;
+                })
+                .delay(function (d, i) {
+                    return i * 200;
+                });
+            
+
+            let yTrack = 45;
+            
+            
+            vis.svg.append("text")
+              .attr("x", 60)
+              .attr("y", yTrack + i * 60)
+              .attr("text-anchor", "middle")
+              .attr("font-family", "sans-serif")
+                .attr("font-size", "12px")
+                .attr("font-weight", "bold")
+              .text(vis.companyMap[i])
+              .call(wrap, 120);
+            
+            let height = parseInt(vis.svg.select('text').node().getBoundingClientRect().height);
+            
+            vis.svg.select('text').attr('transform', 'translate(0, ' + (-height / 2) + ')');
+            
+            yTrack += (parseInt(height / 2) + 10);
+
+            
+            function wrap(text, width) {
+              text.each(function() {
+                let text = d3.select(this),
+                  words = text.text().split(/\s+/).reverse(),
+                  word,
+                  line = [],
+                  lineNumber = 0,
+                  lineHeight = 1.05, // ems
+                  x = text.attr("x"),
+                  y = text.attr("y"),
+                  dy = 1.05,
+                  tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+                while (word = words.pop()) {
+                  line.push(word);
+                  tspan.text(line.join(" "));
+                  if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                  }
+                }
+              });
             }
 
-        vis.svg.append('rect')
-            .attr('class', 'progress-rect')
-            .attr('fill', function(){
-                return vis.colorScale(vis.currentState);
-            })
-            .attr('height', 15)
-            .attr('width', function(){
-                const index = vis.states.indexOf(vis.currentState);
-                // console.log(index)
-                return (index + 1) * vis.segmentWidth;
-            })
-            .attr('rx', 10)
-            .attr('ry', 10)
-            .attr('x', 100)
-            .attr('y', 50 + 60 * i);
 
 
-        // vis.svg.append('svg:image')
+	        // vis.svg.append('svg:image')
         //     .attr({
         //       'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
         //     })
@@ -187,67 +200,17 @@ class Bars {
         //     })
         //     .attr('y', 50 + 60 * i);
 
-            }
-
-        function changeSize() {
-            vis.svg.selectAll('rect.progress-rect').remove()
-            console.log('removed')
-            vis.data = window.bars_data_response
-            console.log(window.bars_data_response)
-            vis.flagMap = window.bars_data_response.map(d => d.flag);
-            vis.companyMap = window.bars_data_response.map(d => d.company)
-            vis.stageMap = window.bars_data_response.map(d => d.stage)
-            // console.log(vis.stageMap)
-            for (let i = 0; i < vis.stageMap.length; i++){
-            if (vis.stageMap[i] === 0) {
-                vis.currentState = 'Pre-Clinical'
-            } else if (vis.stageMap[i] === 1){
-                vis.currentState = 'Phase I'
-            } else if (vis.stageMap[i] === 2){
-                vis.currentState = 'Phase II'
-            } else if (vis.stageMap[i] === 3){
-                vis.currentState = 'Phase III'
-            } else if (vis.stageMap[i] === 4) {
-                vis.currentState = 'Approval'
-            }
-
-        vis.svg.append('rect')
-            .attr('class', 'progress-rect')
-            .attr('fill', function(){
-                return vis.colorScale(vis.currentState);
-            })
-            .attr('height', 15)
-            .attr('width', function(){
-                const index = vis.states.indexOf(vis.currentState);
-                // console.log(index)
-                return (index + 1) * vis.segmentWidth;
-            })
-            .attr('rx', 10)
-            .attr('ry', 10)
-            .attr('x', 100)
-            .attr('y', 50 + 60 * i);
-
-
-        // vis.svg.append('svg:image')
-        //     .attr({
-        //       'xlink:href': 'http://www.iconpng.com/png/beautiful_flat_color/computer.png',  // can also add svg file here
-        //     })
-        //     .attr('height', 20)
-        //     .attr('x', function(){
-        //         const index = vis.states.indexOf(vis.currentState);
-        //         return (index + 1) * vis.segmentWidth + 5;
-        //     })
-        //     .attr('y', 50 + 60 * i);
+            // moveProgressBar(vis.currentState)
 
             }
-            console.log('updated')
-        }
-        // Add an event listener to the button created in the html part
-        // d3.select("#World").on("click", changeSize)
-        // d3.select("#NorthAmerica").on("click", changeSize)
-        // d3.select("#Europe").on("click", changeSize)
-        // d3.select("#Asia").on("click", changeSize)
-        // d3.select("#Oceania").on("click", changeSize)
+
+            // for (let i = 0; i < vis.stageMap.length; i++){
+            //
+            //
+            //
+            //
+            //     console.log(vis.currentState)
+            // }
 
         vis.svg.append('rect')
             .attr('class', 'border')
@@ -256,9 +219,24 @@ class Bars {
             .attr('fill', 'orange')
             .attr('height', 350)
             .attr('width', 10)
-		    .attr('x', 95)
+		    .attr('x', vis.progressStart - 5)
             .attr('y', 10);
 
+
+
+
+        function moveProgressBar(state){
+		d3.selectAll('.progress-rect').transition()
+            .delay(function(d, i) { return i * 500; })
+			.duration(2000)
+			.attr('fill', function(){
+				return vis.colorScale(state);
+			})
+			.attr('width', function(){
+				var index = vis.states.indexOf(state);
+				return (index + 1) * vis.segmentWidth;
+			})
+	}
         // Now render
         vis.render();
     }

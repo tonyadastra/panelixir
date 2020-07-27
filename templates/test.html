@@ -112,7 +112,7 @@ function ready(error, world, names) {
 
   for(i = 0; i < names.length; i++) {
     for (j = 0; j < countries.length; j++) {
-      if (countries[j].id == names[i].id) {
+      if (countries[j].id === names[i].id) {
         map.insert("path", ".graticule")
           .datum(countries[j])
           .attr("fill", colors.clickable)
@@ -127,7 +127,7 @@ function ready(error, world, names) {
               .classed("clicked", true)
               .attr("fill", colors.clicked);
 
-            (function transition(t) {
+            (function transition() {
               d3.select(".clicked").transition()
               .duration(1000)
                   // .ease(d3.easeCubic(t))
@@ -165,7 +165,7 @@ function ready(error, world, names) {
       .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
       .attr("class", "boundary")
       .attr("d", path);
-};
+}
 
 d3.select(self.frameElement).style("height", height + "px");
 </script>
