@@ -18,22 +18,18 @@
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"
     defer></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
-<!--<script src="https://d3js.org/d3-queue.v1.min.js"></script>-->
-<!--<script src="//d3js.org/topojson.v1.min.js"></script>-->
-<!-- <script src="//d3js.org/queue.v1.min.js"></script> -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
 <script src="https://unpkg.com/topojson-client@3"></script>
+<script src="../static/js/new.js"></script>
 <script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
-<script src="../static/js/index.js"></script>
-<script src="../static/js/new.js"></script>
 <script src="../static/js/main.js"></script>
 
+
 <script>
-    $(".button-font").on('click', function() {
-    $(".button-font").removeClass('active');
-    $(this).addClass('active');
-})
+    $(".button-font").on('click', function () {
+        $(".button-font").removeClass('active');
+        $(this).addClass('active');
+    })
 </script>
 
 {% if scrollToAnchor %}
@@ -43,7 +39,6 @@
         // document.URL="/";
     });
 </script>
-
 {% endif %}
 
 {% endblock %}
@@ -52,11 +47,9 @@
 {% block content %}
 <!-- Heading Bar of Webpage-->
 <div class="jumbotron">
-    <h3 >Coronavirus Vaccine and Treatment Tracker</h3>
+    <h3>Coronavirus Vaccine and Treatment Tracker</h3>
 </div>
 <!-- {{continent_data}} -->
-
-
 
 
 <!-- Data Visualizations-->
@@ -67,13 +60,56 @@
     <div class="col" style="margin: 0 0.1rem 0 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
             <button class="btn btn-outline-primary button-font active" data-value="World">World</button>
-            <button class="btn btn-outline-secondary button-font" data-value="North America">North America</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Europe">Europe</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Asia">Asia</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Oceania">Oceania</button>
+            <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
+            <button class="btn btn-outline-secondary button-font" data-value="Oceania" value="Oceania">Oceania</button>
         </div>
 
-        <div id="progressbar"></div>
+        <div class="interactive-progress row">
+            <!--            Extended Length of Bar1-->
+            <div class="stage0" style="width: 18px"></div>
+            <!--            Bar1-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage0">
+                    <div class="bar-data" id="progress0">&nbsp;</div>
+                </div>
+            </div>
+            <!--            Arrow1-->
+            <div class="arrow-right-stage0 stage1"></div>
+            <!--            Bar2-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage1">
+                    <div class="bar-data" id="progress1">&nbsp;</div>
+                </div>
+            </div>
+            <!--            Arrow2-->
+            <div class="arrow-right-stage1 stage2"></div>
+            <!--            Bar3-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage2">
+                    <div class="bar-data" id="progress2">&nbsp;</div>
+                </div>
+            </div>
+            <!-- Arrow3-->
+            <div class="arrow-right-stage2 stage3"></div>
+            <!-- Bar4-->
+            <div class="col" style="padding: 0;">
+                <div class="interactive-bar stage3">
+                    <div class="bar-data" id="progress3">&nbsp;</div>
+                </div>
+        </div>
+        <!--            Arrow4-->
+        <div class="arrow-right-stage3 stage4"></div>
+        <!--            Bar5-->
+        <div class="col" style="padding: 0;">
+            <div class="interactive-bar stage4">
+                <div class="bar-data" id="progress4">&nbsp;</div>
+            </div>
+        </div>
+        <!--            Arrow5-->
+        <div class="arrow-right-stage4"></div>
+    </div>
         <div class="interactive-progress row">
             <div class="col" style="padding: 0;">
                 <div class="interactive-bar">
@@ -101,13 +137,15 @@
                 </div>
             </div>
         </div>
+        <div id="vis2" class="vis"></div>
+        <div id="vis3" class="vis"></div>
     </div>
 </div>
 
 <!--</div>-->
 
 <div class="ctr text-center">
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color: transparent;">
         <h3 id="title">The Developing Process of a <i>Coronavirus Vaccine</i></h3>
     </div>
     <div class="row">
@@ -237,6 +275,7 @@
 
         </div>
     </form>
+
 
     <!--    </div>-->
 </div>

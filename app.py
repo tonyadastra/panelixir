@@ -1,11 +1,11 @@
-import random
-import string
-from flask import Flask, render_template, request, jsonify, session
+import random, string, re
+from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
 import json
 import csv
+import time
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -14,50 +14,21 @@ app = Flask(__name__)
 # heroku = Heroku(app)
 # Unquote following line to run at local
 
-# User - Tony
+# # User - Tony
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
 # app.secret_key = "ILoveNewYork"
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
-
-# User - Lola
+# # User - Lola
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
 app.secret_key = "lola980109"
 conn = psycopg2.connect("dbname=covid19_db user=lola")
-
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
 
 
-@app.route("/update_continent")
-def update_continent():
-    continent = str(request.args.get('continent'))
-    if request.args.get('continent') is None or continent == "World":
-        continent = ""
-
-    cur.execute("SELECT stage, COUNT(stage) as count "
-                "FROM info "
-                "WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage ORDER BY stage")
-    continent_data = np.array(cur.fetchall(), dtype=object)
-    cur.execute("rollback")
-    data_arr = []
-    # print(continent_data)
-    for i in range(5):  
-        found = False
-        for j in continent_data:
-            if i == j[0]:
-                data_arr.append(j[1])
-                found = True
-        if (not found):   
-            data_arr.append(0)
-    # print(data_arr)
-    return render_template('update_continent.html', continent_data=data_arr)
-
-
-# W/O Filtering
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # if request.method == 'GET':
@@ -117,14 +88,14 @@ def index():
                 else:
                     types = ""
                     types_dis = "Vaccine Types"
-
+            cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id "
                 "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                "AND country LIKE '%" + country + "%' "
-                "AND vac_type LIKE '%" + types + "%' "
-                "ORDER BY stage DESC, co_name, partner_name;")
+                                                                    "AND country LIKE '%" + country + "%' "
+                                                                                                      "AND vac_type LIKE '%" + types + "%' "
+                                                                                                                                       "ORDER BY stage DESC, co_name, partner_name;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -141,7 +112,6 @@ def index():
 
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-
         return render_template("index.html", data=data, stages_dis=stages_dis, stages=stages,
                                country=country, country_dis=country_dis, types=types, types_dis=types_dis,
                                scrollToAnchor="TagIWantToLoadTo")
@@ -158,6 +128,72 @@ def index():
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
+# @app.route("/update_continent")
+# def update_continent():
+#     continent = str(request.args.get('continent'))
+#     # print(request.args.get('continent'))
+#     if request.args.get('continent') is None or continent == "World":
+#         continent = ""
+#
+#     cur.execute("rollback")
+#     cur.execute("SELECT stage, COUNT(stage) as count "
+#                 " FROM info "
+#                 " WHERE continent LIKE '%"+continent+"%' "
+#                 "GROUP BY stage ORDER BY stage")
+#     continent_data = np.array(cur.fetchall(), dtype=object)
+#     cur.execute("rollback")
+#     data_arr = []
+#     for i in range(5):
+#         found = False
+#         for j in continent_data:
+#             if i == j[0]:
+#                 data_arr.append(j[1])
+#                 found = True
+#         if not found:
+#             data_arr.append(0)
+#     # print(data_arr)
+#     return jsonify(data_arr)
+
+
+@app.route("/get_bars_data")
+def getBarsData():
+    continent = str(request.args.get('continent'))
+    if request.args.get('continent') is None or continent == "World":
+        continent = ""
+        time.sleep(0.1)
+    cur.execute("rollback")
+    cur.execute("SELECT json_agg(json_build_object('company', company, "
+                "'stage', stage,"
+                " 'country', country,"
+                " 'flag', flag )) "
+                " FROM info "
+                " INNER JOIN companies ON info.vac_id = companies.vac_id "
+                " WHERE continent LIKE '%"+continent+"%' "
+                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+    bars_data = cur.fetchall()
+    cur.execute("rollback")
+    cur.execute("SELECT stage, COUNT(stage) as count "
+                " FROM info "
+                " WHERE continent LIKE '%" + continent + "%' "
+                                                         "GROUP BY stage ORDER BY stage")
+    continent_data = np.array(cur.fetchall(), dtype=object)
+    cur.execute("rollback")
+    data_arr = []
+    for i in range(5):
+        found = False
+        for j in continent_data:
+            if i == j[0]:
+                data_arr.append(j[1])
+                found = True
+        if not found:
+            data_arr.append(0)
+    bars_data_json = {'bars_data': []}
+    for i in range(len(bars_data)):
+        bars_data_json['bars_data'].append(bars_data[i][0][0])
+    # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
+    return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
+
+
 @app.route('/load_data', methods=['GET'])
 def load_data():
     vaccines_json = {'vaccines': []}
@@ -172,6 +208,13 @@ def load_data():
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
     with open('data/worldcountries.json') as json_file:
+        data = json.load(json_file)
+    return jsonify(data)
+
+
+@app.route('/data/custom_geo.json', methods=['GET'])
+def load_map():
+    with open('data/custom_geo.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
 
@@ -195,7 +238,6 @@ if __name__ == '__main__':
     app.secret_key = ''.join(random.choice(string.printable)
                              for _ in range(20))
     app.run(debug=True)
-
 
 # cur.close()
 # conn.close()
