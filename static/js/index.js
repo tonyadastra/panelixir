@@ -175,15 +175,16 @@ $(document).ready(function () {
                                     }
                                 }
                                 // If single country
-                                svg.append('svg:image')
-                                    .attr('xlink:href', flagMap[i])
-                                    .attr('height', 20)
-                                    .attr('x', function () {
-                                        const index = states.indexOf(currentState);
-                                        return (index + 1) * segmentWidth + progressStart + 5;
-                                    })
-                                    .attr('y', 47.5 + 60 * i);
-
+                                if (flagMap[i][0] === '.') {
+                                    svg.append('svg:image')
+                                        .attr('xlink:href', flagMap[i])
+                                        .attr('height', 20)
+                                        .attr('x', function () {
+                                            const index = states.indexOf(currentState);
+                                            return (index + 1) * segmentWidth + progressStart + 5;
+                                        })
+                                        .attr('y', 47.5 + 60 * i);
+                                }
 
                             }
                             // Append orange bar on the left
@@ -368,14 +369,17 @@ $('.button-font').on('click', function () {
                             }
                         }
                         // If single country
-                        svg.append('svg:image')
-                            .attr('xlink:href', flagMap[i])
-                            .attr('height', 20)
-                            .attr('x', function () {
-                                const index = states.indexOf(currentState);
-                                return (index + 1) * segmentWidth + progressStart + 5;
-                            })
-                            .attr('y', 47.5 + 60 * i);
+                        if (flagMap[i][0] === '.') {
+                            svg.append('svg:image')
+                                .attr('xlink:href', flagMap[i])
+                                .attr('height', 20)
+                                .attr('x', function () {
+                                    const index = states.indexOf(currentState);
+                                    return (index + 1) * segmentWidth + progressStart + 5;
+                                })
+                                .attr('y', 47.5 + 60 * i);
+                        }
+
 
                     }
                     svg.append('rect')
