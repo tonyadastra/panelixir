@@ -37,6 +37,7 @@ def update_continent():
     if request.args.get('continent') is None or continent == "World":
         continent = ""
 
+    # print("app.py", continent)
     cur.execute("SELECT stage, COUNT(stage) as count "
                 "FROM info "
                 "WHERE continent LIKE '%" + continent + "%' "
@@ -172,6 +173,13 @@ def load_data():
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
     with open('data/worldcountries.json') as json_file:
+        data = json.load(json_file)
+    return jsonify(data)
+
+
+@app.route('/data/custom_geo.json', methods=['GET'])
+def load_map():
+    with open('data/custom_geo.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
 

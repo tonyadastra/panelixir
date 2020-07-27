@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    .background {
+        fill: none;
+        pointer-events: all;
+        stroke: grey;
+    }
+
+    .feature
+        {
+        fill: #ccc;
+        cursor: pointer;
+    }
+
+    .feature.active {
+        fill: orange;
+    }
+
+    .mesh,
+    .land {
+        fill: black;
+        stroke: #ddd;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .water {
+        fill: #00248F;
+    }
+</style>
+
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="//d3js.org/queue.v1.min.js"></script>
+    <script>
+
+        var width = 960,
+            height = 600,
+            active = d3.select(null);
+
+        var projection = d3.geo.orthographic()
+            .scale(250)
+            .translate([width / 2, height / 2])
+            .clipAngle(90);
+
+        var path = d3.geo.path()
+            .projection(projection);
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        svg.append("rect")
+            .attr("class", "background")
+            .attr("width", width)
+            .attr("height", height)
+            .on("click", reset);
+
+        var g = svg.append("g")
+            .style("stroke-width", "1.5px");
+
+        var countries;
+        var countryIDs;
+
+        queue()
+            .defer(d3.json, "../data/worldcountries.json")
+            .defer(d3.csv, "../data/world-country-names.csv")
+            .await(ready)
+
+        function ready(error, world, countryData) {
+            if (error) throw error;
+
+            countries = topojson.feature(world, world.objects.countries).features;
+            countryIDs = countryData;
+
+            //Adding water
+            g.append("path")
+                .datum({ type: "Sphere" })
+                .attr("class", "water")
+                .attr("d", path);
+
+            var world = g.selectAll("path.land")
+                .data(countries)
+                .enter().append("path")
+                .attr("class", "land")
+                .attr("d", path)
+                .on("click", clicked)
+
+        };
+
+        function clicked(d) {
+            if (active.node() === this) return reset();
+            active.classed("active", false);
+            active = d3.select(this).classed("active", true);
+
+            var countryCode;
+
+            for (i = 0; i < countryIDs.length; i++) {
+                if (countryIDs[i].id == d.id) {
+                    countryCode = countryIDs[i];
+                }
+            }
+
+            var focusedCountry = country(countries, countryCode);
+            var p = d3.geo.centroid(focusedCountry);
+
+
+            // Store the current rotation and scale:
+            var currentRotate = projection.rotate();
+            var currentScale = projection.scale();
+
+            // Calculate the future bounding box after applying a rotation:
+            projection.rotate([-p[0], -p[1]]);
+            path.projection(projection);
+
+            // calculate the scale and translate required:
+            var b = path.bounds(d);
+            var nextScale = currentScale * 1 / Math.max((b[1][0] - b[0][0]) / (width / 2), (b[1][1] - b[0][1]) / (height / 2));
+            var nextRotate = projection.rotate();
+
+            // Update the map:
+            d3.selectAll("path")
+                .transition()
+                .attrTween("d", function (d) {
+                    var r = d3.interpolate(currentRotate, nextRotate);
+                    var s = d3.interpolate(currentScale, nextScale);
+                    return function (t) {
+                        projection
+                            .rotate(r(t))
+                            .scale(s(t));
+                        path.projection(projection);
+                        return path(d);
+                    }
+                })
+                .duration(1000);
+
+
+            function country(cnt, sel) {
+                for (var i = 0, l = cnt.length; i < l; i++) {
+                    console.log(sel.id)
+                    if (cnt[i].id == sel.id) {
+                        return cnt[i];
+                    }
+                }
+            };
+        }
+
+        function reset() {
+            active.classed("active", false);
+            active = d3.select(null);
+
+            d3.selectAll("path")
+                .transition()
+                .attrTween("d", function (d) {
+                    var s = d3.interpolate(projection.scale(), 250);
+                    return function (t) {
+                        projection
+                            .scale(s(t));
+                        path.projection(projection);
+                        return path(d);
+                    }
+                })
+                .duration(1000);
+
+        }
+
+    </script>
