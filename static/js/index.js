@@ -1,6 +1,6 @@
 /** When page is loaded...**/
 $(document).ready(function () {
-    var continent = "World";
+    var continent = "World"
     var processing = false;
     $.ajax({
         url: "/update_continent",
@@ -8,27 +8,22 @@ $(document).ready(function () {
         async: true,
         data: { continent: continent },
         success: function (response) {
-            // console.log(response)
-            $("#progressbar").html(response);
-            setTimeout(function () {
-                if (!processing){
-                    processing = true;
-                    $.ajax({
-                    url: "/get_bars_data",
-                    type: "get",
-                    async: true,
-                    data: { continent: continent },
-                    success: function (response) {
-                        window.bars_data_response = response.bars_data
-                        console.log(window.bars_data_response)
-                    },
-                    });
-                }
-            }, 50);
+            console.log(response[0])
+            // $("#progressbar").html(response);
+           d3.selectAll('#progress0')
+               .text(response[0])
+            d3.selectAll('#progress1')
+                .text(response[1])
+            d3.selectAll('#progress2')
+                .text(response[2])
+            d3.selectAll('#progress3')
+                .text([response[3]])
+            d3.selectAll('#progress4')
+                .text(response[4])
 
             setTimeout(function () {
-                if (processing) {
-                    processing = false;
+                if (!processing) {
+                    processing = true;
                     $.ajax({
                         url: "/get_bars_data",
                         type: "get",
@@ -219,8 +214,43 @@ $('.button-font').on('click', function () {
                 async: true,
                 data: {continent: continent},
                 success: function (response) {
-                    // console.log(response)
-                    $("#progressbar").html(response);
+                    console.log(response)
+                    // $("#progressbar").html(response);
+                    d3.selectAll('#progress0')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, response[0])
+
+                        })
+                    d3.selectAll('#progress1')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, response[1])
+
+                        })
+                    d3.selectAll('#progress2')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, response[2])
+
+                        })
+                    d3.selectAll('#progress3')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, response[3])
+
+                        })
+                    d3.selectAll('#progress4')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, response[4])
+
+                        })
                 }
             })
         }
@@ -380,8 +410,8 @@ $('.button-font').on('click', function () {
                                 .attr('y', 47.5 + 60 * i);
                         }
 
-
                     }
+                    // Append orange bar
                     svg.append('rect')
                         .attr('class', 'border')
                         .attr('rx', 10)

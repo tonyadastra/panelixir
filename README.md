@@ -1,7 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
-+ July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name)
++ July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)
 + July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
 + July 24, 2020 - Database + Region, Interactive Button and Progress Bar-v1
 + July 23, 2020 - Multiple form submission, Country and Vaccine tags, Dropdown Title Display

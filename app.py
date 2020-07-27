@@ -152,7 +152,7 @@ def update_continent():
         if not found:
             data_arr.append(0)
     # print(data_arr)
-    return render_template('update_continent.html', continent_data=data_arr)
+    return jsonify(data_arr)
 
 
 @app.route("/get_bars_data")
