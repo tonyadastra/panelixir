@@ -22,6 +22,8 @@ class Worldmap {
   g = null;
   world = [];
   names = [];
+  vac_country = [];
+  vac_stage = [];
 
   // Configs
   svgW = 700;
@@ -37,7 +39,7 @@ class Worldmap {
     // .duration(1000)
     .translate([this.svgW / 2, this.svgH / 2])
     .clipAngle(90)
-    .precision(10);
+    .precision(0.7);
   path = d3.geoPath()
     .projection(this.projection);
   graticule = d3.geoGraticule();
@@ -128,7 +130,7 @@ class Worldmap {
 
     // filter unique countries with highest stage
     let vac_map = new Map();
-    for (var i = 0; i < vis.vac_country.length; i++) {
+    for (let i = 0; i < vis.vac_country.length; i++) {
       if (vis.vac_country[i].includes(",")) {
         let arr = vis.vac_country[i].split(",")
         arr.forEach(function (elem) {
@@ -196,21 +198,21 @@ class Worldmap {
 
             let curr_color = vis.colors.clickable;
             let curr_stage = -1;
-            if (vac_map.get(Object.values(vis.names)[i].name) != undefined) {
+            if (vac_map.get(Object.values(vis.names)[i].name) !== undefined) {
               curr_stage = vac_map.get(Object.values(vis.names)[i].name);
               // console.log(curr_stage);
               // console.log(Object.values(vis.names)[i].name);
             }
 
-            if (curr_stage == 0) {
+            if (curr_stage === 0) {
               curr_color = vis.colors.p0;
-            } else if (curr_stage == 1) {
+            } else if (curr_stage === 1) {
               curr_color = vis.colors.p1;
-            } else if (curr_stage == 2) {
+            } else if (curr_stage === 2) {
               curr_color = vis.colors.p2;
-            } else if (curr_stage == 3) {
+            } else if (curr_stage === 3) {
               curr_color = vis.colors.p3;
-            } else if (curr_stage == 4) {
+            } else if (curr_stage === 4) {
               curr_color = vis.colors.p4;
             }
             // console.log(j, Object.values(vis.names)[i].name);
