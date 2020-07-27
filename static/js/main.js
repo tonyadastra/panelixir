@@ -2,10 +2,9 @@
 
 // Init variables
 let data = [];
-let bars_data = [];
+// let bars_data = [];
 let worldmap = null;
-let bars = null;
-let clear = null;
+// let bars = null;
 
 d3.json('/load_data').then(d => {
 

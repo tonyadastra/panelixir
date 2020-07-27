@@ -1,7 +1,8 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
-+ July 25, 2020 - Building Interactive Map and Bar Chart
++ July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features)
++ July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
 + July 24, 2020 - Database + Region, Interactive Button and Progress Bar-v1
 + July 23, 2020 - Multiple form submission, Country and Vaccine tags, Dropdown Title Display
 + July 22, 2020 - Map coloring and Latest Database Update, Resolve Singapore Issue

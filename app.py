@@ -14,12 +14,12 @@ app = Flask(__name__)
 # heroku = Heroku(app)
 # Unquote following line to run at local
 
-# User - Tony
+# # User - Tony
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
 app.secret_key = "ILoveNewYork"
 conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
-# User - Lola
+# # User - Lola
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
 # app.secret_key = "lola980109"
 # conn = psycopg2.connect("dbname=covid19_db user=lola")
@@ -131,7 +131,7 @@ def index():
 @app.route("/update_continent")
 def update_continent():
     continent = str(request.args.get('continent'))
-    print(request.args.get('continent'))
+    # print(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
 
@@ -143,7 +143,6 @@ def update_continent():
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []
-    # print(continent_data)
     for i in range(5):
         found = False
         for j in continent_data:
@@ -159,7 +158,6 @@ def update_continent():
 @app.route("/get_bars_data")
 def getBarsData():
     continent = str(request.args.get('continent'))
-    print(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
         time.sleep(0.1)
@@ -174,15 +172,9 @@ def getBarsData():
                 "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
-    print(len(bars_data))
     bars_data_json = {'bars_data': []}
-    if len(bars_data) < 5:
-        for i in range(len(bars_data)):
-            bars_data_json['bars_data'].append(bars_data[i][0][0])
-    else:
-        for i in range(5):
-            bars_data_json['bars_data'].append(bars_data[i][0][0])
-    # print(bars_data_json)
+    for i in range(len(bars_data)):
+        bars_data_json['bars_data'].append(bars_data[i][0][0])
     return jsonify(bars_data_json)
 
 
