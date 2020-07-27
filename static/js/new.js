@@ -1,5 +1,5 @@
 map = {
-  aInternal: 10,
+  aInternal: 'World',
   aListener: function (val) { },
   set continent(val) {
     this.aInternal = val;
@@ -263,14 +263,14 @@ class Worldmap {
                   // console.log(d3.select(this).attr("continent"))
                   return d3.select(this).attr("continent") == continent;
                 })
-                  // .attr("fill", vis.colors.hover);
+                  .attr("fill", vis.colors.hover)
                     .classed("clicked", true);
 
-                d3.select(this)
-                  .select(function () {
-                    d3.select(this).attr("fill", curr_color);
-                    console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                  });
+                // d3.select(this)
+                //   .select(function () {
+                //     d3.select(this).attr("fill", curr_color);
+                //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                //   });
                 // .attr("fill", vis.colors.clicked);
 
                 (function transition() {
@@ -306,15 +306,15 @@ class Worldmap {
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clickhover);
                 } else {
-                  d3.selectAll("path").filter(function (d) {
-                    console.log(d3.select(this).attr("continent"))
-                    return d3.select(this).attr("continent") == continent;
+                  // d3.selectAll("path").filter(function (d) {
+                  //   console.log(d3.select(this).attr("continent"))
+                  //   return d3.select(this).attr("continent") == continent;
               
-                  })
-                    .attr("fill", vis.colors.hover);
+                  // })
+                  //   .attr("fill", vis.colors.hover);
                             // && d3.select(this).attr("data-country-id") != countries[j].id;
                     // .classed("clicked", true);
-                  // c.attr("fill", vis.colors.hover);
+                  c.attr("fill", vis.colors.hover);
                 }
                 // console.log("mouse move", Object.values(vis.names)[i].name);
               })
@@ -323,11 +323,11 @@ class Worldmap {
                 var c = d3.select(this);
 
                 if (c.classed("clicked")) {
-                  // c.attr("fill", vis.colors.clicked);
-                  d3.selectAll("path").filter(function (d) {
-                    return d3.select(this).attr("continent") == continent;
-                  })
-                    .attr("fill", vis.colors.clicked);
+                  c.attr("fill", vis.colors.clicked);
+                  // d3.selectAll("path").filter(function (d) {
+                  //   return d3.select(this).attr("continent") == continent;
+                  // })
+                  //   .attr("fill", vis.colors.clicked);
                   // console.log("clicked mouse out", Object.values(vis.names)[i].name)
                 } else {
                   // console.log("unclicked mouse out", Object.values(vis.names)[i].name)

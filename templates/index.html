@@ -35,7 +35,9 @@
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.location.hash = '#{{ scrollToAnchor }}';
+        // document.location.hash = '#{{ scrollToAnchor }}';
+        // $('html,body').animate({ scrollTop: $("#TagIWantToLoadTo").offset().top }, 'slow');
+        document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
         // document.URL="/";
     });
 </script>
@@ -289,7 +291,10 @@
     {% endfor %}
     {% else %}
     <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+    </div>
     {% endif %}
+    <div style="height: 40rem;">
+
 </div>
 
 {% endblock %}
