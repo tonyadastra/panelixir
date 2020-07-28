@@ -450,7 +450,7 @@ map.registerListener(function (val) {
 
     for (var i = 0, length = btn_group.length; i < length; i++) {
         var btn = btn_group[i];
-        if (btn.value == val) {
+        if (btn.value === val) {
             btn.click();
             break;
         }
