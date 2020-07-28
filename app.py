@@ -1,13 +1,11 @@
 import random
 import string
-import re
 from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
 import json
 import csv
-import time
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -83,9 +81,9 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id "
                 "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                "AND country LIKE '%" + country + "%' "
-                "AND vac_type LIKE '%" + types + "%' "
-                "ORDER BY stage DESC, co_name, partner_name;")
+                                                                    "AND country LIKE '%" + country + "%' "
+                                                                                                      "AND vac_type LIKE '%" + types + "%' "
+                                                                                                                                       "ORDER BY stage DESC, co_name, partner_name;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -123,7 +121,6 @@ def getBarsData():
     continent = str(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
-        time.sleep(0.1)
     cur.execute("rollback")
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"
@@ -138,9 +135,9 @@ def getBarsData():
 
     # bar chart
     cur.execute("SELECT stage, COUNT(stage) as count "
-                " FROM info "
-                " WHERE continent LIKE '%" + continent + "%' "
-                                                         "GROUP BY stage ORDER BY stage")
+                "FROM info "
+                "WHERE continent LIKE '%" + continent + "%' "
+                "GROUP BY stage ORDER BY stage")
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []
@@ -155,7 +152,6 @@ def getBarsData():
     bars_data_json = {'bars_data': []}
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
-    return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
     # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
 
     # map
@@ -182,7 +178,7 @@ def load_data():
 
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
-    with open('data/worldcountries.json') as json_file:
+    with open('data/map.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
 
