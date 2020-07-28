@@ -1,11 +1,14 @@
-import random, string, re
-from flask import Flask, render_template, request, jsonify
-from models.vaccine_info import Db, Vaccine
-import psycopg2
-import numpy as np
-import json
 import csv
+import json
+import random
+import string
 import time
+
+import numpy as np
+import psycopg2
+from flask import Flask, render_template, request, jsonify
+
+from models.vaccine_info import Db, Vaccine
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -31,18 +34,6 @@ cur = conn.cursor()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # if request.method == 'GET':
-    #     continent = str(request.args.get('continent'))
-    #     if request.args.get('continent') is None or continent == "World":
-    #         continent = ""
-
-    #     cur.execute("SELECT stage, COUNT(stage) as count "
-    #                 "FROM info "
-    #                 "WHERE continent LIKE '%" + continent + "%' "
-    #                 "GROUP BY stage ORDER BY stage")
-    #     continent_data = np.array(cur.fetchall(), dtype=object)
-    #     cur.execute("rollback")
-
     if request.method == 'POST':
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
@@ -93,9 +84,9 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 "JOIN companies ON info.vac_id = companies.vac_id "
                 "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                    "AND country LIKE '%" + country + "%' "
-                                                                                                      "AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                       "ORDER BY stage DESC, co_name, partner_name;")
+                "AND country LIKE '%" + country + "%' "
+                "AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -126,33 +117,6 @@ def index():
         types_dis = "Vaccine Types"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
-
-
-# @app.route("/update_continent")
-# def update_continent():
-#     continent = str(request.args.get('continent'))
-#     # print(request.args.get('continent'))
-#     if request.args.get('continent') is None or continent == "World":
-#         continent = ""
-#
-#     cur.execute("rollback")
-#     cur.execute("SELECT stage, COUNT(stage) as count "
-#                 " FROM info "
-#                 " WHERE continent LIKE '%"+continent+"%' "
-#                 "GROUP BY stage ORDER BY stage")
-#     continent_data = np.array(cur.fetchall(), dtype=object)
-#     cur.execute("rollback")
-#     data_arr = []
-#     for i in range(5):
-#         found = False
-#         for j in continent_data:
-#             if i == j[0]:
-#                 data_arr.append(j[1])
-#                 found = True
-#         if not found:
-#             data_arr.append(0)
-#     # print(data_arr)
-#     return jsonify(data_arr)
 
 
 @app.route("/get_bars_data")
@@ -190,7 +154,6 @@ def getBarsData():
     bars_data_json = {'bars_data': []}
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
-    # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
     return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
 
 

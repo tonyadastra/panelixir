@@ -1,6 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 27, 2020 - Complete 50% Interaction of Map and Buttons, Code Optimization(Combine Requests)
 + July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)
 + July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
 + July 24, 2020 - Database + Region, Interactive Button and Progress Bar-v1
@@ -18,8 +19,10 @@
 + June 26, 2020 - Project Group Formed
 
 **Links to Solve Existing Problems**
-1. [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url)
-2. [TextTween](https://observablehq.com/@d3/transition-texttween)
+1. [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url) Success!
+2. [TextTween](https://observablehq.com/@d3/transition-texttween) Success!
+3. [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
+
 
 **Quick Access:**
 1. [Google Docs Project Plan](https://docs.google.com/document/d/1deIU2SzWKDxPKVcOjmgND0dqXN83Fx7WdhrB9ZfNttE/edit?usp=sharing)
@@ -33,3 +36,4 @@
 3. [NYT Article - *Different Approaches to a Vaccine*](https://www.nytimes.com/interactive/2020/05/20/science/coronavirus-vaccine-development.html?action=click&module=RelatedLinks&pgtype=Article)
 4. [One Point Three Acres COVID-19 Cases Tracker](https://coronavirus.1point3acres.com/en)
 5. [Heroku Database Export / Import](https://devcenter.heroku.com/articles/heroku-postgres-import-export)
+6. [D3.ease(transition examples)](https://observablehq.com/@d3/easing-animations)

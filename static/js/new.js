@@ -309,7 +309,7 @@ class Worldmap {
                   d3.selectAll("path").filter(function (d) {
                     console.log(d3.select(this).attr("continent"))
                     return d3.select(this).attr("continent") == continent;
-              
+
                   })
                     .attr("fill", vis.colors.hover);
                             // && d3.select(this).attr("data-country-id") != countries[j].id;
@@ -354,6 +354,8 @@ class Worldmap {
     //   map_continent = window.continent;
     //   console.log("update", map_continent);
     // });
+    
 
   }
 }
+
