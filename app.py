@@ -1,14 +1,13 @@
-import csv
-import json
 import random
 import string
-import time
-
-import numpy as np
-import psycopg2
+import re
 from flask import Flask, render_template, request, jsonify
-
 from models.vaccine_info import Db, Vaccine
+import psycopg2
+import numpy as np
+import json
+import csv
+import time
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -136,6 +135,8 @@ def getBarsData():
                 "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
+
+    # bar chart
     cur.execute("SELECT stage, COUNT(stage) as count "
                 " FROM info "
                 " WHERE continent LIKE '%" + continent + "%' "
@@ -155,6 +156,17 @@ def getBarsData():
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
     return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
+    # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
+
+    # map
+    vaccines_json = {'vaccines': []}
+    vaccines = Vaccine.query.all()
+    for vaccine in vaccines:
+        vaccine_info = vaccine.__dict__
+        del vaccine_info['_sa_instance_state']
+        vaccines_json['vaccines'].append(vaccine_info)
+
+    return json.dumps({'count': data_arr, 'bars_data': bars_data_json, 'map_data': vaccines_json})
 
 
 @app.route('/load_data', methods=['GET'])
@@ -165,7 +177,7 @@ def load_data():
         vaccine_info = vaccine.__dict__
         del vaccine_info['_sa_instance_state']
         vaccines_json['vaccines'].append(vaccine_info)
-    return jsonify(vaccines_json)
+    return json.dumps({'map_data': vaccines_json})
 
 
 @app.route('/data/map.json', methods=['GET'])
@@ -175,17 +187,17 @@ def load_string():
     return jsonify(data)
 
 
-@app.route('/data/custom_geo.json', methods=['GET'])
-def load_map():
-    with open('data/custom_geo.json') as json_file:
-        data = json.load(json_file)
-    return jsonify(data)
+# @app.route('/data/custom_geo.json', methods=['GET'])
+# def load_map():
+#     with open('data/custom_geo.json') as json_file:
+#         data = json.load(json_file)
+#     return jsonify(data)
 
 
 @app.route('/data/world-country-names.tsv', methods=['GET'])
 def load_country():
     data = {}
-    with open('data/world-country-names.csv') as csvFile:
+    with open('data/WorldCountries.csv') as csvFile:
         csvReader = csv.DictReader(csvFile)
         for rows in csvReader:
             id = rows['id']

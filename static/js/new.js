@@ -306,15 +306,15 @@ class Worldmap {
                 if (c.classed("clicked")) {
                   c.attr("fill", vis.colors.clickhover);
                 } else {
-                  d3.selectAll("path").filter(function (d) {
-                    console.log(d3.select(this).attr("continent"))
-                    return d3.select(this).attr("continent") == continent;
+                  // d3.selectAll("path").filter(function (d) {
+                  //   console.log(d3.select(this).attr("continent"))
+                  //   return d3.select(this).attr("continent") == continent;
 
-                  })
-                    .attr("fill", vis.colors.hover);
-                            // && d3.select(this).attr("data-country-id") != countries[j].id;
-                    // .classed("clicked", true);
-                  // c.attr("fill", vis.colors.hover);
+                  // })
+                  //   .attr("fill", vis.colors.hover);
+                  // && d3.select(this).attr("data-country-id") != countries[j].id;
+                  // .classed("clicked", true);
+                  c.attr("fill", vis.colors.hover);
                 }
                 // console.log("mouse move", Object.values(vis.names)[i].name);
               })
@@ -354,8 +354,6 @@ class Worldmap {
     //   map_continent = window.continent;
     //   console.log("update", map_continent);
     // });
-    
 
   }
 }
-

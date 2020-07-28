@@ -19,11 +19,10 @@
     defer></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
-<script src="../static/js/new.js"></script>
+<!-- <script src="../static/js/new.js"></script> -->
 <script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
-<script src="../static/js/main.js"></script>
-<script src="../static/js/test.js"></script>
+<!-- <script src="../static/js/main.js"></script> -->
 
 <script>
     $(".button-font").on('click', function () {
@@ -35,31 +34,27 @@
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.location.hash = '#{{ scrollToAnchor }}';
-        // document.URL="/";
+        document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
     });
 </script>
 {% endif %}
-
 {% endblock %}
-
 
 {% block content %}
 <!-- Heading Bar of Webpage-->
 <div class="jumbotron">
     <h3>Coronavirus Vaccine and Treatment Tracker</h3>
 </div>
-<!-- {{continent_data}} -->
-
 
 <!-- Data Visualizations-->
 <div class="row">
     <div class="col" style="padding: 0;">
         <div id="vis1" class="vis"></div>
+        <div id="vis4" class="vis"></div>
     </div>
     <div class="col" style="margin: 0 0.1rem 0 0;">
         <div class="interactive-buttons row" style="margin-bottom: 1rem;">
-            <button class="btn btn-outline-primary button-font active" data-value="World">World</button>
+            <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
             <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
             <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
             <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
@@ -289,7 +284,10 @@
     {% endfor %}
     {% else %}
     <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+    </div>
     {% endif %}
+    <div style="height: 40rem;">
+
 </div>
 
 {% endblock %}

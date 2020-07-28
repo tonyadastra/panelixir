@@ -1,36 +1,36 @@
 id,name,continent_name
-4,Afghanistan,Asia
-8,Albania,Europe
-10,Antarctica,Antarctica
-12,Algeria,Africa
-16,American Samoa,Oceania
-20,Andorra,Europe
-24,Angola,Africa
-28,Antigua and Barbuda,North America
-31,Azerbaijan,Europe
-31,Azerbaijan,Asia
-32,Argentina,South America
-36,Australia,Oceania
-40,Austria,Europe
-44,Bahamas,North America
-48,Bahrain,Asia
-50,Bangladesh,Asia
-51,Armenia,Europe
-51,Armenia,Asia
-52,Barbados,North America
-56,Belgium,Europe
-60,Bermuda,North America
-64,Bhutan,Asia
-68,"Bolivia, Plurinational State of",South America
-70,Bosnia and Herzegovina,Europe
-72,Botswana,Africa
-74,Bouvet Island,Antarctica
-76,Brazil,South America
-84,Belize,North America
-86,British Indian Ocean Territory,Asia
-90,Solomon Islands,Oceania
-92,"Virgin Islands, British",North America
-96,Brunei Darussalam,Asia
+004,Afghanistan,Asia
+008,Albania,Europe
+010,Antarctica,Antarctica
+012,Algeria,Africa
+016,American Samoa,Oceania
+020,Andorra,Europe
+024,Angola,Africa
+028,Antigua and Barbuda,North America
+031,Azerbaijan,Europe
+031,Azerbaijan,Asia
+032,Argentina,South America
+036,Australia,Oceania
+040,Austria,Europe
+044,Bahamas,North America
+048,Bahrain,Asia
+050,Bangladesh,Asia
+051,Armenia,Europe
+051,Armenia,Asia
+052,Barbados,North America
+056,Belgium,Europe
+060,Bermuda,North America
+064,Bhutan,Asia
+068,"Bolivia, Plurinational State of",South America
+070,Bosnia and Herzegovina,Europe
+072,Botswana,Africa
+074,Bouvet Island,Antarctica
+076,Brazil,South America
+084,Belize,North America
+086,British Indian Ocean Territory,Asia
+090,Solomon Islands,Oceania
+092,"Virgin Islands, British",North America
+096,Brunei Darussalam,Asia
 100,Bulgaria,Europe
 104,Myanmar,Asia
 108,Burundi,Africa
@@ -45,6 +45,7 @@ id,name,continent_name
 148,Chad,Africa
 152,Chile,South America
 156,China,Asia
+158,China,Asia
 162,Christmas Island,Asia
 166,Cocos (Keeling) Islands,Asia
 170,Colombia,South America
@@ -213,6 +214,7 @@ id,name,continent_name
 716,Zimbabwe,Africa
 724,Spain,Europe
 728,South Sudan,Africa
+729,Sudan,Africa
 732,Western Sahara,Africa
 740,Suriname,South America
 744,Svalbard and Jan Mayen,Europe
