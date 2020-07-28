@@ -1,11 +1,19 @@
 /* Header */
 
 .jumbotron {
-  padding: 1.5rem 2rem 1.5rem 2rem;
+  padding: 1.5rem 2rem 1.2rem 2rem;
   margin-bottom: 20px;
-  background-color: rgba(188, 255, 222, 0.24);
+  /* background-color: rgba(188, 255, 222, 0.24); */
+  background-color: #eaf9f7;
   border-radius: 0.2rem;
 }
+
+/* #headerbar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+} */
 
 .heading {
   margin-top: 1.5rem;
@@ -13,7 +21,7 @@
   padding-left: 3rem;
 }
 
-.row{
+.row {
   margin-right: 0;
 }
 
@@ -125,6 +133,13 @@ span.highlight {
   padding-left: 2rem;
   padding-bottom: 1rem;
 }
+
+/* .filter * {
+  z-index: 2;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+} */
 
 .filtertext {
   display: inline-block;
