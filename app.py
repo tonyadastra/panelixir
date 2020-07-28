@@ -79,11 +79,11 @@ def index():
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
-                "JOIN companies ON info.vac_id = companies.vac_id "
-                "WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                    "AND country LIKE '%" + country + "%' "
-                                                                                                      "AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                       "ORDER BY stage DESC, co_name, partner_name;")
+                " JOIN companies ON info.vac_id = companies.vac_id "
+                " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
+                " AND country LIKE '%" + country + "%' "
+                " AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -181,13 +181,6 @@ def load_string():
     with open('data/map.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
-
-
-# @app.route('/data/custom_geo.json', methods=['GET'])
-# def load_map():
-#     with open('data/custom_geo.json') as json_file:
-#         data = json.load(json_file)
-#     return jsonify(data)
 
 
 @app.route('/data/world-country-names.tsv', methods=['GET'])
