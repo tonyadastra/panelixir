@@ -351,6 +351,7 @@ $(document).ready(function () {
     /** When Interactive Buttons are Clicked... **/
     $('.button-font').on('click', function () {
         var continent = $(this).data("value");
+        var processing = false;
         if (!processing) {
             processing = true;
             $.ajax({
