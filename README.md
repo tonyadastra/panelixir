@@ -22,6 +22,7 @@
 1. [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url) Success!
 2. [TextTween](https://observablehq.com/@d3/transition-texttween) Success!
 3. [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
+4. [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
 
 
 **Quick Access:**
