@@ -51,10 +51,13 @@
 <div class="row">
     <div class="col" style="padding: 0;">
         <div id="vis1" class="vis"></div>
+<<<<<<< HEAD
         <!-- <div id="vis4" class="vis"></div> -->
+=======
+>>>>>>> fe241c9a0dfaed73364104d42c8ccd237c290c8d
     </div>
     <div class="col" style="margin: 0 0.1rem 0 0;">
-        <div class="interactive-buttons row" style="margin-bottom: 1.5rem;">
+        <div class="interactive-buttons row" style="margin-bottom: 1rem;">
             <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
             <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
             <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
@@ -277,17 +280,26 @@
 </div>
 <!-- list institutions -->
 <div class="institutions">
-    {% if data|length %}
+    {% if data|length >= 2 %}
     {% for entry in data %}
     <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
         data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
     </my-card>
     {% endfor %}
     {% else %}
+    {% if data|length > 0 %}
+    {% for entry in data %}
+    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+        data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+    </my-card>
+    {% endfor %}
+    <div style="height: 20rem;"></div>
+    {% else %}
     <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-    </div>
+    <div style="height: 35rem;"></div>
     {% endif %}
-    <div style="height: 40rem;">
+    {% endif %}
+
 
 </div>
 
