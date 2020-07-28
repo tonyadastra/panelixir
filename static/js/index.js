@@ -220,7 +220,7 @@ $(document).ready(function () {
                                                     // console.log("bound", countries[d3.select(this).attr("data-country-id")])
                                                     var nextScale = projection.scale() * 1 / Math.max((b[1][0] - b[0][0]) / (300 / 2), (b[1][1] - b[0][1]) / (300 / 2));
                                                     var s = d3.interpolate(300, nextScale);
-                                                    // console.log(projection.scale())
+                                                    console.log(-p[0], -p[1])
                                                     return function (t) {
                                                         // projection.rotate(r(t)).scale(s(t));
                                                         projection.rotate(r(t));
@@ -500,7 +500,6 @@ $(document).ready(function () {
                     .attr('width', 10)
                     .attr('x', progressStart - 5)
                     .attr('y', 10);
-
             },
 
         });

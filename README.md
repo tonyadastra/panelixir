@@ -1,7 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
-+ July 27, 2020 - Complete 50% Interaction of Map and Buttons, Code Optimization(Combine Requests)
++ July 27, 2020 - Complete 60% Interaction of Map and Buttons, Code Optimization(Combine Requests), new csv file that also includes continents
 + July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)
 + July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
 + July 24, 2020 - Database + Region, Interactive Button and Progress Bar-v1
