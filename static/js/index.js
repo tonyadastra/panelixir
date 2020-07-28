@@ -1,6 +1,5 @@
 
 window.addEventListener('storage', function () {
-    // document.querySelector("button[data-value='val']").click();
     console.log("storeag change")
     var btn_group = document.getElementsByTagName('button');
 
@@ -13,12 +12,13 @@ window.addEventListener('storage', function () {
     }
 })
 
-map = {
-    aInternal: 'World',
+var world_continents = {
+    aInternal: "World",
     aListener: function (val) { },
     set continent(val) {
         this.aInternal = val;
         this.aListener(val);
+        // this.letMeKnow();
     },
     get continent() {
         return this.aInternal;
@@ -27,6 +27,18 @@ map = {
         this.aListener = listener;
     }
 }
+
+world_continents.registerListener(function (val) {
+    var btn_group = document.getElementsByTagName('button');
+
+    for (var i = 0, length = btn_group.length; i < length; i++) {
+        var btn = btn_group[i];
+        if (btn.value == val) {
+            btn.click();
+            break;
+        }
+    }
+});
 
 
 /** When page is loaded...**/
@@ -46,7 +58,7 @@ $(document).ready(function () {
                 /** Interactive Map Response **/
                 let world = [];
                 let names = [];
-                let map_svgW = 650;
+                let map_svgW = 700;
                 let map_svgH = 600;
 
                 // Tools
@@ -197,10 +209,9 @@ $(document).ready(function () {
                                                 // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                                             })
 
-                                        // console.log("clicked", clicked, Object.values(names)[i].name, prev_stage, prev_color);
+                                        
 
-                                        map.continent = continent;
-                                        localStorage.setItem('continent', continent);
+                                        world_continents.continent = continent;
 
                                         d3.selectAll("path").filter(function (d) {
                                             return d3.select(this).attr("continent") == continent;
@@ -699,7 +710,7 @@ $(document).ready(function () {
                                     for (let j = 0; j < flagMap[i][a].length; j++) {
                                         svg.append('svg:image')
                                             .attr('xlink:href', flagMap[i][a])
-                                            .attr('height', 20)
+                                            .attr('height', 25)
                                             .attr('x', function () {
                                                 const index = states.indexOf(currentState);
                                                 // Add x values for multiple images
@@ -746,16 +757,5 @@ $(document).ready(function () {
     });
 });
 
-map.registerListener(function (val) {
-    console.log("listener change")
-    var btn_group = document.getElementsByTagName('button');
 
-    for (var i = 0, length = btn_group.length; i < length; i++) {
-        var btn = btn_group[i];
-        if (btn.value == val) {
-            btn.click();
-            break;
-        }
-    }
-});
 
