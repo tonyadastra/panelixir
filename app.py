@@ -1,13 +1,11 @@
 import random
 import string
-import re
 from flask import Flask, render_template, request, jsonify
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
 import json
 import csv
-import time
 
 # Quote following line to run at local
 # from flask_heroku import Heroku
@@ -17,14 +15,14 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-# app.secret_key = "ILoveNewYork"
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+app.secret_key = "ILoveNewYork"
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 # # User - Lola
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-app.secret_key = "lola980109"
-conn = psycopg2.connect("dbname=covid19_db user=lola")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+# app.secret_key = "lola980109"
+# conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
@@ -33,18 +31,6 @@ cur = conn.cursor()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # if request.method == 'GET':
-    #     continent = str(request.args.get('continent'))
-    #     if request.args.get('continent') is None or continent == "World":
-    #         continent = ""
-
-    #     cur.execute("SELECT stage, COUNT(stage) as count "
-    #                 "FROM info "
-    #                 "WHERE continent LIKE '%" + continent + "%' "
-    #                 "GROUP BY stage ORDER BY stage")
-    #     continent_data = np.array(cur.fetchall(), dtype=object)
-    #     cur.execute("rollback")
-
     if request.method == 'POST':
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
@@ -130,39 +116,11 @@ def index():
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
-# @app.route("/update_continent")
-# def update_continent():
-#     continent = str(request.args.get('continent'))
-#     # print(request.args.get('continent'))
-#     if request.args.get('continent') is None or continent == "World":
-#         continent = ""
-#
-#     cur.execute("rollback")
-#     cur.execute("SELECT stage, COUNT(stage) as count "
-#                 " FROM info "
-#                 " WHERE continent LIKE '%"+continent+"%' "
-#                 "GROUP BY stage ORDER BY stage")
-#     continent_data = np.array(cur.fetchall(), dtype=object)
-#     cur.execute("rollback")
-#     data_arr = []
-#     for i in range(5):
-#         found = False
-#         for j in continent_data:
-#             if i == j[0]:
-#                 data_arr.append(j[1])
-#                 found = True
-#         if not found:
-#             data_arr.append(0)
-#     # print(data_arr)
-#     return jsonify(data_arr)
-
-
 @app.route("/get_bars_data")
 def getBarsData():
     continent = str(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
-        time.sleep(0.1)
     cur.execute("rollback")
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"
@@ -220,7 +178,7 @@ def load_data():
 
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
-    with open('data/worldcountries.json') as json_file:
+    with open('data/map.json') as json_file:
         data = json.load(json_file)
     return jsonify(data)
 

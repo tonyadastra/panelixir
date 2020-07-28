@@ -4,7 +4,6 @@ var world_continents = {
     set continent(val) {
         this.aInternal = val;
         this.aListener(val);
-        // this.letMeKnow();
     },
     get continent() {
         return this.aInternal;
@@ -88,14 +87,12 @@ $(document).ready(function () {
             url: "/load_data",
             type: "get",
             async: true,
-            data: {},
             success: function (response) {
                 window.map_response = JSON.parse(response).map_data.vaccines;
                 var vac_country = window.map_response.map(d => d.country);
                 var vac_stage = window.map_response.map(d => d.stage);
 
                 /** Interactive Map Response **/
-
                 // filter unique countries with highest stage
                 for (let i = 0; i < vac_country.length; i++) {
                     if (vac_country[i].includes(",")) {
@@ -120,7 +117,7 @@ $(document).ready(function () {
                     names = values[1]
                     // console.log(world)
                     // console.log("custom", world_continent)
-                    var globe = { type: "Sphere" },
+                    var globe = {type: "Sphere"},
                         land = topojson.feature(world, world.objects.land),
                         borders = topojson.mesh(world, world.objects.countries, function (a, b) { return a !== b; })
                     grid = graticule();
@@ -224,15 +221,15 @@ $(document).ready(function () {
                                                 temp = vac_map.get(d3.select(this).attr("countryname"));
                                                 prev_stage = temp === undefined ? -1 : temp;
 
-                                                if (prev_stage == 0) {
+                                                if (prev_stage === 0) {
                                                     prev_color = colors.p0;
-                                                } else if (prev_stage == 1) {
+                                                } else if (prev_stage === 1) {
                                                     prev_color = colors.p1;
-                                                } else if (prev_stage == 2) {
+                                                } else if (prev_stage === 2) {
                                                     prev_color = colors.p2;
-                                                } else if (prev_stage == 3) {
+                                                } else if (prev_stage === 3) {
                                                     prev_color = colors.p3;
-                                                } else if (prev_stage == 4) {
+                                                } else if (prev_stage === 4) {
                                                     prev_color = colors.p4;
                                                 } else {
                                                     prev_color = colors.clickable;
@@ -343,7 +340,7 @@ $(document).ready(function () {
         var btn_group = document.getElementsByTagName('button');
         for (var i = 0, length = btn_group.length; i < length; i++) {
             var btn = btn_group[i];
-            if (btn.value == 'World') {
+            if (btn.value === 'World') {
                 btn.click();
                 break;
             }
@@ -353,9 +350,7 @@ $(document).ready(function () {
 
     /** When Interactive Buttons are Clicked... **/
     $('.button-font').on('click', function () {
-        var processing = false;
         var continent = $(this).data("value");
-
         if (!processing) {
             processing = true;
             $.ajax({
