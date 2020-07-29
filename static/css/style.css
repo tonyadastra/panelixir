@@ -1,11 +1,19 @@
 /* Header */
 
 .jumbotron {
-  padding: 1.5rem 2rem 1.5rem 2rem;
+  padding: 1.5rem 2rem 1.2rem 2rem;
   margin-bottom: 20px;
-  background-color: #f3f1f1;
+  /* background-color: rgba(188, 255, 222, 0.24); */
+  background-color: #eaf9f7;
   border-radius: 0.2rem;
 }
+
+/* #headerbar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+} */
 
 .heading {
   margin-top: 1.5rem;
@@ -13,7 +21,7 @@
   padding-left: 3rem;
 }
 
-.row{
+.row {
   margin-right: 0;
 }
 
@@ -126,6 +134,13 @@ span.highlight {
   padding-bottom: 1rem;
 }
 
+/* .filter * {
+  z-index: 2;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+} */
+
 .filtertext {
   display: inline-block;
   font-weight: 400;
@@ -196,6 +211,28 @@ span.highlight {
 .overflow {
   height: 15rem;
   overflow-y: auto;
+}
+.overflow::-webkit-scrollbar{
+  width: 10px;
+  border-radius: 0.2rem;
+}
+
+/* Track */
+.overflow::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0.2rem;
+}
+
+/* Handle */
+.overflow::-webkit-scrollbar-thumb {
+  background: #aaa9a9;
+  border-radius: 0.2rem;
+}
+
+/* Handle on hover */
+.overflow::-webkit-scrollbar-thumb:hover {
+  background: #848484;
+  border-radius: 0.2rem;
 }
 
 .btn-types {
