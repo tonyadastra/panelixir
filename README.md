@@ -1,6 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 28, 2020 - Complete 100% of Interactive Features (Map Automatic Rotation, Button & Map Interaction)
 + July 27, 2020 - Complete 60% Interaction of Map and Buttons, Code Optimization(Combine Requests), new csv file that also includes continents
 + July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)
 + July 25, 2020 - Building Interactive Map and Bar Chart (Layout, Structure)
@@ -19,10 +20,12 @@
 + June 26, 2020 - Project Group Formed
 
 **Links to Solve Existing Problems**
-1. [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url) Success!
-2. [TextTween](https://observablehq.com/@d3/transition-texttween) Success!
-3. [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
-4. [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
+* [X] [Go to anchor without changing URL](https://stackoverflow.com/questions/15223006/scroll-with-anchor-without-in-url)
+* [X] [TextTween](https://observablehq.com/@d3/transition-texttween)
+* [X] [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
+* [X] [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
+* [ ] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
+* [ ] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
 
 
 **Quick Access:**
