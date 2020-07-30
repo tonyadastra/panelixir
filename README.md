@@ -1,6 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 **Latest Updates**
++ July 29, 2020 - Web Domain Brainstorm & Organize Structure of Webpages
 + July 28, 2020 - Complete 100% of Interactive Features (Map Automatic Rotation, Button & Map Interaction)
 + July 27, 2020 - Complete 60% Interaction of Map and Buttons, Code Optimization(Combine Requests), new csv file that also includes continents
 + July 26, 2020 - Building Interactive Map and Bar Chart (Animation, Interactive Features, Add Flag & Company Name, TextTween)

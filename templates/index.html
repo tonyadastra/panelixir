@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
 {% block styles %}
-<!--External Source Library-->
-<link rel="stylesheet" href="../static/css/bootstrap.css">
 <!--Internal CSS Files-->
 <link rel="stylesheet" href="../static/css/style.css">
 <link rel="stylesheet" href="../static/css/card.css">
@@ -29,7 +27,6 @@
     })
 </script>
 
-
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -40,10 +37,6 @@
 {% endblock %}
 
 {% block content %}
-<!-- Heading Bar of Webpage-->
-<div class="jumbotron" id="headerbar">
-    <h3>Coronavirus Vaccine and Treatment Tracker</h3>
-</div>
 
 <!-- Data Visualizations-->
 <div class="row">
