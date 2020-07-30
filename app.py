@@ -116,6 +116,11 @@ def index():
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
+@app.route("/about-us")
+def aboutUs():
+    return render_template("about-us.html")
+
+
 @app.route("/get_bars_data")
 def getBarsData():
     continent = str(request.args.get('continent'))
