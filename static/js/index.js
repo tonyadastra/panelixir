@@ -305,276 +305,281 @@ $(document).ready(function () {
 
     /** When Interactive Buttons are Clicked... **/
     $('.button-font').on('click', function () {
+        var prev_continent = 'World';
         var continent = $(this).data("value");
-        window.continent = world_continents.continent
-        $.ajax({
-            url: "/get_bars_data",
-            type: "get",
-            async: true,
-            data: {continent: continent},
-            success: function (response) {
+        // if (prev_continent !== continent) {
 
-                /** Interactive Progress Response **/
-                var progress_response = JSON.parse(response).count
-                d3.selectAll('#progress0')
-                    .transition()
-                    .duration(774)
-                    .textTween(function () {
-                        return d3.interpolateRound(0, progress_response[0])
+            window.continent = world_continents.continent;
+            $.ajax({
+                url: "/get_bars_data",
+                type: "get",
+                async: true,
+                data: {continent: continent},
+                success: function (response) {
 
-                    })
-                    .ease(d3.easePolyOut.exponent(3))
-                d3.selectAll('#progress1')
-                    .transition()
-                    .duration(774)
-                    .textTween(function () {
-                        return d3.interpolateRound(0, progress_response[1])
-
-                    })
-                    .ease(d3.easePolyOut.exponent(3))
-                d3.selectAll('#progress2')
-                    .transition()
-                    .duration(774)
-                    .textTween(function () {
-                        return d3.interpolateRound(0, progress_response[2])
-
-                    })
-                    .ease(d3.easePolyOut.exponent(3))
-                d3.selectAll('#progress3')
-                    .transition()
-                    .duration(774)
-                    .textTween(function () {
-                        return d3.interpolateRound(0, progress_response[3])
-
-                    })
-                    .ease(d3.easePolyOut.exponent(3))
-                d3.selectAll('#progress4')
-                    .transition()
-                    .duration(774)
-                    .textTween(function () {
-                        return d3.interpolateRound(0, progress_response[4])
-
-                    })
-                    .ease(d3.easePolyOut.exponent(3))
-
-
-                /** Interactive Bars Response **/
-                // Call d3 function
-                window.bars_data_response = JSON.parse(response).bars_data.bars_data
-                console.log(window.bars_data_response)
-                // clear vis2 workspace
-                d3.select('#vis2').remove()
-                let svgW = 700, svgH = 360;
-                let gMargin = {top: 50, right: 25, bottom: 75, left: 75};
-                let states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
-                let currentState = 'Pre-Clinical'
-                let progressStart = 130, segmentWidth = 95;
-                // vis3 replaces vis2 in position
-                svg = d3.select('#vis3')
-                    .append('svg')
-                    .attr('id', 'vis2')
-                    .attr('width', svgW)
-                    .attr('height', svgH);
-
-                colorScale = d3.scaleOrdinal()
-                    .domain(states)
-                    .range(['#c1c8e4', '#84ceeb', '#5ab9ea',
-                        '#88bdbc', '#3aafa9']);
-
-                let flagMap = window.bars_data_response.map(d => d.flag);
-                let companyMap = window.bars_data_response.map(d => d.company);
-                let stageMap = window.bars_data_response.map(d => d.stage);
-
-                for (let i = 0; i < stageMap.length; i++) {
-                    if (stageMap[i] === 0) {
-                        currentState = 'Pre-Clinical'
-                    } else if (stageMap[i] === 1) {
-                        currentState = 'Phase I'
-                    } else if (stageMap[i] === 2) {
-                        currentState = 'Phase II'
-                    } else if (stageMap[i] === 3) {
-                        currentState = 'Phase III'
-                    } else if (stageMap[i] === 4) {
-                        currentState = 'Approval'
-                    }
-
-                    svg.append('rect')
-                        .attr('class', 'progress-rect')
-                        .attr('fill', function () {
-                            return colorScale('Pre-Clinical');
-                        })
-                        .attr('height', 15)
-                        .attr('width', function () {
-                            const index = states.indexOf('Pre-Clinical');
-                            // console.log(index)
-                            return (index + 1) * segmentWidth;
-                        })
-                        .attr('rx', 10)
-                        .attr('ry', 10)
-                        .attr('x', progressStart)
-                        .attr('y', 50 + 60 * i)
+                    /** Interactive Progress Response **/
+                    var progress_response = JSON.parse(response).count
+                    d3.selectAll('#progress0')
                         .transition()
-                        .duration(2000)
-                        .attr('fill', function () {
-                            return colorScale(currentState);
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, progress_response[0])
+
                         })
-                        .attr('width', function () {
-                            var index = states.indexOf(currentState);
-                            return (index + 1) * segmentWidth;
+                        .ease(d3.easePolyOut.exponent(3))
+                    d3.selectAll('#progress1')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, progress_response[1])
+
                         })
-                        .delay(function (d, i) {
-                            return i * 200;
-                        });
+                        .ease(d3.easePolyOut.exponent(3))
+                    d3.selectAll('#progress2')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, progress_response[2])
 
-                    let yTrack = 45;
+                        })
+                        .ease(d3.easePolyOut.exponent(3))
+                    d3.selectAll('#progress3')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, progress_response[3])
+
+                        })
+                        .ease(d3.easePolyOut.exponent(3))
+                    d3.selectAll('#progress4')
+                        .transition()
+                        .duration(774)
+                        .textTween(function () {
+                            return d3.interpolateRound(0, progress_response[4])
+
+                        })
+                        .ease(d3.easePolyOut.exponent(3))
 
 
-                    svg.append("text")
-                        .attr("x", 60)
-                        .attr("y", yTrack + i * 60)
-                        .attr("text-anchor", "middle")
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", "12px")
-                        .attr("font-weight", "bold")
-                        .text(companyMap[i])
-                        .call(wrap, 120);
+                    /** Interactive Bars Response **/
+                    // Call d3 function
+                    window.bars_data_response = JSON.parse(response).bars_data.bars_data
+                    console.log(window.bars_data_response)
+                    // clear vis2 workspace
+                    d3.select('#vis2').remove()
+                    let svgW = 700, svgH = 360;
+                    let gMargin = {top: 50, right: 25, bottom: 75, left: 75};
+                    let states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
+                    let currentState = 'Pre-Clinical'
+                    let progressStart = 130, segmentWidth = 95;
+                    // vis3 replaces vis2 in position
+                    svg = d3.select('#vis3')
+                        .append('svg')
+                        .attr('id', 'vis2')
+                        .attr('width', svgW)
+                        .attr('height', svgH);
 
-                    let height = parseInt(svg.select('text').node().getBoundingClientRect().height);
+                    colorScale = d3.scaleOrdinal()
+                        .domain(states)
+                        .range(['#c1c8e4', '#84ceeb', '#5ab9ea',
+                            '#88bdbc', '#3aafa9']);
 
-                    svg.select('text').attr('transform', 'translate(0, ' + (-height / 2) + ')');
+                    let flagMap = window.bars_data_response.map(d => d.flag);
+                    let companyMap = window.bars_data_response.map(d => d.company);
+                    let stageMap = window.bars_data_response.map(d => d.stage);
 
-                    yTrack += (parseInt(height / 2) + 10);
+                    for (let i = 0; i < stageMap.length; i++) {
+                        if (stageMap[i] === 0) {
+                            currentState = 'Pre-Clinical'
+                        } else if (stageMap[i] === 1) {
+                            currentState = 'Phase I'
+                        } else if (stageMap[i] === 2) {
+                            currentState = 'Phase II'
+                        } else if (stageMap[i] === 3) {
+                            currentState = 'Phase III'
+                        } else if (stageMap[i] === 4) {
+                            currentState = 'Approval'
+                        }
 
-                    function wrap(text, width) {
-                        text.each(function () {
-                            let text = d3.select(this),
-                                words = text.text().split(/\s+/).reverse(),
-                                word,
-                                line = [],
-                                lineNumber = 0,
-                                lineHeight = 1.05, // ems
-                                x = text.attr("x"),
-                                y = text.attr("y"),
-                                dy = 1.05,
-                                tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-                            while (word = words.pop()) {
-                                line.push(word);
-                                tspan.text(line.join(" "));
-                                if (tspan.node().getComputedTextLength() > width) {
-                                    line.pop();
+                        svg.append('rect')
+                            .attr('class', 'progress-rect')
+                            .attr('fill', function () {
+                                return colorScale('Pre-Clinical');
+                            })
+                            .attr('height', 15)
+                            .attr('width', function () {
+                                const index = states.indexOf('Pre-Clinical');
+                                // console.log(index)
+                                return (index + 1) * segmentWidth;
+                            })
+                            .attr('rx', 10)
+                            .attr('ry', 10)
+                            .attr('x', progressStart)
+                            .attr('y', 50 + 60 * i)
+                            .transition()
+                            .duration(2000)
+                            .attr('fill', function () {
+                                return colorScale(currentState);
+                            })
+                            .attr('width', function () {
+                                var index = states.indexOf(currentState);
+                                return (index + 1) * segmentWidth;
+                            })
+                            .delay(function (d, i) {
+                                return i * 200;
+                            });
+
+                        let yTrack = 45;
+
+
+                        svg.append("text")
+                            .attr("x", 60)
+                            .attr("y", yTrack + i * 60)
+                            .attr("text-anchor", "middle")
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "12px")
+                            .attr("font-weight", "bold")
+                            .text(companyMap[i])
+                            .call(wrap, 120);
+
+                        let height = parseInt(svg.select('text').node().getBoundingClientRect().height);
+
+                        svg.select('text').attr('transform', 'translate(0, ' + (-height / 2) + ')');
+
+                        yTrack += (parseInt(height / 2) + 10);
+
+                        function wrap(text, width) {
+                            text.each(function () {
+                                let text = d3.select(this),
+                                    words = text.text().split(/\s+/).reverse(),
+                                    word,
+                                    line = [],
+                                    lineNumber = 0,
+                                    lineHeight = 1.05, // ems
+                                    x = text.attr("x"),
+                                    y = text.attr("y"),
+                                    dy = 1.05,
+                                    tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+                                while (word = words.pop()) {
+                                    line.push(word);
                                     tspan.text(line.join(" "));
-                                    line = [word];
-                                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                                    if (tspan.node().getComputedTextLength() > width) {
+                                        line.pop();
+                                        tspan.text(line.join(" "));
+                                        line = [word];
+                                        tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                                    }
+                                }
+                            });
+                        }
+
+                        // Append Flag Image
+                        // If multiple countries
+                        for (let a = 0; a < flagMap[i].length; a++) {
+                            // if flagMap[i][a] is undefined
+                            if (flagMap[i][a] !== '.') {
+                                for (let j = 0; j < flagMap[i][a].length; j++) {
+                                    svg.append('svg:image')
+                                        .attr('xlink:href', flagMap[i][a])
+                                        .attr('height', 25)
+                                        .attr('x', function () {
+                                            const index = states.indexOf(currentState);
+                                            // Add x values for multiple images
+                                            return (index + 1) * segmentWidth + progressStart + 5 + a * 50;
+                                        })
+                                        .attr('y', 47.5 + 60 * i);
                                 }
                             }
-                        });
-                    }
-
-                    // Append Flag Image
-                    // If multiple countries
-                    for (let a = 0; a < flagMap[i].length; a++) {
-                        // if flagMap[i][a] is undefined
-                        if (flagMap[i][a] !== '.') {
-                            for (let j = 0; j < flagMap[i][a].length; j++) {
-                                svg.append('svg:image')
-                                    .attr('xlink:href', flagMap[i][a])
-                                    .attr('height', 25)
-                                    .attr('x', function () {
-                                        const index = states.indexOf(currentState);
-                                        // Add x values for multiple images
-                                        return (index + 1) * segmentWidth + progressStart + 5 + a * 50;
-                                    })
-                                    .attr('y', 47.5 + 60 * i);
-                            }
                         }
+                        // If single country
+                        if (flagMap[i][0] === '.') {
+                            svg.append('svg:image')
+                                .attr('xlink:href', flagMap[i])
+                                .attr('height', 20)
+                                .attr('x', function () {
+                                    const index = states.indexOf(currentState);
+                                    return (index + 1) * segmentWidth + progressStart + 5;
+                                })
+                                .attr('y', 47.5 + 60 * i);
+                        }
+
                     }
-                    // If single country
-                    if (flagMap[i][0] === '.') {
-                        svg.append('svg:image')
-                            .attr('xlink:href', flagMap[i])
-                            .attr('height', 20)
-                            .attr('x', function () {
-                                const index = states.indexOf(currentState);
-                                return (index + 1) * segmentWidth + progressStart + 5;
-                            })
-                            .attr('y', 47.5 + 60 * i);
-                    }
+                    // Append orange bar
+                    svg.append('rect')
+                        .attr('class', 'border')
+                        .attr('rx', 10)
+                        .attr('ry', 10)
+                        .attr('fill', 'orange')
+                        .attr('height', 350)
+                        .attr('width', 10)
+                        .attr('x', progressStart - 5)
+                        .attr('y', 10);
 
-                }
-                // Append orange bar
-                svg.append('rect')
-                    .attr('class', 'border')
-                    .attr('rx', 10)
-                    .attr('ry', 10)
-                    .attr('fill', 'orange')
-                    .attr('height', 350)
-                    .attr('width', 10)
-                    .attr('x', progressStart - 5)
-                    .attr('y', 10);
+                    // d3.select(self.frameElement).style("height", svgH + "px");
+                },
+            });
 
-                // d3.select(self.frameElement).style("height", svgH + "px");
-            },
-        });
+            /** change map on button click */
+            // setTimeout(() => {
+            if (world_continents.continent !== continent) {
+                needs_update = false;
+                processing = continent !== 'World';
+                world_continents.continent = continent;
+                var prev_color = colors.clickable, prev_stage = -1;
 
-        /** change map on button click */
-        // setTimeout(() => {
-        if (world_continents.continent !== continent) {
-            needs_update = false;
-            processing = continent !== 'World';
-            world_continents.continent = continent;
-            var prev_color = colors.clickable, prev_stage = -1;
+                d3.selectAll(".clicked")
+                    .classed("clicked", false)
+                    .select(function () {
+                        // console.log(this)
+                        // console.log(d3.select(this).attr("countryname"));
+                        var temp = vac_map.get(d3.select(this).attr("countryname"));
+                        prev_stage = temp === undefined ? -1 : temp;
 
-            d3.selectAll(".clicked")
-                .classed("clicked", false)
-                .select(function () {
-                    // console.log(this)
-                    // console.log(d3.select(this).attr("countryname"));
-                    var temp = vac_map.get(d3.select(this).attr("countryname"));
-                    prev_stage = temp === undefined ? -1 : temp;
+                        if (prev_stage === 0) {
+                            prev_color = colors.p0;
+                        } else if (prev_stage === 1) {
+                            prev_color = colors.p1;
+                        } else if (prev_stage === 2) {
+                            prev_color = colors.p2;
+                        } else if (prev_stage === 3) {
+                            prev_color = colors.p3;
+                        } else if (prev_stage === 4) {
+                            prev_color = colors.p4;
+                        } else {
+                            prev_color = colors.clickable;
+                        }
+                        d3.select(this).attr("fill", prev_color);
+                        // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                    })
 
-                    if (prev_stage === 0) {
-                        prev_color = colors.p0;
-                    } else if (prev_stage === 1) {
-                        prev_color = colors.p1;
-                    } else if (prev_stage === 2) {
-                        prev_color = colors.p2;
-                    } else if (prev_stage === 3) {
-                        prev_color = colors.p3;
-                    } else if (prev_stage === 4) {
-                        prev_color = colors.p4;
-                    } else {
-                        prev_color = colors.clickable;
-                    }
-                    d3.select(this).attr("fill", prev_color);
-                    // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                d3.selectAll("path").filter(function (d) {
+                    return d3.select(this).attr("continent") === continent;
                 })
+                    .attr("fill", colors.clicked)
+                    .classed("clicked", true);
 
-            d3.selectAll("path").filter(function (d) {
-                return d3.select(this).attr("continent") === continent;
-            })
-                .attr("fill", colors.clicked)
-                .classed("clicked", true);
+                // d3.select(this)
+                //   .select(function () {
+                //     d3.select(this).attr("fill", curr_color);
+                //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                //   });
+                // .attr("fill", colors.clicked);
 
-            // d3.select(this)
-            //   .select(function () {
-            //     d3.select(this).attr("fill", curr_color);
-            //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-            //   });
-            // .attr("fill", colors.clicked);
-
-            (function transition() {
-                d3.select(".clicked").transition()
-                    .duration(1000)
-                    .tween("rotate", function () {
-                        var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
-                        return function (t) {
-                            // projection.rotate(r(t)).scale(s(t));
-                            projection.rotate(r(t));
-                            map.selectAll("path").attr("d", path);
-                        }
-                    });
-            })();
-        }
+                (function transition() {
+                    d3.select(".clicked").transition()
+                        .duration(1000)
+                        .tween("rotate", function () {
+                            var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
+                            return function (t) {
+                                // projection.rotate(r(t)).scale(s(t));
+                                projection.rotate(r(t));
+                                map.selectAll("path").attr("d", path);
+                            }
+                        });
+                })();
+            }
+        // }
         // }, 600);
     });
+
 });
