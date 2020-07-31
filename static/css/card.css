@@ -6,7 +6,8 @@
 
 .wrapper {
   margin: 0 10px 50px 10px;
-  background-color: #eee2dc;
+  /* background-color: #eee2dc; */
+  background-color: #e5f0ed;
   box-shadow: 4px 7px #bbb8b8;
 }
 
