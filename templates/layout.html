@@ -6,12 +6,24 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>COVID-19 Vaccine and Treatment Tracker</title>
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!--External Source Library-->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
     <!-- Styles -->
     {% block styles %}
     {% endblock %}
 </head>
 <body>
+<!-- Heading Bar of Webpage-->
+<div class="jumbotron" id="headerbar">
+    <div class="row">
+        <h2 id="title" style="margin-left: 1rem; color: darkslategray"><a class="style-a" href="/">Coronavirus Vaccine and Treatment Tracker</a></h2>
+<!--        <h5 class="header-text align-right" style="right: 27%">Home</h5>-->
+        <h5 class="header-text align-right" style="right: 15%"><a class="style-a">Submit Data</a>
+        <span class="coming-soon">Coming Soon</span></h5>
+        <h5 class="header-text align-right" style="right: 5%"><a class="style-a" href="/about-us">About Us</a></h5>
+    </div>
+</div>
 <!-- Content -->
 {% block content %}
 {% endblock %}

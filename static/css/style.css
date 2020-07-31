@@ -1,11 +1,91 @@
 /* Header */
-
 .jumbotron {
   padding: 1.5rem 2rem 1.2rem 2rem;
   margin-bottom: 20px;
-  /* background-color: rgba(188, 255, 222, 0.24); */
   background-color: #eaf9f7;
   border-radius: 0.2rem;
+}
+
+a.style-a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0 0 0.5rem;
+  position: relative;
+}
+
+#title > a.style-a {
+  position: relative;
+  color: darkslateblue;
+  text-decoration: none;
+}
+
+/* Hover Headerbar Effect */
+.header-text {
+  margin-top: 0.3rem;
+  color: #00008b;
+  font-family: sans-serif;
+  font-size: 1.4rem;
+  font-weight: lighter;
+  padding: 0;
+  position: relative;
+  display: inline-block;
+}
+
+
+.header-text > a.style-a {
+  position: relative;
+  color: #000;
+  text-decoration: none;
+}
+
+.header-text > a.style-a:hover {
+  color: #000;
+}
+
+.header-text > a.style-a::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 0.15rem;
+  bottom: 0;
+  left: 0;
+  background-color: darkorange;
+  border-radius: 0.1rem;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.25s ease-in-out 0s;
+}
+
+.header-text > a.style-a:hover::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+/* Coming Soon Toolkit */
+.coming-soon{
+  font-size: 1.2rem;
+}
+
+.header-text .coming-soon {
+  visibility: hidden;
+  width: 160px;
+  background-color: rgba(135, 133, 133, 0.87);
+  color: #fff;
+  text-align: center;
+  border-radius: 0.2rem;
+  padding: 5px 2px;
+
+  /* Position */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+
+.header-text:hover .coming-soon {
+  visibility: visible;
 }
 
 /* #headerbar {
@@ -14,6 +94,116 @@
   top: 0;
   z-index: 1;
 } */
+.column-card {
+  float: left;
+  width: 50%;
+  /*margin-bottom: 16px;*/
+  /*padding: 0 8px;*/
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 0.8rem;
+  padding: 2rem;
+  background-color: rgba(243, 252, 245, 0.31);
+}
+
+.cursive{
+  font-family: Brush Script MT, Brush Script Std, cursive;
+  color: #111b2b;
+  font-size: 4rem;
+}
+
+/* Positive Quote Tab */
+.positive{
+  padding: 1.5rem 2rem 1.2rem 2rem;
+  margin-bottom: 20px;
+  background-color: #f1f6fd;
+  border-radius: 0.2rem;
+}
+
+
+.testimonial-quote {
+    font-size: 16px;
+}
+
+.testimonial-quote blockquote {
+    /* Negate theme styles */
+    border: 0;
+    margin: 0;
+    padding: 0;
+
+    background: none;
+    color: gray;
+    font-family: Georgia, serif;
+    font-size: 1.5em;
+    font-style: italic;
+    line-height: 1.4 !important;
+    position: relative;
+    text-shadow: 0 1px white;
+    z-index: 600;
+}
+
+.testimonial-quote blockquote * {
+    box-sizing: border-box;
+}
+
+.testimonial-quote blockquote p {
+    color: #75808a;
+    line-height: 1.4 !important;
+}
+
+.testimonial-quote blockquote p:first-child:before {
+    content: '\201C';
+    color: #55deca;
+    font-size: 7.5em;
+    font-weight: 700;
+    opacity: .3;
+    position: absolute;
+    top: -.4em;
+    left: -.2em;
+    text-shadow: none;
+    z-index: -300;
+}
+
+
+.testimonial-quote cite {
+    color: gray;
+    display: block;
+    font-size: .8em;
+}
+
+.testimonial-quote cite span {
+    color: #5e5e5e;
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 1px white;
+}
+
+.testimonial-quote {
+    position: relative;
+}
+
+.testimonial-quote .quote-container {
+    padding-left: 160px;
+}
+
+.testimonial-quote.right .quote-container {
+    padding-left: 0;
+    padding-right: 160px;
+}
+
+.testimonial-quote.right img {
+    left: auto;
+    right: 0;
+}
+
+.testimonial-quote.right cite {
+    text-align: right;
+}
 
 .heading {
   margin-top: 1.5rem;

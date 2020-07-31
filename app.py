@@ -1,6 +1,7 @@
 import random
 import string
-from flask import Flask, render_template, request, jsonify
+import os
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from models.vaccine_info import Db, Vaccine
 import psycopg2
 import numpy as np
@@ -27,6 +28,12 @@ conn = psycopg2.connect("dbname=covid19_db user=lola")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -114,6 +121,11 @@ def index():
         types_dis = "Vaccine Types"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
+
+
+@app.route("/about-us")
+def aboutUs():
+    return render_template("about-us.html")
 
 
 @app.route("/get_bars_data")
