@@ -20,7 +20,7 @@ world_continents.registerListener(function (val) {
 
         for (var i = 0, length = btn_group.length; i < length; i++) {
             var btn = btn_group[i];
-            if (btn.value == val) {
+            if (btn.value === val) {
                 btn.click();
                 break;
             }
@@ -32,21 +32,22 @@ var needs_update = true;
 var processing = false;
 /** When page is loaded...**/
 $(document).ready(function () {
-    window.continent = "World";
     /** Interactive Map Setup **/
     let world = [], names = [], countries, vac_map = new Map();
-    let map_svgW = 700, map_svgH = 600;
+    let map_svgW = 700, map_svgH = 550;
     let rotate = [100, -40];
     let velocity = 0.01;
     let time = Date.now();
-    var ContinentArray = {"Europe": [-35.187509595656408, -70.75594328392682],
-                        "North America": [96.3959652111984, -60.4768931916812],
-                        "Antarctica": [-69.53089507427761, 89.30702018723926],
-                        "Oceania":[-138.56893652314406, 18.31504815749142],
-                        "Asia":[-96.51319759040699, -20.94479984182297],
-                        "South America":[60.17789122485408, 20.310911906837475],
-                        "Africa":[-29.91403682471926, 3.377695631236064],
-                        "World": [100, -40]}
+    var ContinentArray = {
+        "Europe": [-35.187509595656408, -70.75594328392682],
+        "North America": [96.3959652111984, -60.4768931916812],
+        "Antarctica": [-69.53089507427761, 89.30702018723926],
+        "Oceania": [-138.56893652314406, 18.31504815749142],
+        "Asia": [-96.51319759040699, -20.94479984182297],
+        "South America": [60.17789122485408, 20.310911906837475],
+        "Africa": [-29.91403682471926, 3.377695631236064],
+        "World": [100, -40]
+    }
 
 
     // Tools
@@ -74,7 +75,7 @@ $(document).ready(function () {
         .attr('class', "map")
 
     map.append("defs").append("path")
-        .datum({ type: "Sphere" })
+        .datum({type: "Sphere"})
         .attr("id", "sphere")
         .attr("d", path);
 
@@ -121,31 +122,29 @@ $(document).ready(function () {
                 var files = ["/data/map.json", "/data/world-country-names.tsv"];
 
                 Promise.all(files.map(url => d3.json(url))).then(function (values) {
-                        world = values[0]
-                        // console.log("map", values[0])
-                        names = values[1]
-                        // console.log(world)
-                        // console.log("custom", world_continent)
+                    world = values[0]
+                    // console.log("map", values[0])
+                    names = values[1]
+                    // console.log(world)
+                    // console.log("custom", world_continent)
                     var globe = {type: "Sphere"},
-                            land = topojson.feature(world, world.objects.land);
-                            borders = topojson.mesh(world, world.objects.countries, function (a, b) {
-                                return a !== b;
-                            })
-                        grid = graticule();
-                        countries = topojson.feature(world, world.objects.countries).features;
-                        map.insert("path", ".graticule")
-                            .datum(land)
-                            .attr("class", "land")
-                            .attr("d", path);
+                        land = topojson.feature(world, world.objects.land),
+                        borders = topojson.mesh(world, world.objects.countries, function (a, b) {
+                        return a !== b;
+                    })
+                    let grid = graticule();
+                    countries = topojson.feature(world, world.objects.countries).features;
+                    map.insert("path", ".graticule")
+                        .datum(land)
+                        .attr("class", "land")
+                        .attr("d", path);
 
                     for (let i = 0; i < Object.values(names).length; i++) {
                         for (let j = 0; j < countries.length; j++) {
 
                             let map_continent;
-                            if (countries[j].id == Object.values(names)[i].id) {
+                            if (countries[j].id === Object.values(names)[i].id) {
                                 map_continent = Object.values(names)[i].continent_name;
-                                window.continent = map_continent;
-                                // console.log("continent", continent)
 
                                 let curr_color = colors.clickable;
                                 let curr_stage = -1;
@@ -209,27 +208,20 @@ $(document).ready(function () {
                                             })
 
                                         d3.selectAll("path").filter(function (d) {
-                                            return d3.select(this).attr("continent") == map_continent;
+                                            return d3.select(this).attr("continent") === map_continent;
                                         })
                                             .attr("fill", colors.clicked)
                                             .classed("clicked", true);
 
-                                        // d3.select(this)
-                                        //   .select(function () {
-                                        //     d3.select(this).attr("fill", curr_color);
-                                        //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                                        //   });
-                                        // .attr("fill", colors.clicked);
 
                                         (function transition() {
                                             d3.select(".clicked").transition()
                                                 .duration(1000)
                                                 .tween("rotate", function () {
-                                                    console.log(ContinentArray[map_continent])
+                                                    // console.log(ContinentArray[map_continent])
+                                                    // Assign Continent to Rotate to
                                                     var r = d3.interpolate(projection.rotate(), ContinentArray[map_continent])
-                                                    // var p = d3.geoCentroid(countries[d3.select(this).attr("data-country-id")]);
-                                                    // var r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
-                                                    // console.log(-p[0], -p[1])
+
                                                     return function (t) {
                                                         // projection.rotate(r(t)).scale(s(t));
                                                         projection.rotate(r(t));
@@ -282,22 +274,19 @@ $(document).ready(function () {
                         .attr("class", "boundary")
                         .attr("d", path);
 
-                    // d3.select(self.frameElement).style("height", map_svgH + "px");
+                    // Initial Rotation
                     d3.timer(function () {
                         var feature = map.selectAll("path");
                         var dt = Date.now() - time;
-                        if (processing){
+                        if (processing) {
                             time = Date.now()
                         }
-                            if (!processing) {
-                                console.log(window.continent)
-                                // console.log(ContinentArray[world_continents.continent][0])
-                                projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
-                                feature.attr("d", path);
-                            }
-
-                        });
-
+                        if (!processing) {
+                            // console.log(window.continent)
+                            projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                            feature.attr("d", path);
+                        }
+                    });
                 });
             }
         })
@@ -316,13 +305,16 @@ $(document).ready(function () {
 
     /** When Interactive Buttons are Clicked... **/
     $('.button-font').on('click', function () {
+        var prev_continent = 'World';
         var continent = $(this).data("value");
-        window.continent = world_continents.continent
+        // if (prev_continent !== continent) {
+
+            window.continent = world_continents.continent;
             $.ajax({
                 url: "/get_bars_data",
                 type: "get",
                 async: true,
-                data: { continent: continent },
+                data: {continent: continent},
                 success: function (response) {
 
                     /** Interactive Progress Response **/
@@ -376,7 +368,7 @@ $(document).ready(function () {
                     // clear vis2 workspace
                     d3.select('#vis2').remove()
                     let svgW = 700, svgH = 360;
-                    let gMargin = { top: 50, right: 25, bottom: 75, left: 75 };
+                    let gMargin = {top: 50, right: 25, bottom: 75, left: 75};
                     let states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
                     let currentState = 'Pre-Clinical'
                     let progressStart = 130, segmentWidth = 95;
@@ -393,8 +385,8 @@ $(document).ready(function () {
                             '#88bdbc', '#3aafa9']);
 
                     let flagMap = window.bars_data_response.map(d => d.flag);
-                    let companyMap = window.bars_data_response.map(d => d.company)
-                    let stageMap = window.bars_data_response.map(d => d.stage)
+                    let companyMap = window.bars_data_response.map(d => d.company);
+                    let stageMap = window.bars_data_response.map(d => d.stage);
 
                     for (let i = 0; i < stageMap.length; i++) {
                         if (stageMap[i] === 0) {
@@ -455,7 +447,6 @@ $(document).ready(function () {
                         svg.select('text').attr('transform', 'translate(0, ' + (-height / 2) + ')');
 
                         yTrack += (parseInt(height / 2) + 10);
-
 
                         function wrap(text, width) {
                             text.each(function () {
@@ -528,13 +519,11 @@ $(document).ready(function () {
                 },
             });
 
-        /** change map on button click */
-        // setTimeout(() => {
-            if (world_continents.continent != continent) {
+            /** change map on button click */
+            // setTimeout(() => {
+            if (world_continents.continent !== continent) {
                 needs_update = false;
                 processing = continent !== 'World';
-
-                // console.log(processing)
                 world_continents.continent = continent;
                 var prev_color = colors.clickable, prev_stage = -1;
 
@@ -546,15 +535,15 @@ $(document).ready(function () {
                         var temp = vac_map.get(d3.select(this).attr("countryname"));
                         prev_stage = temp === undefined ? -1 : temp;
 
-                        if (prev_stage == 0) {
+                        if (prev_stage === 0) {
                             prev_color = colors.p0;
-                        } else if (prev_stage == 1) {
+                        } else if (prev_stage === 1) {
                             prev_color = colors.p1;
-                        } else if (prev_stage == 2) {
+                        } else if (prev_stage === 2) {
                             prev_color = colors.p2;
-                        } else if (prev_stage == 3) {
+                        } else if (prev_stage === 3) {
                             prev_color = colors.p3;
-                        } else if (prev_stage == 4) {
+                        } else if (prev_stage === 4) {
                             prev_color = colors.p4;
                         } else {
                             prev_color = colors.clickable;
@@ -564,7 +553,7 @@ $(document).ready(function () {
                     })
 
                 d3.selectAll("path").filter(function (d) {
-                    return d3.select(this).attr("continent") == continent;
+                    return d3.select(this).attr("continent") === continent;
                 })
                     .attr("fill", colors.clicked)
                     .classed("clicked", true);
@@ -589,6 +578,8 @@ $(document).ready(function () {
                         });
                 })();
             }
+        // }
         // }, 600);
     });
+
 });

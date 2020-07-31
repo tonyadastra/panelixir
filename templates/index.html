@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<!--Internal CSS Files-->
 <link rel="stylesheet" href="../static/css/style.css">
 <link rel="stylesheet" href="../static/css/card.css">
 <link rel="stylesheet" href="../static/css/interactive.css">
@@ -10,19 +9,16 @@
 
 
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"
-    defer></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"
-    defer></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/topojson-client@3"></script>
-<!-- <script src="../static/js/new.js"></script> -->
+<!--External Source Libraries-->
+<script src="../static/js/library/jquery.js"></script>
+<script src="../static/js/library/popper.js"></script>
+<script src="../static/js/library/bootstrap.js"></script>
+<script src="../static/js/library/d3.v5.js"></script>
+<script src="../static/js/library/topojson.client.js"></script>
+<!--Internal JS Files-->
 <script src="../static/js/index.js"></script>
 <script src="../static/js/card.js"></script>
-<!-- <script src="../static/js/main.js"></script> -->
+
 
 <script>
     $(".button-font").on('click', function () {
@@ -30,7 +26,6 @@
         $(this).addClass('active');
     })
 </script>
-
 
 {% if scrollToAnchor %}
 <script>
@@ -42,10 +37,6 @@
 {% endblock %}
 
 {% block content %}
-<!-- Heading Bar of Webpage-->
-<div class="jumbotron" id="headerbar">
-    <h3>Coronavirus Vaccine and Treatment Tracker</h3>
-</div>
 
 <!-- Data Visualizations-->
 <div class="row">
@@ -137,7 +128,6 @@
     </div>
 </div>
 
-<!--</div>-->
 
 <div class="ctr text-center">
     <div class="jumbotron" style="background-color: transparent;">
@@ -170,9 +160,11 @@
                     approve the vaccine or not</b>.</p>
         </div>
     </div>
-
 </div>
 
+<div class="text-center" style="color: #19198b">
+    <p>Data Source:&nbsp;<i><b>The World Health Organization</b>: <a href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines" style="color: rgb(6,69,173);"> Draft landscape of COVID-19 candidate vaccines</a></i></p>
+</div>
 <!--Heading - Question-->
 <!--<div class="heading">-->
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
