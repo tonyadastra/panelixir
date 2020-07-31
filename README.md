@@ -3,6 +3,7 @@
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
 **Latest Updates**
++ July 30, 2020 - Web Domain Registration [PanElixir](https://www.panelixir.com), About Us Page Design, Create favicon.ico
 + July 29, 2020 - Web Domain Brainstorm & Organize Structure of Webpages
 + July 28, 2020 - Complete 100% of Interactive Features (Map Automatic Rotation, Button & Map Interaction)
 + July 27, 2020 - Complete 60% Interaction of Map and Buttons, Code Optimization(Combine Requests), new csv file that also includes continents
