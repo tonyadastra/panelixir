@@ -1,118 +1,570 @@
 /* Header */
-.jumbotron {
-  padding: 1.5rem 2rem 1.2rem 2rem;
-  margin-bottom: 20px;
-  background-color: #eaf9f7;
-  border-radius: 0.2rem;
-}
+/* Extra Small Screen - Two Line Title */
+@media screen and (max-width: 350px) {
+  .title {
+    font-size: 0.8rem !important; /* Modified */
+    max-width: 70%; /* New */
+  }
 
-a.style-a {
-  color: #fff;
-  text-decoration: none;
-  padding: 0 0 0.5rem;
-  position: relative;
-}
+  .title-bar {
+    height: 3rem !important; /* Modified */
+    padding: 0.5rem 1rem 1.75rem 0.7rem !important; /* Modified */
+    margin-bottom: 1rem !important; /* Modified */
+    background-color: #f5f5f5;
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  }
 
-#title > a.style-a {
-  position: relative;
-  color: darkslateblue;
-  text-decoration: none;
-}
+  #submit-data {
+    right: 20% !important;
+  }
 
-/* Hover Headerbar Effect */
-.header-text {
-  margin-top: 0.3rem;
-  color: #00008b;
-  font-family: sans-serif;
-  font-size: 1.4rem;
-  font-weight: lighter;
-  padding: 0;
-  position: relative;
-  display: inline-block;
-}
+  /* Title "The Developing Process of a Coronavirus Vaccine" */
+  .jumbotron {
+    padding: 0.75rem !important;
+    margin-bottom: 1px !important;
+    background-color: transparent;
+    border-radius: 0.2rem;
+  }
 
-
-.header-text > a.style-a {
-  position: relative;
-  color: #000;
-  text-decoration: none;
-}
-
-.header-text > a.style-a:hover {
-  color: #000;
-}
-
-.header-text > a.style-a::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 0.15rem;
-  bottom: 0;
-  left: 0;
-  background-color: darkorange;
-  border-radius: 0.1rem;
-  visibility: hidden;
-  transform: scaleX(0);
-  transition: all 0.25s ease-in-out 0s;
-}
-
-.header-text > a.style-a:hover::before {
-  visibility: visible;
-  transform: scaleX(1);
-}
-
-/* Coming Soon Toolkit */
-.coming-soon{
-  font-size: 1.2rem;
-}
-
-.header-text .coming-soon {
-  visibility: hidden;
-  width: 160px;
-  background-color: rgba(135, 133, 133, 0.87);
-  color: #fff;
-  text-align: center;
-  border-radius: 0.2rem;
-  padding: 5px 2px;
-
-  /* Position */
-  position: absolute;
-  z-index: 1;
-  top: 100%;
-  left: 50%;
-  margin-left: -80px;
 }
 
 
-.header-text:hover .coming-soon {
-  visibility: visible;
+/* Mobile Size ≤ 425px */
+@media screen and (max-width: 424px) {
+  /* Hide Dropdown for Mobile */
+
+  /*.dropdown{*/
+  /*  display: none;*/
+  /*}*/
+
+  .source {
+    font-size: 0.7rem; /* Modified */
+  }
+
+  .black {
+    /*color: black;*/
+    font-size: 10px !important;
+    margin-top: 0.5rem;
+    line-height: 1.3 !important;
+  }
+
+  .border-info {
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #17a2b8 !important;
+    margin-bottom: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  span.highlight {
+    font-family: sans-serif;
+    font-size: 11px !important;
+    margin: 0.35rem !important;
+    padding: 0.35rem !important;
+    border-radius: 0.2rem;
+    color: white;
+  }
+
+  #title {
+    font-family: Garamond, EB Garamond, Georgia, serif;
+    font-size: 0.9rem;
+    font-weight: 350;
+  }
+
+  .filter {
+    background-color: rgba(255, 194, 129, 0.25);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    padding-left: 0.8rem !important; /* Modified */
+    padding-bottom: 1rem;
+  }
+
+  .filtertext {
+    display: inline-block;
+    font-weight: 360 !important; /* Modified */
+    text-align: center;
+    vertical-align: middle;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem !important; /* Modified */
+    line-height: 1.5;
+    border-radius: 0.25rem;
+  }
+
+
+  .jumbotron {
+    padding: 0.75rem !important;
+    margin-bottom: 1px !important;
+    background-color: transparent;
+    border-radius: 0.2rem;
+  }
+
+  .title {
+    font-size: 0.7rem; /* Modified */
+  }
+
+
+  /* Hover Header-bar Effect */
+  .header-text {
+    margin-top: 0.2rem;
+    color: #00008b;
+    font-family: sans-serif;
+    font-size: 0.2rem !important; /* Modified */
+    font-weight: lighter;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .header-text > a.style-a {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+  }
+
+  /* Coming Soon Toolkit */
+  .coming-soon {
+    font-size: 0.35rem !important; /* Modified */
+  }
+
+  .header-text .coming-soon {
+    visibility: hidden;
+    width: 70px; /* Modified */
+    background-color: rgba(135, 133, 133, 0.87);
+    color: #fff;
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 5px 2px;
+
+    /* Position-Bottom */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -35px; /* Negative half of width */ /* Modified */
+  }
+
+
+  .header-text:hover .coming-soon {
+    visibility: visible;
+  }
+
+  .column-card {
+    float: left;
+    width: 100% !important; /* Modified */
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+  .intro-us{
+    font-size: 0.7rem; /* Modified */
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 0.3rem;/* Modified */
+    padding: 0.8rem;/* Modified */
+    background-color: rgba(253, 246, 236, 0.8);
+  }
+
+  .cursive {
+    font-family: Brush Script MT, Brush Script Std, cursive;
+    color: #111b2b;
+    font-size: 3.5rem; /* Modified */
+  }
+
 }
 
-/* #headerbar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-} */
-.column-card {
-  float: left;
-  width: 50%;
-  /*margin-bottom: 16px;*/
-  /*padding: 0 8px;*/
+/* 425-767px - Tablet */
+@media screen and (min-width: 425px) and (max-width: 767px) {
+  .title-bar {
+    /*height: 2rem;*/
+    padding: 0.75rem 1rem 1.75rem 1rem; /* Modified */
+    margin-bottom: 1rem; /* Modified */
+    background-color: #f5f5f5;
+    border-radius: 0.2rem;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* Modified */
+  }
+
+  .title {
+    font-size: 0.8rem; /* Modified */
+  }
+
+  .title > a.style-a {
+    position: relative;
+    color: #095a09; /* Color of Title */
+    text-decoration: none;
+  }
+
+  /* Hover Header-bar Effect */
+  .header-text {
+    margin-top: 0.2rem;
+    color: #00008b;
+    font-family: sans-serif;
+    font-size: 0.5rem; /* Modified */
+    font-weight: lighter;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .header-text > a.style-a {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+  }
+
+  /* Coming Soon Toolkit */
+  .coming-soon {
+    font-size: 0.4rem; /* Modified */
+  }
+
+  .header-text .coming-soon {
+    visibility: hidden;
+    width: 80px; /* Modified */
+    background-color: rgba(135, 133, 133, 0.87);
+    color: #fff;
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 5px 2px; /* Modified */
+
+    /* Position */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -40px;/* Modified */
+  }
+  .header-text:hover .coming-soon {
+    visibility: visible;
+  }
+
+  /* #headerbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  } */
+
+  .column-card {
+    float: left;
+    width: 100%; /* Modified */
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .intro-us {
+    font-size: 0.7rem; /* Modified */
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 0.3rem; /* Modified */
+    padding: 0.8rem; /* Modified */
+    background-color: rgba(253, 246, 236, 0.8);
+  }
+
+  .cursive {
+    font-family: Brush Script MT, Brush Script Std, cursive;
+    color: #111b2b;
+    font-size: 3.5rem; /* Modified */
+  }
+
+  .jumbotron {
+    padding: 1.5rem 2rem 1.2rem 2rem; /* Modified */
+    margin-bottom: 20px; /* Modified */
+    background-color: transparent;
+    border-radius: 0.2rem;
+  }
+
 }
 
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  margin: 0.8rem;
-  padding: 2rem;
-  background-color: rgba(243, 252, 245, 0.31);
+/* Tablet-iPad-Mini-Laptop 768-1200px */
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .title-bar {
+    padding: 1.5rem 2rem 1.2rem 2rem;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border-radius: 0.2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    font-size: 1.5rem; /* Modified */
+  }
+
+  a.style-a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 0 0.5rem;
+    position: relative;
+  }
+
+  .title > a.style-a {
+    position: relative;
+    color: #095a09; /* Color of Title */
+    text-decoration: none;
+  }
+
+  /* Hover Header-bar Effect */
+  .header-text {
+    margin-top: 0.3rem;
+    color: #00008b;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    font-weight: lighter;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .header-text > a.style-a {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+  }
+
+  .header-text > a.style-a:hover {
+    color: #000;
+  }
+
+  .header-text > a.style-a::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.15rem;
+    bottom: 0;
+    left: 0;
+    background-color: darkorange;
+    border-radius: 0.1rem;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.25s ease-in-out 0s;
+  }
+
+  .header-text > a.style-a:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+
+  /* Coming Soon Toolkit */
+  .coming-soon {
+    font-size: 1.2rem;
+  }
+
+  .header-text .coming-soon {
+    visibility: hidden;
+    width: 160px;
+    background-color: rgba(135, 133, 133, 0.87);
+    color: #fff;
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 5px 2px;
+
+    /* Position */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -80px;
+  }
+
+
+  .header-text:hover .coming-soon {
+    visibility: visible;
+  }
+
+  /* #headerbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  } */
+  .column-card {
+    float: left;
+    width: 50%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .intro-us {
+    font-size: 0.7rem;
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 0.6rem;
+    padding: 1.6rem;
+    background-color: rgba(253, 246, 236, 0.8);
+  }
+
+  .cursive {
+    font-family: Brush Script MT, Brush Script Std, cursive;
+    color: #111b2b;
+    font-size: 3.8rem;
+  }
+
+  .jumbotron {
+    padding: 1.5rem 2rem 1.2rem 2rem;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-radius: 0.2rem;
+  }
+
 }
 
-.cursive{
-  font-family: Brush Script MT, Brush Script Std, cursive;
-  color: #111b2b;
-  font-size: 4rem;
+
+@media screen and (min-width: 960px) and (max-width: 1199px) {
+  .intro-us {
+    font-size: 1rem !important;
+  }
 }
+
+/* Normal Computer Screen 1440px */
+@media screen and (min-width: 1200px) {
+
+  .title-bar {
+    padding: 1.5rem 2rem 1.2rem 2rem;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border-radius: 0.2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .jumbotron {
+    padding: 1.5rem 2rem 1.2rem 2rem;
+    margin-bottom: 20px;
+    background-color: transparent;
+    border-radius: 0.2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  a.style-a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 0 0.5rem;
+    position: relative;
+  }
+
+  .title > a.style-a {
+    position: relative;
+    color: #095a09; /* Color of Title */
+    text-decoration: none;
+  }
+
+  /* Hover Header-bar Effect */
+  .header-text {
+    margin-top: 0.3rem;
+    color: #00008b;
+    font-family: sans-serif;
+    font-size: 1.4rem;
+    font-weight: lighter;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+
+  .header-text > a.style-a {
+    position: relative;
+    color: #000;
+    text-decoration: none;
+  }
+
+  .header-text > a.style-a:hover {
+    color: #000;
+  }
+
+  .header-text > a.style-a::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 0.15rem;
+    bottom: 0;
+    left: 0;
+    background-color: darkorange;
+    border-radius: 0.1rem;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.25s ease-in-out 0s;
+  }
+
+  .header-text > a.style-a:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+
+  /* Coming Soon Toolkit */
+  .coming-soon {
+    font-size: 1.2rem;
+  }
+
+  .header-text .coming-soon {
+    visibility: hidden;
+    width: 160px;
+    background-color: rgba(135, 133, 133, 0.87);
+    color: #fff;
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 5px 2px;
+
+    /* Position */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -80px;
+  }
+
+
+  .header-text:hover .coming-soon {
+    visibility: visible;
+  }
+
+  /* #headerbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  } */
+  .column-card {
+    float: left;
+    width: 50%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 0.8rem;
+    padding: 2rem;
+    background-color: rgba(253, 246, 236, 0.8);
+  }
+
+  .cursive {
+    font-family: Brush Script MT, Brush Script Std, cursive;
+    color: #111b2b;
+    font-size: 4rem;
+  }
+
+}
+
+/*.title-bar {*/
+/*    height: 2rem;*/
+/*    padding: 0.75rem 1rem 1.75rem 1rem;*/
+/*    margin-bottom: 1rem;*/
+/*    background-color: #f5f5f5;*/
+/*    border-radius: 0.2rem;*/
+/*    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); !* Modified *!*/
+/*  }*/
 
 /* Positive Quote Tab */
 .positive{
@@ -462,7 +914,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-0.active, .dropdown-item-0:active {
@@ -480,7 +932,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-1.active, .dropdown-item-1:active {
@@ -498,7 +950,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-2.active, .dropdown-item-2:active {
@@ -516,7 +968,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-3.active, .dropdown-item-3:active {
@@ -534,7 +986,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-4.active, .dropdown-item-4:active {
@@ -552,7 +1004,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-ctry.active, .dropdown-item-ctry:active {
@@ -570,7 +1022,7 @@ span.highlight {
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
-  border: 0
+  border: 0;
 }
 
 .dropdown-item-type.active, .dropdown-item-type:active {
@@ -590,5 +1042,5 @@ span.highlight {
 
 .clear-filter {
   color: transparent;
-  border-bottom: darkslateblue
+  border-bottom: darkslateblue;
 }
