@@ -25,29 +25,10 @@ class myCard extends HTMLElement {
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
 
-
-        // logo image
-        if (this.hasAttribute('data-img')) {
-            const imgUrlArr = this.getAttribute('data-img').split(',')
-            imgUrlArr.forEach((imgUrl) => {
-                imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
-                const img = document.createElement('img');
-                img.setAttribute('height', '60px');
-                img.src = imgUrl; 
-                wrapper.appendChild(img);
-            })
-        } else {
-            let imgUrl = '../static/img/Untitled.png';
-            const img = document.createElement('img');
-            img.setAttribute('height', '40px');
-            img.src = imgUrl;
-            wrapper.appendChild(img);
-        }
-
-        // tag wrapper 
+        // tag wrapper
         var tag_wrapper = document.createElement('div');
         tag_wrapper.setAttribute('class', 'tag_wrapper');
-        
+
         // country tag
         // #e37222'
         const countryArr = this.getAttribute('data-country').split(',')
@@ -71,6 +52,32 @@ class myCard extends HTMLElement {
         tag_wrapper.appendChild(vac_tag);
 
         wrapper.appendChild(tag_wrapper);
+
+        // button to learn more
+        var btn = document.createElement('button');
+        btn.setAttribute('class', 'collapsible');
+        btn.setAttribute('type', 'button');
+        btn.innerHTML = 'Learn More';
+
+        var content = document.createElement('a');
+
+        // logo image
+        if (this.hasAttribute('data-img')) {
+            const imgUrlArr = this.getAttribute('data-img').split(',')
+            imgUrlArr.forEach((imgUrl) => {
+                imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
+                const img = document.createElement('img');
+                img.setAttribute('height', '60px');
+                img.src = imgUrl; 
+                wrapper.appendChild(img);
+            })
+        } else {
+            let imgUrl = '../static/img/Untitled.png';
+            const img = document.createElement('img');
+            img.setAttribute('height', '40px');
+            img.src = imgUrl;
+            wrapper.appendChild(img);
+        }
 
 
         // progress bar
@@ -144,13 +151,6 @@ class myCard extends HTMLElement {
         text.innerHTML = intro;
         wrapper.appendChild(text);
 
-        // button to learn more 
-        var btn = document.createElement('button');
-        btn.setAttribute('class', 'collapsible');
-        btn.setAttribute('type', 'button');
-        btn.innerHTML = 'Learn More';
-
-        var content = document.createElement('a');
 
         var url = this.getAttribute('data-expand');
         content.setAttribute("href", url);
