@@ -37,24 +37,34 @@ try:
             # ignore header and empty rows
             if (str(table[j, 2]) != 'nan' and vac_id != 49):
                 # update info table
-                cur.execute("INSERT INTO info (vac_id, vac_type, company, stage, country) "
-                            "VALUES (" + str(vac_id) + ",'" + str(table[j, 0]) + "','" + str(table[j, 2])
-                            + "',0,'')")
+                # cur.execute("INSERT INTO info (vac_id, vac_type, company, stage, country) "
+                #             "VALUES (" + str(vac_id) + ",'" + str(table[j, 0]) + "','" + str(table[j, 2])
+                #             + "',0,'')")
+                cur.execute("UPDATE info "
+                            "SET vac_id=" + str(vac_id) + 
+                            " where company='"+str(table[j, 2])+"' and vac_type='"+str(table[j, 0]) + "';")
                 cur.execute("rollback")
 
                 # update "companies" table
                 arr = str(table[j, 2]).replace('\r', '').split('/', 1)
-                if (len(arr) == 1):
-                    cur.execute("INSERT INTO companies (vac_id, co_name, partner_name) "
-                                "VALUES (" + str(vac_id) + ",'" +
-                                arr[0] + "','')")
+                # cur.execute("UPDATE companies "
+                #             "SET vac_id=" + str(vac_id) +
+                #             " where co_name='"+arr[0]+ "';")
+                # if (len(arr) == 1):
+                #     cur.execute("INSERT INTO companies (vac_id, co_name, partner_name) "
+                #                 "VALUES (" + str(vac_id) + ",'" +
+                #                 arr[0] + "','')")
 
-                else:
-                    cur.execute("INSERT INTO companies (vac_id, co_name, partner_name) "
-                                "VALUES (" + str(vac_id) + ",'" +
-                                arr[0] + "','" + arr[1] + "')")
+                # else:
+                #     cur.execute("INSERT INTO companies (vac_id, co_name, partner_name) "
+                #                 "VALUES (" + str(vac_id) + ",'" +
+                #                 arr[0] + "','" + arr[1] + "')")
                 cur.execute("rollback")
-            vac_id = vac_id+1
+            # if (str(table[j, 2]) == 'nan'):
+            #     print(vac_id)
+
+                if (str(table[j, 2]) != 'nan'):
+                    vac_id = vac_id+1
 
             
             # if (str(table[j, 2]) != 'nan' ):
