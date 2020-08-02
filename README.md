@@ -3,6 +3,8 @@
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
 **Latest Updates**
++ August 1, 2020 - Complete Media Querying(Compatible with Mobile, Tablets, and iPads), Add Datasource to Database(Current Display- Pre-Clinical: 140)
++ July 31, 2020 - Complete 70% of Media Querying, Add source from WHO to database
 + July 30, 2020 - Web Domain Registration [PanElixir](https://www.panelixir.com), About Us Page Design, Create favicon.ico
 + July 29, 2020 - Web Domain Brainstorm & Organize Structure of Webpages
 + July 28, 2020 - Complete 100% of Interactive Features (Map Automatic Rotation, Button & Map Interaction)
@@ -28,7 +30,7 @@
 * [X] [TextTween](https://observablehq.com/@d3/transition-texttween)
 * [X] [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
 * [X] [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
-* [ ] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
+* [X] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
 * [ ] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
 
 
@@ -41,7 +43,8 @@
 **Resources**
 1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
 2. [The Lancet Coronavirus Resource Center](https://www.thelancet.com/coronavirus?dgcid=kr_pop-up_tlcoronavirus20)
-3. [NYT Article - *Different Approaches to a Vaccine*](https://www.nytimes.com/interactive/2020/05/20/science/coronavirus-vaccine-development.html?action=click&module=RelatedLinks&pgtype=Article)
-4. [One Point Three Acres COVID-19 Cases Tracker](https://coronavirus.1point3acres.com/en)
-5. [Heroku Database Export / Import](https://devcenter.heroku.com/articles/heroku-postgres-import-export)
-6. [D3.ease(transition examples)](https://observablehq.com/@d3/easing-animations)
+3. [New England Journal of Medicine](https://www.nejm.org/)
+4. [NYT Article - *Different Approaches to a Vaccine*](https://www.nytimes.com/interactive/2020/05/20/science/coronavirus-vaccine-development.html?action=click&module=RelatedLinks&pgtype=Article)
+5. [One Point Three Acres COVID-19 Cases Tracker](https://coronavirus.1point3acres.com/en)
+6. [Heroku Database Export / Import](https://devcenter.heroku.com/articles/heroku-postgres-import-export)
+7. [D3.ease(transition examples)](https://observablehq.com/@d3/easing-animations)
