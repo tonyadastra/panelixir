@@ -39,94 +39,100 @@
 {% block content %}
 
 <!-- Data Visualizations-->
-<div class="row">
-    <div class="col" style="padding: 0;">
-        <div id="vis1" class="vis"></div>
-    </div>
-    <div class="col" style="margin: 0 0.1rem 0 0;">
-        <div class="interactive-buttons row" style="margin-bottom: 1rem;">
-            <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
-            <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Oceania" value="Oceania">Oceania</button>
+{#<div class="container" style="position: relative; text-align: center; background-color: white;width: 100%;max-width: none;padding: 0;margin: 0;">#}
+    <div class="row">
+        <div class="col-xl col-lg col-md-2" style="padding: 0;">
+            <div id="vis1" class="vis"></div>
         </div>
+        <div class="col-xl col-lg col-md-12 col-xs-12 text-center" style="margin: 0 1rem 0 0;">
+            <div class="interactive-buttons" style="margin-bottom: 1rem;">
+                <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
+                <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North America</button>
+                <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
+                <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
+                <button class="btn btn-outline-secondary button-font" data-value="Oceania" value="Oceania">Oceania</button>
+                <button class="btn btn-outline-secondary button-font" data-value="Africa" value="Africa">Africa</button>
+                <button class="btn btn-outline-secondary button-font" data-value="South America" value="South America">South America</button>
+            </div>
 
-        <div class="interactive-progress row">
-            <!--            Extended Length of Bar1-->
-            <div class="stage0" style="width: 18px"></div>
-            <!--            Bar1-->
+            <div class="interactive-progress row">
+                <!--            Extended Length of Bar1-->
+                <div class="stage0" style="width: 18px"></div>
+                <!--            Bar1-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage0">
+                        <div class="bar-data" id="progress0">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow1-->
+                <div class="arrow-right-stage0 stage1"></div>
+                <!--            Bar2-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage1">
+                        <div class="bar-data" id="progress1">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow2-->
+                <div class="arrow-right-stage1 stage2"></div>
+                <!--            Bar3-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage2">
+                        <div class="bar-data" id="progress2">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- Arrow3-->
+                <div class="arrow-right-stage2 stage3"></div>
+                <!-- Bar4-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage3">
+                        <div class="bar-data" id="progress3">&nbsp;</div>
+                    </div>
+            </div>
+            <!--            Arrow4-->
+            <div class="arrow-right-stage3 stage4"></div>
+            <!--            Bar5-->
             <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage0">
-                    <div class="bar-data" id="progress0">&nbsp;</div>
+                <div class="interactive-bar stage4">
+                    <div class="bar-data" id="progress4">&nbsp;</div>
                 </div>
             </div>
-            <!--            Arrow1-->
-            <div class="arrow-right-stage0 stage1"></div>
-            <!--            Bar2-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage1">
-                    <div class="bar-data" id="progress1">&nbsp;</div>
-                </div>
-            </div>
-            <!--            Arrow2-->
-            <div class="arrow-right-stage1 stage2"></div>
-            <!--            Bar3-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage2">
-                    <div class="bar-data" id="progress2">&nbsp;</div>
-                </div>
-            </div>
-            <!-- Arrow3-->
-            <div class="arrow-right-stage2 stage3"></div>
-            <!-- Bar4-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage3">
-                    <div class="bar-data" id="progress3">&nbsp;</div>
-                </div>
+            <!--            Arrow5-->
+            <div class="arrow-right-stage4"></div>
         </div>
-        <!--            Arrow4-->
-        <div class="arrow-right-stage3 stage4"></div>
-        <!--            Bar5-->
-        <div class="col" style="padding: 0;">
-            <div class="interactive-bar stage4">
-                <div class="bar-data" id="progress4">&nbsp;</div>
+            <div class="interactive-progress row" id="tag-between">
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage0">Pre-Clinical</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage1">Phase I</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage2">Phase II</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage3">Phase III</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage4">Approval</div>
+                    </div>
+                </div>
+            </div>
+            <div class="vis-bars">
+                <div id="vis2" class="vis"></div>
+                <div id="vis3" class="vis"></div>
             </div>
         </div>
-        <!--            Arrow5-->
-        <div class="arrow-right-stage4"></div>
     </div>
-        <div class="interactive-progress row">
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage0">Pre-Clinical</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage1">Phase I</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage2">Phase II</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage3">Phase III</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage4">Approval</div>
-                </div>
-            </div>
-        </div>
-        <div id="vis2" class="vis"></div>
-        <div id="vis3" class="vis"></div>
-    </div>
-</div>
+{#</div>#}
 
 
 <div class="ctr text-center">
@@ -134,27 +140,27 @@
         <h3 id="title">The Developing Process of a <i>Coronavirus Vaccine</i></h3>
     </div>
     <div class="row">
-        <div class="col border-left border-info">
+        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
             <span class="highlight stage0">Preclinical</span>
             <p class="black">In the Preclinical stage, the vaccine is <b>given to animals</b> to identify potential
                 safety concerns and test if it triggers an immune response.</p>
         </div>
-        <div class="col border-left border-info">
+        <div class="col-lg col-md-4 col-sm-4 col-4 border-left border-info">
             <span class="highlight stage1">Phase I</span>
             <p class="black">In Phase I trials, the vaccine is <b>given to small groups of people</b> (approximately 20
                 to 80) to test its safety and confirm that it stimulates the immune system.</p>
         </div>
-        <div class="col border-left border-info">
+        <div class="col-lg col-md-4 col-sm-4 col-4 border-left border-info">
             <span class="highlight stage2">Phase II</span>
             <p class="black">In Phase II trials, the vaccine is <b>given to several hundred people</b>, especially
                 people of different ages, to test its effectiveness.</p>
         </div>
-        <div class="col border-left border-info">
+        <div class="col-lg col-md-6 col-sm-6 col-4 border-left border-info">
             <span class="highlight stage3">Phase III</span>
             <p class="black">In Phase III trials, the vaccine is <b>given to several thousand people</b> to confirm and
                 expand on safety and effectiveness results from previous trials.</p>
         </div>
-        <div class="col border-left border-right border-info">
+        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
             <span class="highlight stage4">Approval</span>
             <p class="black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
                     approve the vaccine or not</b>.</p>
@@ -163,7 +169,7 @@
 </div>
 
 <div class="text-center" style="color: #19198b">
-    <p>Data Source:&nbsp;<i><b>The World Health Organization</b>: <a href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines" style="color: rgb(6,69,173);"> Draft landscape of COVID-19 candidate vaccines</a></i></p>
+    <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines" style="color: rgb(6,69,173);"> Draft landscape of COVID-19 candidate vaccines</a></i></p>
 </div>
 <!--Heading - Question-->
 <!--<div class="heading">-->
@@ -208,6 +214,8 @@
                         {{country_dis}}
                     </button>
                     <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
+                         <button class="dropdown-item disabled" style="color: darkcyan;">Commonly Searched</button>
+{#                        <div class="dropdown-divider"></div>#}
                         <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
                             States</button>
                         <button class="dropdown-item-ctry" type="submit" name="country" value="United Kingdom">United
@@ -226,6 +234,30 @@
                         <button class="dropdown-item-ctry" type="submit" name="country" value="Austria">Austria</button>
                         <button class="dropdown-item-ctry" type="submit" name="country"
                             value="Singapore">Singapore</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item disabled">Other Countries</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Argentina">Argentina</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Belgium">Belgium</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Brazil">Brazil</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Egypt">Egypt</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Finland">Finland</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Israel">Israel</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Italy">Italy</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Kazakhstan">Kazakhstan</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Malaysia">Malaysia</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Netherlands">Netherlands</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Nigeria">Nigeria</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Sweden">Sweden</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Switzerland">Switzerland</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Thailand">Thailand</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Turkey">Turkey</button>
+                        <button class="dropdown-item-ctry" type="submit" name="country" value="Vietnam">Vietnam</button>
+
+
+
+
+
                     </div>
                 </div>
             </div>

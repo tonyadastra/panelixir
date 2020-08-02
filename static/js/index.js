@@ -70,8 +70,9 @@ $(document).ready(function () {
     // Set up the svg work space
     var map = d3.select('#vis1')
         .append('svg')
-        .attr('width', map_svgW)
-        .attr('height', map_svgH)
+        // .attr('width', map_svgW)
+        // .attr('height', map_svgH)
+        .attr('viewBox', `0 0 ${map_svgW} ${map_svgH}`)
         .attr('class', "map")
 
     map.append("defs").append("path")
@@ -371,13 +372,12 @@ $(document).ready(function () {
                     let gMargin = {top: 50, right: 25, bottom: 75, left: 75};
                     let states = ['Pre-Clinical', 'Phase I', 'Phase II', 'Phase III', 'Approval'];
                     let currentState = 'Pre-Clinical'
-                    let progressStart = 130, segmentWidth = 95;
+                    let progressStart = 130, segmentWidth = 85;
                     // vis3 replaces vis2 in position
                     svg = d3.select('#vis3')
                         .append('svg')
                         .attr('id', 'vis2')
-                        .attr('width', svgW)
-                        .attr('height', svgH);
+                        .attr('viewBox', `0 0 ${svgW} ${svgH}`);
 
                     colorScale = d3.scaleOrdinal()
                         .domain(states)
@@ -439,6 +439,7 @@ $(document).ready(function () {
                             .attr("font-family", "sans-serif")
                             .attr("font-size", "12px")
                             .attr("font-weight", "bold")
+                            .attr("class", "bars-text")
                             .text(companyMap[i])
                             .call(wrap, 120);
 
