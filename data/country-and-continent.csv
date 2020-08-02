@@ -231,8 +231,8 @@ Oceania,OC,"Tonga, Kingdom of",TO,TON,776
 North America,NA,"Trinidad and Tobago, Republic of",TT,TTO,780
 Asia,AS,United Arab Emirates,AE,ARE,784
 Africa,AF,"Tunisia, Tunisian Republic",TN,TUN,788
-Europe,EU,"Turkey, Republic of",TR,TUR,792
-Asia,AS,"Turkey, Republic of",TR,TUR,792
+Europe,EU,Turkey,TR,TUR,792
+Asia,AS,Turkey,TR,TUR,792
 Asia,AS,Turkmenistan,TM,TKM,795
 North America,NA,Turks and Caicos Islands,TC,TCA,796
 Oceania,OC,Tuvalu,TV,TUV,798
