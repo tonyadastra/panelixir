@@ -83,6 +83,9 @@ def index():
                 else:
                     types = ""
                     types_dis = "Vaccine Types"
+
+            if types == "DNA" or types == "RNA":
+                types = "Genetic"
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
