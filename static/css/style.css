@@ -429,7 +429,6 @@
 }
 
 /* Normal Computer Screen 1440px */
-
 @media screen and (min-width: 1200px) {
   .title-bar {
     padding: 1.5rem 2rem 0.9rem 2rem !important;
