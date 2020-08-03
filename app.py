@@ -16,14 +16,14 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-# app.secret_key = "ILoveNewYork"
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+app.secret_key = "ILoveNewYork"
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 # # User - Lola
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-app.secret_key = "lola980109"
-conn = psycopg2.connect("dbname=covid19_db user=lola")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+# app.secret_key = "lola980109"
+# conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
