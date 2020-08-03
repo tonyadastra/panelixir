@@ -35,10 +35,14 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-
+stages = "Stages"
+country = "Country"
+types = "Vaccine Types"
+status = "status"
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        global stages, country, types, status
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
         types = request.form.get("type", "Vaccine Types")
@@ -56,7 +60,7 @@ def index():
             types_dis = "Vaccine Types"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                        "ORDER BY stage DESC, co_name, partner_name;")
+                        "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
         else:
             if stages == "Stages":
                 if prev_stages != "Stages":
@@ -84,16 +88,27 @@ def index():
                     types = ""
                     types_dis = "Vaccine Types"
 
-            if types == "DNA" or types == "RNA":
-                types = "Genetic"
+            if types == "Genetic":
+                types_dis = types
+                types = "DNA%' or vac_type LIKE '%RNA"
+            elif types == "Protein":
+                types_dis = "Protein-Based Vaccines"
+            elif types == "Virus":
+                types_dis = "Whole-Virus Vaccines"
+            elif types == "Repurposed":
+                types_dis = "Others"
+
+            # elif types== 
+
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
+                # "AND '" + types + "' ~ vac_type "
                 " AND vac_type LIKE '%" + types + "%' "
-                "ORDER BY stage DESC, co_name, partner_name;")
+                "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -116,14 +131,51 @@ def index():
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, co_name, partner_name;")
-        data = np.array(cur.fetchall())
+                    "ORDER BY stage DESC, company, partner_name LIMIT 5")
+                    # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
+        data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
         country_dis = "Country"
         types_dis = "Vaccine Types"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
+
+
+@app.route("/card", methods=['GET','POST'])
+def card():
+    limit = int(request.args.get('limit'))
+    count = int(request.args.get('count'))
+
+    if (status == "clear"):
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+                    "info INNER JOIN companies ON info.vac_id = companies.vac_id "
+                    "ORDER BY stage DESC, company, partner_name "
+                    "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+
+    elif (stages != "Stages" or country !="Country" or types !="Vaccine Types"):
+    #     if types == "Genetic":
+    #         types = "DNA%' or vac_type LIKE '%RNA"
+
+        cur.execute(
+            "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+            " JOIN companies ON info.vac_id = companies.vac_id "
+            " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
+            " AND country LIKE '%" + country + "%' "
+            " AND vac_type LIKE '%" + types + "%' "
+            "ORDER BY stage DESC, co_name, partner_name "
+            "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+
+    else:
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+                    "info INNER JOIN companies ON info.vac_id = companies.vac_id "
+                    "ORDER BY stage DESC, company, partner_name "
+                    "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+    
+    # cur.execute("rollback")    
+    data = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("card.html", data=data)
 
 
 @app.route("/about-us")
@@ -209,9 +261,6 @@ def load_country():
     return jsonify(data)
 
 
-# @app.route('/workstation', methods=['GET'])
-# def workstation():
-#   return flask.render_template('station.html', target=)
 
 if __name__ == '__main__':
     app.secret_key = ''.join(random.choice(string.printable)
@@ -220,3 +269,5 @@ if __name__ == '__main__':
 
 # cur.close()
 # conn.close()
+
+

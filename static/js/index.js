@@ -30,12 +30,14 @@ world_continents.registerListener(function (val) {
 
 var needs_update = true;
 var processing = false;
+var count = 1, limit = 5;
+
 /** When page is loaded...**/
 $(document).ready(function () {
     /** Interactive Map Setup **/
     let world = [], names = [], countries, vac_map = new Map();
     let map_svgW = 700, map_svgH = 550;
-    let rotate = [100, -40];
+    let rotate = [100, -20];
     let velocity = 0.01;
     let time = Date.now();
     var ContinentArray = {
@@ -292,6 +294,17 @@ $(document).ready(function () {
             }
         })
 
+        // $.ajax({
+        //     url: '/card',
+        //     type: 'get',
+        //     data: { 'count': count, 'limit': limit },
+        //     success: function (response) {
+        //         // console.log(response)
+        //         console.log(response)
+        //         $('#card_container').append(response);
+        //         count = count + 1;
+        //     }
+        // });
 
         var btn_group = document.getElementsByTagName('button');
         for (var i = 0, length = btn_group.length; i < length; i++) {
@@ -583,4 +596,24 @@ $(document).ready(function () {
         // }, 600);
     });
 
+});
+
+var nearToBottom = 100;
+$(window).scroll(function () {
+    if ($(window).scrollTop() + $(window).height() >
+        $(document).height() - nearToBottom) {
+        // ajax call get data from server and append to the div
+        $.ajax({
+            url: '/card',
+            type: 'get',
+            data: {'count': count, 'limit':limit},
+            success: function (response) {
+                // console.log(response)
+                // console.log(response)
+                $('#card_container').append(response);
+
+                count = count+1;
+            }
+        });
+    }
 });
