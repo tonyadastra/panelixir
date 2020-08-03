@@ -1,28 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Institutions</title>
-    <script src="../static/js/card.js"></script>
-    <link rel="stylesheet" href="../static/css/card.css">
-</head>
-<body>
-    <div class="institutions">
-        <my-card img='../static/img/img1.png' data-text='test'></my-card>
-        <my-card img='../static/img/img2.png'></my-card>
-        <!-- <img src="../static/img/img2.png"> -->
-    </div>
-    <!-- <div id="progress">
-        <div id="pbar"></div>
-    </div> -->
-
-    <div>
-        <!-- {% for row in data %}
-        <p>{{ row[0] }}</p>
-        <p>{{ row[1] }}</p>
-        {% endfor %} -->
-    </div>
-    
-</body>
-</html>
+<div class="institutions">
+    {% for entry in data %}
+    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+        data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+    </my-card>
+    {% endfor %}   
+</div>
