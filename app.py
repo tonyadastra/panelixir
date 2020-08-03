@@ -90,7 +90,7 @@ def index():
 
             if types == "Genetic":
                 types_dis = types
-                types = "DNA%' or vac_type LIKE '%RNA"
+                types = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
             elif types == "Protein":
                 types_dis = "Protein-Based Vaccines"
             elif types == "Virus":
