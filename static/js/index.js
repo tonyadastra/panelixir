@@ -285,8 +285,7 @@ $(document).ready(function () {
                             time = Date.now()
                         }
                         if (!processing) {
-                            // console.log(window.continent)
-                            projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                                projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
                             feature.attr("d", path);
                         }
                     });
