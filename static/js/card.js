@@ -18,7 +18,7 @@ class myCard extends HTMLElement {
 
         const linkElem2 = document.createElement('link');
         linkElem2.setAttribute('rel', 'stylesheet');
-        linkElem2.setAttribute('href', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css');
+        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
         shadow.appendChild(linkElem2);
 
         // the outter most div
