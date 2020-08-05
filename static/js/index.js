@@ -96,6 +96,61 @@ $(document).ready(function () {
         .attr("d", path);
 
     $(function () {
+        if (window.screen.width <= 425) {
+            var div = document.getElementsByClassName("modal_container")[0];
+            var btn1 = document.getElementsByClassName("btn-stage")[1];
+            var btn2 = document.getElementsByClassName("btn-country")[1];
+            var btn3 = document.getElementsByClassName("btn-types")[1];
+            var div_clear = document.getElementsByClassName("clear_filter")[1];
+            
+            $(div).show();
+            $(btn1).show();
+            $(btn2).show();
+            $(btn3).show();
+            $(div_clear).show();
+
+            var modal1 = document.getElementsByClassName("modal")[0];
+            btn1.onclick = function () {
+                modal1.style.display = "block";
+            }
+
+            var modal2 = document.getElementsByClassName("modal")[1];
+            btn2.onclick = function () {
+                modal2.style.display = "block";
+            }
+
+            var modal3 = document.getElementsByClassName("modal")[2];
+            btn3.onclick = function () {
+                modal3.style.display = "block";
+            }
+
+            // clik anywhere to close modal
+            window.onclick = function (event) {
+                if (event.target == modal1) {
+                    modal1.style.display = "none";
+                }
+                if (event.target == modal2) {
+                    modal2.style.display = "none";
+                }
+                if (event.target == modal3) {
+                    modal3.style.display = "none";
+                }
+            }
+        } else {
+            var div = document.getElementsByClassName("dropdown")[0];
+            var btn1 = document.getElementsByClassName("btn-stage")[0];
+            var btn2 = document.getElementsByClassName("btn-country")[0];
+            var btn3 = document.getElementsByClassName("btn-types")[0];
+            var div_clear = document.getElementsByClassName("clear_filter")[0];
+
+            $(div).show();
+            $(btn1).show();
+            $(btn2).show();
+            $(btn3).show();
+            $(div_clear).show();
+        }
+
+
         $.ajax({
             url: "/load_data",
             type: "get",
