@@ -507,7 +507,7 @@ $(document).ready(function () {
                             .attr("font-size", "12px")
                             .attr("font-weight", "bold")
                             .attr("class", "bars-text")
-                            .text(companyMap[i])
+                            .text(companyMap[i].replace(/\//g, ", "))
                             .call(wrap, 120);
 
                         let height = parseInt(svg.select('text').node().getBoundingClientRect().height);
