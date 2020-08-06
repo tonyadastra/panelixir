@@ -16,8 +16,9 @@
 <script src="../static/js/library/d3.v5.js"></script>
 <script src="../static/js/library/topojson.client.js"></script>
 <!--Internal JS Files-->
-<script src="../static/js/card.js"></script>
 <script src="../static/js/index.js"></script>
+<script src="../static/js/card.js"></script>
+
 
 <script>
     $(".button-font").on('click', function () {
@@ -211,6 +212,27 @@
                         <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
                         <!--  Enabled-->
                         <!-- <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
+                    </div>
+                </div>
+                <div class="modal_container">
+                    <button type="button" class="btn btn-stage" style="display: none; font-size: 12px;">
+                        {{stages_dis}}
+                    </button>
+
+                    <div class="modal">
+                        <div class="modal-content" style="z-index: 3;">
+                            <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
+                            <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
+                            <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
+                            <div class="dropdown-divider"></div>
+                            <!--  Disabled-->
+                            <button class="dropdown-item disabled" type="submit" name="stages"
+                                value="4">Approval</button>
+                            <!--  Enabled-->
+                            <!-- <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button> -->
+                        </div>
                     </div>
                 </div>
             </div>
