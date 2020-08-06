@@ -16,14 +16,14 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-# app.secret_key = "ILoveNewYork"
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+app.secret_key = "ILoveNewYork"
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 # # User - Lola
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-app.secret_key = "lola980109"
-conn = psycopg2.connect("dbname=covid19_db user=lola")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+# app.secret_key = "lola980109"
+# conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
@@ -35,10 +35,13 @@ def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
+
 stages = "Stages"
 country = "Country"
 types = "Vaccine Types"
 status = "status"
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -105,10 +108,10 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                " AND country LIKE '%" + country + "%' "
+                                                                     " AND country LIKE '%" + country + "%' "
                 # "AND '" + types + "' ~ vac_type "
-                " AND vac_type LIKE '%" + types + "%' "
-                "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                                                                                                        " AND vac_type LIKE '%" + types + "%' "
+                                                                                                                                          "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -132,7 +135,7 @@ def index():
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name LIMIT 5")
-                    # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
+        # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
@@ -142,20 +145,20 @@ def index():
                                country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
 
 
-@app.route("/card", methods=['GET','POST'])
+@app.route("/card", methods=['GET', 'POST'])
 def card():
     limit = int(request.args.get('limit'))
     count = int(request.args.get('count'))
 
-    if (status == "clear"):
+    if status == "clear":
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
-                    "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+                    "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    elif (stages != "Stages" or country !="Country" or types !="Vaccine Types"):
-    #     if types == "Genetic":
-    #         types = "DNA%' or vac_type LIKE '%RNA"
+    elif stages != "Stages" or country != "Country" or types != "Vaccine Types":
+        #     if types == "Genetic":
+        #         types = "DNA%' or vac_type LIKE '%RNA"
 
         cur.execute(
             "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
@@ -164,14 +167,14 @@ def card():
             " AND country LIKE '%" + country + "%' "
             " AND vac_type LIKE '%" + types + "%' "
             "ORDER BY stage DESC, co_name, partner_name "
-            "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+            "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
-                    "OFFSET " + str(count*limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-    
+                    "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+
     # cur.execute("rollback")    
     data = cur.fetchall()
     cur.execute("rollback")
@@ -195,7 +198,7 @@ def getBarsData():
                 " 'flag', flag )) "
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
-                " WHERE continent LIKE '%"+continent+"%' "
+                " WHERE continent LIKE '%" + continent + "%' "
                 "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
@@ -204,7 +207,7 @@ def getBarsData():
     cur.execute("SELECT stage, COUNT(stage) as count "
                 "FROM info "
                 "WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage ORDER BY stage")
+                                                        "GROUP BY stage ORDER BY stage")
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []
@@ -261,7 +264,6 @@ def load_country():
     return jsonify(data)
 
 
-
 if __name__ == '__main__':
     app.secret_key = ''.join(random.choice(string.printable)
                              for _ in range(20))
@@ -269,5 +271,3 @@ if __name__ == '__main__':
 
 # cur.close()
 # conn.close()
-
-

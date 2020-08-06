@@ -356,8 +356,7 @@ $(document).ready(function () {
                             time = Date.now()
                         }
                         if (!processing) {
-                            // console.log(window.continent)
-                            projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                                projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
                             feature.attr("d", path);
                         }
                     });
@@ -524,7 +523,7 @@ $(document).ready(function () {
                             .attr("font-size", "12px")
                             .attr("font-weight", "bold")
                             .attr("class", "bars-text")
-                            .text(companyMap[i])
+                            .text(companyMap[i].replace(/\//g, ", "))
                             .call(wrap, 120);
 
                         let height = parseInt(svg.select('text').node().getBoundingClientRect().height);

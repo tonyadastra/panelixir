@@ -2,6 +2,19 @@
 
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
+**To Do List**
+* [ ] Modal For Mobile Version
+* [ ] WHO Vaccine Type Filtering
+* [ ] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
+* [ ] Logo Design
+* [ ] Map Optimization (Taking up 100%+ CPU)
+* [ ] About-Us Photos & Contact Info
+* [ ] Disclaimer
+* [ ] Auto-Update Data from WHO website
+* [ ] Daily/Weekly Update from Interactive Progress Bar
+* [ ] Combined Phases
+* [ ] Feedback Form
+
 **Latest Updates**
 + August 1, 2020 - Complete Media Querying(Compatible with Mobile, Tablets, and iPads), Add Datasource to Database(Current Display- Pre-Clinical: 140)
 + July 31, 2020 - Complete 70% of Media Querying, Add source from WHO to database
@@ -31,6 +44,7 @@
 * [X] [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
 * [X] [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
 * [X] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
+* [ ] [Host Database on Amazon RDS](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/)
 * [ ] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
 
 

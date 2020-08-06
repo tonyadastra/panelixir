@@ -29,6 +29,16 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  p.display-highlight{
+    margin-bottom: 0.3rem!important;
+  }
+  .large-screen{
+    display: none;
+  }
+  /*.dropdown{*/
+  /*  display: none;*/
+  /*}*/
+
   .title-bar {
     height: 2rem;
     padding: 0.75rem 1rem 0.4rem 1rem;
@@ -44,23 +54,31 @@
     /*color: black;*/
     font-size: 10px !important;
     margin-top: 0.5rem;
+    margin-bottom: 0.3rem;
     line-height: 1.3 !important;
+    text-align: left!important;
+    padding-right: 0!important;
+    /*margin-right: -10px!important;*/
   }
   .border-info {
     border-left: 0 !important;
     border-right: 0 !important;
     border-bottom: 1px solid #17a2b8 !important;
-    margin-bottom: 12px;
+    /*margin-bottom: 4px!important;*/
     padding-left: 5px;
     padding-right: 5px;
   }
   span.highlight {
+    vertical-align: middle!important;
     font-family: sans-serif;
     font-size: 11px !important;
-    margin: 0.35rem !important;
+    margin: auto 0.1rem !important;
     padding: 0.35rem !important;
     border-radius: 0.2rem;
     color: white;
+    display: inline-block;
+    height: 50%;
+    width: 80%;
   }
   #title {
     font-family: Garamond, EB Garamond, Georgia, serif;
@@ -189,6 +207,9 @@
 /* 425-767px - Tablet */
 
 @media screen and (min-width: 426px) and (max-width: 767px) {
+  .large-screen{
+    display: none;
+  }
   .title-bar {
     /*height: 2rem;*/
     padding: 0.75rem 1rem 0.4rem 1rem;
@@ -296,6 +317,9 @@
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
+  .small-screen{
+    display: none;
+  }
   .title-bar {
     padding: 1.5rem 2rem 1.2rem 2rem;
     margin-bottom: 20px;
@@ -421,6 +445,10 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+  .small-screen{
+    display: none;
+  }
+
   .title-bar {
     padding: 1.5rem 2rem 0.9rem 2rem;
     margin-bottom: 30px;
@@ -658,6 +686,7 @@
 
 .row {
   margin-right: 0;
+  margin-left: 0;
 }
 
 /* Global Setting */
@@ -753,7 +782,7 @@
 span.highlight {
   font-family: sans-serif;
   font-size: 16px;
-  margin: 0.5rem;
+  /*margin: 0.5rem;*/
   padding: 0.5rem;
   border-radius: 0.2rem;
   color: white;
