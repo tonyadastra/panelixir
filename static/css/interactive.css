@@ -270,10 +270,9 @@
 		display: block !important;/* Modified */;
 	}
 
-	button.align-right {
-		/*position: absolute;*/
-		right: 12% !important;/* Modified */;
-	}
+	/* button.align-right {
+		right: 12% !important;;
+	} */
 	#progress0 {
 		/*background-color: #c1c8e4;*/
 		margin-left: -0.7rem !important;/* Modified */;
