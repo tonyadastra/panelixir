@@ -89,11 +89,6 @@
     font-size: 0.9rem;
     font-weight: 350;
   }
-  .filter {
-    background-color: #faf4e5;
-    padding: 1rem 0 1rem 0.8rem;
-    margin-top: 0.5rem;
-  }
   /* .filtertext {
     display: inline-block;
     font-weight: 360;
@@ -211,6 +206,7 @@
     font-size: 0.8rem;
     line-height: 1rem;
   }
+  
   .column {
     padding: 0.5rem !important;
   }
@@ -805,12 +801,11 @@ span.highlight {
 }
 
 /* filter menu */
-
 .filter {
   /* background-color: rgba(255, 194, 129, 0.25); */
   background-color: #faf4e5;
   margin-top: 0.5rem;
-  padding: 0.5rem 0 0.5rem 2rem;
+  padding: 0.5rem 0 0rem 2rem;
   /* padding-left: 2rem;
   padding-bottom: 0.6rem; */
 }
