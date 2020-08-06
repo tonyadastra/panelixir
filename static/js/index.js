@@ -28,6 +28,74 @@ world_continents.registerListener(function (val) {
     }
 });
 
+function resize() {
+    var div_s = document.getElementsByClassName("modal_container")[0];
+    var btn1_s = document.getElementsByClassName("btn-stage")[1];
+    var btn2_s = document.getElementsByClassName("btn-country")[1];
+    var btn3_s = document.getElementsByClassName("btn-types")[1];
+    var div_clear_s = document.getElementsByClassName("clear_filter")[1];
+
+    var div_l = document.getElementsByClassName("dropdown")[0];
+    var btn1_l = document.getElementsByClassName("btn-stage")[0];
+    var btn2_l = document.getElementsByClassName("btn-country")[0];
+    var btn3_l = document.getElementsByClassName("btn-types")[0];
+    var div_clear_l = document.getElementsByClassName("clear_filter")[0];
+    if (window.screen.width <= 425) {
+        $(div_s).show();
+        $(btn1_s).show();
+        $(btn2_s).show();
+        $(btn3_s).show();
+        $(div_clear_s).show();
+
+        $(div_l).hide();
+        $(btn1_l).hide();
+        $(btn2_l).hide();
+        $(btn3_l).hide();
+        $(div_clear_l).hide();
+
+        var modal1 = document.getElementsByClassName("modal")[0];
+        btn1_s.onclick = function () {
+            modal1.style.display = "block";
+        }
+
+        var modal2 = document.getElementsByClassName("modal")[1];
+        btn2_s.onclick = function () {
+            modal2.style.display = "block";
+        }
+
+        var modal3 = document.getElementsByClassName("modal")[2];
+        btn3_s.onclick = function () {
+            modal3.style.display = "block";
+        }
+
+        // clik anywhere to close modal
+        window.onclick = function (event) {
+            if (event.target == modal1) {
+                modal1.style.display = "none";
+            }
+            if (event.target == modal2) {
+                modal2.style.display = "none";
+            }
+            if (event.target == modal3) {
+                modal3.style.display = "none";
+            }
+        }
+    } else {
+        $(div_s).hide();
+        $(btn1_s).hide();
+        $(btn2_s).hide();
+        $(btn3_s).hide();
+        $(div_clear_s).hide();
+
+        $(div_l).show();
+        $(btn1_l).show();
+        $(btn2_l).show();
+        $(btn3_l).show();
+        $(div_clear_l).show();
+
+    }
+};
+
 var needs_update = true;
 var processing = false;
 var count = 1, limit = 5;
@@ -96,59 +164,7 @@ $(document).ready(function () {
         .attr("d", path);
 
     $(function () {
-        if (window.screen.width <= 425) {
-            var div = document.getElementsByClassName("modal_container")[0];
-            var btn1 = document.getElementsByClassName("btn-stage")[1];
-            var btn2 = document.getElementsByClassName("btn-country")[1];
-            var btn3 = document.getElementsByClassName("btn-types")[1];
-            var div_clear = document.getElementsByClassName("clear_filter")[1];
-            
-            $(div).show();
-            $(btn1).show();
-            $(btn2).show();
-            $(btn3).show();
-            $(div_clear).show();
-
-            var modal1 = document.getElementsByClassName("modal")[0];
-            btn1.onclick = function () {
-                modal1.style.display = "block";
-            }
-
-            var modal2 = document.getElementsByClassName("modal")[1];
-            btn2.onclick = function () {
-                modal2.style.display = "block";
-            }
-
-            var modal3 = document.getElementsByClassName("modal")[2];
-            btn3.onclick = function () {
-                modal3.style.display = "block";
-            }
-
-            // clik anywhere to close modal
-            window.onclick = function (event) {
-                if (event.target == modal1) {
-                    modal1.style.display = "none";
-                }
-                if (event.target == modal2) {
-                    modal2.style.display = "none";
-                }
-                if (event.target == modal3) {
-                    modal3.style.display = "none";
-                }
-            }
-        } else {
-            var div = document.getElementsByClassName("dropdown")[0];
-            var btn1 = document.getElementsByClassName("btn-stage")[0];
-            var btn2 = document.getElementsByClassName("btn-country")[0];
-            var btn3 = document.getElementsByClassName("btn-types")[0];
-            var div_clear = document.getElementsByClassName("clear_filter")[0];
-
-            $(div).show();
-            $(btn1).show();
-            $(btn2).show();
-            $(btn3).show();
-            $(div_clear).show();
-        }
+        resize();
 
 
         $.ajax({
