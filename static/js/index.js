@@ -29,72 +29,72 @@ world_continents.registerListener(function (val) {
 });
 
 function resize() {
-    var div_s = document.getElementsByClassName("modal_container")[0];
-    var btn1_s = document.getElementsByClassName("btn-stage")[1];
-    var btn2_s = document.getElementsByClassName("btn-country")[1];
-    var btn3_s = document.getElementsByClassName("btn-types")[1];
-    var div_clear_s = document.getElementsByClassName("clear_filter")[1];
-
-    var div_l = document.getElementsByClassName("dropdown")[0];
-    var btn1_l = document.getElementsByClassName("btn-stage")[0];
-    var btn2_l = document.getElementsByClassName("btn-country")[0];
-    var btn3_l = document.getElementsByClassName("btn-types")[0];
-    var div_clear_l = document.getElementsByClassName("clear_filter")[0];
-    if (window.screen.width <= 425) {
-        $(div_s).show();
-        $(btn1_s).show();
-        $(btn2_s).show();
-        $(btn3_s).show();
-        $(div_clear_s).show();
-
-        $(div_l).hide();
-        $(btn1_l).hide();
-        $(btn2_l).hide();
-        $(btn3_l).hide();
-        $(div_clear_l).hide();
-
-        var modal1 = document.getElementsByClassName("modal")[0];
-        btn1_s.onclick = function () {
-            modal1.style.display = "block";
-        }
-
-        var modal2 = document.getElementsByClassName("modal")[1];
-        btn2_s.onclick = function () {
-            modal2.style.display = "block";
-        }
-
-        var modal3 = document.getElementsByClassName("modal")[2];
-        btn3_s.onclick = function () {
-            modal3.style.display = "block";
-        }
-
-        // clik anywhere to close modal
-        window.onclick = function (event) {
-            if (event.target == modal1) {
-                modal1.style.display = "none";
-            }
-            if (event.target == modal2) {
-                modal2.style.display = "none";
-            }
-            if (event.target == modal3) {
-                modal3.style.display = "none";
-            }
-        }
-    } else {
-        $(div_s).hide();
-        $(btn1_s).hide();
-        $(btn2_s).hide();
-        $(btn3_s).hide();
-        $(div_clear_s).hide();
-
-        $(div_l).show();
-        $(btn1_l).show();
-        $(btn2_l).show();
-        $(btn3_l).show();
-        $(div_clear_l).show();
-
-    }
-};
+    // var div_s = document.getElementsByClassName("modal_container")[0];
+    // var btn1_s = document.getElementsByClassName("btn-stage")[1];
+    // var btn2_s = document.getElementsByClassName("btn-country")[1];
+    // var btn3_s = document.getElementsByClassName("btn-types")[1];
+    // var div_clear_s = document.getElementsByClassName("clear_filter")[1];
+    //
+    // var div_l = document.getElementsByClassName("dropdown")[0];
+    // var btn1_l = document.getElementsByClassName("btn-stage")[0];
+    // var btn2_l = document.getElementsByClassName("btn-country")[0];
+    // var btn3_l = document.getElementsByClassName("btn-types")[0];
+    // var div_clear_l = document.getElementsByClassName("clear_filter")[0];
+    // if (window.screen.width <= 425) {
+    //     $(div_s).show();
+    //     $(btn1_s).show();
+    //     $(btn2_s).show();
+    //     $(btn3_s).show();
+    //     $(div_clear_s).show();
+    //
+    //     $(div_l).hide();
+    //     $(btn1_l).hide();
+    //     $(btn2_l).hide();
+    //     $(btn3_l).hide();
+    //     $(div_clear_l).hide();
+    //
+    //     var modal1 = document.getElementsByClassName("modal")[0];
+    //     btn1_s.onclick = function () {
+    //         modal1.style.display = "block";
+    //     }
+    //
+    //     var modal2 = document.getElementsByClassName("modal")[1];
+    //     btn2_s.onclick = function () {
+    //         modal2.style.display = "block";
+    //     }
+    //
+    //     var modal3 = document.getElementsByClassName("modal")[2];
+    //     btn3_s.onclick = function () {
+    //         modal3.style.display = "block";
+    //     }
+    //
+    //     // clik anywhere to close modal
+    //     window.onclick = function (event) {
+    //         if (event.target == modal1) {
+    //             modal1.style.display = "none";
+    //         }
+    //         if (event.target == modal2) {
+    //             modal2.style.display = "none";
+    //         }
+    //         if (event.target == modal3) {
+    //             modal3.style.display = "none";
+    //         }
+    //     }
+    // } else {
+    //     $(div_s).hide();
+    //     $(btn1_s).hide();
+    //     $(btn2_s).hide();
+    //     $(btn3_s).hide();
+    //     $(div_clear_s).hide();
+    //
+    //     $(div_l).show();
+    //     $(btn1_l).show();
+    //     $(btn2_l).show();
+    //     $(btn3_l).show();
+    //     $(div_clear_l).show();
+    //
+    // }
+}
 
 var needs_update = true;
 var processing = false;
@@ -349,17 +349,17 @@ $(document).ready(function () {
                         .attr("d", path);
 
                     // Initial Rotation
-                    d3.timer(function () {
-                        var feature = map.selectAll("path");
-                        var dt = Date.now() - time;
-                        if (processing) {
-                            time = Date.now()
-                        }
-                        if (!processing) {
-                                projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
-                            feature.attr("d", path);
-                        }
-                    });
+                    // d3.timer(function () {
+                    //     var feature = map.selectAll("path");
+                    //     var dt = Date.now() - time;
+                    //     if (processing) {
+                    //         time = Date.now()
+                    //     }
+                    //     if (!processing) {
+                    //             projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                    //         feature.attr("d", path);
+                    //     }
+                    // });
                 });
             }
         })
@@ -687,3 +687,25 @@ $(window).scroll(function () {
         });
     }
 });
+
+$("#mobile-form").submit(function(){
+    let stages = document.querySelector('.active#stages').value;
+    let country = document.querySelector('.active#country').value;
+    let type = document.querySelector('.active#type').value;
+    $.ajax({
+        url: "/mobile-form",
+        data: {'stages': stages, 'country': country, 'type': type},
+        type: "GET",
+        success: function (response) {
+
+            $('.all-cards').remove();
+            document.getElementById('mobile_container').innerHTML = response;
+
+        },
+        // error:function(e){
+        //     console.log(JSON.stringify(e));
+        // }
+    });
+    return false;
+});
+
