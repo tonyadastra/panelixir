@@ -253,7 +253,7 @@
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
 <!--</div>-->
            <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button" class="btn btn-outline-info mobile-button" data-toggle="modal" data-target="#exampleModalCenter">
   Filter Vaccines <i class="fa fa-filter"></i>
 </button>
 
@@ -307,60 +307,33 @@
 </div>
 <!--Filter Data-->
 <div id="TagIWantToLoadTo" class="filter">
+    <!--    <div class="container">-->
     <form action="/" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="column filtertext">
-                <b>Filter Vaccines:</b>
+                <b>Filter Vaccines</b>
             </div>
-
-            <!-- Stages-->
+            <!--            Stages-->
 
             <div class="column">
                 <div class="dropdown">
                     <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false" style="display:none">
+                        aria-haspopup="true" aria-expanded="false">
                         {{stages_dis}}
                     </button>
-
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
                         <div class="dropdown-divider"></div>
-                        <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase
-                            I</button>
-                        <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase
-                            II</button>
-                        <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase
-                            III</button>
+                        <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
+                        <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
+                        <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
                         <div class="dropdown-divider"></div>
-                        <!--  Disabled-->
+                        <!--                            Disabled-->
                         <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
-                        <!--  Enabled-->
-                        <!-- <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button> -->
+                        <!--                            Enabled-->
+                        <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
                     </div>
                 </div>
-
-                <!-- stage modal -->
-{#                <div class="modal_container">#}
-{#                    <button type="button" class="btn btn-stage" style="display: none; font-size: 12px;">#}
-{#                        {{stages_dis}}#}
-{#                    </button>#}
-{##}
-{#                    <div class="modal">#}
-{#                        <div class="modal-content" style="z-index: 3;">#}
-{#                            <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>#}
-{#                            <div class="dropdown-divider"></div>#}
-{#                            <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>#}
-{#                            <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>#}
-{#                            <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>#}
-{#                            <div class="dropdown-divider"></div>#}
-{#                            <!--  Disabled-->#}
-{#                            <button class="dropdown-item disabled" type="submit" name="stages"#}
-{#                                value="4">Approval</button>#}
-{#                            <!--  Enabled-->#}
-{#                            <!-- <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button> -->#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
 
             <!-- Country-->
@@ -368,7 +341,7 @@
                 <!-- country dropdown -->
                 <div class="dropdown">
                     <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{country_dis}}
                     </button>
                     <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
@@ -499,7 +472,7 @@
                 <!-- types dropdown -->
                 <div class="dropdown">
                     <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{types_dis}}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -541,26 +514,16 @@
 {#                    </div>#}
 {#                </div>#}
             </div>
-            <div class="column clear_filter" style="float: right; display: none;">
-                <button class="btn btn-warning align-right" type="submit" style="background-color: white; border: None"
+            <div class="column clear_filter" style="float: right;">
+                <button class="btn btn-light align-right" type="submit" style="border: None"
                     name="status" value="clear">
-                    <b><u style="color: darkblue">Clear Filter</u></b>
+                    <b style="color: darkblue">Clear Filter</b>
                 </button>
             </div>
 
             <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
             <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
             <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
-        </div>
-
-        <!-- modal clear filter -->
-        <div class="row clear_filter" style="display: none;">
-            <div class="column">
-                <button class="btn btn-warning" type="submit" style="background-color: white; border: None; font-size: 12px;"
-                    name="status" value="clear">
-                    <b><u style="color: darkblue">Clear Filter</u></b>
-                </button>
-            </div>
         </div>
     </form>
 </div>
