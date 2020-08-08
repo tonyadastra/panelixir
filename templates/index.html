@@ -42,7 +42,7 @@
       $(this).addClass("active");
     });
 
-    $('#mobile-form').submit(function(e) {
+    $('#submit-form').click(function(e) {
         e.preventDefault();
         // Coding
         $('#exampleModalCenter').modal('toggle'); //or  $('#IDModal').modal('hide');
@@ -157,7 +157,6 @@
         </div>
     </div>
 </div>
-{#</div>#}
 
 
 <div class="ctr text-center">
@@ -252,59 +251,76 @@
 <!--<div class="heading">-->
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
 <!--</div>-->
-           <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-info mobile-button" data-toggle="modal" data-target="#exampleModalCenter">
-  Filter Vaccines <i class="fa fa-filter"></i>
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+{# For Mobile Version Only #}
+<div class="mobile-filter" id="TagIWantToLoadTo">
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <div class="column mobile-clear">
+                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
+                  <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
+                </button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog" role="document">
+                    <div class="modal-content" style="text-align: left">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h6>Stage:</h6>
+                            <div class="btn-group btn-group-1" role="group">
+                                <button type="button" class="active btn btn-default mobile-font" id="stages" value="_">All</button>
+                                <button type="button" class="btn btn-default mobile-font" id="stages" value="0">Pre-Clinical</button>
+                                <button type="button" class="btn btn-default mobile-font" id="stages" value="1">Phase I</button>
+                                <button type="button" class="btn btn-default mobile-font" id="stages" value="2">Phase II</button>
+                                <button type="button" class="btn btn-default mobile-font" id="stages" value="3">Phase III</button>
+                                <button type="button" class="btn btn-default mobile-font" id="stages" value="4">Approval</button>
+                            </div>
+                            <h6>Most Viewed Countries:</h6>
+                            <div class="btn-group btn-group-2" role="group">
+                                <button type="button" class="active btn btn-default mobile-font" id="country" value="">All</button>
+                                <button type="button" class="btn btn-default mobile-font" id="country" value="United States">United States</button>
+                                <button type="button" class="btn btn-default mobile-font" id="country" value="United Kingdom">United Kingdom</button>
+                                <button type="button" class="btn btn-default mobile-font" id="country" value="Australia">Australia</button>
+                                <button type="button" class="btn btn-default mobile-font" id="country" value="China">China</button>
+                                <button type="button" class="btn btn-default mobile-font" id="country" value="Canada">Canada</button>
+                            </div>
+                            <h6>Vaccine Type:</h6>
+                            <div class="btn-group btn-group-3">
+                                <button type="button" class="active btn btn-default mobile-font" id="type" value="">All</button>
+                                <button type="button" class="btn btn-default mobile-font" id="type" value="Genetic">Genetic</button>
+                                <button type="button" class="btn btn-default mobile-font" id="type" value="Viral Vector">Viral Vector</button>
+                                <button type="button" class="btn btn-default mobile-font" id="type" value="Protein">Protein-Based</button>
+                                <button type="button" class="btn btn-default mobile-font" id="type" value="Virus">Whole Virus</button>
+                                <button type="button" class="btn btn-default mobile-font" id="type" value="Repurposed">Others</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem;">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem;">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col" style="text-align: center">
             <form action="/" id="mobile-form" method="POST" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <div class="column mobile-clear">
+                    <button class="btn btn-clear" type="submit" name="status" value="clear" style="padding: 0.15rem 1.5rem!important;font-size: 0.8rem;">
+                        Clear Filter
                     </button>
-                </div>
-                <div class="modal-body">
-                    <h6>Stage:</h6>
-                    <div class="btn-group btn-group-1" role="group">
-                        <button type="button" class="active btn btn-default mobile-font" id="stages" value="_">All</button>
-                        <button type="button" class="btn btn-default mobile-font" id="stages" value="0">Pre-Clinical</button>
-                        <button type="button" class="btn btn-default mobile-font" id="stages" value="1">Phase I</button>
-                        <button type="button" class="btn btn-default mobile-font" id="stages" value="2">Phase II</button>
-                        <button type="button" class="btn btn-default mobile-font" id="stages" value="3">Phase III</button>
-                        <button type="button" class="btn btn-default mobile-font" id="stages" value="4">Approval</button>
-                    </div>
-                    <h6>Most Viewed Countries:</h6>
-                    <div class="btn-group btn-group-2" role="group">
-                        <button type="button" class="active btn btn-default mobile-font" id="country" value="">All</button>
-                        <button type="button" class="btn btn-default mobile-font" id="country" value="United States">United States</button>
-                        <button type="button" class="btn btn-default mobile-font" id="country" value="United Kingdom">United Kingdom</button>
-                        <button type="button" class="btn btn-default mobile-font" id="country" value="Australia">Australia</button>
-                        <button type="button" class="btn btn-default mobile-font" id="country" value="China">China</button>
-                        <button type="button" class="btn btn-default mobile-font" id="country" value="Canada">Canada</button>
-                    </div>
-                    <h6>Vaccine Type:</h6>
-                    <div class="btn-group btn-group-3">
-                        <button type="button" class="active btn btn-default mobile-font" id="type" value="">All</button>
-                        <button type="button" class="btn btn-default mobile-font" id="type" value="Genetic">Genetic</button>
-                        <button type="button" class="btn btn-default mobile-font" id="type" value="Viral Vector">Viral Vector</button>
-                        <button type="button" class="btn btn-default mobile-font" id="type" value="Protein">Protein-Based</button>
-                        <button type="button" class="btn btn-default mobile-font" id="type" value="Virus">Whole Virus</button>
-                        <button type="button" class="btn btn-default mobile-font" id="type" value="Repurposed">Others</button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem;">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem;">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 <!--Filter Data-->
 <div id="TagIWantToLoadTo" class="filter">
     <!--    <div class="container">-->
