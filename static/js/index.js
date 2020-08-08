@@ -28,7 +28,7 @@ world_continents.registerListener(function (val) {
     }
 });
 
-function resize() {
+// function resize() {
     // var div_s = document.getElementsByClassName("modal_container")[0];
     // var btn1_s = document.getElementsByClassName("btn-stage")[1];
     // var btn2_s = document.getElementsByClassName("btn-country")[1];
@@ -94,7 +94,7 @@ function resize() {
     //     $(div_clear_l).show();
     //
     // }
-}
+// }
 
 var needs_update = true;
 var processing = false;
@@ -164,7 +164,7 @@ $(document).ready(function () {
         .attr("d", path);
 
     $(function () {
-        resize();
+        // resize();
 
 
         $.ajax({

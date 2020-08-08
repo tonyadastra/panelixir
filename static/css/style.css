@@ -1,7 +1,6 @@
 /* Header */
 
 /* Extra Small Screen - Two Line Title */
-
 @media screen and (max-width: 375px) {
   .title {
     font-size: 0.7rem;
@@ -30,6 +29,9 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  .filter{
+    display: none;
+  }
   h6{
     margin-top: 0.5rem;
   }
@@ -50,9 +52,6 @@
     margin-bottom: 0.3rem!important;
   }
   .large-screen{
-    display: none;
-  }
-  .dropdown{
     display: none;
   }
 
@@ -85,18 +84,18 @@
     padding-left: 5px;
     padding-right: 5px;
   }
-  span.highlight {
-    vertical-align: middle!important;
-    font-family: sans-serif;
-    font-size: 11px !important;
-    margin: auto 0.1rem !important;
-    padding: 0.35rem !important;
-    border-radius: 0.2rem;
-    color: white;
-    display: inline-block;
-    height: 50%;
-    width: 80%;
-  }
+  /*span.highlight {*/
+  /*  vertical-align: middle!important;*/
+  /*  font-family: sans-serif;*/
+  /*  font-size: 11px !important;*/
+  /*  margin: auto 0.1rem !important;*/
+  /*  padding: 0.35rem !important;*/
+  /*  border-radius: 0.2rem;*/
+  /*  color: white;*/
+  /*  display: inline-block;*/
+  /*  height: 50%;*/
+  /*  width: 80%;*/
+  /*}*/
   #title {
     font-family: Garamond, EB Garamond, Georgia, serif;
     font-size: 0.9rem;
@@ -220,11 +219,33 @@
     padding: 00rem;
   }
 }
-
-/* 425-767px - Tablet */
-
-@media screen and (min-width: 426px) and (max-width: 767px) {
+@media screen and (max-width: 576px) {
   .large-screen{
+    display: none!important;
+  }
+  .small-screen{
+    display: block!important;
+  }
+  span.highlight {
+    vertical-align: middle !important;
+    font-family: sans-serif!important;
+    font-size: 11px !important;
+    margin: auto 0.1rem !important;
+    padding: 0.35rem !important;
+    border-radius: 0.2rem!important;
+    color: white!important;
+    display: inline-block!important;
+    height: 50% !important;
+    width: 80% !important;
+  }
+}
+
+/* 426-767px - Tablet */
+@media screen and (min-width: 426px) and (max-width: 767px) {
+  .filter{
+    display: none;
+  }
+  .small-screen{
     display: none;
   }
   .title-bar {
@@ -260,6 +281,7 @@
     font-size: 0.4rem;
     /* Modified */
   }
+
   .header-text .coming-soon {
     visibility: hidden;
     width: 80px;
@@ -334,6 +356,9 @@
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
+  .mobile-button{
+    display: none;
+  }
   .small-screen{
     display: none;
   }
@@ -462,6 +487,9 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+  .mobile-button{
+    display: none;
+  }
   .small-screen{
     display: none;
   }
