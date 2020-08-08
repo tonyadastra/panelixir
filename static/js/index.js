@@ -688,7 +688,7 @@ $(window).scroll(function () {
     }
 });
 
-$("#mobile-form").submit(function(){
+$("#submit-form").click(function(){
     let stages = document.querySelector('.active#stages').value;
     let country = document.querySelector('.active#country').value;
     let type = document.querySelector('.active#type').value;
