@@ -48,6 +48,7 @@
         $('#exampleModalCenter').modal('toggle'); //or  $('#IDModal').modal('hide');
         return false;
     });
+
 </script>
 
 {% if scrollToAnchor %}
@@ -70,13 +71,13 @@
     <div class="col-xl col-lg col-md-12 col-xs-12 text-center" style="margin: 0 1rem 0 0;">
         <div class="interactive-buttons" style="margin-bottom: 1rem;">
             <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
-            <button class="btn btn-outline-secondary button-font" data-value="North America" value="North America">North
+            <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
                 America</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Europe" value="Europe">Europe</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Asia" value="Asia">Asia</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Oceania" value="Oceania">Oceania</button>
-            <button class="btn btn-outline-secondary button-font" data-value="Africa" value="Africa">Africa</button>
-            <button class="btn btn-outline-secondary button-font" data-value="South America" value="South America">South
+            <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
+            <button class="btn btn-outline-continent button-font" data-value="Asia" value="Asia">Asia</button>
+            <button class="btn btn-outline-continent button-font" data-value="Oceania" value="Oceania">Oceania</button>
+            <button class="btn btn-outline-continent button-font" data-value="Africa" value="Africa">Africa</button>
+            <button class="btn btn-outline-continent button-font" data-value="South America" value="South America">South
                 America</button>
         </div>
 
@@ -284,12 +285,62 @@
                             </div>
                             <h6>Most Viewed Countries:</h6>
                             <div class="btn-group btn-group-2" role="group">
-                                <button type="button" class="active btn btn-default mobile-font" id="country" value="">All</button>
-                                <button type="button" class="btn btn-default mobile-font" id="country" value="United States">United States</button>
-                                <button type="button" class="btn btn-default mobile-font" id="country" value="United Kingdom">United Kingdom</button>
-                                <button type="button" class="btn btn-default mobile-font" id="country" value="Australia">Australia</button>
-                                <button type="button" class="btn btn-default mobile-font" id="country" value="China">China</button>
-                                <button type="button" class="btn btn-default mobile-font" id="country" value="Canada">Canada</button>
+                                <button type="button" class="active btn btn-default mobile-font most-viewed" value="">All</button>
+                                <button type="button" class="btn btn-default mobile-font most-viewed" id="United States" value="United States">United States</button>
+                                <button type="button" class="btn btn-default mobile-font most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
+                                <button type="button" class="btn btn-default mobile-font most-viewed" id="Australia" value="Australia">Australia</button>
+                                <button type="button" class="btn btn-default mobile-font most-viewed" id="China" value="China">China</button>
+                            </div>
+                            <h6>All Countries:</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-mobile" id="mobile-button" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 1.2rem!important;">
+                                    {{country_dis}}
+                                </button>
+                                <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
+                                    <button class="active dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="">All</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Argentina">Argentina</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Australia">Australia</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Austria">Austria</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Belgium">Belgium</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Brazil">Brazil</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Canada">Canada</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="China">China</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Egypt">Egypt</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Finland">Finland</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="France">France</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Germany">Germany</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="India">India</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Israel">Israel</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Italy">Italy</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Japan">Japan</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Kazakhstan">Kazakhstan</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Malaysia">Malaysia</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Netherlands">Netherlands</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Nigeria">Nigeria</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Russia">Russia</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Singapore">Singapore</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South
+                                        Korea</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Sweden">Sweden</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Switzerland">Switzerland</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
+                                        value="Thailand">Thailand</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Turkey">Turkey</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United
+                                        Kingdom</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United
+                                        States</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Vietnam">Vietnam</button>
+                                </div>
                             </div>
                             <h6>Vaccine Type:</h6>
                             <div class="btn-group btn-group-3">

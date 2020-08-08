@@ -679,7 +679,6 @@ $(window).scroll(function () {
             data: {'count': count, 'limit':limit},
             success: function (response) {
                 // console.log(response)
-                // console.log(response)
                 $('#card_container').append(response);
 
                 count = count+1;
@@ -688,6 +687,66 @@ $(window).scroll(function () {
     }
 });
 
+// When Dropdown Item is Clicked
+$('.dropdown-mobile > .mobile-dropdown-item').click(function () {
+    // Remove all previous active dropdown-items
+    $('.dropdown-mobile > .mobile-dropdown-item').removeClass("active");
+    // Set new to active
+    $(this).addClass("active");
+    var countryTitle = $(this).val();
+    if ($(this).val() === "") {
+        countryTitle = "All";
+    }
+    // Display Title of Previous Selected Country
+    document.getElementById('mobile-button').innerHTML = countryTitle;
+    // When Dropdown Item Clicked and Matches Most Viewed Countries, set button to active
+    if (document.querySelector('.active#country').value === "United States" || "United Kingdom" || "Australia" || "China") {
+        var dropdownName = document.querySelector('.active#country').value;
+        $(".btn-group-2 > .btn").removeClass("active");
+        d3.selectAll(".btn")
+            .filter(function () {
+                return d3.select(this).attr("value") === dropdownName; // filter by single attribute
+            })
+            .attr('class', 'active btn btn-default mobile-font most-viewed')
+    }
+    // If Dropdown Item Clicked and it is not listed in Most Viewed Countries, deactivate all buttons
+    if (document.querySelector('.active.most-viewed') !== null) {
+        if (document.querySelector('.active#country').value !== document.querySelector('.active.most-viewed').value) {
+            $(".btn-group-2 > .btn").removeClass("active");
+        }
+    }
+});
+
+// When most-viewed button is clicked
+$('.most-viewed').click(function () {
+    var countryTitle = $(this).val();
+    // Value to All to display
+    if ($(this).val() === "") {
+        countryTitle = "All";
+    }
+    // change dropdown title
+    document.getElementById('mobile-button').innerHTML = countryTitle;
+    // Remove Previous Active
+    $(".dropdown-mobile > .mobile-dropdown-item").removeClass("active");
+    // Set matched dropdown item to active
+    d3.selectAll(".dropdown-item-ctry")
+        .filter(function () {
+            return d3.select(this).attr("value") === countryTitle; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-ctry mobile-dropdown-item')
+
+})
+
+// Display Title of Previous Selected Country when Reopening
+$('.btn-filter').click(function (){
+    var activeCountry = document.querySelector('.active#country').value;
+    if (activeCountry === ""){
+        activeCountry = "All";
+    }
+    document.getElementById('mobile-button').innerHTML = activeCountry;
+})
+
+// AJAX Request for submitting mobile form
 $("#submit-form").click(function(){
     let stages = document.querySelector('.active#stages').value;
     let country = document.querySelector('.active#country').value;
