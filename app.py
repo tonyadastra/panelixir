@@ -181,6 +181,30 @@ def card():
     return render_template("card.html", data=data)
 
 
+@app.route("/mobile-form", methods=['GET', 'POST'])
+def mobileForm():
+    mobile_stages = str(request.args.get('stages'))
+    mobile_country = str(request.args.get('country'))
+    mobile_type = str(request.args.get('type'))
+    print(mobile_stages)
+    print(mobile_country)
+    print(mobile_type)
+
+    cur.execute("rollback")
+    cur.execute(
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        " JOIN companies ON info.vac_id = companies.vac_id "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + mobile_stages + "' "
+        " AND country LIKE '%" + mobile_country + "%' "
+        # "AND '" + types + "' ~ vac_type "
+        " AND vac_type LIKE '%" + mobile_type + "%' "
+        "ORDER BY stage DESC, co_name, partner_name;")
+
+    data = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("mobile-card.html", data=data)
+
+
 @app.route("/about-us")
 def aboutUs():
     return render_template("about-us.html")
