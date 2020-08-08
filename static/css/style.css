@@ -41,6 +41,8 @@
   }
   .btn-default{
     border: 1px solid darkcyan;
+  outline: 0;
+  box-shadow: 0 0 0 0!important;
   }
   .title {
     font-size: 0.7rem;
@@ -1178,3 +1180,19 @@ span.highlight {
 .show > .btn-clear.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.05rem rgb(255, 114, 7);
 }
+
+.dropdown-mobile{
+  position: relative;
+  width: 100%;
+  text-align: left!important;
+}
+
+.dropdown-mobile{
+  width: 100%;
+}
+
+.btn-default.active{
+  background-color: #5ab9ea;
+}
+
+
