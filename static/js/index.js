@@ -687,6 +687,7 @@ $(window).scroll(function () {
     }
 });
 
+// Mobile Modal
 // When Dropdown Item is Clicked
 $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
     // Remove all previous active dropdown-items
@@ -720,12 +721,6 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
 // When most-viewed button is clicked
 $('.most-viewed').click(function () {
     var countryTitle = $(this).val();
-    // Value to All to display
-    if ($(this).val() === "") {
-        countryTitle = "All";
-    }
-    // change dropdown title
-    document.getElementById('mobile-button').innerHTML = countryTitle;
     // Remove Previous Active
     $(".dropdown-mobile > .mobile-dropdown-item").removeClass("active");
     // Set matched dropdown item to active
@@ -734,6 +729,14 @@ $('.most-viewed').click(function () {
             return d3.select(this).attr("value") === countryTitle; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-ctry mobile-dropdown-item')
+
+    // Value to All to display
+    if ($(this).val() === "") {
+        countryTitle = "All";
+    }
+    // change dropdown title
+    document.getElementById('mobile-button').innerHTML = countryTitle;
+
 
 })
 
