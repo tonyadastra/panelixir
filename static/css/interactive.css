@@ -108,7 +108,7 @@
 	}
 
 	.btn {
-		padding: 0.1875rem 0.375rem !important;/* Modified */;
+		padding: 0.1875rem 0.3rem !important;/* Modified */;
 	}
 
 	.btn-outline-primary:focus,
@@ -482,30 +482,30 @@
 
 /* Mobile Dropdown */
 .btn-outline-secondary {
-  color: #6c757d;
+  color: #7a7c7e;
   background-color: transparent;
   background-image: none;
   border-color: #a6aaae;
 }
 .btn-outline-secondary:hover {
-  color: #6c757d;
+  color: #7a7c7e;
   background-color: transparent;
   border-color: #a6aaae;
 }
 .btn-outline-secondary:focus,
 .btn-outline-secondary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+  box-shadow: 0 0 0 0.15rem rgba(108, 117, 125, 0.5);
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled):active,
 .btn-outline-secondary:not(:disabled):not(.disabled).active,
 .show > .btn-outline-secondary.dropdown-toggle {
-  color: #6c757d;
+  color: #7a7c7e;
   background-color: transparent!important;
   border-color: #a6aaae;
 }
 .btn-outline-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
 .show > .btn-outline-secondary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+  box-shadow: 0 0 0 0.15rem rgba(108, 117, 125, 0.5);
 }

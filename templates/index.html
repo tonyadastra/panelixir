@@ -267,43 +267,46 @@
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog" role="document">
                     <div class="modal-content" style="text-align: left">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+{#                        <div class="modal-header">#}
+{#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
+{##}
+{#                        </div>#}
+                        <div class="modal-body">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
-                        <div class="modal-body">
-                            <h6>Stage:</h6>
+                            <h6>Select Stage</h6>
                             <div class="btn-group btn-group-1" role="group">
-                                <button type="button" class="active btn btn-default mobile-font" id="stages" value="_">All</button>
-                                <button type="button" class="btn btn-default mobile-font" id="stages" value="0">Pre-Clinical</button>
-                                <button type="button" class="btn btn-default mobile-font" id="stages" value="1">Phase I</button>
-                                <button type="button" class="btn btn-default mobile-font" id="stages" value="2">Phase II</button>
-                                <button type="button" class="btn btn-default mobile-font" id="stages" value="3">Phase III</button>
-                                <button type="button" class="btn btn-default mobile-font" id="stages" value="4">Approval</button>
+                                <button type="button" class="active btn btn-default btn-mobile-stage mobile-font" id="stages" value="_" style="padding: 0.1875rem 0.5rem!important;">All</button>
                             </div>
-                            <h6>Most Viewed Countries:</h6>
+                            <div class="btn-group btn-group-1" role="group">
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="0">Pre-Clinical</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="1">Phase I</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="2">Phase II</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="3">Phase III</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4">Approval</button>
+                            </div>
+                            <h6>Select Country</h6>
+                            <p class="subtag">Popular countries:</p>
                             <div class="btn-group btn-group-2" role="group">
-                                <button type="button" class="active btn btn-default mobile-font most-viewed" value="">All</button>
-                                <button type="button" class="btn btn-default mobile-font most-viewed" id="United States" value="United States">United States</button>
-                                <button type="button" class="btn btn-default mobile-font most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
-                                <button type="button" class="btn btn-default mobile-font most-viewed" id="Australia" value="Australia">Australia</button>
-                                <button type="button" class="btn btn-default mobile-font most-viewed" id="China" value="China">China</button>
+                                <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
                             </div>
-                            <h6>All Countries:</h6>
+                            <div class="btn-group btn-group-2" role="group">
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font-large most-viewed" id="United States" value="United States">United States</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font-large most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font-large most-viewed" id="Australia" value="Australia">Australia</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font-large most-viewed" id="China" value="China">China</button>
+                            </div>
+                            <p class="subtag">Or select from all countries:</p>
                             <div class="dropdown">
                                 <button class="btn btn-outline-secondary dropdown-mobile" id="mobile-button" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 1.2rem!important;">
-                                    {{country_dis}}
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
+                                    All(Default)
                                 </button>
                                 <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
-                                    <button class="active dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="">All</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Argentina">Argentina</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Australia">Australia</button>
+                                    <button class="active dropdown-item-ctry mobile-dropdown-item" id="country" value="">All</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Argentina">Argentina</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Australia">Australia</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Austria">Austria</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Belgium">Belgium</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Brazil">Brazil</button>
@@ -317,44 +320,37 @@
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Israel">Israel</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Italy">Italy</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Japan">Japan</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Kazakhstan">Kazakhstan</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Malaysia">Malaysia</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Netherlands">Netherlands</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Kazakhstan">Kazakhstan</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Malaysia">Malaysia</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Netherlands">Netherlands</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Nigeria">Nigeria</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Russia">Russia</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Singapore">Singapore</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South
-                                        Korea</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Singapore">Singapore</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South Korea</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Sweden">Sweden</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Switzerland">Switzerland</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country"
-                                        value="Thailand">Thailand</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Switzerland">Switzerland</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Thailand">Thailand</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Turkey">Turkey</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United
-                                        Kingdom</button>
-                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United
-                                        States</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United Kingdom</button>
+                                    <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United States</button>
                                     <button class="dropdown-item-ctry mobile-dropdown-item" id="country" value="Vietnam">Vietnam</button>
                                 </div>
                             </div>
-                            <h6>Vaccine Type:</h6>
+                            <h6>Select Vaccine Type</h6>
                             <div class="btn-group btn-group-3">
-                                <button type="button" class="active btn btn-default mobile-font" id="type" value="">All</button>
-                                <button type="button" class="btn btn-default mobile-font" id="type" value="Genetic">Genetic</button>
-                                <button type="button" class="btn btn-default mobile-font" id="type" value="Viral Vector">Viral Vector</button>
-                                <button type="button" class="btn btn-default mobile-font" id="type" value="Protein">Protein-Based</button>
-                                <button type="button" class="btn btn-default mobile-font" id="type" value="Virus">Whole Virus</button>
-                                <button type="button" class="btn btn-default mobile-font" id="type" value="Repurposed">Others</button>
+                                <button type="button" class="active btn btn-default btn-mobile-type mobile-font-small" id="type" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                            </div>
+                            <div class="btn-group btn-group-3">
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Genetic">Genetic</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Viral Vector">Viral Vector</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Protein">Protein-Based</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Virus">Whole Virus</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Repurposed">Others</button>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem;">Close</button>
-                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem;">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -409,7 +405,7 @@
                 <div class="dropdown">
                     <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{country_dis}}
+                        {{ country_dis }}
                     </button>
                     <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
                         <button class="dropdown-item disabled" style="color: darkcyan;">Commonly
@@ -460,78 +456,6 @@
                         <button class="dropdown-item-ctry" type="submit" name="country" value="Vietnam">Vietnam</button>
                     </div>
                 </div>
-
-                <!-- country modal -->
-{#                <div class="modal_container">#}
-{#                    <button class="btn btn-country" type="button" style="display:none;font-size : 10px;">#}
-{#                        {{country_dis}}#}
-{#                    </button>#}
-
-{#                    <div class="modal">#}
-{#                        <div class="modal-content overflow">#}
-{#                            <button class="dropdown-item disabled" style="color: darkcyan;">Commonly#}
-{#                                Searched</button>#}
-                            {# <div class="dropdown-divider"></div> #}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United#}
-{#                                States</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="United Kingdom">United#}
-{#                                Kingdom</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="China">China</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="Japan">Japan</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Germany">Germany</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="India">India</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="South Korea">South#}
-{#                                Korea</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="France">France</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Australia">Australia</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Russia">Russia</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Canada">Canada</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Austria">Austria</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Singapore">Singapore</button>#}
-{#                            <div class="dropdown-divider"></div>#}
-{#                            <button class="dropdown-item disabled">Other Countries</button>#}
-{#                            <div class="dropdown-divider"></div>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Argentina">Argentina</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Belgium">Belgium</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Brazil">Brazil</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="Egypt">Egypt</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Finland">Finland</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Israel">Israel</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country" value="Italy">Italy</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Kazakhstan">Kazakhstan</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Malaysia">Malaysia</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Netherlands">Netherlands</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Nigeria">Nigeria</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Sweden">Sweden</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Switzerland">Switzerland</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Thailand">Thailand</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Turkey">Turkey</button>#}
-{#                            <button class="dropdown-item-ctry" type="submit" name="country"#}
-{#                                value="Vietnam">Vietnam</button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
 
             <!-- Vaccine Types-->
@@ -557,29 +481,6 @@
                             Others</button>
                     </div>
                 </div>
-
-                <!-- types modal -->
-{#                <div class="modal_container">#}
-{#                    <button class="btn btn-types" type="button" style="display: none; font-size: 10px;">#}
-{#                        {{types_dis}}#}
-{#                    </button>#}
-{#                    <div class="modal">#}
-{#                        <div class="modal-content" style="z-index: 3; width: 45%">#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="Genetic">#}
-{#                                Genetic Vaccines</button>#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="Protein">#}
-{#                                Protein-Based Vaccines</button>#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">#}
-{#                                Viral Vector Vaccines</button>#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="VLP">#}
-{#                                VLP Vaccines</button>#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="Virus">#}
-{#                                Whole-Virus Vaccines</button>#}
-{#                            <button class="dropdown-item-type" type="submit" name="type" value="Repurposed">#}
-{#                                Others</button>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
             <div class="column clear_filter" style="float: right;">
                 <button class="btn btn-light align-right" type="submit" style="border: None"
