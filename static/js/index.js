@@ -349,17 +349,17 @@ $(document).ready(function () {
                         .attr("d", path);
 
                     // Initial Rotation
-                    // d3.timer(function () {
-                    //     var feature = map.selectAll("path");
-                    //     var dt = Date.now() - time;
-                    //     if (processing) {
-                    //         time = Date.now()
-                    //     }
-                    //     if (!processing) {
-                    //             projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
-                    //         feature.attr("d", path);
-                    //     }
-                    // });
+                    d3.timer(function () {
+                        var feature = map.selectAll("path");
+                        var dt = Date.now() - time;
+                        if (processing) {
+                            time = Date.now()
+                        }
+                        if (!processing) {
+                                projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                            feature.attr("d", path);
+                        }
+                    });
                 });
             }
         })
