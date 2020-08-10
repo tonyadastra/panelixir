@@ -708,7 +708,7 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
             .filter(function () {
                 return d3.select(this).attr("value") === dropdownName; // filter by single attribute
             })
-            .attr('class', 'active btn btn-default mobile-font most-viewed')
+            .attr('class', 'active btn btn-default btn-mobile-country mobile-font most-viewed')
     }
     // If Dropdown Item Clicked and it is not listed in Most Viewed Countries, deactivate all buttons
     if (document.querySelector('.active.most-viewed') !== null) {
