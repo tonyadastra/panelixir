@@ -253,8 +253,10 @@
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
 <!--</div>-->
 
+{# Go to Top of Filter Bar #}
+<div id="TagIWantToLoadTo"></div>
 {# For Mobile Version Only #}
-<div class="mobile-filter" id="TagIWantToLoadTo">
+<div class="mobile-filter">
     <div class="row">
         <div class="col" style="text-align: center">
             <div class="column mobile-clear">
@@ -369,7 +371,7 @@
 </div>
 
 <!--Filter Data-->
-<div id="TagIWantToLoadTo" class="filter">
+<div class="filter">
     <!--    <div class="container">-->
     <form action="/" method="POST" enctype="multipart/form-data">
         <div class="row">
@@ -377,7 +379,6 @@
                 <b>Filter Vaccines</b>
             </div>
             <!--            Stages-->
-
             <div class="column">
                 <div class="dropdown">
                     <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
@@ -499,7 +500,7 @@
 
 <!-- list institutions -->
 <div class="all-cards">
-    <div class="institutions">
+    <div class="institutions" id="institutions">
         {% if data|length >= 2 %}
         {% for entry in data %}
         <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
