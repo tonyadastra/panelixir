@@ -1,11 +1,3 @@
-function hexToBase64(str) {
-    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-}
-
-// function hexToBase64(str) {
-//     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-// }
-
 class myCard extends HTMLElement {
     connectedCallback() {
         const shadow = this.attachShadow({ mode: 'open' });
@@ -68,7 +60,7 @@ class myCard extends HTMLElement {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
                 const img = document.createElement('img');
                 img.setAttribute('height', '60px');
-                img.src = imgUrl; 
+                img.src = imgUrl;
                 wrapper.appendChild(img);
             })
         } else {
@@ -111,19 +103,19 @@ class myCard extends HTMLElement {
         pbar5.setAttribute('id', 'pbar5');
         pbar5.innerHTML = 'APPROVAL';
 
-        if (this.getAttribute('data-stage') >= 0) 
+        if (this.getAttribute('data-stage') >= 0)
             bar_wrapper.appendChild(pbar1);
-        
-        if (this.getAttribute('data-stage') >= 1) 
+
+        if (this.getAttribute('data-stage') >= 1)
             bar_wrapper.appendChild(pbar2);
-        
-        if (this.getAttribute('data-stage') >= 2) 
+
+        if (this.getAttribute('data-stage') >= 2)
             bar_wrapper.appendChild(pbar3);
-        
-        if (this.getAttribute('data-stage') >= 3) 
+
+        if (this.getAttribute('data-stage') >= 3)
             bar_wrapper.appendChild(pbar4);
-         
-        if (this.getAttribute('data-stage') == 4) 
+
+        if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
 
         wrapper.appendChild(bar_wrapper);
@@ -131,20 +123,16 @@ class myCard extends HTMLElement {
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
-
         // text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
         var intro = this.getAttribute('data-intro');
         // console.log(intro);
-        
 
-        if (this.getAttribute('data-stage') != 0) 
-            text.innerHTML = intro;
-        else 
-            text.setAttribute('style', 'margin-bottom:2rem');
+
+        // if (this.getAttribute('data-stage') != 0)
+        text.innerHTML = intro;
+        // else
+        //     text.setAttribute('style', 'margin-bottom:2rem');
         wrapper.appendChild(text);
-        // } else {
-        
-        // }
 
 
         var url = this.getAttribute('data-expand');
@@ -187,5 +175,3 @@ customElements.define('my-card', myCard);
 //     }
 // }
 // customElements.define('my-expandInfo', instDetail, { extends: "ul" });
-
-
