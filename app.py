@@ -16,14 +16,14 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-app.secret_key = "ILoveNewYork"
-conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+# app.secret_key = "ILoveNewYork"
+# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 # # User - Lola
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-# app.secret_key = "lola980109"
-# conn = psycopg2.connect("dbname=covid19_db user=lola")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+app.secret_key = "lola980109"
+conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
@@ -63,7 +63,7 @@ def index():
             types_dis = "Vaccine Types"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                        "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
         else:
             if stages == "Stages":
                 if prev_stages != "Stages":
@@ -101,17 +101,15 @@ def index():
             elif types == "Repurposed":
                 types_dis = "Others"
 
-            # elif types== 
 
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                     " AND country LIKE '%" + country + "%' "
-                # "AND '" + types + "' ~ vac_type "
-                                                                                                        " AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                          "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                " AND country LIKE '%" + country + "%' "
+                " AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -134,8 +132,7 @@ def index():
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, company, partner_name LIMIT 5")
-        # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
+                    "ORDER BY stage DESC, company, partner_name LIMIT 10")
         data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
@@ -174,11 +171,33 @@ def card():
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-
-    # cur.execute("rollback")    
+  
     data = cur.fetchall()
     cur.execute("rollback")
     return render_template("card.html", data=data)
+
+
+@app.route("/mobile-form", methods=['GET', 'POST'])
+def mobileForm():
+    mobile_stages = str(request.args.get('stages'))
+    mobile_country = str(request.args.get('country'))
+    mobile_type = str(request.args.get('type'))
+    print(mobile_stages)
+    print(mobile_country)
+    print(mobile_type)
+
+    cur.execute("rollback")
+    cur.execute(
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        " JOIN companies ON info.vac_id = companies.vac_id "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + mobile_stages + "' "
+        " AND country LIKE '%" + mobile_country + "%' "
+        " AND vac_type LIKE '%" + mobile_type + "%' "
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
+
+    data = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("mobile-card.html", data=data)
 
 
 @app.route("/about-us")
@@ -199,7 +218,7 @@ def getBarsData():
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
 

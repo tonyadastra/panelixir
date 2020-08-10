@@ -1,11 +1,3 @@
-function hexToBase64(str) {
-    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-}
-
-// function hexToBase64(str) {
-//     return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-// }
-
 class myCard extends HTMLElement {
     connectedCallback() {
         const shadow = this.attachShadow({ mode: 'open' });
@@ -131,20 +123,16 @@ class myCard extends HTMLElement {
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
-
         // text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
         var intro = this.getAttribute('data-intro');
         // console.log(intro);
         
 
-        if (this.getAttribute('data-stage') != 0) 
-            text.innerHTML = intro;
-        else 
-            text.setAttribute('style', 'margin-bottom:2rem');
+        // if (this.getAttribute('data-stage') != 0) 
+        text.innerHTML = intro;
+        // else 
+        //     text.setAttribute('style', 'margin-bottom:2rem');
         wrapper.appendChild(text);
-        // } else {
-        
-        // }
 
 
         var url = this.getAttribute('data-expand');
