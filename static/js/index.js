@@ -125,7 +125,7 @@ function resize() {
                     names = values[1]
                     // console.log(world)
                     // console.log("custom", world_continent)
-                    var globe = { type: "Sphere" },
+                    var globe = {type: "Sphere"},
                         land = topojson.feature(world, world.objects.land),
                         borders = topojson.mesh(world, world.objects.countries, function (a, b) {
                             return a !== b;
@@ -558,7 +558,7 @@ $(document).ready(function () {
             world_continents.continent = continent;
             var prev_color = colors.clickable, prev_stage = -1;
 
-            if (window.screen.size > 768) {
+            if (window.screen.width > 768) {
                 d3.selectAll(".clicked")
                     .classed("clicked", false)
                     .select(function () {
@@ -611,29 +611,49 @@ $(document).ready(function () {
                 })();
             }
         }
-        // }
-        // }, 600);
     });
-
-
 });
 
-var nearToBottom = 100;
-$(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() >
-        $(document).height() - nearToBottom) {
-        // ajax call get data from server and append to the div
-        $.ajax({
-            url: '/card',
-            type: 'get',
-            data: {'count': count, 'limit':limit},
-            success: function (response) {
-                // console.log(response)
-                $('#card_container').append(response);
+var nearToBottom = 150;
+var mobile_stage = ''
+var mobile_country = ''
+var mobile_type = ''
 
-                count = count+1;
-            }
-        });
+$(window).scroll(function () {
+    if (window.screen.width <= 768) {
+        if ($(window).scrollTop() + $(window).height() >=
+            $(document).height()) {
+            // ajax call get data from server and append to the div
+
+            $.ajax({
+                url: '/mobile-card',
+                type: 'get',
+                data: {
+                    'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+                    'mobile_count': mobile_count, 'limit': limit
+                },
+                success: function (response) {
+                    console.log(mobile_count)
+                    $('#mobile_container').append(response);
+                    mobile_count = mobile_count + 1;
+                }
+            });
+        }
+    }
+    else {
+        if ($(window).scrollTop() + $(window).height() >=
+            $(document).height() - nearToBottom) {
+            $.ajax({
+                url: '/card',
+                type: 'get',
+                data: { 'count': count, 'limit': limit },
+                success: function (response) {
+                    // console.log(response)
+                    $('#card_container').append(response);
+                    count = count + 1;
+                }
+            });
+        }
     }
 });
 
@@ -700,24 +720,22 @@ $('.btn-filter').click(function (){
 })
 
 // AJAX Request for submitting mobile form
-$("#submit-form").click(function(){
-    let stages = document.querySelector('.active#stages').value;
-    let country = document.querySelector('.active#country').value;
-    let type = document.querySelector('.active#type').value;
+$("#submit-form").click(function () {
+    mobile_stage = document.querySelector('.active#stages').value;
+    mobile_country = document.querySelector('.active#country').value;
+    mobile_type = document.querySelector('.active#type').value;
     $.ajax({
         url: "/mobile-form",
-        data: {'stages': stages, 'country': country, 'type': type},
+        data: {
+            'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+            'limit': limit, 'mobile_count': mobile_count
+        },
         type: "GET",
         success: function (response) {
-
             $('.all-cards').remove();
             document.getElementById('mobile_container').innerHTML = response;
-
+            mobile_count = 1;
         },
-        // error:function(e){
-        //     console.log(JSON.stringify(e));
-        // }
     });
     return false;
 });
-
