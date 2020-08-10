@@ -1,12 +1,11 @@
 /* Header */
-
 /* Extra Small Screen - Two Line Title */
-
 @media screen and (max-width: 375px) {
   .title {
     font-size: 0.7rem;
     /* Modified */
     max-width: 60%;
+    margin-left: 0.5rem!important;
     /* New */
   }
   .title-bar {
@@ -29,15 +28,25 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  .filter{
+    display: none;
+  }
+  h6{
+    margin-top: 0.5rem;
+  }
+
+  .title {
+    font-size: 0.7rem;
+    /* Modified */
+    margin-left: 0.5rem!important;
+    /* New */
+  }
   p.display-highlight{
     margin-bottom: 0.3rem!important;
   }
   .large-screen{
     display: none;
   }
-  /*.dropdown{*/
-  /*  display: none;*/
-  /*}*/
 
   .title-bar {
     height: 2rem;
@@ -68,18 +77,18 @@
     padding-left: 5px;
     padding-right: 5px;
   }
-  span.highlight {
-    vertical-align: middle!important;
-    font-family: sans-serif;
-    font-size: 11px !important;
-    margin: auto 0.1rem !important;
-    padding: 0.35rem !important;
-    border-radius: 0.2rem;
-    color: white;
-    display: inline-block;
-    height: 50%;
-    width: 80%;
-  }
+  /*span.highlight {*/
+  /*  vertical-align: middle!important;*/
+  /*  font-family: sans-serif;*/
+  /*  font-size: 11px !important;*/
+  /*  margin: auto 0.1rem !important;*/
+  /*  padding: 0.35rem !important;*/
+  /*  border-radius: 0.2rem;*/
+  /*  color: white;*/
+  /*  display: inline-block;*/
+  /*  height: 50%;*/
+  /*  width: 80%;*/
+  /*}*/
   #title {
     font-family: Garamond, EB Garamond, Georgia, serif;
     font-size: 0.9rem;
@@ -178,36 +187,58 @@
     /* Modified */
   }
   /* modal display */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 30% auto !important;
-    padding: 10px 0;
-    border: 1px solid #888;
-    width: 40%;
-    font-size: 10px;
-    line-height: 1rem;
-  }
+  /*.modal {*/
+  /*  display: none;*/
+  /*  position: fixed;*/
+  /*  z-index: 2;*/
+  /*  left: 0;*/
+  /*  top: 0;*/
+  /*  width: 100%;*/
+  /*  height: 100%;*/
+  /*  overflow: auto;*/
+  /*  background-color: rgba(0, 0, 0, 0.4);*/
+  /*}*/
+  /*!* Modal Content/Box *!*/
+  /*.modal-content {*/
+  /*  background-color: #fefefe;*/
+  /*  margin: 30% auto !important;*/
+  /*  padding: 10px 0;*/
+  /*  border: 1px solid #888;*/
+  /*  width: 40%;*/
+  /*  font-size: 10px;*/
+  /*  line-height: 1rem;*/
+  /*}*/
   .column {
     padding: 00rem;
   }
 }
-
-/* 425-767px - Tablet */
-
-@media screen and (min-width: 426px) and (max-width: 767px) {
+@media screen and (max-width: 576px) {
   .large-screen{
+    display: none!important;
+  }
+  .small-screen{
+    display: block!important;
+  }
+  span.highlight {
+    vertical-align: middle !important;
+    font-family: sans-serif!important;
+    font-size: 11px !important;
+    margin: auto 0.1rem !important;
+    padding: 0.35rem !important;
+    border-radius: 0.2rem!important;
+    color: white!important;
+    display: inline-block!important;
+    height: 50% !important;
+    width: 80% !important;
+  }
+}
+
+/* 426-767px - Tablet */
+@media screen and (min-width: 426px) and (max-width: 767px) {
+  .filter{
+    display: none;
+  }
+  .small-screen{
     display: none;
   }
   .title-bar {
@@ -243,6 +274,7 @@
     font-size: 0.4rem;
     /* Modified */
   }
+
   .header-text .coming-soon {
     visibility: hidden;
     width: 80px;
@@ -317,6 +349,9 @@
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
+  .mobile-filter{
+    display: none;
+  }
   .small-screen{
     display: none;
   }
@@ -445,6 +480,9 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+  .mobile-filter{
+    display: none;
+  }
   .small-screen{
     display: none;
   }
@@ -1084,7 +1122,115 @@ span.highlight {
   position: absolute;
 }
 
-.clear-filter {
-  color: transparent;
-  border-bottom: darkslateblue;
+.mobile-filter{
+  /*background-color: #faf4e5;*/
+  padding: 0.7rem 0;
+}
+
+.btn-filter {
+  color: #fff;
+  background-color: #359afa;
+  border-color: #359afa;
+  border-bottom: 2px solid #148192;
+}
+.btn-filter:hover {
+  color: #fff;
+  background-color: #045dac;
+  border-color: #0583fc;
+}
+
+.btn-filter:not(:disabled):not(.disabled):active,
+.btn-filter:not(:disabled):not(.disabled).active,
+.show > .btn-filter.dropdown-toggle {
+  color: #fff;
+  background-color: #359afa;
+  border-color: #0882f6;
+}
+
+.btn-clear {
+  color: #fff;
+  background-color: #f85c5c;
+  border-color: #f85c5c;
+  border-bottom: 2px solid #b83838;
+}
+.btn-clear:hover {
+  color: #fff;
+  background-color: #ae3c3c;
+  border-color: #942323;
+}
+
+.btn-clear:not(:disabled):not(.disabled):active,
+.btn-clear:not(:disabled):not(.disabled).active,
+.show > .btn-clear.dropdown-toggle {
+  color: #fff;
+  background-color: #d35b00;
+  border-color: #a54a04;
+}
+.btn-clear:not(:disabled):not(.disabled):active:focus,
+.btn-clear:not(:disabled):not(.disabled).active:focus,
+.show > .btn-clear.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.05rem rgb(255, 114, 7);
+}
+
+.dropdown-mobile{
+  position: relative;
+  width: 100%;
+  text-align: left!important;
+}
+
+.dropdown-mobile{
+  width: 100%;
+}
+
+.btn-default{
+
+}
+.btn-default.btn-mobile-stage.active{
+  /*background-color: #5ab9ea;*/
+    color: #ffffff;
+  background-color: #33b7b3;
+}
+
+.btn-default.btn-mobile-country.active{
+  /*background-color: #5ab9ea;*/
+    color: #ffffff;
+  background-color: #ec701e;
+}
+
+.btn-default.btn-mobile-type.active{
+  /*background-color: #5ab9ea;*/
+    color: #ffffff;
+  background-color: #b683ec;
+}
+
+
+.btn-default {
+  border: 1px solid rgba(143, 182, 241, 0.98);
+  outline: 0;
+  box-shadow: 0 0 0 0 !important;
+}
+.modal-body{
+  padding: 1rem 0.7rem;
+  margin-top: 0.3rem;
+}
+.mobile-font{
+    font-size: 0.68rem;
+    /*color: white;*/
+}
+.mobile-font-small{
+    font-size: 0.6rem;
+    /*color: white;*/
+}
+.mobile-font-large{
+    font-size: 0.75rem;
+    /*color: white;*/
+}
+p.subtag{
+  font-size: 0.9rem;
+  color: grey;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.close{
+  line-height: 0.5rem;
 }
