@@ -460,8 +460,6 @@ $(document).ready(function () {
 
                     let yTrack = 75;
 
-
-
                     svg.append("text")
                         .attr("x", 60)
                         .attr("y", yTrack + i * 60)
@@ -671,10 +669,10 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
     // Display Title of Previous Selected Country
     document.getElementById('mobile-button').innerHTML = countryTitle;
     // When Dropdown Item Clicked and Matches Most Viewed Countries, set button to active
-    if (document.querySelector('.active#country').value === "United States" || "United Kingdom" || "Australia" || "China") {
+    if (document.querySelector('.active#country').value === "United States" || "United Kingdom" || "China") {
         var dropdownName = document.querySelector('.active#country').value;
         $(".btn-group-2 > .btn").removeClass("active");
-        d3.selectAll(".btn")
+        d3.selectAll(".btn-mobile-country")
             .filter(function () {
                 return d3.select(this).attr("value") === dropdownName; // filter by single attribute
             })
@@ -694,11 +692,11 @@ $('.most-viewed').click(function () {
     // Remove Previous Active
     $(".dropdown-mobile > .mobile-dropdown-item").removeClass("active");
     // Set matched dropdown item to active
-    d3.selectAll(".dropdown-item-ctry")
+    d3.selectAll(".mobile-dropdown-item-ctry")
         .filter(function () {
             return d3.select(this).attr("value") === countryTitle; // filter by single attribute
         })
-        .attr('class', 'active dropdown-item-ctry mobile-dropdown-item')
+        .attr('class', 'active mobile-dropdown-item-ctry mobile-dropdown-item')
 
     // Value to All to display
     if ($(this).val() === "") {

@@ -1174,7 +1174,7 @@ span.highlight {
 
 .dropdown-mobile{
   position: relative;
-  width: 100%;
+  width: 97% !important;
   text-align: left!important;
 }
 
@@ -1221,10 +1221,6 @@ span.highlight {
     font-size: 0.6rem;
     /*color: white;*/
 }
-.mobile-font-large{
-    font-size: 0.75rem;
-    /*color: white;*/
-}
 p.subtag{
   font-size: 0.9rem;
   color: grey;
@@ -1233,4 +1229,23 @@ p.subtag{
 }
 .close{
   line-height: 0.5rem;
+}
+
+.mobile-dropdown-item-ctry {
+  display: block;
+  width: 100%;
+  padding: .25rem 1rem;
+  clear: both;
+  font-weight: 320;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+}
+
+.mobile-dropdown-item-ctry.active, .mobile-dropdown-item-ctry:active {
+  color: #fff;
+  background-color: rgba(102, 152, 255, 0.68);
+  font-weight: 350;
 }
