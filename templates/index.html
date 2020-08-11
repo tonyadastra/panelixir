@@ -260,7 +260,7 @@
     <div class="row">
         <div class="col" style="text-align: center">
             <div class="column mobile-clear">
-                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
+                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important;">
                   <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
                 </button>
             </div>
@@ -300,9 +300,9 @@
                             </div>
                             <p class="subtag">Or select from all countries:</p>
                             <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-mobile" id="mobile-button" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
-                                    All(Default)
+                                <button onclick="myFunction()" class="btn btn-outline-secondary dropdown-mobile dropdown-toggle" type="button"
+                                    data-toggle="dropdown" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
+                                    <span id="mobile-button">All(Default)</span> <i class="fa fa-angle-down vertical-center" style="right: 3%;" aria-hidden="true"></i>
                                 </button>
                                 <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
                                     <button class="active mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="">All</button>
@@ -350,8 +350,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Close</button>
-                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;margin-right: 0.9rem;">Close</button>
+                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
                         </div>
                     </div>
                 </div>

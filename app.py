@@ -104,17 +104,15 @@ def index():
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
 
-            # elif types== 
-
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                     " AND country LIKE '%" + country + "%' "
+                " AND country LIKE '%" + country + "%' "
                 # "AND '" + types + "' ~ vac_type "
-                                                                                                        " AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                          "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                " AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -169,8 +167,8 @@ def card():
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
             " AND vac_type LIKE '%" + types + "%' "
-            "ORDER BY stage DESC, co_name, partner_name "
-            "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+            " ORDER BY stage DESC, co_name, partner_name "
+            " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
@@ -215,7 +213,7 @@ def mobileForm():
 
 
 @app.route("/mobile-card")
-def mobileMoreCards():
+def mobileAppendCards():
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
     mobile_type = str(request.args.get('mobile_type'))
