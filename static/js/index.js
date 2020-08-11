@@ -412,8 +412,8 @@ $(document).ready(function () {
                     .attr("x", (svgW / 2))
                     .attr("y", 50)
                     .attr("text-anchor", "middle")
-                    .style("font-size", "16px")
-                    .style("font-style", "italic")
+                    .style("font-size", "18px")
+                    // .style("font-style", "italic")
                     .attr("font-weight", "bold")
                     .text("Top 5 Candidates");
 
@@ -697,6 +697,7 @@ $('.most-viewed').click(function () {
             return d3.select(this).attr("value") === countryTitle; // filter by single attribute
         })
         .attr('class', 'active mobile-dropdown-item-ctry mobile-dropdown-item')
+    // var elmnt = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0].scrollIntoView(true);
 
     // Value to All to display
     if ($(this).val() === "") {
@@ -736,4 +737,17 @@ $("#submit-form").click(function () {
         },
     });
     return false;
+});
+
+
+$(document).ready(function() {
+    // Trigger Mobile Dropdown
+    $(".dropdown-toggle").dropdown();
+    // Scroll To Active Dropdown Item
+    $(".dropdown > .dropdown-mobile").click(function () {
+        // Get Active Item
+        var elmnt = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0];
+        // Scroll Into View, (true)=top, (false)=bottom
+        elmnt.scrollIntoView();
+    })
 });
