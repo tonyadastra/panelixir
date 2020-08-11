@@ -135,7 +135,7 @@ def index():
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, company, partner_name LIMIT 10")
+                    "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
