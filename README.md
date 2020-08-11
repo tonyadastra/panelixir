@@ -3,11 +3,11 @@
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
 **To Do List**
-* [ ] Modal For Mobile Version
-* [ ] WHO Vaccine Type Filtering
-* [ ] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
+* [X] Modal For Mobile Version
+* [X] WHO Vaccine Type Filtering
+* [X] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
 * [ ] Logo Design
-* [ ] Map Optimization (Taking up 100%+ CPU)
+* [X] Map Optimization (Taking up 100%+ CPU)
 * [ ] About-Us Photos & Contact Info
 * [ ] Disclaimer
 * [ ] Auto-Update Data from WHO website
@@ -16,6 +16,7 @@
 * [ ] Feedback Form
 
 **Latest Updates**
++ August 2-10, 2020 - Final V1 Updates and BugFixes, Complete Mobile Modal, Update Databases, Disclaimer
 + August 1, 2020 - Complete Media Querying(Compatible with Mobile, Tablets, and iPads), Add Datasource to Database(Current Display- Pre-Clinical: 140)
 + July 31, 2020 - Complete 70% of Media Querying, Add source from WHO to database
 + July 30, 2020 - Web Domain Registration [PanElixir](https://www.panelixir.com), About Us Page Design, Create favicon.ico
