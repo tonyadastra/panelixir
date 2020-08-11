@@ -292,14 +292,12 @@ function resize() {
 
 var needs_update = true;
 var processing = false;
-var count = 1, limit = 10;
+var count = 1, limit = 10, mobile_count = 1;
 
 /** When page is loaded...**/
 $(document).ready(function () {
     $(function () {
         resize();
-
-     
 
         // $.ajax({
         //     url: '/card',
@@ -461,7 +459,6 @@ $(document).ready(function () {
 
                     let yTrack = 75;
 
-                    
 
                     svg.append("text")
                         .attr("x", 60)
@@ -559,6 +556,56 @@ $(document).ready(function () {
             world_continents.continent = continent;
             var prev_color = colors.clickable, prev_stage = -1;
 
+            if (window.screen.width > 768) {
+                d3.selectAll(".clicked")
+                    .classed("clicked", false)
+                    .select(function () {
+                        // console.log(this)
+                        // console.log(d3.select(this).attr("countryname"));
+                        var temp = vac_map.get(d3.select(this).attr("countryname"));
+                        prev_stage = temp === undefined ? -1 : temp;
+
+                        if (prev_stage === 0) {
+                            prev_color = colors.p0;
+                        } else if (prev_stage === 1) {
+                            prev_color = colors.p1;
+                        } else if (prev_stage === 2) {
+                            prev_color = colors.p2;
+                        } else if (prev_stage === 3) {
+                            prev_color = colors.p3;
+                        } else if (prev_stage === 4) {
+                            prev_color = colors.p4;
+                        } else {
+                            prev_color = colors.clickable;
+                        }
+                        d3.select(this).attr("fill", prev_color);
+                        // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                    })
+
+                }
+                // Append orange bar
+                svg.append('rect')
+                    .attr('class', 'border')
+                    .attr('rx', 10)
+                    .attr('ry', 10)
+                    .attr('fill', 'orange')
+                    .attr('height', 330)
+                    .attr('width', 10)
+                    .attr('x', progressStart - 5)
+                    .attr('y', 40);
+
+                // d3.select(self.frameElement).style("height", svgH + "px");
+            },
+        });
+
+        /** change map on button click */
+        // setTimeout(() => {
+        if (world_continents.continent !== continent) {
+            needs_update = false;
+            processing = continent !== 'World';
+            world_continents.continent = continent;
+            var prev_color = colors.clickable, prev_stage = -1;
+
             d3.selectAll(".clicked")
                 .classed("clicked", false)
                 .select(function () {
@@ -583,54 +630,73 @@ $(document).ready(function () {
                     d3.select(this).attr("fill", prev_color);
                     // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                 })
+                    .attr("fill", colors.clicked)
+                    .classed("clicked", true);
 
-            d3.selectAll("path").filter(function (d) {
-                return d3.select(this).attr("continent") === continent;
-            })
-                .attr("fill", colors.clicked)
-                .classed("clicked", true);
+                // d3.select(this)
+                //   .select(function () {
+                //     d3.select(this).attr("fill", curr_color);
+                //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                //   });
+                // .attr("fill", colors.clicked);
 
-            // d3.select(this)
-            //   .select(function () {
-            //     d3.select(this).attr("fill", curr_color);
-            //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-            //   });
-            // .attr("fill", colors.clicked);
-
-            (function transition() {
-                d3.select(".clicked").transition()
-                    .duration(1000)
-                    .tween("rotate", function () {
-                        var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
-                        return function (t) {
-                            // projection.rotate(r(t)).scale(s(t));
-                            projection.rotate(r(t));
-                            map.selectAll("path").attr("d", path);
-                        }
-                    });
-            })();
+                (function transition() {
+                    d3.select(".clicked").transition()
+                        .duration(1000)
+                        .tween("rotate", function () {
+                            var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
+                            return function (t) {
+                                // projection.rotate(r(t)).scale(s(t));
+                                projection.rotate(r(t));
+                                map.selectAll("path").attr("d", path);
+                            }
+                        });
+                })();
+            }
         }
-        // }
-        // }, 600);
     });
-
 });
 
-var nearToBottom = 120;
+var nearToBottom = 150;
+var mobile_stage = ''
+var mobile_country = ''
+var mobile_type = ''
+
 $(window).scroll(function () {
-    if ($(window).scrollTop() + $(window).height() >
-        $(document).height() - nearToBottom) {
-        // ajax call get data from server and append to the div
-        $.ajax({
-            url: '/card',
-            type: 'get',
-            data: { 'count': count, 'limit': limit },
-            success: function (response) {
-                // console.log(response)
-                $('#card_container').append(response);
-                count = count + 1;
-            }
-        });
+    if (window.screen.width <= 768) {
+        if ($(window).scrollTop() + $(window).height() >=
+            $(document).height()) {
+            // ajax call get data from server and append to the div
+
+            $.ajax({
+                url: '/mobile-card',
+                type: 'get',
+                data: {
+                    'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+                    'mobile_count': mobile_count, 'limit': limit
+                },
+                success: function (response) {
+                    console.log(mobile_count)
+                    $('#mobile_container').append(response);
+                    mobile_count = mobile_count + 1;
+                }
+            });
+        }
+    }
+    else {
+        if ($(window).scrollTop() + $(window).height() >=
+            $(document).height() - nearToBottom) {
+            $.ajax({
+                url: '/card',
+                type: 'get',
+                data: { 'count': count, 'limit': limit },
+                success: function (response) {
+                    // console.log(response)
+                    $('#card_container').append(response);
+                    count = count + 1;
+                }
+            });
+        }
     }
 });
 
@@ -655,7 +721,7 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
             .filter(function () {
                 return d3.select(this).attr("value") === dropdownName; // filter by single attribute
             })
-            .attr('class', 'active btn btn-default mobile-font most-viewed')
+            .attr('class', 'active btn btn-default btn-mobile-country mobile-font most-viewed')
     }
     // If Dropdown Item Clicked and it is not listed in Most Viewed Countries, deactivate all buttons
     if (document.querySelector('.active.most-viewed') !== null) {
@@ -698,23 +764,21 @@ $('.btn-filter').click(function () {
 
 // AJAX Request for submitting mobile form
 $("#submit-form").click(function () {
-    let stages = document.querySelector('.active#stages').value;
-    let country = document.querySelector('.active#country').value;
-    let type = document.querySelector('.active#type').value;
+    mobile_stage = document.querySelector('.active#stages').value;
+    mobile_country = document.querySelector('.active#country').value;
+    mobile_type = document.querySelector('.active#type').value;
     $.ajax({
         url: "/mobile-form",
-        data: { 'stages': stages, 'country': country, 'type': type },
+        data: {
+            'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+            'limit': limit, 'mobile_count': mobile_count
+        },
         type: "GET",
         success: function (response) {
-
             $('.all-cards').remove();
             document.getElementById('mobile_container').innerHTML = response;
-
+            mobile_count = 1;
         },
-        // error:function(e){
-        //     console.log(JSON.stringify(e));
-        // }
     });
     return false;
 });
-
