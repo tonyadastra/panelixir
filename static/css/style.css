@@ -19,6 +19,9 @@
 }
 
 @media screen and (max-width: 375px){
+  .dropdown-menu{
+    transform: translate3d(5px, 35px, 0px)!important;
+}
   .title {
     font-size: 0.7rem;
     /* Modified */
@@ -46,6 +49,9 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  .dropdown-menu{
+    transform: translate3d(5px, 35px, 0px)!important;
+}
   .btn-filter{
     font-size: 0.8rem;
   }
@@ -1340,6 +1346,6 @@ h6{
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
-  .dropdown-toggle::after{
+  .dropdown-mobile.dropdown-toggle::after{
     display: none;
   }
