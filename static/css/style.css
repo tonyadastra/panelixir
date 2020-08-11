@@ -16,7 +16,9 @@
     font-size: 8.5px!important;
     /*color: white;*/
   }
+}
 
+@media screen and (max-width: 375px){
   .title {
     font-size: 0.7rem;
     /* Modified */
