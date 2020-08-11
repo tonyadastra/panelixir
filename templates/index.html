@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../static/css/card.css">
 <link rel="stylesheet" href="../static/css/interactive.css">
 <link rel="stylesheet" href="../static/css/style.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../static/css/icons.css">
 {% endblock %}
 
 
@@ -261,29 +261,57 @@
     <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
     <!--</div>-->
 
-    {# For Mobile Version Only #}
-    <div class="mobile-filter" id="TagIWantToLoadTo">
-        <div class="row">
-            <div class="col" style="text-align: center">
-                <div class="column mobile-clear">
-                    <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter"
-                        style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
-                        <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
-                    </button>
-                </div>
+{# Go to Top of Filter Bar #}
+<div id="TagIWantToLoadTo"></div>
+{# For Mobile Version Only #}
+<div class="mobile-filter">
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <div class="column mobile-clear">
+                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
+                  <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
+                </button>
+            </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog" role="document">
-                        <div class="modal-content" style="text-align: left">
-                            {#                        <div class="modal-header">#}
-                            {#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
-                            {##}
-                            {#                        </div>#}
-                            <div class="modal-body">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog" role="document">
+                    <div class="modal-content" style="text-align: left">
+{#                        <div class="modal-header">#}
+{#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
+{##}
+{#                        </div>#}
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h6>Select Stage</h6>
+                            <div class="btn-group btn-group-1" role="group">
+                                <button type="button" class="active btn btn-default btn-mobile-stage mobile-font" id="stages" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                            </div>
+                            <div class="btn-group btn-group-1" role="group">
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="0">Pre-Clinical</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="1">Phase I</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="2">Phase II</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="3">Phase III</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4">Approval</button>
+                            </div>
+                            <h6>Select Country</h6>
+                            <p class="subtag">Popular countries:</p>
+                            <div class="btn-group btn-group-2" role="group">
+                                <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                            </div>
+                            <div class="btn-group btn-group-2" role="group">
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United States" value="United States">United States</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="Australia" value="Australia">Australia</button>
+                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="China" value="China">China</button>
+                            </div>
+                            <p class="subtag">Or select from all countries:</p>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-mobile" id="mobile-button" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
+                                    All(Default)
                                 </button>
                                 <h6>Select Stage</h6>
                                 <div class="btn-group btn-group-1" role="group">
@@ -414,12 +442,16 @@
                                         id="type" value="Repurposed">Others</button>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                    style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Close</button>
-                                <button type="submit" class="btn btn-primary" id="submit-form"
-                                    style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;">Save
-                                    changes</button>
+                            <h6>Select Vaccine Type</h6>
+                            <div class="btn-group btn-group-3">
+                                <button type="button" class="active btn btn-default btn-mobile-type mobile-font-small" id="type" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                            </div>
+                            <div class="btn-group btn-group-3">
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Genetic">Genetic</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Viral Vector">Viral Vector</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Protein">Protein-Based</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Virus">Whole Virus</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Others">Others</button>
                             </div>
                         </div>
                     </div>
@@ -438,35 +470,32 @@
         </div>
     </div>
 
-    <!--Filter Data-->
-    <div id="TagIWantToLoadTo" class="filter">
-        <!--    <div class="container">-->
-        <form action="/" method="POST" enctype="multipart/form-data">
-            <div class="row">
-                <div class="column filtertext">
-                    <b>Filter Vaccines</b>
-                </div>
-                <!--            Stages-->
-
-                <div class="column">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            {{stages_dis}}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
-                            <div class="dropdown-divider"></div>
-                            <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
-                            <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
-                            <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
-                            <div class="dropdown-divider"></div>
-                            <!--                            Disabled-->
-                            <button class="dropdown-item disabled" type="submit" name="stages"
-                                value="4">Approval</button>
-                            <!--                            Enabled-->
-                            <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
-                        </div>
+<!--Filter Data-->
+<div class="filter">
+    <!--    <div class="container">-->
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="column filtertext">
+                <b>Filter Vaccines</b>
+            </div>
+            <!--            Stages-->
+            <div class="column">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        {{stages_dis}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
+                        <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
+                        <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
+                        <div class="dropdown-divider"></div>
+                        <!--                            Disabled-->
+                        <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
+                        <!--                            Enabled-->
+                        <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
                     </div>
                 </div>
 
@@ -543,28 +572,25 @@
                     </div>
                 </div>
 
-                <!-- Vaccine Types-->
-                <div class="column">
-                    <!-- types dropdown -->
-                    <div class="dropdown">
-                        <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{types_dis}}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
-                                Genetic Vaccines</button>
-                            <button class="dropdown-item-type" type="submit" name="type" value="Protein">
-                                Protein-Based Vaccines</button>
-                            <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
-                                Viral Vector Vaccines</button>
-                            <button class="dropdown-item-type" type="submit" name="type" value="VLP">
-                                VLP Vaccines</button>
-                            <button class="dropdown-item-type" type="submit" name="type" value="Virus">
-                                Whole-Virus Vaccines</button>
-                            <button class="dropdown-item-type" type="submit" name="type" value="Repurposed">
-                                Others</button>
-                        </div>
+            <!-- Vaccine Types-->
+            <div class="column">
+                <!-- types dropdown -->
+                <div class="dropdown">
+                    <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{types_dis}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
+                            Genetic Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Protein">
+                            Protein-Based Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
+                            Viral Vector Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Virus">
+                            Whole-Virus Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="Others">
+                            Others</button>
                     </div>
                 </div>
                 <div class="column clear_filter" style="float: right;">
@@ -582,33 +608,33 @@
     </div>
 
 
-    <!-- list institutions -->
-    <div class="all-cards">
-        <div class="institutions">
-            {% if data|length >= 2 %}
-            {% for entry in data %}
-            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
-                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-            </my-card>
-            {% endfor %}
-            {% else %}
-            {% if data|length > 0 %}
-            {% for entry in data %}
-            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
-                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-            </my-card>
-            {% endfor %}
-            <div style="height: 20rem;"></div>
-            {% else %}
-            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-            <div style="height: 35rem;"></div>
-            {% endif %}
-            {% endif %}
-        </div>
-        <div id="card_container"></div>
+<!-- list institutions -->
+<div class="all-cards">
+    <div class="institutions" id="institutions">
+        {% if data|length >= 2 %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+        {% else %}
+        {% if data|length > 0 %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+        <div style="height: 20rem;"></div>
+        {% else %}
+        <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+        <div style="height: 35rem;"></div>
+        {% endif %}
+        {% endif %}
     </div>
     <div id="mobile_container"></div>
-</body>
+
+
+{#</body>#}
 
 {% endblock %}
 

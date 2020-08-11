@@ -92,13 +92,16 @@ def index():
                     types_dis = "Vaccine Types"
 
             if types == "Genetic":
-                types_dis = types
+                types_dis = "Genetic Vaccines"
                 types = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
             elif types == "Protein":
                 types_dis = "Protein-Based Vaccines"
+            elif types == "Viral Vector":
+                types_dis = "Viral Vector Vaccines"
             elif types == "Virus":
                 types_dis = "Whole-Virus Vaccines"
-            elif types == "Repurposed":
+            elif types == "Others":
+                types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
 
 
@@ -179,25 +182,57 @@ def card():
 
 @app.route("/mobile-form", methods=['GET', 'POST'])
 def mobileForm():
-    mobile_stages = str(request.args.get('stages'))
-    mobile_country = str(request.args.get('country'))
-    mobile_type = str(request.args.get('type'))
+    # global mobile_stages, mobile_country, mobile_type
+    mobile_stages = str(request.args.get('mobile_stage'))
+    mobile_country = str(request.args.get('mobile_country'))
+    mobile_type = str(request.args.get('mobile_type'))
     print(mobile_stages)
     print(mobile_country)
     print(mobile_type)
+    print(request.args.get('mobile_count'))
+    print(request.args.get('initialize'))
+    if mobile_type == "Genetic":
+        mobile_type = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
+    elif mobile_type == "Others":
+        mobile_type = "Repurposed%' or vac_type LIKE '%VLP"
 
-    cur.execute("rollback")
     cur.execute(
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + mobile_stages + "' "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND vac_type LIKE '%" + mobile_type + "%' "
+<<<<<<< HEAD
         "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
+=======
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+>>>>>>> f350e91ed62d726689c696a5ef18edd9b6c143d8
 
     data = cur.fetchall()
     cur.execute("rollback")
+
     return render_template("mobile-card.html", data=data)
+
+
+@app.route("/mobile-card")
+def mobileMoreCards():
+    mobile_stages = str(request.args.get('mobile_stage'))
+    mobile_country = str(request.args.get('mobile_country'))
+    mobile_type = str(request.args.get('mobile_type'))
+    count = int(request.args.get('mobile_count'))
+    limit = int(request.args.get('limit'))
+    cur.execute(
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        " JOIN companies ON info.vac_id = companies.vac_id "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
+        " AND country LIKE '%" + mobile_country + "%' "
+        " AND vac_type LIKE '%" + mobile_type + "%' "
+        " ORDER BY stage DESC, co_name, partner_name "
+        " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+
+    data = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("card.html", data=data)
 
 
 @app.route("/about-us")
