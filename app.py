@@ -100,6 +100,7 @@ def index():
                 types_dis = "Viral Vector Vaccines"
             elif types == "Virus":
                 types_dis = "Whole-Virus Vaccines"
+                types = "Virus%' or vac_type LIKE '%Inactivated"
             elif types == "Others":
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
@@ -110,6 +111,7 @@ def index():
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
+                # "AND '" + types + "' ~ vac_type "
                 " AND vac_type LIKE '%" + types + "%' "
                 "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
@@ -134,7 +136,8 @@ def index():
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, company, partner_name LIMIT 10")
+                    "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
@@ -165,8 +168,8 @@ def card():
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
             " AND vac_type LIKE '%" + types + "%' "
-            "ORDER BY stage DESC, co_name, partner_name "
-            "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+            " ORDER BY stage DESC, co_name, partner_name "
+            " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
@@ -174,6 +177,7 @@ def card():
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
+    # cur.execute("rollback")
     data = cur.fetchall()
     cur.execute("rollback")
     return render_template("card.html", data=data)
@@ -202,10 +206,11 @@ def mobileForm():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND vac_type LIKE '%" + mobile_type + "%' "
-        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
+    print(len(data))
 
     return render_template("mobile-card.html", data=data)
 

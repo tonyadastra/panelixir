@@ -125,7 +125,7 @@ function resize() {
                     names = values[1]
                     // console.log(world)
                     // console.log("custom", world_continent)
-                    var globe = { type: "Sphere" },
+                    var globe = {type: "Sphere"},
                         land = topojson.feature(world, world.objects.land),
                         borders = topojson.mesh(world, world.objects.countries, function (a, b) {
                             return a !== b;
@@ -299,18 +299,6 @@ $(document).ready(function () {
     $(function () {
         resize();
 
-        // $.ajax({
-        //     url: '/card',
-        //     type: 'get',
-        //     data: { 'count': count, 'limit': limit },
-        //     success: function (response) {
-        //         // console.log(response)
-        //         console.log(response)
-        //         $('#card_container').append(response);
-        //         count = count + 1;
-        //     }
-        // });
-
         var btn_group = document.getElementsByTagName('button');
         for (var i = 0, length = btn_group.length; i < length; i++) {
             var btn = btn_group[i];
@@ -412,8 +400,8 @@ $(document).ready(function () {
                     .attr("x", (svgW / 2))
                     .attr("y", 50)
                     .attr("text-anchor", "middle")
-                    .style("font-size", "16px")
-                    .style("font-style", "italic")
+                    .style("font-size", "18px")
+                    // .style("font-style", "italic")
                     .attr("font-weight", "bold")
                     .text("Top 5 Candidates");
 
@@ -612,8 +600,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 600;
-var nearToBottomMobile = 400;
+var nearToBottom = 100;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -621,7 +608,7 @@ var mobile_type = ''
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
-            $(document).height()-nearToBottomMobile) {
+            $(document).height()) {
             // ajax call get data from server and append to the div
 
             $.ajax({
@@ -632,7 +619,7 @@ $(window).scroll(function () {
                     'mobile_count': mobile_count, 'limit': limit
                 },
                 success: function (response) {
-                    // console.log(mobile_count)
+                    console.log(mobile_count)
                     $('#mobile_container').append(response);
                     mobile_count = mobile_count + 1;
                 }
@@ -642,8 +629,7 @@ $(window).scroll(function () {
     else {
         if ($(window).scrollTop() + $(window).height() >
             $(document).height() - nearToBottom) {
-            console.log(($(window).scrollTop() + $(window).height() >
-            $(document).height() - nearToBottom))
+            console.log($(window).scrollTop() + $(window).height(), $(document).height() - nearToBottom)
             $.ajax({
                 url: '/card',
                 type: 'get',
@@ -652,7 +638,6 @@ $(window).scroll(function () {
                     // console.log(response)
                     $('#card_container').append(response);
                     count = count + 1;
-                    console.log(count)
                 }
             });
         }
@@ -673,10 +658,10 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
     // Display Title of Previous Selected Country
     document.getElementById('mobile-button').innerHTML = countryTitle;
     // When Dropdown Item Clicked and Matches Most Viewed Countries, set button to active
-    if (document.querySelector('.active#country').value === "United States" || "United Kingdom" || "Australia" || "China") {
+    if (document.querySelector('.active#country').value === "United States" || "United Kingdom" || "China") {
         var dropdownName = document.querySelector('.active#country').value;
         $(".btn-group-2 > .btn").removeClass("active");
-        d3.selectAll(".btn")
+        d3.selectAll(".btn-mobile-country")
             .filter(function () {
                 return d3.select(this).attr("value") === dropdownName; // filter by single attribute
             })
@@ -696,11 +681,12 @@ $('.most-viewed').click(function () {
     // Remove Previous Active
     $(".dropdown-mobile > .mobile-dropdown-item").removeClass("active");
     // Set matched dropdown item to active
-    d3.selectAll(".dropdown-item-ctry")
+    d3.selectAll(".mobile-dropdown-item-ctry")
         .filter(function () {
             return d3.select(this).attr("value") === countryTitle; // filter by single attribute
         })
-        .attr('class', 'active dropdown-item-ctry mobile-dropdown-item')
+        .attr('class', 'active mobile-dropdown-item-ctry mobile-dropdown-item')
+    // var elmnt = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0].scrollIntoView(true);
 
     // Value to All to display
     if ($(this).val() === "") {
