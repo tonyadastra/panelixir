@@ -111,7 +111,6 @@ def index():
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
-                # "AND '" + types + "' ~ vac_type "
                 " AND vac_type LIKE '%" + types + "%' "
                 "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
@@ -136,8 +135,7 @@ def index():
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
-        # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
+                    "ORDER BY stage DESC, company, partner_name LIMIT 10")
         data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
@@ -177,7 +175,6 @@ def card():
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    # cur.execute("rollback")    
     data = cur.fetchall()
     cur.execute("rollback")
     return render_template("card.html", data=data)
