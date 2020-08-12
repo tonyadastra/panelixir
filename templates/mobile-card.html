@@ -12,7 +12,7 @@
             data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
         </my-card>
         {% endfor %}
-        <div style="height: 20rem;"></div>
+{#        <div style="height: 20rem;"></div>#}
     {% else %}
         {% if data|length > 0 %}
         {% for entry in data %}
@@ -20,10 +20,10 @@
             data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
         </my-card>
         {% endfor %}
-        <div style="height: 30rem;"></div>
+        <div style="height: 2rem;"></div>
         {% else %}
         <h5 class="text-center" style="color: darkslateblue; margin-top: 1rem; font-size: 0.8rem;"> Currently there are no results available </h5>
-        <div style="height: 40rem;"></div>
+        <div style="height: 5rem;"></div>
         {% endif %}
     {% endif %}
 {% endif %}
