@@ -614,7 +614,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 150;
+var nearToBottom = 200;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''

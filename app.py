@@ -16,14 +16,14 @@ app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
-app.secret_key = "ILoveNewYork"
-conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/vaccinedb'
+# app.secret_key = "ILoveNewYork"
+# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
 # # User - Lola
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-# app.secret_key = "lola980109"
-# conn = psycopg2.connect("dbname=covid19_db user=lola")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
+app.secret_key = "lola980109"
+conn = psycopg2.connect("dbname=covid19_db user=lola")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
@@ -135,9 +135,10 @@ def index():
                                country=country, country_dis=country_dis, types=types, types_dis=types_dis,
                                scrollToAnchor="TagIWantToLoadTo")
     else:
+        # print("yes")
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, company, partner_name LIMIT 5")
+                    "ORDER BY stage DESC, company, partner_name LIMIT 10")
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
