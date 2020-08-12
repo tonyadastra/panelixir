@@ -613,6 +613,7 @@ $(document).ready(function () {
 });
 
 var nearToBottom = 600;
+var nearToBottomMobile = 400;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -620,7 +621,7 @@ var mobile_type = ''
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
-            $(document).height()) {
+            $(document).height()-nearToBottomMobile) {
             // ajax call get data from server and append to the div
 
             $.ajax({
@@ -631,7 +632,7 @@ $(window).scroll(function () {
                     'mobile_count': mobile_count, 'limit': limit
                 },
                 success: function (response) {
-                    console.log(mobile_count)
+                    // console.log(mobile_count)
                     $('#mobile_container').append(response);
                     mobile_count = mobile_count + 1;
                 }
@@ -639,7 +640,7 @@ $(window).scroll(function () {
         }
     }
     else {
-        if ($(window).scrollTop() + $(window).height() >=
+        if ($(window).scrollTop() + $(window).height() >
             $(document).height() - nearToBottom) {
             console.log(($(window).scrollTop() + $(window).height() >
             $(document).height() - nearToBottom))
