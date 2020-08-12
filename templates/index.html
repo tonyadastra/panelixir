@@ -30,103 +30,101 @@
 {% endblock %}
 
 {% block content %}
-<!-- Data Visualizations-->
-{#< onresize="resize()">#}
-{#<div class="container" style="position: relative; text-align: center; background-color: white;width: 100%;max-width: none;padding: 0;margin: 0;">#}
-<div class="row">
-    <div class="col-xl col-lg col-md-2" style="padding: 0;">
-        <div id="vis1" class="vis"></div>
-    </div>
-    <div class="col-xl col-lg col-md-12 col-xs-12 text-center" style="margin: 0 1rem 0 0;">
-        <div class="interactive-buttons" style="margin-bottom: 1rem;">
-            <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
-            <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
-                America</button>
-            <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
-            <button class="btn btn-outline-continent button-font" data-value="Asia" value="Asia">Asia</button>
-            <button class="btn btn-outline-continent button-font" data-value="Oceania" value="Oceania">Oceania</button>
-            <button class="btn btn-outline-continent button-font" data-value="Africa" value="Africa">Africa</button>
-            <button class="btn btn-outline-continent button-font" data-value="South America" value="South America">South
-                America</button>
+    <!-- Data Visualizations-->
+    <div class="row">
+        <div class="col-xl col-lg col-md-2" style="padding: 0;">
+            <div id="vis1" class="vis"></div>
         </div>
+        <div class="col-xl col-lg col-md-12 col-xs-12 text-center" style="margin: 0 1rem 0 0;">
+            <div class="interactive-buttons" style="margin-bottom: 1rem;">
+                <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
+                <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
+                    America</button>
+                <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
+                <button class="btn btn-outline-continent button-font" data-value="Asia" value="Asia">Asia</button>
+                <button class="btn btn-outline-continent button-font" data-value="Oceania" value="Oceania">Oceania</button>
+                <button class="btn btn-outline-continent button-font" data-value="Africa" value="Africa">Africa</button>
+                <button class="btn btn-outline-continent button-font" data-value="South America" value="South America">South
+                    America</button>
+            </div>
 
-        <div class="interactive-progress row">
-            <!--            Extended Length of Bar1-->
-            <div class="stage0" style="width: 18px"></div>
-            <!--            Bar1-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage0">
-                    <div class="bar-data" id="progress0">&nbsp;</div>
+            <div class="interactive-progress row">
+                <!--            Extended Length of Bar1-->
+                <div class="stage0" style="width: 18px"></div>
+                <!--            Bar1-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage0">
+                        <div class="bar-data" id="progress0">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow1-->
+                <div class="arrow-right-stage0 stage1"></div>
+                <!--            Bar2-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage1">
+                        <div class="bar-data" id="progress1">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- Arrow2-->
+                <div class="arrow-right-stage1 stage2"></div>
+                <!-- Bar3-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage2">
+                        <div class="bar-data" id="progress2">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- Arrow3-->
+                <div class="arrow-right-stage2 stage3"></div>
+                <!-- Bar4-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage3">
+                        <div class="bar-data" id="progress3">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow4-->
+                <div class="arrow-right-stage3 stage4"></div>
+                <!--            Bar5-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage4">
+                        <div class="bar-data" id="progress4">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow5-->
+                <div class="arrow-right-stage4"></div>
+            </div>
+            <div class="interactive-progress row" id="tag-between">
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage0">Pre-Clinical</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage1">Phase I</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage2">Phase II</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage3">Phase III</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage4">Approval</div>
+                    </div>
                 </div>
             </div>
-            <!--            Arrow1-->
-            <div class="arrow-right-stage0 stage1"></div>
-            <!--            Bar2-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage1">
-                    <div class="bar-data" id="progress1">&nbsp;</div>
-                </div>
+            <div class="vis-bars">
+                <div id="vis2" class="vis"></div>
+                <div id="vis3" class="vis"></div>
             </div>
-            <!-- Arrow2-->
-            <div class="arrow-right-stage1 stage2"></div>
-            <!-- Bar3-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage2">
-                    <div class="bar-data" id="progress2">&nbsp;</div>
-                </div>
-            </div>
-            <!-- Arrow3-->
-            <div class="arrow-right-stage2 stage3"></div>
-            <!-- Bar4-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage3">
-                    <div class="bar-data" id="progress3">&nbsp;</div>
-                </div>
-            </div>
-            <!--            Arrow4-->
-            <div class="arrow-right-stage3 stage4"></div>
-            <!--            Bar5-->
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar stage4">
-                    <div class="bar-data" id="progress4">&nbsp;</div>
-                </div>
-            </div>
-            <!--            Arrow5-->
-            <div class="arrow-right-stage4"></div>
-        </div>
-        <div class="interactive-progress row" id="tag-between">
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage0">Pre-Clinical</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage1">Phase I</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage2">Phase II</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage3">Phase III</div>
-                </div>
-            </div>
-            <div class="col" style="padding: 0;">
-                <div class="interactive-bar">
-                    <div class="bar-tag text-stage4">Approval</div>
-                </div>
-            </div>
-        </div>
-        <div class="vis-bars">
-            <div id="vis2" class="vis"></div>
-            <div id="vis3" class="vis"></div>
         </div>
     </div>
-</div>
 
 
     <div class="ctr text-center">
@@ -166,50 +164,50 @@
             </div>
         </div>
 
-{#    Only Display with Small Screen (< 768px) #}
-    <div class="row small-screen">
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <p class="display-highlight row">
-            <span class="highlight stage0 col-lg-12 col-md-12 col-sm-3 col-3">Preclinical</span>
-            <span class="col-lg-12 col-md-12 col-sm col black">In the Preclinical stage, the vaccine is <b>given to <span style="color: red">
-                        animals</span></b> to identify potential
-                safety concerns and test if it triggers an immune response.</span>
-            </p>
-        </div>
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <p class="display-highlight row">
-            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage1">Phase I</span>
-            <span class="col-lg-12 col-md-12 col-sm col black">In Phase I trials, the vaccine is <b>given to small groups of <span
-                        style="color: blue">people</span></b> (approximately 20
-                to 80) to test its safety and confirm that it stimulates the immune system.</span>
-            </p>
-        </div>
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <p class="display-highlight row">
-            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage2">Phase II</span>
-            <span class="col-lg-12 col-md-12 col-sm col black">In Phase II trials, the vaccine is <b>given to several hundred <span
-                        style="color: blue">people</span></b>, especially
-                people of different ages, to test its effectiveness.</span>
-            </p>
-        </div>
-        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-info">
-            <p class="display-highlight row">
-            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage3">Phase III</span>
-            <span class="col-lg-12 col-md-12 col-sm col black">In Phase III trials, the vaccine is <b>given to several thousand <span
-                        style="color: blue">people</span></b> to confirm and
-                expand on safety and effectiveness results from previous trials.</span>
-            </p>
-        </div>
-        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
-            <p class="display-highlight row">
+    {#    Only Display with Small Screen (< 768px) #}
+        <div class="row small-screen">
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <p class="display-highlight row">
+                <span class="highlight stage0 col-lg-12 col-md-12 col-sm-3 col-3">Preclinical</span>
+                <span class="col-lg-12 col-md-12 col-sm col black">In the Preclinical stage, the vaccine is <b>given to <span style="color: red">
+                            animals</span></b> to identify potential
+                    safety concerns and test if it triggers an immune response.</span>
+                </p>
+            </div>
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <p class="display-highlight row">
+                <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage1">Phase I</span>
+                <span class="col-lg-12 col-md-12 col-sm col black">In Phase I trials, the vaccine is <b>given to small groups of <span
+                            style="color: blue">people</span></b> (approximately 20
+                    to 80) to test its safety and confirm that it stimulates the immune system.</span>
+                </p>
+            </div>
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <p class="display-highlight row">
+                <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage2">Phase II</span>
+                <span class="col-lg-12 col-md-12 col-sm col black">In Phase II trials, the vaccine is <b>given to several hundred <span
+                            style="color: blue">people</span></b>, especially
+                    people of different ages, to test its effectiveness.</span>
+                </p>
+            </div>
+            <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-info">
+                <p class="display-highlight row">
+                <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage3">Phase III</span>
+                <span class="col-lg-12 col-md-12 col-sm col black">In Phase III trials, the vaccine is <b>given to several thousand <span
+                            style="color: blue">people</span></b> to confirm and
+                    expand on safety and effectiveness results from previous trials.</span>
+                </p>
+            </div>
+            <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
+                <p class="display-highlight row">
 
-            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4">Approval</span>
-            <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
-                approve the vaccine or not</b>.</span>
-            </p>
+                <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4">Approval</span>
+                <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
+                    approve the vaccine or not</b>.</span>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
     <div class="text-center">
         <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
@@ -222,121 +220,121 @@
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
 <!--</div>-->
 
-{# Go to Top of Filter Bar #}
-<div id="TagIWantToLoadTo"></div>
-{# For Mobile Version Only #}
-<div class="mobile-filter">
-    <div class="row">
-        <div class="col" style="text-align: center">
-            <div class="column mobile-clear">
-                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
-                  <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
-                </button>
-            </div>
+    {# Go to Top of Filter Bar #}
+    <div id="TagIWantToLoadTo"></div>
+    {# For Mobile Version Only #}
+    <div class="mobile-filter">
+        <div class="row">
+            <div class="col" style="text-align: center">
+                <div class="column mobile-clear">
+                    <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
+                      <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
+                    </button>
+                </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog" role="document">
-                    <div class="modal-content" style="text-align: left">
-{#                        <div class="modal-header">#}
-{#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
-{##}
-{#                        </div>#}
-                        <div class="modal-body">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h6>Select Stage</h6>
-                            <div class="btn-group btn-group-1" role="group">
-                                <button type="button" class="active btn btn-default btn-mobile-stage mobile-font" id="stages" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
-                            </div>
-                            <div class="btn-group btn-group-1" role="group">
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="0">Pre-Clinical</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="1">Phase I</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="2">Phase II</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="3">Phase III</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4">Approval</button>
-                            </div>
-                            <h6>Select Country</h6>
-                            <p class="subtag">Popular countries:</p>
-                            <div class="btn-group-2">
-                                <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
-{#                            </div>#}
-{#                            <div class="btn-group btn-group-2" role="group">#}
-                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United States" value="United States">United States</button>
-                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="China" value="China">China</button>
-                                <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
-                            </div>
-                            <p class="subtag">Or select from all countries:</p>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-secondary dropdown-mobile dropdown-toggle" type="button"
-                                    data-toggle="dropdown" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
-                                    <span id="mobile-button">All(Default)</span> <i class="fa fa-angle-down vertical-center" style="right: 3%;" aria-hidden="true"></i>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog" role="document">
+                        <div class="modal-content" style="text-align: left">
+    {#                        <div class="modal-header">#}
+    {#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
+    {##}
+    {#                        </div>#}
+                            <div class="modal-body">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                                 </button>
-                                <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
-                                    <button class="active mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="">All</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Argentina">Argentina</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Australia">Australia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Austria">Austria</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Belgium">Belgium</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Brazil">Brazil</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Canada">Canada</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="China">China</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Egypt">Egypt</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Finland">Finland</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="France">France</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Germany">Germany</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="India">India</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Israel">Israel</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Italy">Italy</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Japan">Japan</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Kazakhstan">Kazakhstan</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Malaysia">Malaysia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Netherlands">Netherlands</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Nigeria">Nigeria</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Russia">Russia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Singapore">Singapore</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South Korea</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Sweden">Sweden</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Switzerland">Switzerland</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Thailand">Thailand</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Turkey">Turkey</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United Kingdom</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United States</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Vietnam">Vietnam</button>
+                                <h6>Select Stage</h6>
+                                <div class="btn-group btn-group-1" role="group">
+                                    <button type="button" class="active btn btn-default btn-mobile-stage mobile-font" id="stages" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                                </div>
+                                <div class="btn-group btn-group-1" role="group">
+                                    <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="0">Pre-Clinical</button>
+                                    <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="1">Phase I</button>
+                                    <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="2">Phase II</button>
+                                    <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="3">Phase III</button>
+                                    <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4">Approval</button>
+                                </div>
+                                <h6>Select Country</h6>
+                                <p class="subtag">Popular countries:</p>
+                                <div class="btn-group-2">
+                                    <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+    {#                            </div>#}
+    {#                            <div class="btn-group btn-group-2" role="group">#}
+                                    <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United States" value="United States">United States</button>
+                                    <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="China" value="China">China</button>
+                                    <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United Kingdom" value="United Kingdom">United Kingdom</button>
+                                </div>
+                                <p class="subtag">Or select from all countries:</p>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-mobile dropdown-toggle" type="button"
+                                        data-toggle="dropdown" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
+                                        <span id="mobile-button">All(Default)</span> <i class="fa fa-angle-down vertical-center" style="right: 3%;" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
+                                        <button class="active mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="">All</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Argentina">Argentina</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Australia">Australia</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Austria">Austria</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Belgium">Belgium</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Brazil">Brazil</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Canada">Canada</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="China">China</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Egypt">Egypt</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Finland">Finland</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="France">France</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Germany">Germany</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="India">India</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Israel">Israel</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Italy">Italy</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Japan">Japan</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Kazakhstan">Kazakhstan</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Malaysia">Malaysia</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Netherlands">Netherlands</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Nigeria">Nigeria</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Russia">Russia</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Singapore">Singapore</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South Korea</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Sweden">Sweden</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Switzerland">Switzerland</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Thailand">Thailand</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Turkey">Turkey</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United Kingdom</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United States</button>
+                                        <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Vietnam">Vietnam</button>
+                                    </div>
+                                </div>
+                                <h6>Select Vaccine Type</h6>
+                                <div class="btn-group btn-group-3">
+                                    <button type="button" class="active btn btn-default btn-mobile-type mobile-font-small" id="type" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                                </div>
+                                <div class="btn-group btn-group-3">
+                                    <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Genetic">Genetic</button>
+                                    <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Viral Vector">Viral Vector</button>
+                                    <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Protein">Protein-Based</button>
+                                    <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Virus">Whole Virus</button>
+                                    <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Others">Others</button>
                                 </div>
                             </div>
-                            <h6>Select Vaccine Type</h6>
-                            <div class="btn-group btn-group-3">
-                                <button type="button" class="active btn btn-default btn-mobile-type mobile-font-small" id="type" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;margin-right: 0.9rem;">Close</button>
+                                <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
                             </div>
-                            <div class="btn-group btn-group-3">
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Genetic">Genetic</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Viral Vector">Viral Vector</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Protein">Protein-Based</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Virus">Whole Virus</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Others">Others</button>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.375rem!important;margin-right: 0.9rem;">Close</button>
-                            <button type="submit" class="btn btn-primary" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col" style="text-align: center">
-            <form action="/" id="mobile-form" method="POST" enctype="multipart/form-data">
-                <div class="column mobile-clear">
-                    <button class="btn btn-clear" type="submit" name="status" value="clear" style="padding: 0.15rem 1.5rem!important;font-size: 0.8rem;">
-                        Clear Filter
-                    </button>
-                </div>
-            </form>
+            <div class="col" style="text-align: center">
+                <form action="/" id="mobile-form" method="POST" enctype="multipart/form-data">
+                    <div class="column mobile-clear">
+                        <button class="btn btn-clear" type="submit" name="status" value="clear" style="padding: 0.15rem 1.5rem!important;font-size: 0.8rem;">
+                            Clear Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
     <!--Filter Data-->
     <div class="filter">
@@ -508,36 +506,34 @@
                 <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
                 <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
                 <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
-            </div>
-        </form>
     </div>
 
 
-<!-- list institutions -->
-<div class="all-cards">
-    <div class="institutions" id="institutions">
-        {% if data|length >= 2 %}
-        {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-        </my-card>
-        {% endfor %}
-        {% else %}
-        {% if data|length > 0 %}
-        {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-        </my-card>
-        {% endfor %}
-        <div style="height: 20rem;"></div>
-        {% else %}
-        <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-        <div style="height: 35rem;"></div>
-        {% endif %}
-        {% endif %}
+    <!-- list institutions -->
+    <div class="all-cards">
+        <div class="institutions" id="institutions">
+            {% if data|length >= 2 %}
+            {% for entry in data %}
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+                data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+            </my-card>
+            {% endfor %}
+            {% else %}
+            {% if data|length > 0 %}
+            {% for entry in data %}
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+                data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+            </my-card>
+            {% endfor %}
+            <div style="height: 20rem;"></div>
+            {% else %}
+            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+            <div style="height: 35rem;"></div>
+            {% endif %}
+            {% endif %}
+        </div>
+        <div id="mobile_container"></div>
     </div>
-    <div id="mobile_container"></div>
-</div>
 
 
     <!-- Footer -->
