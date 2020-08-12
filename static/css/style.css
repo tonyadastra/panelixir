@@ -1370,3 +1370,12 @@ h6{
     font-weight: 700;
     /*font-variant: small-caps;*/
   }
+  .footer-link{
+    color: #dde3e1;
+    /*padding-bottom: 1rem;*/
+  }
+  .footer-link:hover {
+    color: #c6cfce;
+    cursor: pointer;
+    text-decoration: underline;
+  }
