@@ -129,42 +129,42 @@
 </div>
 
 
-<div class="ctr text-center">
-    <div class="jumbotron" style="background-color: transparent;">
-        <h3 id="title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
-    </div>
-{#    Only Display with Large Screen (≥ 768px) #}
-    <div class="row large-screen">
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <span class="highlight stage0">Preclinical</span>
-            <p class="black">In the Preclinical stage, the vaccine is <b>given to <span style="color: red">
-                        animals</span></b> to identify potential
-                safety concerns and test if it triggers an immune response.</p>
+    <div class="ctr text-center">
+        <div class="jumbotron" style="background-color: transparent;">
+            <h3 id="title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
         </div>
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <span class="highlight stage1">Phase I</span>
-            <p class="black">In Phase I trials, the vaccine is <b>given to small groups of <span
-                        style="color: blue">people</span></b> (approximately 20
-                to 80) to test its safety and confirm that it stimulates the immune system.</p>
+    {#    Only Display with Large Screen (≥ 768px) #}
+        <div class="row large-screen">
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <span class="highlight stage0">Preclinical</span>
+                <p class="black">In the Preclinical stage, the vaccine is <b>given to <span style="color: red">
+                            animals</span></b> to identify potential
+                    safety concerns and test if it triggers an immune response.</p>
+            </div>
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <span class="highlight stage1">Phase I</span>
+                <p class="black">In Phase I trials, the vaccine is <b>given to small groups of <span
+                            style="color: blue">people</span></b> (approximately 20
+                    to 80) to test its safety and confirm that it stimulates the immune system.</p>
+            </div>
+            <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+                <span class="highlight stage2">Phase II</span>
+                <p class="black">In Phase II trials, the vaccine is <b>given to several hundred <span
+                            style="color: blue">people</span></b>, especially
+                    people of different ages, to test its effectiveness.</p>
+            </div>
+            <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-info">
+                <span class="highlight stage3">Phase III</span>
+                <p class="black">In Phase III trials, the vaccine is <b>given to several thousand <span
+                            style="color: blue">people</span></b> to confirm and
+                    expand on safety and effectiveness results from previous trials.</p>
+            </div>
+            <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
+                <span class="highlight stage4">Approval</span>
+                <p class="black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
+                        approve the vaccine or not</b>.</p>
+            </div>
         </div>
-        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
-            <span class="highlight stage2">Phase II</span>
-            <p class="black">In Phase II trials, the vaccine is <b>given to several hundred <span
-                        style="color: blue">people</span></b>, especially
-                people of different ages, to test its effectiveness.</p>
-        </div>
-        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-info">
-            <span class="highlight stage3">Phase III</span>
-            <p class="black">In Phase III trials, the vaccine is <b>given to several thousand <span
-                        style="color: blue">people</span></b> to confirm and
-                expand on safety and effectiveness results from previous trials.</p>
-        </div>
-        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
-            <span class="highlight stage4">Approval</span>
-            <p class="black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
-                    approve the vaccine or not</b>.</p>
-        </div>
-    </div>
 
 {#    Only Display with Small Screen (< 768px) #}
     <div class="row small-screen">
@@ -211,12 +211,12 @@
     </div>
 </div>
 
-<div class="text-center">
-    <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
-                href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines"
-                style="color: rgb(6,69,173);" target="_blank"> Draft landscape of COVID-19 candidate vaccines</a></i>
-    </p>
-</div>
+    <div class="text-center">
+        <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
+                    href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines"
+                    style="color: rgb(6,69,173);" target="_blank"> Draft landscape of COVID-19 candidate vaccines</a></i>
+        </p>
+    </div>
 <!--Heading - Question-->
 <!--<div class="heading">-->
 <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
@@ -229,7 +229,7 @@
     <div class="row">
         <div class="col" style="text-align: center">
             <div class="column mobile-clear">
-                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important;">
+                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
                   <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
                 </button>
             </div>
@@ -338,159 +338,254 @@
     </div>
 </div>
 
-<!--Filter Data-->
-<div class="filter">
-    <!--    <div class="container">-->
-    <form action="/" method="POST" enctype="multipart/form-data">
-        <div class="row">
-            <div class="column filtertext">
-                <b>Filter Vaccines</b>
-            </div>
-            <!--            Stages-->
-            <div class="column">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        {{stages_dis}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
-                        <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
-                        <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
-                        <div class="dropdown-divider"></div>
-                        <!--                            Disabled-->
-                        <button class="dropdown-item disabled" type="submit" name="stages" value="4">Approval</button>
-                        <!--                            Enabled-->
-                        <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
+    <!--Filter Data-->
+    <div class="filter">
+        <!--    <div class="container">-->
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="column filtertext">
+                    <b>Filter Vaccines</b>
+                </div>
+                <!--            Stages-->
+                <div class="column">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-stage dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            {{stages_dis}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item-0" type="submit" name="stages" value="0">Pre-Clinical</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item-1" type="submit" name="stages" value="1">Phase I</button>
+                            <button class="dropdown-item-2" type="submit" name="stages" value="2">Phase II</button>
+                            <button class="dropdown-item-3" type="submit" name="stages" value="3">Phase III</button>
+                            <div class="dropdown-divider"></div>
+                            <!--                            Disabled-->
+                            <button class="dropdown-item disabled" type="submit" name="stages"
+                                value="4">Approval</button>
+                            <!--                            Enabled-->
+                            <!--                            <button class="dropdown-item-4" type="submit" name="stages" value="4">Approval</button>-->
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Country-->
-            <div class="column">
-                <!-- country dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ country_dis }}
-                    </button>
-                    <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item disabled" style="color: darkcyan;">Commonly
-                            Searched</button>
-                        {# <div class="dropdown-divider"></div> #}
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
-                            States</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="United Kingdom">United
-                            Kingdom</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="China">China</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Japan">Japan</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Germany">Germany</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="India">India</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="South Korea">South
-                            Korea</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="France">France</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Australia">Australia</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Russia">Russia</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Canada">Canada</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Austria">Austria</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Singapore">Singapore</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item disabled">Other Countries</button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Argentina">Argentina</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Belgium">Belgium</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Brazil">Brazil</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Egypt">Egypt</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Finland">Finland</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Israel">Israel</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Italy">Italy</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Kazakhstan">Kazakhstan</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Malaysia">Malaysia</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Netherlands">Netherlands</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Nigeria">Nigeria</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Sweden">Sweden</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Switzerland">Switzerland</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country"
-                            value="Thailand">Thailand</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Turkey">Turkey</button>
-                        <button class="dropdown-item-ctry" type="submit" name="country" value="Vietnam">Vietnam</button>
+                <!-- Country-->
+                <div class="column">
+                    <!-- country dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-country dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ country_dis }}
+                        </button>
+                        <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item disabled" style="color: darkcyan;">Commonly
+                                Searched</button>
+                            {# <div class="dropdown-divider"></div> #}
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="United States">United
+                                States</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="United Kingdom">United
+                                Kingdom</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="China">China</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="Japan">Japan</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Germany">Germany</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="India">India</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="South Korea">South
+                                Korea</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="France">France</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Australia">Australia</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Russia">Russia</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Canada">Canada</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Austria">Austria</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Singapore">Singapore</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item disabled">Other Countries</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Argentina">Argentina</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Belgium">Belgium</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Brazil">Brazil</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="Egypt">Egypt</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Finland">Finland</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Israel">Israel</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country" value="Italy">Italy</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Kazakhstan">Kazakhstan</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Malaysia">Malaysia</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Netherlands">Netherlands</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Nigeria">Nigeria</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Sweden">Sweden</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Switzerland">Switzerland</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Thailand">Thailand</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Turkey">Turkey</button>
+                            <button class="dropdown-item-ctry" type="submit" name="country"
+                                value="Vietnam">Vietnam</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Vaccine Types-->
-            <div class="column">
-                <!-- types dropdown -->
-                <div class="dropdown">
-                    <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{types_dis}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
-                            Genetic Vaccines</button>
-                        <button class="dropdown-item-type" type="submit" name="type" value="Protein">
-                            Protein-Based Vaccines</button>
-                        <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
-                            Viral Vector Vaccines</button>
-                        <button class="dropdown-item-type" type="submit" name="type" value="Virus">
-                            Whole-Virus Vaccines</button>
-                        <button class="dropdown-item-type" type="submit" name="type" value="Others">
-                            Others</button>
+                <!-- Vaccine Types-->
+                <div class="column">
+                    <!-- types dropdown -->
+                    <div class="dropdown">
+                        <button id="dropdownMenuButton" class="btn btn-types dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{types_dis}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
+                                Genetic Vaccines</button>
+                            <button class="dropdown-item-type" type="submit" name="type" value="Protein">
+                                Protein-Based Vaccines</button>
+                            <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
+                                Viral Vector Vaccines</button>
+                            <button class="dropdown-item-type" type="submit" name="type" value="Virus">
+                                Whole-Virus Vaccines</button>
+                            <button class="dropdown-item-type" type="submit" name="type" value="Others">
+                                Others</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="column clear_filter" style="float: right;">
-                <button class="btn btn-light align-right" type="submit" style="border: None"
-                    name="status" value="clear">
-                    <b style="color: darkblue">Clear Filter</b>
-                </button>
-            </div>
+                <div class="column clear_filter" style="float: right;">
+                    <button class="btn btn-light align-right" type="submit" style="border: None" name="status"
+                        value="clear">
+                        <b style="color: darkblue">Clear Filter</b>
+                    </button>
+                </div>
 
-            <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
-            <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
-            <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
+                <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
+                <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
+                <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
+            </div>
+        </form>
+    </div>
+
+
+    <!-- list institutions -->
+    <div class="all-cards">
+        <div class="institutions" id="institutions">
+            {% if data|length >= 2 %}
+            {% for entry in data %}
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
+                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+            </my-card>
+            {% endfor %}
+            {% else %}
+            {% if data|length > 0 %}
+            {% for entry in data %}
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
+                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+            </my-card>
+            {% endfor %}
+            <!-- <div style="height: 20rem;"></div> -->
+            {% else %}
+            <div style="height: 1rem;"></div>
+            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+            <div style="height: 10rem;"></div>
+            {% endif %}
+            {% endif %}
         </div>
-    </form>
-</div>
+        <div id="card_container"></div>
+
+                <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
+                <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
+                <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
+            </div>
+        </form>
+    </div>
 
 
 <!-- list institutions -->
 <div class="all-cards">
     <div class="institutions" id="institutions">
         {% if data|length >= 2 %}
-            {% for entry in data %}
-                <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-                    data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-                </my-card>
-            {% endfor %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
         {% else %}
         {% if data|length > 0 %}
-            {% for entry in data %}
-                <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-                    data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-                </my-card>
-            {% endfor %}
-            <div style="height: 20rem;"></div>
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+        <div style="height: 20rem;"></div>
         {% else %}
-            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-            <div style="height: 35rem;"></div>
+        <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+        <div style="height: 35rem;"></div>
         {% endif %}
         {% endif %}
     </div>
-    <div id="card_container"></div>
-</div>
     <div id="mobile_container"></div>
+</div>
 
+
+    <!-- Footer -->
+    <div style="height: 2rem;"></div>
+    <footer class="page-footer font-small pt-4" style="background-color: #00261c;">
+
+        <!-- Footer Links -->
+        <div class="container-fluid text-center text-md-left">
+            <div class="row">
+                <div class="col-md-8 mt-md-0 mt-6" style="color: #c6cecc; text-align:justify">
+
+                    <!-- Content -->
+                    <h5 class="text-uppercase">PANELIXIR</h5>
+                    <!-- <p>Legal Disclaimer</p> -->
+                    <p style="color: #00a56b">PANELIXIR.com assumes no responsibility or liability for any errors or omissions in the content of this site.
+                        The information contained in this site is provided on an "as is" basis with no guarantees of completeness, accuracy, usefulness or
+                        timeliness. The information should be used as a guide and modified to meet your own individual needs and the laws of your state.
+                        Your use of any information or forms is at your own risk.</p>
+                    <p style="color: #00a56b">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
+                                href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines"
+                                target="_blank" style="color: #00a56b"> <u>Draft landscape of COVID-19 candidate
+                                vaccines</u></a></i></p>
+
+                </div>
+
+                <!-- <hr class="clearfix w-100 d-md-none pb-3"> -->
+                <div class="col-md-1 mb-md-0 mb-1"></div>
+
+                <div class="col-md-3 mb-md-0 mb-3" >
+                 <div style="height: 2rem;"></div>
+                    <!-- <h5 class="text-uppercase"  style="color: #c6cecc;"></h5> -->
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="/about-us">About Us</a>
+                        </li>
+                        <li>
+                            <a href="#!">Contact Us: xxx @gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3" style="color:#c6cecc; ">© 2020 Copyright:
+            <a href="https://PANELIXIR.com/" style="color:#c6cecc"> PANELIXIR.com</a>
+        </div>
+    </footer>
 {#</body>#}
 
 {% endblock %}

@@ -171,6 +171,7 @@ class myCard extends HTMLElement {
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
+        text.setAttribute('style', 'text-align:justify');
         // text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
         var intro = this.getAttribute('data-intro');
         // console.log(intro);
