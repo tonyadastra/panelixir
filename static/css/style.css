@@ -1,5 +1,7 @@
 /* Header */
+
 /* Extra Small Screen - Two Line Title */
+
 @media screen and (max-width: 375px) {
   .title {
     font-size: 0.7rem;
@@ -28,26 +30,24 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
-  .filter{
+  .filter {
     display: none;
   }
-  h6{
+  h6 {
     margin-top: 0.5rem;
   }
-
   .title {
     font-size: 0.7rem;
     /* Modified */
     margin-left: 0.5rem!important;
     /* New */
   }
-  p.display-highlight{
+  p.display-highlight {
     margin-bottom: 0.3rem!important;
   }
-  .large-screen{
+  .large-screen {
     display: none;
   }
-
   .title-bar {
     height: 2rem;
     padding: 0.75rem 1rem 0.4rem 1rem;
@@ -211,12 +211,22 @@
   .column {
     padding: 00rem;
   }
+  * footer {
+    font-size: 8px;
+  }
+  footer h5 {
+    font-size: 11px;
+  }
+  .footer-copyright {
+    padding-top: 0 !important;
+  }
 }
+
 @media screen and (max-width: 576px) {
-  .large-screen{
+  .large-screen {
     display: none!important;
   }
-  .small-screen{
+  .small-screen {
     display: block!important;
   }
   span.highlight {
@@ -234,11 +244,12 @@
 }
 
 /* 426-767px - Tablet */
+
 @media screen and (min-width: 426px) and (max-width: 767px) {
-  .filter{
+  .filter {
     display: none;
   }
-  .small-screen{
+  .small-screen {
     display: none;
   }
   .title-bar {
@@ -274,7 +285,6 @@
     font-size: 0.4rem;
     /* Modified */
   }
-
   .header-text .coming-soon {
     visibility: hidden;
     width: 80px;
@@ -349,10 +359,10 @@
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
-  .mobile-filter{
+  .mobile-filter {
     display: none;
   }
-  .small-screen{
+  .small-screen {
     display: none;
   }
   .title-bar {
@@ -480,13 +490,12 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
-  .mobile-filter{
+  .mobile-filter {
     display: none;
   }
-  .small-screen{
+  .small-screen {
     display: none;
   }
-
   .title-bar {
     padding: 1.5rem 2rem 0.9rem 2rem;
     margin-bottom: 30px;
@@ -496,7 +505,7 @@
     margin-bottom: 20px;
   }
   .title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   a.style-a {
     color: #fff;
@@ -509,7 +518,7 @@
     margin-top: 0.3rem;
     color: #00008b;
     font-family: sans-serif;
-    /* font-size: 1.4rem; */
+    font-size: 1rem;
     font-weight: lighter;
     padding: 0;
     position: relative;
@@ -745,6 +754,15 @@
 .jumbotron {
   background-color: transparent;
   border-radius: 0.2rem;
+}
+
+.list-unstyled>li {
+  margin-bottom: 1rem;
+  color: #c6cecc;
+}
+
+.list-unstyled>li>a {
+  color: #c6cecc;
 }
 
 /* World Map */
@@ -1122,7 +1140,7 @@ span.highlight {
   position: absolute;
 }
 
-.mobile-filter{
+.mobile-filter {
   /*background-color: #faf4e5;*/
   padding: 0.7rem 0;
 }
@@ -1133,15 +1151,14 @@ span.highlight {
   border-color: #359afa;
   border-bottom: 2px solid #148192;
 }
+
 .btn-filter:hover {
   color: #fff;
   background-color: #045dac;
   border-color: #0583fc;
 }
 
-.btn-filter:not(:disabled):not(.disabled):active,
-.btn-filter:not(:disabled):not(.disabled).active,
-.show > .btn-filter.dropdown-toggle {
+.btn-filter:not(:disabled):not(.disabled):active, .btn-filter:not(:disabled):not(.disabled).active, .show>.btn-filter.dropdown-toggle {
   color: #fff;
   background-color: #359afa;
   border-color: #0882f6;
@@ -1153,84 +1170,86 @@ span.highlight {
   border-color: #f85c5c;
   border-bottom: 2px solid #b83838;
 }
+
 .btn-clear:hover {
   color: #fff;
   background-color: #ae3c3c;
   border-color: #942323;
 }
 
-.btn-clear:not(:disabled):not(.disabled):active,
-.btn-clear:not(:disabled):not(.disabled).active,
-.show > .btn-clear.dropdown-toggle {
+.btn-clear:not(:disabled):not(.disabled):active, .btn-clear:not(:disabled):not(.disabled).active, .show>.btn-clear.dropdown-toggle {
   color: #fff;
   background-color: #d35b00;
   border-color: #a54a04;
 }
-.btn-clear:not(:disabled):not(.disabled):active:focus,
-.btn-clear:not(:disabled):not(.disabled).active:focus,
-.show > .btn-clear.dropdown-toggle:focus {
+
+.btn-clear:not(:disabled):not(.disabled):active:focus, .btn-clear:not(:disabled):not(.disabled).active:focus, .show>.btn-clear.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.05rem rgb(255, 114, 7);
 }
 
-.dropdown-mobile{
+.dropdown-mobile {
   position: relative;
   width: 100%;
   text-align: left!important;
 }
 
-.dropdown-mobile{
+.dropdown-mobile {
   width: 100%;
 }
 
-.btn-default{
+.btn-default {}
 
-}
-.btn-default.btn-mobile-stage.active{
+.btn-default.btn-mobile-stage.active {
   /*background-color: #5ab9ea;*/
-    color: #ffffff;
+  color: #ffffff;
   background-color: #33b7b3;
 }
 
-.btn-default.btn-mobile-country.active{
+.btn-default.btn-mobile-country.active {
   /*background-color: #5ab9ea;*/
-    color: #ffffff;
+  color: #ffffff;
   background-color: #ec701e;
 }
 
-.btn-default.btn-mobile-type.active{
+.btn-default.btn-mobile-type.active {
   /*background-color: #5ab9ea;*/
-    color: #ffffff;
+  color: #ffffff;
   background-color: #b683ec;
 }
-
 
 .btn-default {
   border: 1px solid rgba(143, 182, 241, 0.98);
   outline: 0;
   box-shadow: 0 0 0 0 !important;
 }
-.modal-body{
+
+.modal-body {
   padding: 1rem 0.7rem;
   margin-top: 0.3rem;
 }
-.mobile-font{
-    font-size: 0.68rem;
-    /*color: white;*/
+
+.mobile-font {
+  font-size: 0.68rem;
+  /*color: white;*/
 }
-.mobile-font-small{
-    font-size: 0.6rem;
-    /*color: white;*/
+
+.mobile-font-small {
+  font-size: 0.6rem;
+  /*color: white;*/
 }
-.mobile-font-large{
-    font-size: 0.75rem;
-    /*color: white;*/
+
+.mobile-font-large {
+  font-size: 0.75rem;
+  /*color: white;*/
 }
-p.subtag{
+
+p.subtag {
   font-size: 0.9rem;
   color: grey;
   margin-top: 0.4rem;
   margin-bottom: 0.4rem;
 }
-.close{
+
+.close {
   line-height: 0.5rem;
 }
