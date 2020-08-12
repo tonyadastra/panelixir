@@ -600,17 +600,20 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 100;
+var nearToBottom = 600;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
-
+var prev_response = ''
+var prev_response_mobile = ''
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
-            $(document).height()) {
+            $(document).height() - $('.page-footer').height() - 150) {
+            // console.log($(window).scrollTop())
+            // console.log($(window).height())
+            // console.log($(document).height())
             // ajax call get data from server and append to the div
-
             $.ajax({
                 url: '/mobile-card',
                 type: 'get',
@@ -619,25 +622,29 @@ $(window).scroll(function () {
                     'mobile_count': mobile_count, 'limit': limit
                 },
                 success: function (response) {
-                    console.log(mobile_count)
-                    $('#mobile_container').append(response);
-                    mobile_count = mobile_count + 1;
+                    if (response !== prev_response_mobile){
+                        $('#mobile_container').append(response);
+                        mobile_count = mobile_count + 1;
+                        // console.log(mobile_count)
+                    }
+                    prev_response_mobile = response
                 }
             });
         }
-    }
-    else {
+    } else {
         if ($(window).scrollTop() + $(window).height() >
             $(document).height() - nearToBottom) {
-            console.log($(window).scrollTop() + $(window).height(), $(document).height() - nearToBottom)
             $.ajax({
                 url: '/card',
                 type: 'get',
                 data: { 'count': count, 'limit': limit },
                 success: function (response) {
                     // console.log(response)
-                    $('#card_container').append(response);
-                    count = count + 1;
+                    if (response !== prev_response){
+                        $('#card_container').append(response);
+                        count = count + 1;
+                    }
+                    prev_response = response
                 }
             });
         }
