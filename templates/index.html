@@ -248,6 +248,33 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+
+    <div class="text-center" style="color: #19198b">
+        <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
+                    href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines"
+                    style="color: rgb(6,69,173);" target="_blank"> Draft landscape of COVID-19 candidate
+                    vaccines</a></i>
+        </p>
+    </div>
+    <!--Heading - Question-->
+    <!--<div class="heading">-->
+    <!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
+    <!--</div>-->
+
+{# Go to Top of Filter Bar #}
+<div id="TagIWantToLoadTo"></div>
+{# For Mobile Version Only #}
+<div class="mobile-filter">
+    <div class="row">
+        <div class="col" style="text-align: center">
+            <div class="column mobile-clear">
+                <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.15rem 1.5rem!important; font-size: 0.8rem;">
+                  <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
+                </button>
+            </div>
+>>>>>>> cb1e20df7b22af2135675353b934b27fd0dbfd59
 
     <!-- <div class="text-center" style="color: #19198b">
         <p class="source">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
@@ -290,7 +317,11 @@
                                 <h6>Select Stage</h6>
                                 <div class="btn-group btn-group-1" role="group">
                                     <button type="button" class="active btn btn-default btn-mobile-stage mobile-font"
+<<<<<<< HEAD
                                         id="stages" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+=======
+                                        id="stages" value="_" style="padding: 0.1875rem 0.5rem!important;">All</button>
+>>>>>>> cb1e20df7b22af2135675353b934b27fd0dbfd59
                                 </div>
                                 <div class="btn-group btn-group-1" role="group">
                                     <button type="button" class="btn btn-default btn-mobile-stage mobile-font"
@@ -313,6 +344,7 @@
                                 </div>
                                 <div class="btn-group btn-group-2" role="group">
                                     <button type="button"
+<<<<<<< HEAD
                                         class="btn btn-default btn-mobile-country mobile-font most-viewed"
                                         id="United States" value="United States">United States</button>
                                     <button type="button"
@@ -324,6 +356,19 @@
                                     <button type="button"
                                         class="btn btn-default btn-mobile-country mobile-font most-viewed" id="China"
                                         value="China">China</button>
+=======
+                                        class="btn btn-default btn-mobile-country mobile-font-large most-viewed"
+                                        id="United States" value="United States">United States</button>
+                                    <button type="button"
+                                        class="btn btn-default btn-mobile-country mobile-font-large most-viewed"
+                                        id="United Kingdom" value="United Kingdom">United Kingdom</button>
+                                    <button type="button"
+                                        class="btn btn-default btn-mobile-country mobile-font-large most-viewed"
+                                        id="Australia" value="Australia">Australia</button>
+                                    <button type="button"
+                                        class="btn btn-default btn-mobile-country mobile-font-large most-viewed"
+                                        id="China" value="China">China</button>
+>>>>>>> cb1e20df7b22af2135675353b934b27fd0dbfd59
                                 </div>
                                 <p class="subtag">Or select from all countries:</p>
                                 <div class="dropdown">
@@ -413,7 +458,11 @@
                                     <button type="button" class="btn btn-default btn-mobile-type mobile-font-small"
                                         id="type" value="Virus">Whole Virus</button>
                                     <button type="button" class="btn btn-default btn-mobile-type mobile-font-small"
+<<<<<<< HEAD
                                         id="type" value="Others">Others</button>
+=======
+                                        id="type" value="Repurposed">Others</button>
+>>>>>>> cb1e20df7b22af2135675353b934b27fd0dbfd59
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -572,6 +621,7 @@
                         <b style="color: darkblue">Clear Filter</b>
                     </button>
                 </div>
+<<<<<<< HEAD
 
                 <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
                 <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
@@ -606,6 +656,39 @@
             {% endif %}
         </div>
         <div id="card_container"></div>
+=======
+
+                <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
+                <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
+                <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
+            </div>
+        </form>
+    </div>
+
+
+<!-- list institutions -->
+<div class="all-cards">
+    <div class="institutions" id="institutions">
+        {% if data|length >= 2 %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+        {% else %}
+        {% if data|length > 0 %}
+        {% for entry in data %}
+        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+        </my-card>
+        {% endfor %}
+        <div style="height: 20rem;"></div>
+        {% else %}
+        <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+        <div style="height: 35rem;"></div>
+        {% endif %}
+        {% endif %}
+>>>>>>> cb1e20df7b22af2135675353b934b27fd0dbfd59
     </div>
     <div id="mobile_container"></div>
 

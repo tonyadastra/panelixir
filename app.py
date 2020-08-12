@@ -63,7 +63,7 @@ def index():
             types_dis = "Vaccine Types"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                        "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
         else:
             if stages == "Stages":
                 if prev_stages != "Stages":
@@ -104,17 +104,15 @@ def index():
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
 
-            # elif types== 
 
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                     " AND country LIKE '%" + country + "%' "
-                # "AND '" + types + "' ~ vac_type "
-                                                                                                        " AND vac_type LIKE '%" + types + "%' "
-                                                                                                                                          "ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                " AND country LIKE '%" + country + "%' "
+                " AND vac_type LIKE '%" + types + "%' "
+                "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -178,8 +176,7 @@ def card():
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-
-    # cur.execute("rollback")    
+  
     data = cur.fetchall()
     cur.execute("rollback")
     return render_template("card.html", data=data)
@@ -207,7 +204,7 @@ def mobileForm():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND vac_type LIKE '%" + mobile_type + "%' "
-        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -254,7 +251,7 @@ def getBarsData():
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
 

@@ -125,7 +125,7 @@ function resize() {
                     names = values[1]
                     // console.log(world)
                     // console.log("custom", world_continent)
-                    var globe = {type: "Sphere"},
+                    var globe = { type: "Sphere" },
                         land = topojson.feature(world, world.objects.land),
                         borders = topojson.mesh(world, world.objects.countries, function (a, b) {
                             return a !== b;
@@ -329,7 +329,6 @@ $(document).ready(function () {
         // if (prev_continent !== continent) {
 
         window.continent = world_continents.continent;
-
         $.ajax({
             url: "/get_bars_data",
             type: "get",
@@ -461,7 +460,6 @@ $(document).ready(function () {
                     let yTrack = 75;
 
 
-
                     svg.append("text")
                         .attr("x", 60)
                         .attr("y", yTrack + i * 60)
@@ -584,8 +582,53 @@ $(document).ready(function () {
                         // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                     })
 
-                d3.selectAll("path").filter(function (d) {
-                    return d3.select(this).attr("continent") === continent;
+                }
+                // Append orange bar
+                svg.append('rect')
+                    .attr('class', 'border')
+                    .attr('rx', 10)
+                    .attr('ry', 10)
+                    .attr('fill', 'orange')
+                    .attr('height', 330)
+                    .attr('width', 10)
+                    .attr('x', progressStart - 5)
+                    .attr('y', 40);
+
+                // d3.select(self.frameElement).style("height", svgH + "px");
+            },
+        });
+
+        /** change map on button click */
+        // setTimeout(() => {
+        if (world_continents.continent !== continent) {
+            needs_update = false;
+            processing = continent !== 'World';
+            world_continents.continent = continent;
+            var prev_color = colors.clickable, prev_stage = -1;
+
+            d3.selectAll(".clicked")
+                .classed("clicked", false)
+                .select(function () {
+                    // console.log(this)
+                    // console.log(d3.select(this).attr("countryname"));
+                    var temp = vac_map.get(d3.select(this).attr("countryname"));
+                    prev_stage = temp === undefined ? -1 : temp;
+
+                    if (prev_stage === 0) {
+                        prev_color = colors.p0;
+                    } else if (prev_stage === 1) {
+                        prev_color = colors.p1;
+                    } else if (prev_stage === 2) {
+                        prev_color = colors.p2;
+                    } else if (prev_stage === 3) {
+                        prev_color = colors.p3;
+                    } else if (prev_stage === 4) {
+                        prev_color = colors.p4;
+                    } else {
+                        prev_color = colors.clickable;
+                    }
+                    d3.select(this).attr("fill", prev_color);
+                    // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
                 })
                     .attr("fill", colors.clicked)
                     .classed("clicked", true);
@@ -711,9 +754,9 @@ $('.most-viewed').click(function () {
 })
 
 // Display Title of Previous Selected Country when Reopening
-$('.btn-filter').click(function (){
+$('.btn-filter').click(function () {
     var activeCountry = document.querySelector('.active#country').value;
-    if (activeCountry === ""){
+    if (activeCountry === "") {
         activeCountry = "All";
     }
     document.getElementById('mobile-button').innerHTML = activeCountry;
