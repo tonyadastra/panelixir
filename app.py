@@ -38,7 +38,7 @@ def favicon():
 
 stages = "Stages"
 country = "Country"
-types = "Vaccine Types"
+types = "Vaccine Platform"
 status = "status"
 
 
@@ -48,19 +48,19 @@ def index():
         global stages, country, types, status
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country")
-        types = request.form.get("type", "Vaccine Types")
+        types = request.form.get("type", "Vaccine Platform")
         status = request.form.get("status", "status")
 
         prev_stages = request.form.get("prev_stages", "Stages")
         prev_country = request.form.get("prev_country", "Country")
-        prev_types = request.form.get("prev_types", "Vaccine Types")
+        prev_types = request.form.get("prev_types", "Vaccine Platform")
         country_dis = country
         types_dis = types
 
         if status == "clear":
             stages_dis = "Stages"
             country_dis = "Country"
-            types_dis = "Vaccine Types"
+            types_dis = "Vaccine Platform"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                         "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
@@ -81,27 +81,27 @@ def index():
                     country = ""
                     country_dis = "Country"
 
-            if types == "Vaccine Types":
-                if prev_types != "Vaccine Types":
+            if types == "Vaccine Platform":
+                if prev_types != "Vaccine Platform":
                     types = prev_types
                     types_dis = prev_types
                     if prev_types == "":
-                        types_dis = "Vaccine Types"
+                        types_dis = "Vaccine Platform"
                 else:
                     types = ""
-                    types_dis = "Vaccine Types"
+                    types_dis = "Vaccine Platform"
 
-            if types == "Genetic":
+            if types == "Genetic" or prev_types == "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic":
                 types_dis = "Genetic Vaccines"
                 types = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
             elif types == "Protein":
                 types_dis = "Protein-Based Vaccines"
             elif types == "Viral Vector":
                 types_dis = "Viral Vector Vaccines"
-            elif types == "Virus":
+            elif types == "Virus" or prev_types == "Virus%' or vac_type LIKE '%Inactivated":
                 types_dis = "Whole-Virus Vaccines"
                 types = "Virus%' or vac_type LIKE '%Inactivated"
-            elif types == "Others":
+            elif types == "Others" or prev_types == "Repurposed%' or vac_type LIKE '%VLP":
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
 
@@ -112,7 +112,7 @@ def index():
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
                 # "AND '" + types + "' ~ vac_type "
-                " AND vac_type LIKE '%" + types + "%' "
+                " AND (vac_type LIKE '%" + types + "%') "
                 "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
             if stages == "0":
@@ -142,9 +142,9 @@ def index():
         cur.execute("rollback")
         stages_dis = "Stages"
         country_dis = "Country"
-        types_dis = "Vaccine Types"
+        types_dis = "Vaccine Platform"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
-                               country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Types")
+                               country_dis=country_dis, country="Country", types_dis=types_dis, types="Vaccine Platform")
 
 
 @app.route("/card", methods=['GET', 'POST'])
@@ -158,7 +158,7 @@ def card():
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    elif stages != "Stages" or country != "Country" or types != "Vaccine Types":
+    elif stages != "Stages" or country != "Country" or types != "Vaccine Platform":
         #     if types == "Genetic":
         #         types = "DNA%' or vac_type LIKE '%RNA"
 
@@ -167,17 +167,16 @@ def card():
             " JOIN companies ON info.vac_id = companies.vac_id "
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
-            " AND vac_type LIKE '%" + types + "%' "
+            " AND (vac_type LIKE '%" + types + "%') "
             " ORDER BY stage DESC, co_name, partner_name "
             " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                    "ORDER BY stage DESC, company, partner_name "
-                    "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+                    " ORDER BY stage DESC, company, partner_name "
+                    " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    # cur.execute("rollback")
     data = cur.fetchall()
     cur.execute("rollback")
     return render_template("card.html", data=data)
@@ -189,9 +188,9 @@ def mobileForm():
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
     mobile_type = str(request.args.get('mobile_type'))
-    # print(mobile_stages)
-    # print(mobile_country)
-    # print(mobile_type)
+    print(mobile_stages)
+    print(mobile_country)
+    print(mobile_type)
     # print(request.args.get('mobile_count'))
     if mobile_type == "Genetic":
         mobile_type = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
@@ -205,12 +204,12 @@ def mobileForm():
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
-        " AND vac_type LIKE '%" + mobile_type + "%' "
+        " AND (vac_type LIKE '%" + mobile_type + "%') "
         "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
-    print(len(data))
+    print(data)
 
     return render_template("mobile-card.html", data=data)
 
@@ -227,7 +226,7 @@ def mobileAppendCards():
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
-        " AND vac_type LIKE '%" + mobile_type + "%' "
+        " AND (vac_type LIKE '%" + mobile_type + "%') "
         " ORDER BY stage DESC, co_name, partner_name "
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
