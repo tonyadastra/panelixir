@@ -12,8 +12,9 @@
 * [ ] Disclaimer
 * [ ] Auto-Update Data from WHO website
 * [ ] Daily/Weekly Update from Interactive Progress Bar
-* [ ] Combined Phases
 * [ ] Feedback Form
+* [ ] Optimize Update Data (Repetitive Information)
+* [ ] Russia Early Approval
 
 **Latest Updates**
 + August 2-10, 2020 - Final V1 Updates and BugFixes, Complete Mobile Modal, Update Databases, Disclaimer

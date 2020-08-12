@@ -20,37 +20,6 @@
 <script src="../static/js/card.js"></script>
 <script src="../static/js/index.js"></script>
 
-
-<script>
-    $(".button-font").on('click', function () {
-        $(".button-font").removeClass('active');
-        $(this).addClass('active');
-    })
-
-    $(".btn-group-1 > .btn").click(function() {
-      $(".btn-group-1 > .btn").removeClass("active");
-      $(this).addClass("active");
-    });
-
-    $(".btn-group-2 > .btn").click(function() {
-      $(".btn-group-2 > .btn").removeClass("active");
-      $(this).addClass("active");
-    });
-
-    $(".btn-group-3 > .btn").click(function() {
-      $(".btn-group-3 > .btn").removeClass("active");
-      $(this).addClass("active");
-    });
-
-    $('#submit-form').click(function(e) {
-        e.preventDefault();
-        // Coding
-        $('#exampleModalCenter').modal('toggle'); //or  $('#IDModal').modal('hide');
-        return false;
-    });
-
-</script>
-
 {% if scrollToAnchor %}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -162,7 +131,7 @@
 
 <div class="ctr text-center">
     <div class="jumbotron" style="background-color: transparent;">
-        <h3 id="title">The Developing Process of a <i>Coronavirus Vaccine</i></h3>
+        <h3 id="title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
     </div>
 {#    Only Display with Large Screen (≥ 768px) #}
     <div class="row large-screen">
@@ -499,22 +468,22 @@
 <div class="all-cards">
     <div class="institutions" id="institutions">
         {% if data|length >= 2 %}
-        {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-        </my-card>
-        {% endfor %}
+            {% for entry in data %}
+                <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+                    data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+                </my-card>
+            {% endfor %}
         {% else %}
         {% if data|length > 0 %}
-        {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-        </my-card>
-        {% endfor %}
-        <div style="height: 20rem;"></div>
+            {% for entry in data %}
+                <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+                    data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
+                </my-card>
+            {% endfor %}
+            <div style="height: 20rem;"></div>
         {% else %}
-        <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-        <div style="height: 35rem;"></div>
+            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
+            <div style="height: 35rem;"></div>
         {% endif %}
         {% endif %}
     </div>

@@ -52,6 +52,10 @@
   background-color: #3aafa9;
 }
 
+#early{
+  background-color: #07d4ef;
+}
+
 .intro {
   padding: 0 0 2rem 0;
 }
@@ -279,4 +283,14 @@
 /*    !*clear: both;*!*/
 /*  }*/
 
+}
+
+.intro > a {
+  margin: 0;
+}
+.intro > b {
+  margin: 0;
+}
+.intro > i {
+  margin: 0;
 }

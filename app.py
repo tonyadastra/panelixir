@@ -100,6 +100,7 @@ def index():
                 types_dis = "Viral Vector Vaccines"
             elif types == "Virus":
                 types_dis = "Whole-Virus Vaccines"
+                types = "Virus%' or vac_type LIKE '%Inactivated"
             elif types == "Others":
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
@@ -188,15 +189,16 @@ def mobileForm():
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
     mobile_type = str(request.args.get('mobile_type'))
-    print(mobile_stages)
-    print(mobile_country)
-    print(mobile_type)
-    print(request.args.get('mobile_count'))
-    print(request.args.get('initialize'))
+    # print(mobile_stages)
+    # print(mobile_country)
+    # print(mobile_type)
+    # print(request.args.get('mobile_count'))
     if mobile_type == "Genetic":
         mobile_type = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
     elif mobile_type == "Others":
         mobile_type = "Repurposed%' or vac_type LIKE '%VLP"
+    elif mobile_type == "Virus":
+        mobile_type = "Virus%' or vac_type LIKE '%Inactivated"
 
     cur.execute(
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
@@ -257,9 +259,9 @@ def getBarsData():
 
     # bar chart
     cur.execute("SELECT stage, COUNT(stage) as count "
-                "FROM info "
-                "WHERE continent LIKE '%" + continent + "%' "
-                                                        "GROUP BY stage ORDER BY stage")
+                " FROM info "
+                " WHERE continent LIKE '%" + continent + "%' "
+                "GROUP BY stage ORDER BY stage")
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []

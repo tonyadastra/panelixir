@@ -63,13 +63,14 @@ class myCard extends HTMLElement {
                 img.src = imgUrl;
                 wrapper.appendChild(img);
             })
-        } else {
-            let imgUrl = '../static/img/Untitled.png';
-            const img = document.createElement('img');
-            img.setAttribute('height', '40px');
-            img.src = imgUrl;
-            wrapper.appendChild(img);
         }
+        // else {
+        //     let imgUrl = '../static/img/Untitled.png';
+        //     const img = document.createElement('img');
+        //     img.setAttribute('height', '40px');
+        //     img.src = imgUrl;
+        //     wrapper.appendChild(img);
+        // }
 
 
         // progress bar
@@ -103,6 +104,12 @@ class myCard extends HTMLElement {
         pbar5.setAttribute('id', 'pbar5');
         pbar5.innerHTML = 'APPROVAL';
 
+        var pbar6 = document.createElement('div');
+        pbar6.setAttribute('class', 'progress-bar');
+        pbar6.setAttribute('id', 'early');
+        pbar6.setAttribute('style', 'width: 60%')
+        pbar6.innerHTML = 'EARLY APPROVAL';
+
         if (this.getAttribute('data-stage') >= 0)
             bar_wrapper.appendChild(pbar1);
 
@@ -117,6 +124,47 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
+
+        if (this.getAttribute('data-id') === '13'){
+            bar_wrapper.appendChild(pbar6);
+        }
+
+
+
+        // if (this.getAttribute('data-stage') === '0') {
+        //     bar_wrapper.appendChild(pbar1);
+        // }
+        //
+        // else if (this.getAttribute('data-stage') === '1') {
+        //     bar_wrapper.appendChild(pbar1);
+        //     bar_wrapper.appendChild(pbar2);
+        // }
+        //
+        // else if (this.getAttribute('data-stage') === '2') {
+        //     bar_wrapper.appendChild(pbar1);
+        //     bar_wrapper.appendChild(pbar2);
+        //     bar_wrapper.appendChild(pbar3);
+        // }
+        //
+        // else if (this.getAttribute('data-stage') === '3') {
+        //     bar_wrapper.appendChild(pbar1);
+        //     bar_wrapper.appendChild(pbar2);
+        //     bar_wrapper.appendChild(pbar3);
+        //     bar_wrapper.appendChild(pbar4);
+        // }
+        //
+        // if (this.getAttribute('data-stage') === '4') {
+        //     bar_wrapper.appendChild(pbar1);
+        //     bar_wrapper.appendChild(pbar2);
+        //     bar_wrapper.appendChild(pbar3);
+        //     bar_wrapper.appendChild(pbar4);
+        //     bar_wrapper.appendChild(pbar5);
+        // }
+        //
+        // if (this.getAttribute('data-stage') === '5') {
+        //     bar_wrapper.appendChild(pbar1);
+        //     bar_wrapper.appendChild(pbar6);
+        // }
 
         wrapper.appendChild(bar_wrapper);
 
