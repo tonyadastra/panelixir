@@ -120,6 +120,9 @@
 }
 
 @media screen and (max-width: 767px) {
+  .intro{
+    text-align: left!important;
+  }
   .institutions {
     /* position: absolute; */
     width: 100% !important;
@@ -293,5 +296,8 @@
   margin: 0;
 }
 .intro > i {
+  margin: 0;
+}
+.intro > span {
   margin: 0;
 }

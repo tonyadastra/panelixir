@@ -106,7 +106,7 @@ class myCard extends HTMLElement {
 
         var pbar6 = document.createElement('div');
         pbar6.setAttribute('class', 'progress-bar');
-        pbar6.setAttribute('id', 'early');
+        pbar6.setAttribute('id', 'pbar5');
         pbar6.setAttribute('style', 'width: 60%')
         pbar6.innerHTML = 'EARLY APPROVAL';
 
@@ -116,13 +116,13 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') >= 1)
             bar_wrapper.appendChild(pbar2);
 
-        if (this.getAttribute('data-stage') >= 2)
+        if (this.getAttribute('data-stage') >= 2 && this.getAttribute('data-id') !== '13')
             bar_wrapper.appendChild(pbar3);
 
-        if (this.getAttribute('data-stage') >= 3)
+        if (this.getAttribute('data-stage') >= 3 && this.getAttribute('data-id') !== '13')
             bar_wrapper.appendChild(pbar4);
 
-        if (this.getAttribute('data-stage') == 4)
+        if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-id') !== '13')
             bar_wrapper.appendChild(pbar5);
 
         if (this.getAttribute('data-id') === '13'){
