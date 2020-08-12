@@ -9,12 +9,15 @@
 * [ ] Logo Design
 * [X] Map Optimization (Taking up 100%+ CPU)
 * [ ] About-Us Photos & Contact Info
-* [ ] Disclaimer
+* [X] Disclaimer
 * [ ] Auto-Update Data from WHO website
 * [ ] Daily/Weekly Update from Interactive Progress Bar
 * [ ] Feedback Form
-* [ ] Optimize Update Data (Repetitive Information)
+* [ ] Optimize Update Data Process (Repetitive Information)
 * [ ] Russia Early Approval
+* [ ] Info Icon to learn more about Special Vaccines
+* [ ] Order of Vaccines (Early Approval)
+* [ ] Vaccine Type Categories Explanation
 
 **Latest Updates**
 + August 2-10, 2020 - Final V1 Updates and BugFixes, Complete Mobile Modal, Update Databases, Disclaimer

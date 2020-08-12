@@ -49,6 +49,21 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  p.disclaimer-font{
+    font-size: 0.6rem;
+  }
+  .footer-copyright{
+    font-size: 0.6rem;
+  }
+  .mb-3{
+    margin-bottom: 0!important;
+  }
+  .break{
+    display: none;
+  }
+  .disclaimer-wrapper{
+    padding: 0;
+  }
   .dropdown-menu {
     transform: translate3d(5px, 35px, 0px) !important;
   }
