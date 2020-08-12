@@ -1,14 +1,13 @@
 <script src="../static/js/card.js"></script>
 {% if data|length >= 3 %}
     {% for entry in data %}
-    <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-        data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-    </my-card>
+    <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
     {% endfor %}
 {% else %}
     {% if data|length == 2 %}
         {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+        <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
             data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
         </my-card>
         {% endfor %}
@@ -16,7 +15,7 @@
     {% else %}
         {% if data|length > 0 %}
         {% for entry in data %}
-        <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+        <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
             data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
         </my-card>
         {% endfor %}

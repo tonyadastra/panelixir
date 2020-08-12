@@ -49,12 +49,14 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
-  .dropdown-menu{
-    transform: translate3d(5px, 35px, 0px)!important;
-}
-  .btn-filter{
+  .dropdown-menu {
+    transform: translate3d(5px, 35px, 0px) !important;
+  }
+
+  .btn-filter {
     font-size: 0.8rem;
   }
+
   .mobile-font {
     font-size: 0.68rem;
     /*color: white;*/
@@ -74,6 +76,7 @@
     /* Modified */
     margin-left: 0.5rem !important;
     /* New */
+    margin-bottom: 0.2rem !important; /* Modified */
   }
 
   p.display-highlight {
@@ -157,10 +160,6 @@
     margin-bottom: 1px !important;
   }
 
-  .title {
-    font-size: 0.7rem;
-    /* Modified */
-  }
 
   /* Hover Header-bar Effect */
   .header-text {
@@ -309,6 +308,7 @@
   .title {
     font-size: 1rem;
     /* Modified */
+    margin-bottom: 0.2rem!important; /* Modified */
   }
 
   /* Hover Header-bar Effect */
@@ -827,7 +827,7 @@
 
 .title>a.style-a {
   position: relative;
-  color: #095a09;
+  color: #088f8b;
   /* Color of Title */
   text-decoration: none;
 }
@@ -894,7 +894,7 @@
 /*Vaccine Introduction*/
 
 #title {
-  font-family: Garamond, EB Garamond, Georgia, serif;
+  font-family: sans-serif;
 }
 
 .black {
@@ -1348,4 +1348,10 @@ h6{
   }
   .dropdown-mobile.dropdown-toggle::after{
     display: none;
+  }
+  h4.title{
+    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    /*font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;*/
+    font-weight: 700;
+    /*font-variant: small-caps;*/
   }

@@ -299,18 +299,6 @@ $(document).ready(function () {
     $(function () {
         resize();
 
-        // $.ajax({
-        //     url: '/card',
-        //     type: 'get',
-        //     data: { 'count': count, 'limit': limit },
-        //     success: function (response) {
-        //         // console.log(response)
-        //         console.log(response)
-        //         $('#card_container').append(response);
-        //         count = count + 1;
-        //     }
-        // });
-
         var btn_group = document.getElementsByTagName('button');
         for (var i = 0, length = btn_group.length; i < length; i++) {
             var btn = btn_group[i];
@@ -612,7 +600,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 150;
+var nearToBottom = 100;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -639,8 +627,9 @@ $(window).scroll(function () {
         }
     }
     else {
-        if ($(window).scrollTop() + $(window).height() >=
+        if ($(window).scrollTop() + $(window).height() >
             $(document).height() - nearToBottom) {
+            console.log($(window).scrollTop() + $(window).height(), $(document).height() - nearToBottom)
             $.ajax({
                 url: '/card',
                 type: 'get',
@@ -706,7 +695,6 @@ $('.most-viewed').click(function () {
     // change dropdown title
     document.getElementById('mobile-button').innerHTML = countryTitle;
 
-
 })
 
 // Display Title of Previous Selected Country when Reopening
@@ -739,7 +727,7 @@ $("#submit-form").click(function () {
     return false;
 });
 
-
+// Mobile - Show Active Dropdown Item when Dropdown is clicked
 $(document).ready(function() {
     // Trigger Mobile Dropdown
     $(".dropdown-toggle").dropdown();
@@ -750,4 +738,37 @@ $(document).ready(function() {
         // Scroll Into View, (true)=top, (false)=bottom
         elmnt.scrollIntoView();
     })
+});
+
+// Keep Interactive Button Active after clicking outside
+$(".button-font").on('click', function () {
+    $(".button-font").removeClass('active');
+    $(this).addClass('active');
+})
+
+// Mobile Modal
+// Switch Stages
+$(".btn-group-1 > .btn").click(function() {
+  $(".btn-group-1 > .btn").removeClass("active");
+  $(this).addClass("active");
+});
+
+// Switch Popular Countries
+$(".btn-group-2 > .btn").click(function() {
+  $(".btn-group-2 > .btn").removeClass("active");
+  $(this).addClass("active");
+});
+
+// Switch Types
+$(".btn-group-3 > .btn").click(function() {
+  $(".btn-group-3 > .btn").removeClass("active");
+  $(this).addClass("active");
+});
+
+// Close modal after form submission
+$('#submit-form').click(function(e) {
+    e.preventDefault();
+    // Coding
+    $('#exampleModalCenter').modal('toggle'); //or  $('#IDModal').modal('hide');
+    return false;
 });
