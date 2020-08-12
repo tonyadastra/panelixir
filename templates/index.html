@@ -476,52 +476,19 @@
         </form>
     </div>
 
-
     <!-- list institutions -->
     <div class="all-cards">
         <div class="institutions" id="institutions">
             {% if data|length >= 2 %}
             {% for entry in data %}
-            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
-                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-            </my-card>
-            {% endfor %}
-            {% else %}
-            {% if data|length > 0 %}
-            {% for entry in data %}
-            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}'
-                data-intro='{{entry[4]}}' data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
-            </my-card>
-            {% endfor %}
-            <!-- <div style="height: 20rem;"></div> -->
-            {% else %}
-            <div style="height: 1rem;"></div>
-            <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-            <div style="height: 10rem;"></div>
-            {% endif %}
-            {% endif %}
-        </div>
-        <div id="card_container"></div>
-
-                <input type="hidden" id="prev_stages" name="prev_stages" value="{{stages}}">
-                <input type="hidden" id="prev_country" name="prev_country" value="{{country}}">
-                <input type="hidden" id="prev_types" name="prev_types" value="{{types}}">
-    </div>
-
-
-    <!-- list institutions -->
-    <div class="all-cards">
-        <div class="institutions" id="institutions">
-            {% if data|length >= 2 %}
-            {% for entry in data %}
-            <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
                 data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
             </my-card>
             {% endfor %}
             {% else %}
             {% if data|length > 0 %}
             {% for entry in data %}
-            <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
+            <my-card data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
                 data-country='{{entry[5]}}' data-vactype='{{entry[6]}}'>
             </my-card>
             {% endfor %}
@@ -532,56 +499,12 @@
             {% endif %}
             {% endif %}
         </div>
-        <div id="mobile_container"></div>
+        <div id="card_container"></div>
     </div>
+    <div id="mobile_container"></div>
 
 
     <!-- Footer -->
-    <div style="height: 2rem;"></div>
-    <footer class="page-footer font-small pt-4" style="background-color: #00261c;">
-
-        <!-- Footer Links -->
-        <div class="container-fluid text-center text-md-left">
-            <div class="row">
-                <div class="col-md-8 mt-md-0 mt-6" style="color: #c6cecc; text-align:justify">
-
-                    <!-- Content -->
-                    <h5 class="text-uppercase">PANELIXIR</h5>
-                    <!-- <p>Legal Disclaimer</p> -->
-                    <p style="color: #00a56b">PANELIXIR.com assumes no responsibility or liability for any errors or omissions in the content of this site.
-                        The information contained in this site is provided on an "as is" basis with no guarantees of completeness, accuracy, usefulness or
-                        timeliness. The information should be used as a guide and modified to meet your own individual needs and the laws of your state.
-                        Your use of any information or forms is at your own risk.</p>
-                    <p style="color: #00a56b">Data Source:&nbsp;<b>The World Health Organization</b>: <i><a
-                                href="https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines"
-                                target="_blank" style="color: #00a56b"> <u>Draft landscape of COVID-19 candidate
-                                vaccines</u></a></i></p>
-
-                </div>
-
-                <!-- <hr class="clearfix w-100 d-md-none pb-3"> -->
-                <div class="col-md-1 mb-md-0 mb-1"></div>
-
-                <div class="col-md-3 mb-md-0 mb-3" >
-                 <div style="height: 2rem;"></div>
-                    <!-- <h5 class="text-uppercase"  style="color: #c6cecc;"></h5> -->
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="/about-us">About Us</a>
-                        </li>
-                        <li>
-                            <a href="#!">Contact Us: xxx @gmail.com</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3" style="color:#c6cecc; ">© 2020 Copyright:
-            <a href="https://PANELIXIR.com/" style="color:#c6cecc"> PANELIXIR.com</a>
-        </div>
-    </footer>
 {#</body>#}
 
 {% endblock %}

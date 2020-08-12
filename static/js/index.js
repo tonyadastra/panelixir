@@ -612,7 +612,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 100;
+var nearToBottom = 600;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -641,6 +641,8 @@ $(window).scroll(function () {
     else {
         if ($(window).scrollTop() + $(window).height() >=
             $(document).height() - nearToBottom) {
+            console.log(($(window).scrollTop() + $(window).height() >
+            $(document).height() - nearToBottom))
             $.ajax({
                 url: '/card',
                 type: 'get',
@@ -649,6 +651,7 @@ $(window).scroll(function () {
                     // console.log(response)
                     $('#card_container').append(response);
                     count = count + 1;
+                    console.log(count)
                 }
             });
         }
