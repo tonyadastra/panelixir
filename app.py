@@ -100,7 +100,6 @@ def index():
                 types_dis = "Viral Vector Vaccines"
             elif types == "Virus":
                 types_dis = "Whole-Virus Vaccines"
-                types = "Virus%' or vac_type LIKE '%Inactivated"
             elif types == "Others":
                 types = "Repurposed%' or vac_type LIKE '%VLP"
                 types_dis = "Others"
@@ -166,8 +165,8 @@ def card():
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
             " AND vac_type LIKE '%" + types + "%' "
-            " ORDER BY stage DESC, co_name, partner_name "
-            " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+            "ORDER BY stage DESC, co_name, partner_name "
+            "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
@@ -203,7 +202,7 @@ def mobileForm():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND vac_type LIKE '%" + mobile_type + "%' "
-        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
     data = cur.fetchall()
     cur.execute("rollback")
