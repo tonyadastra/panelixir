@@ -649,8 +649,10 @@ $(window).scroll(function () {
             });
         }
     }
-    // When Map Outside of Window, stop map spinning
-    processing = $(window).scrollTop() > $(window).height();
+    if (world_continents.continent === 'World'){
+        // When Map Outside of Window, stop map spinning
+        processing = $(window).scrollTop() > $(window).height();
+    }
 });
 
 // Mobile Modal
