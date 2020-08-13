@@ -649,6 +649,12 @@ $(window).scroll(function () {
             });
         }
     }
+    if ($(window).scrollTop() > $(window).height()){
+        console.log($(window).scrollTop() > $(window).height())
+        processing = true;
+    } else {
+        processing = false;
+    }
 });
 
 // Mobile Modal
