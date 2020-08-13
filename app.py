@@ -91,18 +91,27 @@ def index():
                     types = ""
                     types_dis = "Vaccine Platform"
 
-            if types == "Genetic" or prev_types == "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic":
-                types_dis = "Genetic Vaccines"
-                types = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
+            if types == "Genetic":
+                types_dis = "Nucleic Acid Vaccines"
+                types = "DNA%' or vac_type LIKE '%RNA"
             elif types == "Protein":
-                types_dis = "Protein-Based Vaccines"
+                types_dis = "Subunit Vaccines"
             elif types == "Viral Vector":
                 types_dis = "Viral Vector Vaccines"
-            elif types == "Virus" or prev_types == "Virus%' or vac_type LIKE '%Inactivated":
-                types_dis = "Whole-Virus Vaccines"
+            elif types == "Virus":
+                types_dis = "Whole-Pathogen Vaccines"
                 types = "Virus%' or vac_type LIKE '%Inactivated"
-            elif types == "Others" or prev_types == "Repurposed%' or vac_type LIKE '%VLP":
-                types = "Repurposed%' or vac_type LIKE '%VLP"
+            elif types == "VLP":
+                types_dis = "Nanoparticle Vaccines"
+            elif types == "Others":
+                types = "Repurposed"
+                types_dis = "Others"
+
+            if types_dis == "DNA%' or vac_type LIKE '%RNA":
+                types_dis = "Nucleic Acid Vaccines"
+            if types_dis == "Virus%' or vac_type LIKE '%Inactivated":
+                types_dis = "Whole-Pathogen Vaccines"
+            if types_dis == "Repurposed":
                 types_dis = "Others"
 
             cur.execute("rollback")
@@ -188,14 +197,14 @@ def mobileForm():
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
     mobile_type = str(request.args.get('mobile_type'))
-    print(mobile_stages)
-    print(mobile_country)
-    print(mobile_type)
+    # print(mobile_stages)
+    # print(mobile_country)
+    # print(mobile_type)
     # print(request.args.get('mobile_count'))
     if mobile_type == "Genetic":
-        mobile_type = "DNA%' or vac_type LIKE '%RNA%' or vac_type LIKE '%\Genetic"
+        mobile_type = "DNA%' or vac_type LIKE '%RNA"
     elif mobile_type == "Others":
-        mobile_type = "Repurposed%' or vac_type LIKE '%VLP"
+        mobile_type = "Repurposed"
     elif mobile_type == "Virus":
         mobile_type = "Virus%' or vac_type LIKE '%Inactivated"
 
@@ -209,7 +218,7 @@ def mobileForm():
 
     data = cur.fetchall()
     cur.execute("rollback")
-    print(data)
+    # print(data)
 
     return render_template("mobile-card.html", data=data)
 

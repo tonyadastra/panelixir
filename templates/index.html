@@ -261,7 +261,7 @@
                             <h6>Select Country</h6>
                             <p class="subtag">Popular countries:</p>
                             <div class="btn-group-2">
-                                <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
+                                <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed" value="" style="padding: 0.1875rem 0.5rem!important;min-width: 0;">All</button>
 {#                            </div>#}
 {#                            <div class="btn-group btn-group-2" role="group">#}
                                 <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United States" value="United States">United States</button>
@@ -308,15 +308,16 @@
                                 </div>
                             </div>
                             <h6>Select Vaccine Platform</h6>
-                            <div class="btn-group btn-group-3">
-                                <button type="button" class="active btn btn-default btn-mobile-type mobile-font-small" id="type" value="" style="padding: 0.1875rem 0.5rem!important;">All</button>
-                            </div>
-                            <div class="btn-group btn-group-3">
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Genetic">Genetic</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Viral Vector">Viral Vector</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Protein">Protein-Based</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Virus">Whole Virus</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font-small" id="type" value="Others">Others</button>
+                            <div class="btn-group-3">
+                                <button type="button" class="active btn btn-default btn-mobile-type mobile-font" id="type" value="" style="padding: 0.1875rem 0.5rem!important;min-width: 0!important;">All</button>
+{#                            </div>#}
+{#                            <div class="btn-group btn-group-3">#}
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Genetic">Nucleic Acid</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Viral Vector">Viral Vector</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Protein">Subunit</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Virus">Whole-Pathogen</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="VLP">Nanoparticle</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Others">Others</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -438,13 +439,15 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <button class="dropdown-item-type" type="submit" name="type" value="Genetic">
-                            Genetic Vaccines</button>
+                            Nucleic Acid Vaccines</button>
                         <button class="dropdown-item-type" type="submit" name="type" value="Protein">
-                            Protein-Based Vaccines</button>
+                            Subunit Vaccines</button>
                         <button class="dropdown-item-type" type="submit" name="type" value="Viral Vector">
                             Viral Vector Vaccines</button>
                         <button class="dropdown-item-type" type="submit" name="type" value="Virus">
-                            Whole-Virus Vaccines</button>
+                            Whole-Pathogen Vaccines</button>
+                        <button class="dropdown-item-type" type="submit" name="type" value="VLP">
+                            Nanoparticle Vaccines</button>
                         <button class="dropdown-item-type" type="submit" name="type" value="Others">
                             Others</button>
                     </div>

@@ -12,10 +12,10 @@
     /*color: white;*/
   }
 
-  .mobile-font-small {
-    font-size: 8.5px!important;
-    /*color: white;*/
-  }
+  /*.mobile-font-small {*/
+  /*  font-size: 8.5px!important;*/
+  /*  !*color: white;*!*/
+  /*}*/
 }
 
 @media screen and (max-width: 375px){
@@ -86,10 +86,10 @@
     /*color: white;*/
   }
 
-  .mobile-font-small {
-    font-size: 0.6rem;
-    /*color: white;*/
-  }
+  /*.mobile-font-small {*/
+  /*  font-size: 0.6rem;*/
+  /*  !*color: white;*!*/
+  /*}*/
 
   .filter {
     display: none;
@@ -580,7 +580,7 @@
   }
 
   .align-right {
-    right: 6%;
+    right: 2%;
   }
 }
 
@@ -594,6 +594,9 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+  .btn-outline-continent{
+    min-width: 83px;
+  }
   .mobile-filter{
     display: none;
   }
@@ -1300,12 +1303,21 @@ span.highlight {
   background-color: #33b7b3;
 }
 
+.btn-mobile-country{
+  margin-right: 0.3rem;
+  min-width: 50px;
+}
 .btn-default.btn-mobile-country.active{
   /*background-color: #5ab9ea;*/
     color: #ffffff;
   background-color: #ec701e;
 }
 
+.btn-mobile-type{
+  margin-right: 0.3rem;
+  min-width: 50px;
+  margin-bottom: 0.3rem;
+}
 .btn-default.btn-mobile-type.active{
   /*background-color: #5ab9ea;*/
     color: #ffffff;
@@ -1319,7 +1331,7 @@ span.highlight {
   box-shadow: 0 0 0 0 !important;
 }
 .modal-body{
-  padding: 1rem 0.7rem;
+  padding: 0.7rem;
   margin-top: 0.3rem;
 }
 
