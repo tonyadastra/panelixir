@@ -58,6 +58,7 @@
 2. [Google Sheets Database](https://docs.google.com/spreadsheets/d/1uizkQFCIkAH1fuDuj_N01xJogvwoTmTiQziaBz1Xtvs/edit#gid=0)
 3. [Google Slides UI Design](https://docs.google.com/presentation/d/1ibjxRnj7LZTH4G1Zy0rOL-0un8sc1Ab3FwR-Z1zx1uU/edit#slide=id.p)
 4. [D3 API Reference(Wiki)](https://github.com/d3/d3/blob/master/API.md)
+5. [Nature-Different Vaccine Platforms](https://www.nature.com/articles/s41563-020-0746-0)
 
 **Resources**
 1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
