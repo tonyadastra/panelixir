@@ -649,12 +649,8 @@ $(window).scroll(function () {
             });
         }
     }
-    if ($(window).scrollTop() > $(window).height()){
-        console.log($(window).scrollTop() > $(window).height())
-        processing = true;
-    } else {
-        processing = false;
-    }
+    // When Map Outside of Window, stop map spinning
+    processing = $(window).scrollTop() > $(window).height();
 });
 
 // Mobile Modal
