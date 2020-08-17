@@ -16,7 +16,8 @@ application = app = Flask(__name__)
 # Unquote following line to run at local
 
 # # User - Tony
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds' \
+                                        '.amazonaws.com/vaccinedb '
 app.secret_key = "ILoveNewYork"
 conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 
