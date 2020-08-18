@@ -59,8 +59,11 @@
   .quote{
     font-size: 1rem;
   }
+  .interactive-progress{
+    margin-left: 0.5rem!important;
+  }
   .bar-tag {
-      font-size: 0.3rem; /* Modified */
+      font-size: 10px; /* Modified */
 	}
 
   .quick-actions{
@@ -354,7 +357,7 @@
     margin-bottom: 1rem !important;
   }
   .bar-tag {
-      font-size: 0.4rem; /* Modified */
+      font-size: 15px; /* Modified */
 	}
   .large-screen {
     display: none !important;
