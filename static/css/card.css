@@ -88,55 +88,26 @@
   width: 100%;
 }
 
-.country_tag {
-  font-family: sans-serif;
-  font-size: 14px;
-  margin: 0 0 5px 5px;
-  padding: 5px 8px!important;
-  border-radius: 0.2rem;
-  height: 30px;
-  color: white;
-  float: right;
-  /* clear: both; */
-}
-
-.vac_tag {
-  font-family: sans-serif;
-  font-size: 14px;
-  margin: 0 0 5px 5px;
-  padding: 5px 12px!important;
-  border-radius: 0.2rem;
-  height: 30px;
-  color: white;
-  float: right;
-  clear: both;
-}
-
-.tag_wrapper {
-  float: right;
-  position: relative;
-  margin-bottom: 0 !important;
-  clear: both;
-}
-
 @media screen and (max-width: 767px) {
-  .intro{
-    text-align: left!important;
+  .intro {
+    text-align: left !important;
   }
+
   .institutions {
     /* position: absolute; */
     width: 100% !important;
     margin: 1rem 0 0.5rem 0 !important;
     /*margin-top: 30px;*/
   }
+
   .wrapper {
-  margin: 0 10px 30px 10px;
-  background-color: #e5f0ed;
-  box-shadow: 4px 7px #dbd9d9;
-}
+    margin: 0 10px 30px 10px;
+    background-color: #e5f0ed;
+    box-shadow: 4px 7px #dbd9d9;
+  }
 
   .intro {
-    font-size: 8px !important;
+    font-size: 9px !important;
     /* text-align: justify; */
     padding: 0 0 1rem 0;
   }
@@ -147,7 +118,7 @@
     margin: 0 0 3px 3px;
     padding: 5px 8px !important;
     border-radius: 0.2rem;
-    height: 20px !important;
+    /*height: 20px !important;*/
     color: white;
     float: none;
     /* clear: both; */
@@ -157,9 +128,9 @@
     font-family: sans-serif;
     font-size: 8px !important;
     margin: 0 0 3px 3px;
-    padding: 5px 10px !important;
+    padding: 5px 8px !important;
     border-radius: 0.2rem;
-    height: 20px !important;
+    /*height: 20px !important;*/
     color: white;
     float: none;
     clear: both;
@@ -168,9 +139,10 @@
   .wrapper * {
     margin: 4px;
   }
+
   img {
-    height: 30px!important;
-    position: static!important;
+    height: 30px !important;
+    position: static !important;
   }
 
   .progress-bar {
@@ -286,6 +258,39 @@
 /*    !*margin: 0 !important;*!*/
 /*    !*clear: both;*!*/
 /*  }*/
+
+}
+@media screen and (min-width: 768px) {
+  .country_tag {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0 0 5px 5px;
+    padding: 5px 8px !important;
+    border-radius: 0.2rem;
+    height: 30px;
+    color: white;
+    float: right;
+    /* clear: both; */
+  }
+
+  .vac_tag {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin: 0 0 5px 5px;
+    padding: 5px 12px !important;
+    border-radius: 0.2rem;
+    height: 30px;
+    color: white;
+    float: right;
+    clear: both;
+  }
+
+  .tag_wrapper {
+    float: right;
+    position: relative;
+    margin-bottom: 0 !important;
+    clear: both;
+  }
 
 }
 
