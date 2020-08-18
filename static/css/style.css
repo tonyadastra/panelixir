@@ -333,13 +333,16 @@
   .source{
     margin-top: 0.6rem;
   }
+  #submit-data{
+    right: 20% !important;
+  }
 }
 @media screen and (min-width: 426px) and (max-width: 576px) {
   .quote{
     font-size: 1.2rem;
   }
   #submit-data{
-    right: 20% !important;
+    right: 22% !important;
   }
   .title {
     font-size: 1rem;

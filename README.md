@@ -3,6 +3,8 @@
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
 **To Do List**
+* [ ] Database Security
+* [ ] Add HTTPS Certificate
 * [X] Modal For Mobile Version
 * [X] WHO Vaccine Type Filtering
 * [X] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
@@ -14,7 +16,7 @@
 * [ ] Daily/Weekly Update from Interactive Progress Bar
 * [ ] Feedback Form
 * [ ] Optimize Update Data Process (Repetitive Information)
-* [ ] Russia Early Approval
+* [X] Russia Early Approval
 * [ ] Info Icon to learn more about Special Vaccines
 * [ ] Order of Vaccines (Early Approval)
 * [ ] Vaccine Type Categories Explanation
@@ -49,8 +51,9 @@
 * [X] [Rotate Explicit Example](https://observablehq.com/@d3/world-tour)
 * [X] [Add Customized Scrollbar](https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_scrollbar)
 * [X] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
-* [ ] [Host Database on Amazon RDS](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/)
-* [ ] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
+* [X] [Host Database on Amazon RDS](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/)
+* [X] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
+* [ ] [HTTPS Certificate](https://letsencrypt.org/)
 
 
 **Quick Access:**
