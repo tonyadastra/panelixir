@@ -1315,7 +1315,7 @@ span.highlight {
 
 .mobile-filter{
   /*background-color: #faf4e5;*/
-  padding: 0;
+  padding-top: 1rem;
 }
 
 .btn-filter {
