@@ -5,20 +5,20 @@
 **To Do List**
 * [ ] Database Security
 * [ ] Add HTTPS Certificate
+* [ ] Latest News Section
+* [ ] Register/Login => Send latest information via e-mail
 * [X] Modal For Mobile Version
 * [X] WHO Vaccine Type Filtering
 * [X] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
 * [ ] Logo Design
 * [X] Map Optimization (Taking up 100%+ CPU)
-* [ ] About-Us Photos & Contact Info
 * [X] Disclaimer
 * [ ] Auto-Update Data from WHO website
 * [ ] Daily/Weekly Update from Interactive Progress Bar
 * [ ] Feedback Form
 * [ ] Optimize Update Data Process (Repetitive Information)
 * [X] Russia Early Approval
-* [ ] Info Icon to learn more about Special Vaccines
-* [ ] Order of Vaccines (Early Approval)
+* [ ] Info Icon to learn more (about Special Vaccines)
 * [ ] Vaccine Type Categories Explanation
 
 **Latest Updates**

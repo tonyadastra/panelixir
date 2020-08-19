@@ -600,7 +600,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 600;
+var nearToBottom = 1500;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
