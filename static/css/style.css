@@ -1492,7 +1492,7 @@ h6{
   .dropdown-mobile.dropdown-toggle::after{
     display: none;
   }
-  h4.title{
+  h1.title{
     font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     /*font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;*/
     font-weight: 700;
