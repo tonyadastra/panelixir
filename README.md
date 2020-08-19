@@ -4,7 +4,7 @@
 
 **To Do List**
 * [ ] Database Security
-* [ ] Add HTTPS Certificate
+* [X] Add HTTPS Certificate
 * [ ] Latest News Section
 * [ ] Register/Login => Send latest information via e-mail
 * [X] Modal For Mobile Version
@@ -53,7 +53,7 @@
 * [X] [Create a favicon.ico](https://stackoverflow.com/questions/4888377/how-to-add-a-browser-tab-icon-favicon-for-a-website)
 * [X] [Host Database on Amazon RDS](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/)
 * [X] [**Host the Website!**](https://docs.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain)
-* [ ] [HTTPS Certificate](https://letsencrypt.org/)
+* [X] [HTTPS Certificate](https://letsencrypt.org/)
 
 
 **Quick Access:**
