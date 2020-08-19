@@ -8,24 +8,10 @@ import numpy as np
 import json
 import csv
 
-# Quote following line to run at local
-# from flask_heroku import Heroku
 application = app = Flask(__name__)
-# Quote following line to run at local
-# heroku = Heroku(app)
-# Unquote following line to run at local
-
-# # User - Tony
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.secret_key = "ILoveNewYork"
 conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=postgres password=iloveNYC0704")
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
-
-# # User - Lola
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///covid19_db'
-# app.secret_key = "lola980109"
-# conn = psycopg2.connect("dbname=covid19_db user=lola")
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
