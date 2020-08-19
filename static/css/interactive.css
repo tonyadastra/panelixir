@@ -9,9 +9,12 @@
 	#vis1 {
 		display: none; /* Modified */
 	}
+
 	/* Enlarge Bars */
 	#vis2 {
-		width: 110%; /* Modified */
+		width: 108%; /* Modified */
+		margin-left: -0.7rem;
+		/*margin-right: -1rem;*/
 	}
 
 	.interactive-progress {
@@ -42,97 +45,105 @@
 		/*width: 0;*/
 		/*height: 0;*/
 		border-top: 24px solid transparent !important; /* Modified */
-		border-left: 15px solid #c1c8e4 !important; /* Modified */
+		border-left: 12px solid #c1c8e4 !important; /* Modified */
 		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
 	.arrow-right-stage1 {
 		/*width: 0;*/
 		/*height: 0;*/
-		border-top: 24px solid transparent !important;/* Modified */
-		border-left: 15px solid #84ceeb !important;/* Modified */
-		border-bottom: 24px solid transparent !important;/* Modified */
+		border-top: 24px solid transparent !important; /* Modified */
+		border-left: 12px solid #84ceeb !important; /* Modified */
+		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
 
 	.arrow-right-stage2 {
 		/*width: 0;*/
 		/*height: 0;*/
-		border-top: 24px solid transparent !important;/* Modified */
-		border-left: 15px solid #5ab9ea !important;/* Modified */
-		border-bottom: 24px solid transparent !important;/* Modified */
+		border-top: 24px solid transparent !important; /* Modified */
+		border-left: 12px solid #5ab9ea !important; /* Modified */
+		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
 
 	.arrow-right-stage3 {
 		/*width: 0;*/
 		/*height: 0;*/
-		border-top: 24px solid transparent !important;/* Modified */
-		border-left: 15px solid #88bdbc !important;/* Modified */
-		border-bottom: 24px solid transparent !important;/* Modified */
+		border-top: 24px solid transparent !important; /* Modified */
+		border-left: 12px solid #88bdbc !important; /* Modified */
+		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
 
 	.arrow-right-stage4 {
 		/*width: 0;*/
 		/*height: 0;*/
-		border-top: 24px solid transparent !important;/* Modified */
-		border-left: 15px solid #3aafa9 !important;/* Modified */
-		border-bottom: 24px solid transparent !important;/* Modified */
+		border-top: 24px solid transparent !important; /* Modified */
+		border-left: 12px solid #3aafa9 !important; /* Modified */
+		border-bottom: 24px solid transparent !important; /* Modified */
+		/*margin-left: 4.8px;*/
+
 	}
 
 	#progress0 {
 		background-color: #c1c8e4;
-		line-height: 3rem !important;/* Modified */
-		margin-left: -1.35rem !important;/* Modified */
-		padding-left: 0.3rem !important;/* Modified */
+		line-height: 3rem !important; /* Modified */
+		margin-left: -1.35rem !important; /* Modified */
+		padding-left: 0.3rem !important; /* Modified */
 	}
 
 	#progress1 {
 		/*background-color: #84ceeb;*/
-		line-height: 3rem !important;/* Modified */;
+		line-height: 3rem !important; /* Modified */;
 	}
 
 	#progress2 {
 		/*background-color: #5ab9ea;*/
-		line-height: 3rem !important;/* Modified */;
+		line-height: 3rem !important; /* Modified */;
 	}
 
 	#progress3 {
 		/*background-color: #88bdbc;*/
-		line-height: 3rem !important;/* Modified */;
+		line-height: 3rem !important; /* Modified */;
 	}
 
 	#progress4 {
 		/*background-color: #3aafa9;*/
-		line-height: 3rem !important;/* Modified */;
+		line-height: 3rem !important; /* Modified */;
+		/*width: 110%;*/
+		/*position: relative!important;*/
 	}
 
 	.btn {
-		padding: 0.1875rem 0.3rem !important;/* Modified */;
+		padding: 0.3rem 0.5rem !important; /* Modified */;
 	}
 
 	.btn-outline-primary:focus,
 	.btn-primary.focus {
-		box-shadow: 0 0 0 0.12rem rgb(173, 245, 217) !important;/* Modified */;
+		box-shadow: 0 0 0 0.12rem rgb(173, 245, 217) !important; /* Modified */;
 	}
 
 	.btn-outline-primary:not(:disabled):not(.disabled):active:focus,
 	.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 	.show > .btn-outline-primary.dropdown-toggle:focus {
-		box-shadow: 0 0 0 0.12rem rgb(145, 246, 217) !important;/* Modified */;
+		box-shadow: 0 0 0 0.12rem rgb(145, 246, 217) !important; /* Modified */;
 	}
 
 	.btn-outline-continent:focus,
 	.btn-outline-continent.focus {
-		box-shadow: 0 0 0 0.12rem rgb(122, 227, 124) !important;/* Modified */;
+		box-shadow: 0 0 0 0.12rem rgb(122, 227, 124) !important; /* Modified */;
 	}
 
 	.btn-outline-continent:not(:disabled):not(.disabled):active:focus,
 	.btn-outline-continent:not(:disabled):not(.disabled).active:focus,
 	.show > .btn-outline-continent.dropdown-toggle:focus {
-		box-shadow: 0 0 0 0.12rem rgb(125, 219, 141) !important;/* Modified */;
+		box-shadow: 0 0 0 0.12rem rgb(125, 219, 141) !important; /* Modified */;
 	}
+
+	/*.col > .interactive-bar.stage4 {*/
+	/*	*/
+	/*}*/
 }
 
 
@@ -376,6 +387,7 @@
 
 .text-stage4 {
 	color: #3aafa9;
+	margin-left: -0.5rem;
 }
 
 .arrow-right-stage4 {
