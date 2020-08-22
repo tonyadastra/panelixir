@@ -11,8 +11,8 @@ import csv
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.secret_key = "ILoveNewYork"
-conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=postgres password=iloveNYC0704")
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=postgres password=iloveNYC0704")
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
@@ -107,10 +107,10 @@ def index():
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                     " AND country LIKE '%" + country + "%' "
+                " AND country LIKE '%" + country + "%' "
                 # "AND '" + types + "' ~ vac_type "
-                                                                                                        " AND (vac_type LIKE '%" + types + "%') "
-                                                                                                                                           "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
+                " AND (vac_type LIKE '%" + types + "%') "
+                "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
             if stages == "0":
                 stages_dis = "Pre-Clinical"
@@ -164,11 +164,10 @@ def card():
             "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
             " JOIN companies ON info.vac_id = companies.vac_id "
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-                                                                 " AND country LIKE '%" + country + "%' "
-                                                                                                    " AND (vac_type LIKE '%" + types + "%') "
-                                                                                                                                       " ORDER BY stage DESC, co_name, partner_name "
-                                                                                                                                       " OFFSET " + str(
-                count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+            " AND country LIKE '%" + country + "%' "
+            " AND (vac_type LIKE '%" + types + "%') "
+            " ORDER BY stage DESC, co_name, partner_name "
+            " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
@@ -202,9 +201,9 @@ def mobileForm():
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
-                                                                     " AND country LIKE '%" + mobile_country + "%' "
-                                                                                                               " AND (vac_type LIKE '%" + mobile_type + "%') "
-                                                                                                                                                        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        " AND country LIKE '%" + mobile_country + "%' "
+        " AND (vac_type LIKE '%" + mobile_type + "%') "
+        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -224,11 +223,10 @@ def mobileAppendCards():
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
-                                                                     " AND country LIKE '%" + mobile_country + "%' "
-                                                                                                               " AND (vac_type LIKE '%" + mobile_type + "%') "
-                                                                                                                                                        " ORDER BY stage DESC, co_name, partner_name "
-                                                                                                                                                        " OFFSET " + str(
-            count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+        " AND country LIKE '%" + mobile_country + "%' "
+        " AND (vac_type LIKE '%" + mobile_type + "%') "
+        " ORDER BY stage DESC, co_name, partner_name "
+        " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -253,7 +251,7 @@ def getBarsData():
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE continent LIKE '%" + continent + "%' "
-                                                         "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
     bars_data = cur.fetchall()
     cur.execute("rollback")
 
@@ -261,7 +259,7 @@ def getBarsData():
     cur.execute("SELECT stage, COUNT(stage) as count "
                 " FROM info "
                 " WHERE continent LIKE '%" + continent + "%' "
-                                                         "GROUP BY stage ORDER BY stage")
+                "GROUP BY stage ORDER BY stage")
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []
