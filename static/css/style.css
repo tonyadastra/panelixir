@@ -49,6 +49,9 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  .update-time{
+    font-size: 0.8rem;
+  }
   .large-screen {
     display: none !important;
   }
@@ -1509,4 +1512,7 @@ h6{
   }
   .close{
 
+  }
+  .update-time{
+    color: darkcyan;
   }
