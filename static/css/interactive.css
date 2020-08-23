@@ -1,6 +1,12 @@
 /* Interactive Button */
 
 @media screen and (max-width: 767px) {
+	.btn-outline-primary{
+		border-width: thin;
+	}
+	.btn-outline-continent{
+		border-width: thin;
+	}
 	.bars-text {
 		font-size: 13px; /* Modified */
 	}
@@ -121,24 +127,24 @@
 
 	.btn-outline-primary:focus,
 	.btn-primary.focus {
-		box-shadow: 0 0 0 0.12rem rgb(173, 245, 217) !important; /* Modified */;
+		box-shadow: 0 0 0 0.09rem rgb(173, 245, 217) !important; /* Modified */;
 	}
 
 	.btn-outline-primary:not(:disabled):not(.disabled):active:focus,
 	.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
 	.show > .btn-outline-primary.dropdown-toggle:focus {
-		box-shadow: 0 0 0 0.12rem rgb(145, 246, 217) !important; /* Modified */;
+		box-shadow: 0 0 0 0.09rem rgb(145, 246, 217) !important; /* Modified */;
 	}
 
 	.btn-outline-continent:focus,
 	.btn-outline-continent.focus {
-		box-shadow: 0 0 0 0.12rem rgb(122, 227, 124) !important; /* Modified */;
+		box-shadow: 0 0 0 0.09rem rgb(122, 227, 124) !important; /* Modified */;
 	}
 
 	.btn-outline-continent:not(:disabled):not(.disabled):active:focus,
 	.btn-outline-continent:not(:disabled):not(.disabled).active:focus,
 	.show > .btn-outline-continent.dropdown-toggle:focus {
-		box-shadow: 0 0 0 0.12rem rgb(125, 219, 141) !important; /* Modified */;
+		box-shadow: 0 0 0 0.09rem rgb(125, 219, 141) !important; /* Modified */;
 	}
 
 	/*.col > .interactive-bar.stage4 {*/
