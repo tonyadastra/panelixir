@@ -552,6 +552,9 @@
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
+  .update-time{
+    font-size: 1.2rem;
+  }
   .mobile-filter {
     display: none;
   }
@@ -703,6 +706,9 @@
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+  .update-time{
+    font-size: 1.5rem;
+  }
   .btn-outline-continent{
     min-width: 83px;
   }
@@ -1514,5 +1520,6 @@ h6{
 
   }
   .update-time{
-    color: darkcyan;
+    color: #435bf6;
+    font-weight: lighter;
   }
