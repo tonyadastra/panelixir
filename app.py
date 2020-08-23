@@ -35,19 +35,19 @@ def index():
     if request.method == 'POST':
         global stages, country, types, status
         stages = request.form.get("stages", "Stages")
-        country = request.form.get("country", "Country/Region")
+        country = request.form.get("country", "Country / Region")
         types = request.form.get("type", "Vaccine Platform")
         status = request.form.get("status", "status")
 
         prev_stages = request.form.get("prev_stages", "Stages")
-        prev_country = request.form.get("prev_country", "Country/Region")
+        prev_country = request.form.get("prev_country", "Country / Region")
         prev_types = request.form.get("prev_types", "Vaccine Platform")
         country_dis = country
         types_dis = types
 
         if status == "clear":
             stages_dis = "Stages"
-            country_dis = "Country/Region"
+            country_dis = "Country / Region"
             types_dis = "Vaccine Platform"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
@@ -59,15 +59,15 @@ def index():
                 else:
                     stages = "_"
 
-            if country == "Country/Region":
-                if prev_country != "Country/Region":
+            if country == "Country / Region":
+                if prev_country != "Country / Region":
                     country = prev_country
                     country_dis = prev_country
                     if prev_country == "":
-                        country_dis = "Country/Region"
+                        country_dis = "Country / Region"
                 else:
                     country = ""
-                    country_dis = "Country/Region"
+                    country_dis = "Country / Region"
 
             if types == "Vaccine Platform":
                 if prev_types != "Vaccine Platform":
@@ -138,10 +138,10 @@ def index():
         data = cur.fetchall()
         cur.execute("rollback")
         stages_dis = "Stages"
-        country_dis = "Country/Region"
+        country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
         return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
-                               country_dis=country_dis, country="Country/Region", types_dis=types_dis,
+                               country_dis=country_dis, country="Country / Region", types_dis=types_dis,
                                types="Vaccine Platform")
 
 
@@ -156,7 +156,7 @@ def card():
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    elif stages != "Stages" or country != "Country/Region" or types != "Vaccine Platform":
+    elif stages != "Stages" or country != "Country / Region" or types != "Vaccine Platform":
         #     if types == "Genetic":
         #         types = "DNA%' or vac_type LIKE '%RNA"
 
