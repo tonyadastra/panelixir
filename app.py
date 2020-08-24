@@ -25,7 +25,7 @@ def favicon():
 
 
 stages = "Stages"
-country = "Country"
+country = "Country / Region"
 types = "Vaccine Platform"
 status = "status"
 
