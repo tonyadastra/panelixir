@@ -14,7 +14,6 @@
 * [X] Map Optimization (Taking up 100%+ CPU)
 * [X] Disclaimer
 * [ ] Auto-Update Data from WHO website
-* [ ] Daily/Weekly Update from Interactive Progress Bar
 * [ ] Feedback Form
 * [ ] Optimize Update Data Process (Repetitive Information)
 * [X] Russia Early Approval
@@ -22,6 +21,11 @@
 * [ ] Vaccine Type Categories Explanation
 
 **Latest Updates**
++ August 19-23, 2020 - Mobile+Desktop Optimization & Discussions on next steps including news section, latest update, "country/region", and WeChat official account
++ August 18, 2020 - HTTPS Certificate
++ August 16-17, 2020 - Setup Amazon EB environment and deploy website at www.panelixir.com!
++ August 15, 2020 - Database Deployment on Amazon RDS!
++ August 11-14, 2020 - New Type Categories & Final Checks, edits, mobile optimizations, latest database updates
 + August 2-10, 2020 - Final V1 Updates and BugFixes, Complete Mobile Modal, Update Databases, Disclaimer
 + August 1, 2020 - Complete Media Querying(Compatible with Mobile, Tablets, and iPads), Add Datasource to Database(Current Display- Pre-Clinical: 140)
 + July 31, 2020 - Complete 70% of Media Querying, Add source from WHO to database
