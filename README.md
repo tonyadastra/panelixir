@@ -5,7 +5,7 @@
 **To Do List**
 * [ ] Database Security
 * [X] Add HTTPS Certificate
-* [ ] Latest News Section
+* [X] Latest News Section
 * [ ] Register/Login => Send latest information via e-mail
 * [X] Modal For Mobile Version
 * [X] WHO Vaccine Type Filtering
@@ -21,6 +21,7 @@
 * [ ] Vaccine Type Categories Explanation
 
 **Latest Updates**
++ August 14-27 - Latest News Section and Other Optimizations, open card in dialogue box
 + August 19-23, 2020 - Mobile+Desktop Optimization & Discussions on next steps including news section, latest update, "country/region", and WeChat official account
 + August 18, 2020 - HTTPS Certificate
 + August 16-17, 2020 - Setup Amazon EB environment and deploy website at www.panelixir.com!
