@@ -783,3 +783,21 @@ $('#submit-form').click(function(e) {
     $('#exampleModalCenter').modal('toggle'); //or  $('#IDModal').modal('hide');
     return false;
 });
+
+$('.news-company').click(function () {
+    $(".news-company").removeClass("clicked");
+    $(this).addClass("clicked")
+    let company_id = document.querySelector('.clicked.news-company').id;
+    console.log(company_id)
+    $.ajax({
+        url: "/display-company",
+        data: {'company_id': company_id },
+        type: "GET",
+        success: function (response) {
+            console.log(response)
+            document.getElementById('append-card').innerHTML = response;
+            $('#company-modal').modal('show');
+        },
+    });
+    return false;
+})

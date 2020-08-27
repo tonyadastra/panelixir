@@ -238,6 +238,19 @@ def aboutUs():
     return render_template("about-us.html")
 
 
+@app.route("/display-company", methods=['GET', 'POST'])
+def displayCompany():
+    companyID = str(request.args.get('company_id'))
+    cur.execute(
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        " JOIN companies ON info.vac_id = companies.vac_id "
+        " WHERE info.vac_id = " + companyID + "")
+    company = cur.fetchall()
+    cur.execute("rollback")
+    # print(company)
+    return render_template("display-company.html", company=company)
+
+
 @app.route("/get_bars_data")
 def getBarsData():
     continent = str(request.args.get('continent'))
