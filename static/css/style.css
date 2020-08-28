@@ -49,6 +49,9 @@
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
+  .btn-outline-continent{
+    min-width: 50px;
+  }
   .news-wrapper{
     /*background-color: rgba(233, 233, 233, 0.7);*/
     border: 1px solid orangered!important;
