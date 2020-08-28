@@ -324,9 +324,10 @@
   }
 
   .cursive {
-    font-family: Brush Script MT, Brush Script Std, cursive;
+    font-family: Coronetscript, cursive;!important;
     color: #111b2b;
     font-size: 1.5rem;
+    font-weight: bold;
     /* Modified */
   }
 
@@ -554,9 +555,10 @@
   }
 
   .cursive {
-    font-family: Brush Script MT, Brush Script Std, cursive;
+    font-family: Coronetscript, cursive;!important;
     color: #111b2b;
     font-size: 1.8rem;
+    font-weight: bold;
     /* Modified */
   }
 
