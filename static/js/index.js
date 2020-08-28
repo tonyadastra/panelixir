@@ -394,6 +394,7 @@ $(document).ready(function () {
                 let flagMap = window.bars_data_response.map(d => d.flag);
                 let companyMap = window.bars_data_response.map(d => d.company);
                 let stageMap = window.bars_data_response.map(d => d.stage);
+                let idMap = window.bars_data_response.map(d => d.vac_id);
 
                 // add title
                 svg.append("text")
@@ -456,6 +457,7 @@ $(document).ready(function () {
                         .attr("font-size", "12px")
                         .attr("font-weight", "bold")
                         .attr("class", "bars-text")
+                        .attr("id", idMap[i])
                         .text(companyMap[i].replace(/\//g, ", "))
                         .call(wrap, 120);
 
@@ -484,11 +486,30 @@ $(document).ready(function () {
                                     line.pop();
                                     tspan.text(line.join(" "));
                                     line = [word];
-                                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").attr('class', 'tspan').text(word);
                                 }
                             }
                         });
                     }
+                    // Show company introduction on click
+                    d3.selectAll('.bars-text')
+                        .on('click', function () {
+                            $(".bars-text").removeClass("clicked");
+                            $(this).addClass("clicked");
+                            let company_id = document.querySelector('.clicked.bars-text').id;
+                            console.log(company_id)
+                            $.ajax({
+                                url: "/display-company",
+                                data: {'company_id': company_id},
+                                type: "GET",
+                                success: function (response) {
+                                    // console.log(response)
+                                    document.getElementById('append-card').innerHTML = response;
+                                    $('#company-modal').modal('show');
+                                },
+                            });
+                            return false;
+                        })
 
                     // Append Flag Image
                     // If multiple countries
@@ -784,20 +805,113 @@ $('#submit-form').click(function(e) {
     return false;
 });
 
+// Show company introduction on click - NEWS
 $('.news-company').click(function () {
     $(".news-company").removeClass("clicked");
     $(this).addClass("clicked")
     let company_id = document.querySelector('.clicked.news-company').id;
-    console.log(company_id)
+    // console.log(company_id)
     $.ajax({
         url: "/display-company",
         data: {'company_id': company_id },
         type: "GET",
         success: function (response) {
-            console.log(response)
+            // console.log(response)
             document.getElementById('append-card').innerHTML = response;
             $('#company-modal').modal('show');
         },
     });
     return false;
+})
+
+// DESKTOP - Make clicked dropdown item active - Stages
+$('.btn-stage').click(function () {
+    var stage_Desktop = document.getElementsByClassName('btn btn-stage dropdown-toggle')[0];
+    var stageTitle_Desktop = stage_Desktop.innerText;
+    if (stageTitle_Desktop === "Pre-Clinical "){
+        stageTitle_Desktop = "0 "
+    }
+    if (stageTitle_Desktop === "Phase I "){
+        stageTitle_Desktop = "1 "
+    }
+    if (stageTitle_Desktop === "Phase II "){
+        stageTitle_Desktop = "2 "
+    }
+    if (stageTitle_Desktop === "Phase III "){
+        stageTitle_Desktop = "3 "
+    }
+    if (stageTitle_Desktop === "Approval "){
+        stageTitle_Desktop = "4 "
+    }
+    // console.log(stageTitle_Desktop)
+    d3.selectAll(".dropdown-item-0")
+        .filter(function () {
+            //  console.log(d3.select(this).attr("value"))
+            // console.log(stageTitle_Desktop);
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-0');
+    d3.selectAll(".dropdown-item-1")
+        .filter(function () {
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-1');
+    d3.selectAll(".dropdown-item-2")
+        .filter(function () {
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-2');
+    d3.selectAll(".dropdown-item-3")
+        .filter(function () {
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-3');
+    d3.selectAll(".dropdown-item-4")
+        .filter(function () {
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-4');
+})
+
+// DESKTOP - Make clicked dropdown item active - Country
+$('.btn-country').click(function () {
+    var country_Desktop = document.getElementsByClassName('btn btn-country dropdown-toggle')[0];
+    var countryTitle_Desktop = country_Desktop.innerText;
+    d3.selectAll(".dropdown-item-ctry")
+        .filter(function () {
+            // console.log(d3.select(this).attr("value"))
+            // console.log(countryTitle_Desktop);
+            // console.log(d3.select(this).attr("value") + " " === countryTitle_Desktop)
+            return d3.select(this).attr("value") + " " === countryTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-ctry');
+})
+
+// DESKTOP - Make clicked dropdown item active - Types
+$('.btn-types').click(function () {
+    var types_Desktop = document.getElementsByClassName('btn btn-types dropdown-toggle')[0];
+    var typesTitle_Desktop = types_Desktop.innerText;
+    if (typesTitle_Desktop === "Subunit Vaccines "){
+        typesTitle_Desktop = "Subunit "
+    }
+    if (typesTitle_Desktop === "Nucleic Acid Vaccines "){
+        typesTitle_Desktop = "Genetic "
+    }
+    if (typesTitle_Desktop === "Viral Vector Vaccines "){
+        typesTitle_Desktop = "Viral Vector "
+    }
+    if (typesTitle_Desktop === "Whole-Pathogen Vaccines "){
+        typesTitle_Desktop = "Virus "
+    }
+    if (typesTitle_Desktop === "Nanoparticle Vaccines "){
+        typesTitle_Desktop = "VLP "
+    }
+    d3.selectAll(".dropdown-item-type")
+        .filter(function () {
+            // console.log(d3.select(this).attr("value"))
+            // console.log(countryTitle_Desktop);
+            // console.log(d3.select(this).attr("value") + " " === countryTitle_Desktop)
+            return d3.select(this).attr("value") + " " === typesTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-type');
 })
