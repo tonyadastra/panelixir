@@ -3,7 +3,7 @@
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
 
 **To Do List**
-* [ ] Database Security
+* [X] Database Security
 * [X] Add HTTPS Certificate
 * [X] Latest News Section
 * [ ] Register/Login => Send latest information via e-mail
