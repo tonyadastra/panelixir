@@ -1475,6 +1475,12 @@ span.highlight {
   background-color: #b683ec;
 }
 
+/*.dropdown-item-ctry.active{*/
+/*  !*background-color: #5ab9ea;*!*/
+/*    color: #ffffff;*/
+/*  background-color: #b683ec;*/
+/*}*/
+
 
 .btn-default {
   border: 1px solid rgba(143, 182, 241, 0.98);
@@ -1601,4 +1607,12 @@ h6{
     font-family: Kefa, sans-serif;
     font-variant: small-caps;
     font-size: 2.5rem;
+  }
+  .bars-text:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    /*color: darkblue!important;*/
+  }
+  tspan{
+    fill: #023cae;
   }
