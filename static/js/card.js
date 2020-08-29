@@ -134,12 +134,12 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') >= 3)
             bar_wrapper.appendChild(pbar4);
 
-        if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-id') !== '13')
+        if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
 
-        if (this.getAttribute('data-id') === '13'){
-            bar_wrapper.appendChild(pbar6);
-        }
+        // if (this.getAttribute('data-id') === '13'){
+        //     bar_wrapper.appendChild(pbar6);
+        // }
 
 
 
