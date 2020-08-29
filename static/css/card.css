@@ -308,3 +308,9 @@
 .intro > span {
   margin: 0;
 }
+.intro > ul {
+  margin: 0;
+}
+.intro > li {
+  margin: 0;
+}
