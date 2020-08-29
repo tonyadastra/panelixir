@@ -892,7 +892,7 @@ $('.btn-types').click(function () {
     var types_Desktop = document.getElementsByClassName('btn btn-types dropdown-toggle')[0];
     var typesTitle_Desktop = types_Desktop.innerText;
     if (typesTitle_Desktop === "Subunit Vaccines "){
-        typesTitle_Desktop = "Subunit "
+        typesTitle_Desktop = "Protein "
     }
     if (typesTitle_Desktop === "Nucleic Acid Vaccines "){
         typesTitle_Desktop = "Genetic "
