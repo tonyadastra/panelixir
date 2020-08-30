@@ -1003,7 +1003,7 @@
 /* Global Setting */
 
 .title-bar {
-  background-color: #fdfdfd;
+  background-color: #ffffff;
   border-radius: 0.2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
@@ -1620,4 +1620,8 @@ h6{
   }
   tspan{
     fill: #023cae;
+  }
+
+  .filter{
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
