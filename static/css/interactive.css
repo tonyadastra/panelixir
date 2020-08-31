@@ -453,21 +453,21 @@
 }
 
 .btn-outline-continent {
-	color: #93b174;
+	color: #6cb323;
 	background-color: transparent;
 	background-image: none;
-	border-color: #93b174;
+	border-color: #6cb323;
 }
 .btn-outline-continent:hover {
 	color: #fff;
-	background-color: #93b174;
-	border-color: #93b174;
+	background-color: #6cb323;
+	border-color: #6cb323;
 }
 .btn-outline-continent:focus,
 .btn-outline-continent.focus {
 	color: #fff;
-	background-color: #93b174;
-	border-color: #93b174;
+	background-color: #6cb323;
+	border-color: #6cb323;
 	box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }
 
@@ -475,8 +475,8 @@
 .btn-outline-continent:not(:disabled):not(.disabled).active,
 .show > .btn-outline-continent.dropdown-toggle {
   color: #fff;
-  background-color: #93b174;
-  border-color: #93b174;
+  background-color: #6cb323;
+  border-color: #6cb323;
 }
 
 .btn-outline-primary:focus,
