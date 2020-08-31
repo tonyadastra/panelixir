@@ -1010,7 +1010,7 @@
 
 .title>a.style-a {
   position: relative;
-  color: #088f8b;
+  color: #0e9f9a;
   /* Color of Title */
   text-decoration: none;
 }
@@ -1034,7 +1034,7 @@
 
 .graticule {
   fill: none;
-  stroke: #777;
+  stroke: #777777;
   stroke-width: .5px;
   stroke-opacity: .5;
 }
