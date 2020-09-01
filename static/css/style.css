@@ -54,8 +54,11 @@
 
 @media screen and (max-width: 425px) {
   .btn-mobile-stage{
-    /*font-size: 0.6rem!important;*/
+    font-size: 0.6rem!important;
     padding: 0.3rem 0.4rem;
+  }
+  .stages-all{
+    font-size: 0.68rem!important;
   }
   .btn-outline-continent{
     min-width: 50px;
@@ -368,6 +371,7 @@
     padding: 00rem;
   }
   span.highlight {
+    /*display: inline-block !important;*/
     vertical-align: middle !important;
     font-family: sans-serif !important;
     font-size: 11px !important;
@@ -375,7 +379,6 @@
     padding: 0.35rem !important;
     border-radius: 0.2rem !important;
     color: white !important;
-    /*display: inline-block !important;*/
     height: 50% !important;
     width: 80% !important;
   }
@@ -1651,3 +1654,9 @@ h6{
   .filter{
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
+
+@media screen and (min-width: 375px) and (max-width: 424px) {
+  span.highlight {
+    margin-left: 0.5rem !important;
+  }
+}
