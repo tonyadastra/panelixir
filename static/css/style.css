@@ -1655,8 +1655,8 @@ h6{
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
 
-@media screen and (min-width: 375px) and (max-width: 424px) {
-  span.highlight {
-    margin-left: 0.5rem !important;
-  }
-}
+/*@media screen and (min-width: 375px) and (max-width: 424px) {*/
+/*  span.highlight {*/
+/*    margin-left: 0.5rem !important;*/
+/*  }*/
+/*}*/
