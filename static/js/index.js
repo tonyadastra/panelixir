@@ -59,7 +59,7 @@ var graticule = d3.geoGraticule();
 var colors = {
     clickable: '#e3e2df', hover: '#bab2b5', clicked: "peachpuff",
     clickhover: '#bab2b5', p0: '#c1c8e4', p1: '#84ceeb',
-    p2: '#5ab9ea', p3: '#88bdbc', p4: '#3aafa9'
+    p2: '#5ab9ea', p3: '#2b98d2', p4: '#3aafa9'
 };
 
 
@@ -389,7 +389,7 @@ $(document).ready(function () {
                 colorScale = d3.scaleOrdinal()
                     .domain(states)
                     .range(['#c1c8e4', '#84ceeb', '#5ab9ea',
-                        '#88bdbc', '#3aafa9']);
+                        '#2b98d2', '#3aafa9']);
 
                 let flagMap = window.bars_data_response.map(d => d.flag);
                 let companyMap = window.bars_data_response.map(d => d.company);
@@ -841,6 +841,9 @@ $('.btn-stage').click(function () {
     if (stageTitle_Desktop === "Phase III "){
         stageTitle_Desktop = "3 "
     }
+    if (stageTitle_Desktop === "Limited Use "){
+        stageTitle_Desktop = "4-1 "
+    }
     if (stageTitle_Desktop === "Approval "){
         stageTitle_Desktop = "4 "
     }
@@ -867,6 +870,11 @@ $('.btn-stage').click(function () {
             return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-3');
+    d3.selectAll(".dropdown-item-4-1")
+        .filter(function () {
+            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+        })
+        .attr('class', 'active dropdown-item-4-1');
     d3.selectAll(".dropdown-item-4")
         .filter(function () {
             return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute

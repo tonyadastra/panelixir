@@ -77,7 +77,7 @@
 		/*width: 0;*/
 		/*height: 0;*/
 		border-top: 24px solid transparent !important; /* Modified */
-		border-left: 12px solid #88bdbc !important; /* Modified */
+		border-left: 12px solid #2b98d2 !important; /* Modified */
 		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
@@ -110,7 +110,7 @@
 	}
 
 	#progress3 {
-		/*background-color: #88bdbc;*/
+		/*background-color: #2b98d2;*/
 		line-height: 3rem !important; /* Modified */;
 	}
 
@@ -236,7 +236,7 @@
 		/*width: 0;*/
 		/*height: 0;*/
 		border-top: 40px solid transparent !important;/* Modified */;
-		/*border-left: 18px solid #88bdbc;*/
+		/*border-left: 18px solid #2b98d2;*/
 		border-bottom: 40px solid transparent !important;/* Modified */;
 	}
 
@@ -265,7 +265,7 @@
 	}
 
 	#progress3 {
-		/*background-color: #88bdbc;*/
+		/*background-color: #2b98d2;*/
 		line-height: 5rem !important;/* Modified */;
 	}
 
@@ -380,14 +380,14 @@
 }
 
 .text-stage3 {
-	color: #88bdbc;
+	color: #2b98d2;
 }
 
 .arrow-right-stage3 {
 	width: 0;
 	height: 0;
 	border-top: 48px solid transparent;
-	border-left: 18px solid #88bdbc;
+	border-left: 18px solid #2b98d2;
 	border-bottom: 48px solid transparent;
 }
 
@@ -417,7 +417,7 @@
 }
 
 #progress3 {
-  background-color: #88bdbc;
+  background-color: #2b98d2;
 }
 
 #progress4 {

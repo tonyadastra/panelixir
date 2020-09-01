@@ -28,12 +28,14 @@ stages = "Stages"
 country = "Country / Region"
 types = "Vaccine Platform"
 status = "status"
+filter_limit = ""
+mobile_filter_limit = ""
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        global stages, country, types, status
+        global stages, country, types, status, filter_limit
         stages = request.form.get("stages", "Stages")
         country = request.form.get("country", "Country / Region")
         types = request.form.get("type", "Vaccine Platform")
@@ -102,6 +104,12 @@ def index():
             if types_dis == "Repurposed":
                 types_dis = "Others"
 
+            if stages == "4-1" or prev_stages == "4-1":
+                stages = "_"
+                filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12)"
+            else:
+                filter_limit = ""
+
             cur.execute("rollback")
             cur.execute(
                 "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
@@ -109,7 +117,8 @@ def index():
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
                 # "AND '" + types + "' ~ vac_type "
-                " AND (vac_type LIKE '%" + types + "%') "
+                " AND (vac_type LIKE '%" + types + "%')"
+                " " + filter_limit + " "
                 "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
 
             if stages == "0":
@@ -124,6 +133,9 @@ def index():
                 stages_dis = "Approval"
             else:
                 stages_dis = "Stages"
+            if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12)":
+                stages = "4-1"
+                stages_dis = "Limited Use"
 
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
@@ -166,6 +178,7 @@ def card():
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
             " AND (vac_type LIKE '%" + types + "%') "
+            "" + filter_limit + " "
             " ORDER BY stage DESC, co_name, partner_name "
             " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
@@ -182,6 +195,7 @@ def card():
 
 @app.route("/mobile-form", methods=['GET', 'POST'])
 def mobileForm():
+    global mobile_filter_limit
     # global mobile_stages, mobile_country, mobile_type
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
@@ -197,12 +211,19 @@ def mobileForm():
     elif mobile_type == "Virus":
         mobile_type = "Virus%' or vac_type LIKE '%Inactivated"
 
+    if mobile_stages == "4-1":
+        mobile_stages = "_"
+        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12)"
+    else:
+        mobile_filter_limit = ""
+
     cur.execute(
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
+        "" + mobile_filter_limit + " "
         "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
@@ -225,6 +246,7 @@ def mobileAppendCards():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
+        "" + mobile_filter_limit + " "
         " ORDER BY stage DESC, co_name, partner_name "
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 

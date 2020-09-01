@@ -45,7 +45,7 @@
 }
 
 #pbar4 {
-  background-color: #88bdbc;
+  background-color: #2b98d2;
 }
 
 #pbar5 {
@@ -53,7 +53,7 @@
 }
 
 #early{
-  background-color: #07d4ef;
+  background-color: rgba(58, 175, 169, 0.4);
 }
 
 .intro {
@@ -103,7 +103,7 @@
 
   .wrapper {
     margin: 0 10px 30px 10px;
-    background-color: #e5f0ed;
+    background-color: #ebf6f3;
     box-shadow: 4px 7px #dbd9d9;
   }
 

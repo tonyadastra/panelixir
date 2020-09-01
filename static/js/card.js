@@ -122,6 +122,12 @@ class myCard extends HTMLElement {
         // pbar6.setAttribute('style', 'width: 0%')
         pbar6.innerHTML = 'EARLY APPROVAL';
 
+        var pbar7 = document.createElement('div');
+        pbar7.setAttribute('class', 'progress-bar');
+        pbar7.setAttribute('id', 'early');
+        // pbar6.setAttribute('style', 'width: 10%')
+        pbar7.innerHTML = 'LIMITED USE';
+
         if (this.getAttribute('data-stage') >= 0)
             bar_wrapper.appendChild(pbar1);
 
@@ -136,6 +142,10 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
+
+        if (this.getAttribute('data-id') === '29'|| this.getAttribute('data-id') === '12') {
+            bar_wrapper.appendChild(pbar7);
+        }
 
         // if (this.getAttribute('data-id') === '13'){
         //     bar_wrapper.appendChild(pbar6);
