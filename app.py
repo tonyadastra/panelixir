@@ -104,7 +104,7 @@ def index():
             if types_dis == "Repurposed":
                 types_dis = "Others"
 
-            if stages == "4-1" or prev_stages == "4-1":
+            if stages == "4-1":
                 stages = "_"
                 filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12)"
             else:
