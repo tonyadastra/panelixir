@@ -371,7 +371,7 @@
     padding: 00rem;
   }
   span.highlight {
-    /*display: flex !important;*/
+    /*display: inline !important;*/
     vertical-align: middle !important;
     font-family: sans-serif !important;
     font-size: 11px !important;
