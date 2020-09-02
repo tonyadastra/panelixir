@@ -57,14 +57,6 @@ class myCard extends HTMLElement {
 
         wrapper.appendChild(tag_wrapper);
 
-        // button to learn more
-        var btn = document.createElement('button');
-        btn.setAttribute('class', 'collapsible');
-        btn.setAttribute('type', 'button');
-        btn.innerHTML = 'Learn More';
-
-        var content = document.createElement('a');
-
         // logo image
         if (this.hasAttribute('data-img')) {
             const imgUrlArr = this.getAttribute('data-img').split(',')
@@ -194,17 +186,20 @@ class myCard extends HTMLElement {
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
         text.setAttribute('style', 'text-align:justify');
-        // text.innerHTML ="Moderna’s vaccine dazzled the stock market in May with Phase I data on just eight people, only to see its stock price drop when experts had a lukewarm reaction to the results. The vaccine uses messenger RNA (mRNA for short) to produce viral proteins. The American company is eyeing Phase III trials in July and hopes to have vaccine doses ready by early 2021.";
         var intro = this.getAttribute('data-intro');
-        // console.log(intro);
-
-
         // if (this.getAttribute('data-stage') != 0)
         text.innerHTML = intro;
         // else
         //     text.setAttribute('style', 'margin-bottom:2rem');
         wrapper.appendChild(text);
 
+        // button to learn more
+        var btn = document.createElement('button');
+        btn.setAttribute('class', 'collapsible');
+        btn.setAttribute('type', 'button');
+        btn.innerHTML = 'Learn More';
+
+        var content = document.createElement('a');
 
         var url = this.getAttribute('data-expand');
         content.setAttribute("href", url);
@@ -219,6 +214,7 @@ class myCard extends HTMLElement {
             this.classList.toggle("active");
             if (content.style.display === "block") {
                 content.style.display = "none";
+                document.get
             } else {
                 content.style.display = "block";
             }

@@ -1,14 +1,16 @@
 /* Header */
 /* Extra Small Screen - Two Line Title */
 @media screen and (max-width: 374px) {
-  .btn-filter{
-    font-size: 0.61rem!important;
+  .btn-filter {
+    font-size: 0.61rem !important;
   }
-  .btn-clear{
-    font-size: 0.61rem!important;
+
+  .btn-clear {
+    font-size: 0.61rem !important;
   }
+
   .mobile-font {
-    font-size: 0.6rem!important;
+    font-size: 0.6rem !important;
     /*color: white;*/
   }
 
@@ -19,17 +21,19 @@
   /*}*/
 }
 
-@media screen and (max-width: 375px){
-  .dropdown-menu{
-    transform: translate3d(5px, 35px, 0px)!important;
-}
+@media screen and (max-width: 375px) {
+  .dropdown-menu {
+    transform: translate3d(5px, 35px, 0px) !important;
+  }
+
   .title {
-    font-size: 0.7rem!important;
+    font-size: 0.7rem !important;
     /* Modified */
     max-width: 60%;
-    margin-left: 0.5rem!important;
+    margin-left: 0.5rem !important;
     /* New */
   }
+
   .title-bar {
     height: 3rem !important;
     /* Modified */
@@ -37,69 +41,81 @@
     /* Modified */
     margin-bottom: 1rem !important;
   }
+
   #submit-data {
     right: 20% !important;
   }
+
   /* Title "The Developing Process of a Coronavirus Vaccine" */
   .jumbotron {
     padding: 0.7rem !important;
     margin-bottom: 1px !important;
   }
-  .btn-mobile-stage{
-    font-size: 0.6rem!important;
-    padding: 0.3rem!important;
+
+  .btn-mobile-stage {
+    font-size: 0.6rem !important;
+    padding: 0.3rem !important;
   }
 }
 
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
-  .btn-mobile-stage{
-    font-size: 0.6rem!important;
+  .btn-mobile-stage {
+    font-size: 0.6rem !important;
     padding: 0.3rem 0.4rem;
   }
-  .stages-all{
-    font-size: 0.68rem!important;
+
+  .stages-all {
+    font-size: 0.68rem !important;
   }
-  .btn-outline-continent{
+
+  .btn-outline-continent {
     min-width: 50px;
   }
-  .news-wrapper{
+
+  .news-wrapper {
     /*background-color: rgba(233, 233, 233, 0.7);*/
-    border: 1px solid orangered!important;
+    border: 1px solid orangered !important;
     width: 90% !important;
-    margin: 1rem auto!important;
-    border-radius: 0.2rem!important;
+    margin: 1rem auto !important;
+    border-radius: 0.2rem !important;
   }
-  .news{
-    padding: 0.5rem 0!important;
+
+  .news {
+    padding: 0.5rem 0 !important;
   }
-  .news-list{
-    margin-top: 0.8rem!important;
-    padding-left: 2rem!important;
-    padding-right: 0rem!important;
+
+  .news-list {
+    margin-top: 0.8rem !important;
+    padding-left: 2rem !important;
+    padding-right: 1rem !important;
   }
-  .news-text{
-    font-size: 0.8rem!important;
-    margin-top: 0.2rem!important;
+
+  .news-text {
+    font-size: 0.8rem !important;
+    margin-top: 0.2rem !important;
   }
-  .date{
+
+  .date {
     font-family: Kefa, sans-serif;
     margin-left: 0.5rem;
     font-weight: 200;
     color: #969696;
   }
-  #news-title{
+
+  #news-title {
     font-family: Kefa, sans-serif;
     font-variant: small-caps;
-    font-size: 1.3rem!important;
+    font-size: 1.3rem !important;
   }
 
 
-  .update-time{
+  .update-time {
     font-size: 0.8rem;
-    font-weight: normal!important;
+    font-weight: normal !important;
   }
+
   .large-screen {
     display: none !important;
   }
@@ -107,40 +123,51 @@
   .small-screen {
     display: block !important;
   }
-  .quote{
-    font-size: 1rem;
-  }
-  .interactive-progress{
-    margin-left: 0.5rem!important;
-  }
-  .bar-tag {
-      font-size: 10px; /* Modified */
-	}
 
-  .quick-actions{
+  .quote {
     font-size: 1rem;
   }
-  .mb-2{
-    margin-bottom: 0.35rem!important;
+
+  .interactive-progress {
+    margin-left: 0.5rem !important;
   }
-  .footer-link{
+
+  .bar-tag {
+    font-size: 10px; /* Modified */
+  }
+
+  .quick-actions {
+    font-size: 1rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .footer-link {
     font-size: 0.8rem;
   }
-  p.disclaimer-font{
+
+  p.disclaimer-font {
     font-size: 0.6rem;
   }
-  .footer-copyright{
+
+  .footer-copyright {
     font-size: 0.6rem;
   }
-  .mb-3{
-    margin-bottom: 0!important;
+
+  .mb-3 {
+    margin-bottom: 0 !important;
   }
-  .break{
+
+  .break {
     display: none;
   }
-  .disclaimer-wrapper{
+
+  .disclaimer-wrapper {
     padding: 0;
   }
+
   .dropdown-menu {
     transform: translate3d(5px, 35px, 0px) !important;
   }
@@ -158,7 +185,6 @@
   /*  font-size: 0.6rem;*/
   /*  !*color: white;*!*/
   /*}*/
-
   .filter {
     display: none;
   }
@@ -171,10 +197,10 @@
   /*  margin-bottom: 0.2rem !important; !* Modified *!*/
   /*}*/
   .title {
-    font-size: 0.9rem!important;
+    font-size: 0.9rem !important;
     /* Modified */
     max-width: 60%;
-    margin-left: 0.5rem!important;
+    margin-left: 0.5rem !important;
     /* New */
   }
 
@@ -339,7 +365,8 @@
   }
 
   .cursive {
-    font-family: Coronetscript, cursive;!important;
+    font-family: Coronetscript, cursive;
+  !important;
     color: #111b2b;
     font-size: 1.5rem;
     font-weight: bold;
@@ -371,6 +398,7 @@
   .column {
     padding: 00rem;
   }
+
   span.highlight {
     /*display: inline !important;*/
     vertical-align: middle !important;
@@ -383,14 +411,21 @@
     height: 50% !important;
     width: 80% !important;
   }
-  .source{
+
+  .source {
     margin-top: 0.6rem;
   }
-  #submit-data{
+
+  #submit-data {
     right: 20% !important;
   }
 }
 @media screen and (min-width: 426px) and (max-width: 576px) {
+  .news-list{
+    margin-top: 0.8rem!important;
+    padding-left: 2rem!important;
+    padding-right: 1rem!important;
+  }
   .quote {
     font-size: 1.2rem;
   }
@@ -470,6 +505,11 @@
 
 /* 426-767px - Tablet */
 @media screen and (min-width: 426px) and (max-width: 767px) {
+  .news-list{
+    margin-top: 0.8rem!important;
+    padding-left: 2rem!important;
+    padding-right: 1rem!important;
+  }
 
   .filter {
     display: none;
