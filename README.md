@@ -1,27 +1,29 @@
 ## COVID-19 Vaccine & Treatment Website
 
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
+#### Auto-Update[Getting Started - AWS Elastic Search](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-gsg.html)
 
 **To Do List**
+* [ ] Optimize Update Data Process (Auto-Update)
+* [ ] Auto-Update Data from WHO website
 * [X] Database Security
 * [X] Add HTTPS Certificate
 * [X] Latest News Section
-* [ ] Register/Login => Send latest information via e-mail
+* [ ] Register/Login => Send latest information via e-mail, Comments
 * [X] Modal For Mobile Version
 * [X] WHO Vaccine Type Filtering
 * [X] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
 * [ ] Logo Design
 * [X] Map Optimization (Taking up 100%+ CPU)
 * [X] Disclaimer
-* [ ] Auto-Update Data from WHO website
 * [ ] Feedback Form
-* [ ] Optimize Update Data Process (Repetitive Information)
 * [X] Russia Early Approval
 * [ ] Info Icon to learn more (about Special Vaccines)
 * [ ] Vaccine Type Categories Explanation
 
 **Latest Updates**
-+ August 14-27 - Latest News Section and Other Optimizations, open card in dialogue box
++ August 28-31, 2020 - Update Latest News, Add category "Limited Use" (Also in filter), other optimizations
++ August 14-27, 2020 - Latest News Section and Other Optimizations, open card in dialogue box
 + August 19-23, 2020 - Mobile+Desktop Optimization & Discussions on next steps including news section, latest update, "country/region", and WeChat official account
 + August 18, 2020 - HTTPS Certificate
 + August 16-17, 2020 - Setup Amazon EB environment and deploy website at www.panelixir.com!

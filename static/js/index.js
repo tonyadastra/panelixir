@@ -649,7 +649,7 @@ $(window).scroll(function () {
                         mobile_count = mobile_count + 1;
                         // console.log(mobile_count)
                     }
-                    prev_response_mobile = response
+                    prev_response_mobile = response;
                 }
             });
         }
@@ -666,7 +666,7 @@ $(window).scroll(function () {
                         $('#card_container').append(response);
                         count = count + 1;
                     }
-                    prev_response = response
+                    prev_response = response;
                 }
             });
         }
@@ -917,9 +917,6 @@ $('.btn-types').click(function () {
     }
     d3.selectAll(".dropdown-item-type")
         .filter(function () {
-            // console.log(d3.select(this).attr("value"))
-            // console.log(countryTitle_Desktop);
-            // console.log(d3.select(this).attr("value") + " " === countryTitle_Desktop)
             return d3.select(this).attr("value") + " " === typesTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-type');

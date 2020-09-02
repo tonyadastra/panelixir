@@ -162,7 +162,7 @@ def card():
     limit = int(request.args.get('limit'))
     count = int(request.args.get('count'))
 
-    if status == "clear":
+    if status == "clear" or (stages == "Stages" and country == "Country / Region" and types == "Vaccine Platform"):
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
