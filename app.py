@@ -169,6 +169,7 @@ def card():
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     elif stages != "Stages" or country != "Country / Region" or types != "Vaccine Platform":
+        # print('2')
         #     if types == "Genetic":
         #         types = "DNA%' or vac_type LIKE '%RNA"
 
@@ -183,6 +184,7 @@ def card():
             " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     else:
+        # print('1')
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     " ORDER BY stage DESC, company, partner_name "
