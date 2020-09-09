@@ -184,7 +184,7 @@ class myCard extends HTMLElement {
 
         // short company intro
         var text = document.createElement('p');
-        text.setAttribute('class', 'intro');
+        text.setAttribute('class', 'intro card-text');
         text.setAttribute('style', 'text-align:justify');
         // if (this.getAttribute('data-stage') != 0)
         text.innerHTML = this.getAttribute('data-intro');
@@ -193,7 +193,7 @@ class myCard extends HTMLElement {
         wrapper.appendChild(text);
 
         var latest_news_title = document.createElement('b');
-        latest_news_title.setAttribute('class', 'intro');
+        latest_news_title.setAttribute('class', 'intro card-text');
         latest_news_title.setAttribute('style', 'color:purple;');
         latest_news_title.innerHTML = "Latest News:";
 
@@ -201,13 +201,13 @@ class myCard extends HTMLElement {
 
         // short company intro
         var latest_news = document.createElement('p');
-        latest_news.setAttribute('class', 'intro');
+        latest_news.setAttribute('class', 'intro card-text');
         latest_news.setAttribute('style', 'color:purple;');
         latest_news.innerHTML = this.getAttribute('data-news');
 
         wrapper.appendChild(text);
         if (this.getAttribute('data-news') !== 'None') {
-            wrapper.appendChild(line_break);
+            // wrapper.appendChild(line_break);
             wrapper.appendChild(latest_news_title);
             wrapper.appendChild(latest_news);
         }

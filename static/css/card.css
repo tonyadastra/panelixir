@@ -105,16 +105,21 @@
   }
 
   .wrapper {
-    margin: 0 10px 30px 10px;
+    margin: 0 7px 30px 7px;
     background-color: #ebf6f3;
     box-shadow: 4px 7px #dbd9d9;
+    padding-left: 5px;
+    padding-right: 5px;
     padding-bottom: 1rem!important;
   }
 
   .intro {
     font-size: 10px !important;
     /* text-align: justify; */
-    /*padding: 0 0 1rem 0;*/
+  }
+  .card-text{
+    /*padding-left: 5px;*/
+    /*padding-right: 5px;*/
   }
 
   .country_tag {
