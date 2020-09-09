@@ -186,12 +186,33 @@ class myCard extends HTMLElement {
         var text = document.createElement('p');
         text.setAttribute('class', 'intro');
         text.setAttribute('style', 'text-align:justify');
-        var intro = this.getAttribute('data-intro');
         // if (this.getAttribute('data-stage') != 0)
-        text.innerHTML = intro;
+        text.innerHTML = this.getAttribute('data-intro');
         // else
         //     text.setAttribute('style', 'margin-bottom:2rem');
         wrapper.appendChild(text);
+
+        var latest_news_title = document.createElement('b');
+        latest_news_title.setAttribute('class', 'intro');
+        latest_news_title.setAttribute('style', 'color:purple;');
+        latest_news_title.innerHTML = "Latest News:";
+
+        var line_break = document.createElement('br');
+
+        // short company intro
+        var latest_news = document.createElement('p');
+        latest_news.setAttribute('class', 'intro');
+        latest_news.setAttribute('style', 'color:purple;');
+        latest_news.innerHTML = this.getAttribute('data-news');
+
+        wrapper.appendChild(text);
+        if (this.getAttribute('data-news') !== 'None') {
+            wrapper.appendChild(line_break);
+            wrapper.appendChild(latest_news_title);
+            wrapper.appendChild(latest_news);
+        }
+
+
 
         // button to learn more
         var btn = document.createElement('button');

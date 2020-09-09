@@ -51,7 +51,7 @@ def index():
             stages_dis = "Stages"
             country_dis = "Country / Region"
             types_dis = "Vaccine Platform"
-            cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+            cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                         "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
         else:
@@ -112,7 +112,7 @@ def index():
 
             cur.execute("rollback")
             cur.execute(
-                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+                "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM info INNER "
                 " JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
                 " AND country LIKE '%" + country + "%' "
@@ -143,7 +143,7 @@ def index():
                                country=country, country_dis=country_dis, types=types, types_dis=types_dis,
                                scrollToAnchor="TagIWantToLoadTo")
     else:
-        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
@@ -163,7 +163,7 @@ def card():
     count = int(request.args.get('count'))
 
     if status == "clear" or (stages == "Stages" and country == "Country / Region" and types == "Vaccine Platform"):
-        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
@@ -174,7 +174,7 @@ def card():
         #         types = "DNA%' or vac_type LIKE '%RNA"
 
         cur.execute(
-            "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+            "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM info INNER "
             " JOIN companies ON info.vac_id = companies.vac_id "
             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
             " AND country LIKE '%" + country + "%' "
@@ -185,7 +185,7 @@ def card():
 
     else:
         # print('1')
-        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM "
+        cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     " ORDER BY stage DESC, company, partner_name "
                     " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
@@ -220,7 +220,7 @@ def mobileForm():
         mobile_filter_limit = ""
 
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -243,7 +243,7 @@ def mobileAppendCards():
     count = int(request.args.get('mobile_count'))
     limit = int(request.args.get('limit'))
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -266,7 +266,7 @@ def aboutUs():
 def displayCompany():
     companyID = str(request.args.get('company_id'))
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type FROM info INNER "
+        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM info INNER "
         " JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     company = cur.fetchall()
