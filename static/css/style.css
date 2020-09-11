@@ -112,7 +112,7 @@
 
 
   .update-time {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: normal !important;
   }
 
@@ -646,7 +646,7 @@
     width: 80% !important;
   }
   .update-time{
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
   .mobile-filter {
     display: none;
@@ -800,7 +800,7 @@
 
 @media screen and (min-width: 1200px) {
   .update-time{
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   .btn-outline-continent{
     min-width: 83px;
@@ -1639,6 +1639,7 @@ h6{
   .update-time{
     color: #435bf6;
     font-weight: lighter;
+    font-family: Kefa, sans-serif;
   }
 
   .news-wrapper{

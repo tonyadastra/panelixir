@@ -3,7 +3,6 @@
 .DS_store
 dump
 venv
-
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 .ebextensions/*
