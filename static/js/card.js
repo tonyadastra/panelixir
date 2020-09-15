@@ -135,7 +135,7 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
 
-        if (this.getAttribute('data-id') === '29'|| this.getAttribute('data-id') === '12') {
+        if (this.getAttribute('data-id') === '29'|| this.getAttribute('data-id') === '12' || this.getAttribute('data-id') === '28' || this.getAttribute('data-id') === '35') {
             bar_wrapper.appendChild(pbar7);
         }
 
