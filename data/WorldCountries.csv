@@ -29,7 +29,7 @@ id,name,continent_name
 084,Belize,North America
 086,British Indian Ocean Territory,Asia
 090,Solomon Islands,Oceania
-092,"Virgin Islands, British",North America
+092,British Virgin Islands,North America
 096,Brunei Darussalam,Asia
 100,Bulgaria,Europe
 104,Myanmar,Asia
@@ -45,7 +45,7 @@ id,name,continent_name
 148,Chad,Africa
 152,Chile,South America
 156,China,Asia
-158,China,Asia
+158,Taiwan,Asia
 162,Christmas Island,Asia
 166,Cocos (Keeling) Islands,Asia
 170,Colombia,South America
@@ -118,7 +118,7 @@ id,name,continent_name
 398,Kazakhstan,Asia
 400,Jordan,Asia
 404,Kenya,Africa
-408,"Korea, Democratic People's Republic of",Asia
+408,North Korea,Asia
 410,South Korea,Asia
 414,Kuwait,Asia
 417,Kyrgyzstan,Asia
@@ -248,7 +248,7 @@ id,name,continent_name
 854,Burkina Faso,Africa
 858,Uruguay,South America
 860,Uzbekistan,Asia
-862,"Venezuela, Bolivarian Republic of",South America
+862,Venezuela,South America
 876,Wallis and Futuna,Oceania
 882,Samoa,Oceania
 887,Yemen,Asia
