@@ -10,7 +10,7 @@ import csv
 
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
-app.secret_key = "ILoveNewYork"
+app.secret_key = "panelixir-key"
 conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=internetuser password=welcometopanelixir")
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,7 +24,7 @@ def favicon():
                                'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-stages = "Stages"
+stages = "Vaccine Stage"
 country = "Country / Region"
 types = "Vaccine Platform"
 status = "status"
@@ -36,27 +36,27 @@ mobile_filter_limit = ""
 def index():
     if request.method == 'POST':
         global stages, country, types, status, filter_limit
-        stages = request.form.get("stages", "Stages")
+        stages = request.form.get("stages", "Vaccine Stage")
         country = request.form.get("country", "Country / Region")
         types = request.form.get("type", "Vaccine Platform")
         status = request.form.get("status", "status")
 
-        prev_stages = request.form.get("prev_stages", "Stages")
+        prev_stages = request.form.get("prev_stages", "Vaccine Stage")
         prev_country = request.form.get("prev_country", "Country / Region")
         prev_types = request.form.get("prev_types", "Vaccine Platform")
         country_dis = country
         types_dis = types
 
         if status == "clear":
-            stages_dis = "Stages"
+            stages_dis = "Vaccine Stage"
             country_dis = "Country / Region"
             types_dis = "Vaccine Platform"
             cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                         "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                         "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
         else:
-            if stages == "Stages":
-                if prev_stages != "Stages":
+            if stages == "Vaccine Stage":
+                if prev_stages != "Vaccine Stage":
                     stages = prev_stages
                 else:
                     stages = "_"
@@ -132,7 +132,7 @@ def index():
             elif stages == "4":
                 stages_dis = "Approval"
             else:
-                stages_dis = "Stages"
+                stages_dis = "Vaccine Stage"
             if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35)":
                 stages = "4-1"
                 stages_dis = "Limited Use"
@@ -149,10 +149,10 @@ def index():
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
-        stages_dis = "Stages"
+        stages_dis = "Vaccine Stage"
         country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
-        return render_template("index.html", data=data, stages_dis=stages_dis, stages="Stages",
+        return render_template("index.html", data=data, stages_dis=stages_dis, stages="Vaccine Stage",
                                country_dis=country_dis, country="Country / Region", types_dis=types_dis,
                                types="Vaccine Platform")
 
@@ -162,13 +162,13 @@ def card():
     limit = int(request.args.get('limit'))
     count = int(request.args.get('count'))
 
-    if status == "clear" or (stages == "Stages" and country == "Country / Region" and types == "Vaccine Platform"):
+    if status == "clear" or (stages == "Vaccine Stage" and country == "Country / Region" and types == "Vaccine Platform"):
         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news FROM "
                     "info INNER JOIN companies ON info.vac_id = companies.vac_id "
                     "ORDER BY stage DESC, company, partner_name "
                     "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
-    elif stages != "Stages" or country != "Country / Region" or types != "Vaccine Platform":
+    elif stages != "Vaccine Stage" or country != "Country / Region" or types != "Vaccine Platform":
         # print('2')
         #     if types == "Genetic":
         #         types = "DNA%' or vac_type LIKE '%RNA"
