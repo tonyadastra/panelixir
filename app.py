@@ -149,12 +149,18 @@ def index():
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
+        # cur.execute("SELECT news_tag, news_text, date, display_order FROM news "
+        #             "ORDER BY date DESC, display_order LIMIT 6")
+        # news_data = cur.fetchall()
+        # cur.execute("rollback")
         stages_dis = "Vaccine Stage"
         country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
-        return render_template("index.html", data=data, stages_dis=stages_dis, stages="Vaccine Stage",
-                               country_dis=country_dis, country="Country / Region", types_dis=types_dis,
-                               types="Vaccine Platform")
+        return render_template("index.html", data=data,
+                               # news_data=news_data,
+                               stages_dis=stages_dis,
+                               stages="Vaccine Stage", country_dis=country_dis, country="Country / Region",
+                               types_dis=types_dis, types="Vaccine Platform")
 
 
 @app.route("/card", methods=['GET', 'POST'])

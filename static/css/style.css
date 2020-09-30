@@ -1717,8 +1717,22 @@ tspan {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
-/*@media screen and (min-width: 375px) and (max-width: 424px) {*/
-/*  span.highlight {*/
-/*    margin-left: 0.5rem !important;*/
-/*  }*/
-/*}*/
+/* For Latest News Database */
+.news_tag {
+  font-variant: small-caps;
+}
+#news_tag_new{
+  color: darkorange;
+}
+
+#news_tag_breaking_news{
+  color: purple;
+}
+
+#news_tag_top{
+  color: darkcyan;
+}
+
+#news_tag_about{
+  color: dodgerblue;
+}

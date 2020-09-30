@@ -809,7 +809,7 @@ $('#submit-form').click(function(e) {
 // Show company introduction on click - NEWS
 $('.news-company').click(function () {
     $(".news-company").removeClass("clicked");
-    $(this).addClass("clicked")
+    $(this).addClass("clicked");
     let company_id = document.querySelector('.clicked.news-company').id;
     // console.log(company_id)
     $.ajax({
@@ -825,6 +825,9 @@ $('.news-company').click(function () {
     return false;
 })
 
+function clickFunction(){
+                    console.log("Clicked");
+                }
 // DESKTOP - Make clicked dropdown item active - Stages
 $('.btn-stage').click(function () {
     var stage_Desktop = document.getElementsByClassName('btn btn-stage dropdown-toggle')[0];
