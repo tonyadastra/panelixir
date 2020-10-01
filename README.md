@@ -1,7 +1,7 @@
 ## COVID-19 Vaccine & Treatment Website
 
 #### Important Data Source [The WHO Vaccine Tracking](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
-#### Auto-Update [Getting Started - AWS Elastic Search](https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-gsg.html)
+#### Auto-Update - [Beautiful Soup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 
 **To Do List**
 * [ ] Optimize Update Data Process (Auto-Update)

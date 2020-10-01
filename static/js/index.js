@@ -825,9 +825,6 @@ $('.news-company').click(function () {
     return false;
 })
 
-function clickFunction(){
-                    console.log("Clicked");
-                }
 // DESKTOP - Make clicked dropdown item active - Stages
 $('.btn-stage').click(function () {
     var stage_Desktop = document.getElementsByClassName('btn btn-stage dropdown-toggle')[0];

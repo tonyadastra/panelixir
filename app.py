@@ -11,8 +11,8 @@ import csv
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.secret_key = "panelixir-key"
-conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=internetuser password=welcometopanelixir")
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com dbname=vaccinedb user=internetuser password=welcometopanelixir")
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
@@ -149,13 +149,14 @@ def index():
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
-        # cur.execute("SELECT news_tag, news_text, date, display_order FROM news "
+        # cur.execute("SELECT vac_id, news_tag, news_text, date, display_order FROM news "
         #             "ORDER BY date DESC, display_order LIMIT 6")
         # news_data = cur.fetchall()
         # cur.execute("rollback")
         stages_dis = "Vaccine Stage"
         country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
+        # print(news_data)
         return render_template("index.html", data=data,
                                # news_data=news_data,
                                stages_dis=stages_dis,
