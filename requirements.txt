@@ -28,5 +28,3 @@ setuptools~=47.3.1
 Cython~=0.29.2
 psycopg2~=2.8.5
 requests~=2.20.1
-bs4~=0.0.1
-beautifulsoup4~=4.6.3
