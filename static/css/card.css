@@ -57,10 +57,6 @@
   background-color: rgba(58, 175, 169, 0.6);
 }
 
-.intro {
-  /*padding: 0 0 2rem 0;*/
-}
-
 span.highlight-warp-speed {
   font-family: sans-serif;
   /*font-size: 16px;*/
@@ -109,13 +105,10 @@ span.highlight-warp-speed {
 
 @media screen and (max-width: 767px) {
 
-  span.highlight-warp-speed{
+  span.highlight-warp-speed {
     padding: 0.2rem 0.3rem;
   }
 
-  .intro {
-    text-align: left !important;
-  }
 
   .institutions {
     /* position: absolute; */
@@ -130,19 +123,12 @@ span.highlight-warp-speed {
     box-shadow: 4px 7px #dbd9d9;
     padding-left: 5px;
     padding-right: 5px;
-    padding-bottom: 1rem!important;
+    padding-bottom: 1rem !important;
   }
 
-  .intro {
+
+  .intro-mobile-font {
     font-size: 10px !important;
-    /* text-align: justify; */
-  }
-  #date-mobile-font {
-    font-size: 10px !important;
-  }
-  .card-text{
-    /*padding-left: 5px;*/
-    /*padding-right: 5px;*/
   }
 
   .country_tag {

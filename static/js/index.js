@@ -296,18 +296,29 @@ var count = 1, limit = 10, mobile_count = 1;
 
 /** When page is loaded...**/
 $(document).ready(function () {
-    $(function () {
-        resize();
+    $.ajax({
+        url: "get_update_time",
+        type: "get",
+        async: true,
+        success: function (date) {
+            d3.select('#update_top').append('span')
+                .text("Latest Update: " + date.replace('   ', ' '))
+            $(function () {
+                resize();
 
-        var btn_group = document.getElementsByTagName('button');
-        for (var i = 0, length = btn_group.length; i < length; i++) {
-            var btn = btn_group[i];
-            if (btn.value === 'World') {
-                btn.click();
-                break;
-            }
+                var btn_group = document.getElementsByTagName('button');
+                for (var i = 0, length = btn_group.length; i < length; i++) {
+                    var btn = btn_group[i];
+                    if (btn.value === 'World') {
+                        btn.click();
+                        break;
+                    }
+                }
+            });
+
         }
-    });
+
+    })
 
 
     /** When Interactive Buttons are Clicked... **/

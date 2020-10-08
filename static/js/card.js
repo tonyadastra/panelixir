@@ -184,8 +184,8 @@ class myCard extends HTMLElement {
 
         // short company intro
         var text = document.createElement('p');
-        text.setAttribute('class', 'intro card-text');
-        text.setAttribute('style', 'text-align:justify');
+        text.setAttribute('class', 'intro intro-mobile-font');
+        // text.setAttribute('style', 'text-align:justify');
         // if (this.getAttribute('data-stage') != 0)
         text.innerHTML = this.getAttribute('data-intro');
         // else
@@ -193,7 +193,7 @@ class myCard extends HTMLElement {
         wrapper.appendChild(text);
 
         var latest_news_title = document.createElement('b');
-        latest_news_title.setAttribute('class', 'intro card-text');
+        latest_news_title.setAttribute('class', 'intro intro-mobile-font');
         latest_news_title.setAttribute('style', 'color:purple;');
         latest_news_title.innerHTML = "Latest News:";
 
@@ -201,7 +201,7 @@ class myCard extends HTMLElement {
 
         // short company intro
         var latest_news = document.createElement('p');
-        latest_news.setAttribute('class', 'intro card-text');
+        latest_news.setAttribute('class', 'intro intro-mobile-font');
         latest_news.setAttribute('style', 'color:purple;');
         latest_news.innerHTML = this.getAttribute('data-news');
 
@@ -214,8 +214,7 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-date') !== 'None') {
             var update_time = document.createElement('span');
-            update_time.setAttribute('class', 'date');
-            update_time.setAttribute('id', 'date-mobile-font');
+            update_time.setAttribute('class', 'date intro-mobile-font');
             update_time.innerHTML = " Updated " + this.getAttribute('data-date');
             wrapper.appendChild(update_time);
         }

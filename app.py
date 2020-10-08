@@ -290,12 +290,33 @@ def displayCompany():
     return render_template("display-company.html", company=company)
 
 
+@app.route("/get_update_time")
+def getUpdateTime():
+    # cur.execute("rollback")
+    cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM info WHERE update_date IS NOT NULL "
+                "ORDER BY update_date DESC LIMIT 1")
+    update_time = cur.fetchone()
+    cur.execute("rollback")
+    # while update_time is None:
+    #     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth') FROM info WHERE update_date IS NOT NULL "
+    #                 "ORDER BY update_date DESC LIMIT 1")
+    #     update_time = cur.fetchone()
+    #     cur.execute("rollback")
+    if update_time is not None:
+        return update_time[0]
+
+
 @app.route("/get_bars_data")
 def getBarsData():
+    # cur.execute("rollback")
+    # cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth') FROM info WHERE update_date IS NOT NULL "
+    #             "ORDER BY update_date DESC LIMIT 1")
+    # update_time = cur.fetchone()
+    # cur.execute("rollback")
+    # print(update_time[0])
     continent = str(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
-    cur.execute("rollback")
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"
                 " 'country', country,"
