@@ -100,7 +100,15 @@ span.highlight-warp-speed {
   width: 100%;
 }
 
+.date {
+  font-family: Kefa, sans-serif;
+  margin-left: 0.5rem;
+  font-weight: 200;
+  color: #7a7a7a;
+}
+
 @media screen and (max-width: 767px) {
+
   span.highlight-warp-speed{
     padding: 0.2rem 0.3rem;
   }
@@ -128,6 +136,9 @@ span.highlight-warp-speed {
   .intro {
     font-size: 10px !important;
     /* text-align: justify; */
+  }
+  #date-mobile-font {
+    font-size: 10px !important;
   }
   .card-text{
     /*padding-left: 5px;*/

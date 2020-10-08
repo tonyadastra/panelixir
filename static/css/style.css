@@ -101,13 +101,6 @@ html, body {
     margin-top: 0.2rem !important;
   }
 
-  .date {
-    font-family: Kefa, sans-serif;
-    margin-left: 0.5rem;
-    font-weight: 200;
-    color: #969696;
-  }
-
   #news-title {
     font-family: Kefa, sans-serif;
     font-variant: small-caps;
@@ -1674,13 +1667,6 @@ h1.title {
 .news-text {
   font-size: 1.2rem;
   margin-top: 0.4rem;
-}
-
-.date {
-  font-family: Kefa, sans-serif;
-  margin-left: 0.5rem;
-  font-weight: 200;
-  color: #969696;
 }
 
 .news-company {

@@ -197,7 +197,7 @@ class myCard extends HTMLElement {
         latest_news_title.setAttribute('style', 'color:purple;');
         latest_news_title.innerHTML = "Latest News:";
 
-        var line_break = document.createElement('br');
+        // var line_break = document.createElement('br');
 
         // short company intro
         var latest_news = document.createElement('p');
@@ -205,14 +205,20 @@ class myCard extends HTMLElement {
         latest_news.setAttribute('style', 'color:purple;');
         latest_news.innerHTML = this.getAttribute('data-news');
 
-        wrapper.appendChild(text);
+        // wrapper.appendChild(text);
         if (this.getAttribute('data-news') !== 'None') {
             // wrapper.appendChild(line_break);
             wrapper.appendChild(latest_news_title);
             wrapper.appendChild(latest_news);
         }
 
-
+        if (this.getAttribute('data-date') !== 'None') {
+            var update_time = document.createElement('span');
+            update_time.setAttribute('class', 'date');
+            update_time.setAttribute('id', 'date-mobile-font');
+            update_time.innerHTML = " Updated " + this.getAttribute('data-date');
+            wrapper.appendChild(update_time);
+        }
 
         // button to learn more
         var btn = document.createElement('button');

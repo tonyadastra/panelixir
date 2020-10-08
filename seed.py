@@ -4,7 +4,7 @@ import psycopg2
 from bs4 import BeautifulSoup
 
 # connect to database
-conn = psycopg2.connect("host=localhost dbname=vaccinedb user=postgres")
+conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
 cur = conn.cursor()
 
 # scrape results from the New York Times
