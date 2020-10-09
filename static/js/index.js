@@ -117,7 +117,7 @@ function resize() {
                     }
                 }
 
-                var files = ["/data/map.json", "/data/world-country-names.tsv"];
+                var files = ["/data/map.json", "/data/world-country-names.csv"];
 
                 Promise.all(files.map(url => d3.json(url))).then(function (values) {
                     world = values[0]
@@ -596,7 +596,7 @@ $(document).ready(function () {
                             prev_color = colors.p3;
                         } else if (prev_stage === 4) {
                             prev_color = colors.p4;
-                        } else {
+                        } else {    
                             prev_color = colors.clickable;
                         }
                         d3.select(this).attr("fill", prev_color);

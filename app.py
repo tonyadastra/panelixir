@@ -284,10 +284,10 @@ def displayCompany():
         "TO_CHAR(update_date, 'Month FMDD')"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
-    company = cur.fetchall()
+    data = cur.fetchall()
     cur.execute("rollback")
     # print(company)
-    return render_template("display-company.html", company=company)
+    return render_template("card.html", data=data)
 
 
 @app.route("/get_update_time")
@@ -379,7 +379,7 @@ def load_string():
     return jsonify(data)
 
 
-@app.route('/data/world-country-names.tsv', methods=['GET'])
+@app.route('/data/world-country-names.csv', methods=['GET'])
 def load_country():
     data = {}
     with open('data/WorldCountries.csv') as csvFile:

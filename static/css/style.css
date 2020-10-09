@@ -110,7 +110,7 @@ html, body {
 
   .update-time {
     font-size: 0.9rem;
-    font-weight: normal !important;
+    font-weight: bold !important;
   }
 
   .large-screen {
