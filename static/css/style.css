@@ -33,7 +33,7 @@ html, body {
   .title {
     font-size: 0.7rem !important;
     /* Modified */
-    max-width: 60%;
+    max-width: 50%;
     margin-left: 0.5rem !important;
     /* New */
   }
@@ -196,7 +196,7 @@ html, body {
   .title {
     font-size: 0.9rem !important;
     /* Modified */
-    max-width: 60%;
+    max-width: 50%;
     margin-left: 0.5rem !important;
     /* New */
   }
