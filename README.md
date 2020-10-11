@@ -11,6 +11,8 @@
 * [ ] Weekly Report on Vaccines - (comparison?)
 * [ ] Optimize CSS and JS files
 * [ ] Add-ons to map - display country and other information on hover
+* [ ] G-Zip Compression
+* [X] Non-www redirect - all redirect to https://www.panelixir.com
 * [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
 * [X] Auto-generate Latest-Update on top based on date in database
 * [X] Add update date in each vaccine introduction
