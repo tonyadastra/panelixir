@@ -379,7 +379,7 @@ def load_string():
     return jsonify(data)
 
 
-@app.route('/data/world-country-names.csv', methods=['GET'])
+@app.route('/data/world-countries.csv', methods=['GET'])
 def load_country():
     data = {}
     with open('data/WorldCountries.csv') as csvFile:

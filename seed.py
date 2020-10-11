@@ -1,7 +1,15 @@
 import requests
 import re
 import psycopg2
+import difflib
 from bs4 import BeautifulSoup
+
+case_a = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers.'
+case_b = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers. This is an update.'
+
+output_list = [li for li in difflib.ndiff(case_a, case_b) if li[0] != ' ']
+diff_nl = ''.join([x[2:] for x in output_list if x.startswith('+ ')])
+# print(diff_nl)
 
 # connect to database
 conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
@@ -18,12 +26,91 @@ latest_news = soup.find(text=re.compile('New additions and recent updates:')).pa
 
 # for news in latest_news:
 #     if news.strong in news:
-        # print(news.strong.a.text)
-        # print(news.span.text)
-        # print(news.span.attrs['class'])
-# for news in latest_news:
-#     print(news.text)
-# print(latest_news[3].strong)
+#         print(news.strong.a.text)
+#         print(news.span.text)
+#         print(news.span.attrs['class'])
+latest_update_array = []
+for news in latest_news:
+    news_array = []
+    update_time = news.find('span', class_="g-updated")
+    if update_time is not None and update_time.text in news.text:
+        news_company = news.strong.a
+        news_text = news.text
+        news_text = news_text.replace(update_time.text, '')
+        # print(news_text)
+        news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
+        news_array.append(news_company.text)
+        news_array.append(update_time.text)
+
+        latest_update_array.append(news_array)
+# print(latest_update_array)
+
+cur.execute("SELECT news_text, news_company, update_time FROM news_nytimes;")
+existing_news_array = cur.fetchall()
+cur.execute("rollback")
+# existing_news_array = []
+# for i in range(len(existing_news)):
+#     existing_news_array.append(existing_news[i][0])
+
+for i in range(len(latest_update_array)):
+    if latest_update_array[i][0] == existing_news_array[i][0]:
+        print("No Updates")
+        break
+    else:
+        # if there is an update...
+        if latest_update_array[i][0] == existing_news_array[i-1][0]:
+            update = latest_update_array[i-1]
+            # cur.execute("add to news table")
+            break
+        if latest_update_array[i][0] == existing_news_array[i-2][0]:
+            update = latest_update_array[i-2]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-1]
+            # cur.execute("add to news table")
+            break
+        if latest_update_array[i][0] == existing_news_array[i-3][0]:
+            update = latest_update_array[i-3]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-2]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-1]
+            # cur.execute("add to news table")
+            break
+        if latest_update_array[i][0] == existing_news_array[i-4][0]:
+            update = latest_update_array[i-4]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-3]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-2]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-1]
+            # cur.execute("add to news table")
+            break
+        if latest_update_array[i][0] == existing_news_array[i-5][0]:
+            update = latest_update_array[i-5]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-4]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-3]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-2]
+            # cur.execute("add to news table")
+            update = latest_update_array[i-1]
+            # cur.execute("add to news table")
+            break
+        if latest_update_array[i][0] != existing_news_array[i][0]:
+            update = latest_update_array[i]
+            # cur.execute("add to news table")
+
+# Update table
+cur.execute("DROP TABLE if exists news_nytimes;")
+cur.execute(
+    "CREATE TABLE news_nytimes(vac_id INT, news_text VARCHAR, news_company VARCHAR, update_time VARCHAR);")
+for j in range(0, len(latest_update_array)):
+    cur.execute('''INSERT INTO news_nytimes(news_text, news_company, update_time) VALUES (%s, %s, %s)''',
+                (latest_update_array[j][0], latest_update_array[j][1], latest_update_array[j][2]))
+    conn.commit()
+
 
 # Find all Phase III intro
 phase2_and_3_company_intro = soup.find_all('p', attrs={
@@ -48,6 +135,7 @@ print(len(all_phase1_company_intro) - 2)  # minus North Korea Vaccine and Kentuc
 all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro
 # print(all_phase1_company_intro)
 intro_array = []
+date_array = []
 for intro in all_vaccines_intro:
     intro_text = intro.text
 
@@ -70,28 +158,56 @@ for intro in all_vaccines_intro:
     if limited is not None and limited.text in intro_text:
         intro_text = intro_text.replace(limited.text, '')
 
-    # Remove final "updated" time in Intro
+        # Remove final "updated" time in Intro
     if update_time is not None and update_time.text in intro_text:
+        date_array.append(update_time.text)
         intro_text = intro_text.replace(update_time.text, '')
-    intro_array.append(intro_text.replace('\n', '').replace('  ', ''))  # Formatting - remove \n and redundant spaces
-# print(intro_array)
-# print(len(intro_array))
+
+    if update_time is None:
+        date_array.append('')
+
+    # print(intro_text)
+    intro_array.append(intro_text.replace('\n', '').replace('  ', ''))  # Formatting - remove redundant new lines
+# print(len(date_array))
+
+# Get last fetched data from database
+cur.execute("SELECT vaccine_intro from nytimes ORDER BY intro_id;")
+existing_data = cur.fetchall()
+cur.execute("rollback")
+existing_data_array = []
+# Update data format - transform to 1d array
+for i in range(len(existing_data)):
+    existing_data_array.append(existing_data[i][0])
+
+
+if len(existing_data_array) == len(intro_array):
+    for i in range(len(intro_array)):
+        # If there is an update in vaccine intro
+        if intro_array[i] != existing_data_array[i]:
+            output_list = [li for li in difflib.ndiff(existing_data_array[i], intro_array[i]) if li[0] != ' ']
+            intro_update = ''.join([x[2] for x in output_list if x.startswith('+ ')])
+            # Add new data to database
+            if not intro_update.startswith('.'):
+                cur.execute('''UPDATE nytimes SET intro_update = %s WHERE vac_id = 1''', (intro_update,))
+                conn.commit()
+
 
 cur.execute("DROP TABLE IF EXISTS nytimes;")
 
-cur.execute('''CREATE TABLE nytimes(vac_id INT, news_intro VARCHAR);''')
+cur.execute('''CREATE TABLE nytimes(
+                    vac_id INT, 
+                    intro_id INT NOT NULL, 
+                    vaccine_intro VARCHAR, 
+                    update_time VARCHAR, 
+                    intro_update VARCHAR);''')
 conn.commit()
 
-# Add array data to database
-for i in range(0, len(intro_array)):
-    cur.execute('''INSERT INTO nytimes(news_intro) VALUES (%s)''', (intro_array[i],))
+# Add new data to database
+for i in range(len(intro_array)):
+    cur.execute('''INSERT INTO nytimes(intro_id, vaccine_intro, update_time) VALUES (%s, %s, %s)''',
+                (i, intro_array[i], date_array[i]))
     conn.commit()
 
-# cur.execute("INSERT INTO nytimes(news_intro) VALUES (" + "Hello" + ")")
-
-# print(all_phase2_intro[0])
-
-# print(update)
 
 cur.close()
 conn.close()

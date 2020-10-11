@@ -117,7 +117,7 @@ function resize() {
                     }
                 }
 
-                var files = ["/data/map.json", "/data/world-country-names.csv"];
+                var files = ["/data/map.json", "/data/world-countries.csv"];
 
                 Promise.all(files.map(url => d3.json(url))).then(function (values) {
                     world = values[0]
@@ -596,7 +596,7 @@ $(document).ready(function () {
                             prev_color = colors.p3;
                         } else if (prev_stage === 4) {
                             prev_color = colors.p4;
-                        } else {    
+                        } else {
                             prev_color = colors.clickable;
                         }
                         d3.select(this).attr("fill", prev_color);
@@ -730,7 +730,7 @@ $('.most-viewed').click(function () {
             return d3.select(this).attr("value") === countryTitle; // filter by single attribute
         })
         .attr('class', 'active mobile-dropdown-item-ctry mobile-dropdown-item')
-    // var elmnt = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0].scrollIntoView(true);
+    // var element = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0].scrollIntoView(true);
 
     // Value to All to display
     if ($(this).val() === "") {
@@ -778,9 +778,9 @@ $(document).ready(function() {
     // Scroll To Active Dropdown Item
     $(".dropdown > .dropdown-mobile").click(function () {
         // Get Active Item
-        var elmnt = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0];
+        var element = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0];
         // Scroll Into View, (true)=top, (false)=bottom
-        elmnt.scrollIntoView();
+        element.scrollIntoView();
     })
 });
 
@@ -841,54 +841,54 @@ $('.btn-stage').click(function () {
     var stage_Desktop = document.getElementsByClassName('btn btn-stage dropdown-toggle')[0];
     var stageTitle_Desktop = stage_Desktop.innerText;
     if (stageTitle_Desktop === "Pre-Clinical "){
-        stageTitle_Desktop = "0 "
+        stageTitle_Desktop = "0"
     }
     if (stageTitle_Desktop === "Phase I "){
-        stageTitle_Desktop = "1 "
+        stageTitle_Desktop = "1"
     }
     if (stageTitle_Desktop === "Phase II "){
-        stageTitle_Desktop = "2 "
+        stageTitle_Desktop = "2"
     }
     if (stageTitle_Desktop === "Phase III "){
-        stageTitle_Desktop = "3 "
+        stageTitle_Desktop = "3"
     }
     if (stageTitle_Desktop === "Limited Use "){
-        stageTitle_Desktop = "4-1 "
+        stageTitle_Desktop = "4-1"
     }
     if (stageTitle_Desktop === "Approval "){
-        stageTitle_Desktop = "4 "
+        stageTitle_Desktop = "4"
     }
     // console.log(stageTitle_Desktop)
     d3.selectAll(".dropdown-item-0")
         .filter(function () {
             //  console.log(d3.select(this).attr("value"))
             // console.log(stageTitle_Desktop);
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-0');
     d3.selectAll(".dropdown-item-1")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-1');
     d3.selectAll(".dropdown-item-2")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-2');
     d3.selectAll(".dropdown-item-3")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-3');
     d3.selectAll(".dropdown-item-4-1")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-4-1');
     d3.selectAll(".dropdown-item-4")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === stageTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-4');
 })
@@ -912,23 +912,23 @@ $('.btn-types').click(function () {
     var types_Desktop = document.getElementsByClassName('btn btn-types dropdown-toggle')[0];
     var typesTitle_Desktop = types_Desktop.innerText;
     if (typesTitle_Desktop === "Subunit Vaccines "){
-        typesTitle_Desktop = "Protein "
+        typesTitle_Desktop = "Protein"
     }
     if (typesTitle_Desktop === "Nucleic Acid Vaccines "){
-        typesTitle_Desktop = "Genetic "
+        typesTitle_Desktop = "Genetic"
     }
     if (typesTitle_Desktop === "Viral Vector Vaccines "){
-        typesTitle_Desktop = "Viral Vector "
+        typesTitle_Desktop = "Viral Vector"
     }
     if (typesTitle_Desktop === "Whole-Pathogen Vaccines "){
-        typesTitle_Desktop = "Virus "
+        typesTitle_Desktop = "Virus"
     }
     if (typesTitle_Desktop === "Nanoparticle Vaccines "){
-        typesTitle_Desktop = "VLP "
+        typesTitle_Desktop = "VLP"
     }
     d3.selectAll(".dropdown-item-type")
         .filter(function () {
-            return d3.select(this).attr("value") + " " === typesTitle_Desktop; // filter by single attribute
+            return d3.select(this).attr("value") === typesTitle_Desktop; // filter by single attribute
         })
         .attr('class', 'active dropdown-item-type');
 })
