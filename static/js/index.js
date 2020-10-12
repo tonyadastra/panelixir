@@ -383,7 +383,7 @@ $(document).ready(function () {
                 /** Interactive Bars Response **/
                 // Call d3 function
                 window.bars_data_response = JSON.parse(response).bars_data.bars_data
-                console.log(window.bars_data_response)
+                // console.log(window.bars_data_response)
                 // clear vis2 workspace
                 d3.select('#vis2').remove()
                 let svgW = 700, svgH = 370;
