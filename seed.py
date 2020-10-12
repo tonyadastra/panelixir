@@ -5,13 +5,12 @@ import difflib
 from bs4 import BeautifulSoup
 from models.close_match_indexes import get_close_matches_indexes
 
-
-case_a = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers.'
-case_b = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers. This is an update.'
-
-output_list = [li for li in difflib.ndiff(case_a, case_b) if li[0] != ' ']
-diff_nl = ''.join([x[2:] for x in output_list if x.startswith('+ ')])
-# print(diff_nl)
+# case_a = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers.'
+# case_b = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers. This is an update.'
+#
+# output_list = [li for li in difflib.ndiff(case_a, case_b) if li[0] != ' ']
+# diff_nl = ''.join([x[2:] for x in output_list if x.startswith('+ ')])
+# # print(diff_nl)
 
 # connect to database
 conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
@@ -137,7 +136,7 @@ all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_in
 # print(all_phase1_company_intro)
 
 # cur.execute("SELECT vac_id, company FROM info WHERE stage >= 1")
-cur.execute("SELECT vac_id, company_nytimes FROM companies")
+cur.execute("SELECT vac_id, company_nytimes FROM companies WHERE company_nytimes IS NOT NULL")
 info_id_and_company = cur.fetchall()
 cur.execute("rollback")
 company_array_possibilities = []
@@ -202,7 +201,7 @@ for intro in all_vaccines_intro:
     new_data_array.append(vaccine_array)
 
 # print(new_data_array[0])
-print(matched_array_indexes)
+# print(matched_array_indexes)
 vac_id_array = []
 for i in range(len(matched_array_indexes)):
     try:
@@ -212,7 +211,7 @@ for i in range(len(matched_array_indexes)):
     except TypeError:
         vac_id_array.append(-1)
 
-print(vac_id_array)
+# print(vac_id_array)
 
 # Get last fetched data from database
 cur.execute("SELECT vaccine_intro from nytimes ORDER BY intro_id;")
@@ -223,6 +222,24 @@ existing_data_array = []
 for i in range(len(existing_data)):
     existing_data_array.append(existing_data[i][0])
 
+cur.execute("DROP TABLE IF EXISTS nytimes;")
+
+cur.execute('''CREATE TABLE nytimes(
+                    vac_id INT,
+                    intro_id INT NOT NULL,
+                    company_name VARCHAR,
+                    vaccine_intro VARCHAR,
+                    update_time VARCHAR,
+                    intro_update VARCHAR);''')
+conn.commit()
+
+# Add new data to database
+for i in range(len(new_data_array)):
+    cur.execute('''INSERT INTO nytimes(vac_id, intro_id, company_name, vaccine_intro, update_time)
+                VALUES (%s, %s, %s, %s, %s)''',
+                (vac_id_array[i], i, new_data_array[i][0], new_data_array[i][1], new_data_array[i][2]))
+    conn.commit()
+
 if len(existing_data_array) == len(new_data_array):
     for i in range(len(new_data_array)):
         # If there is an update in vaccine intro
@@ -231,26 +248,24 @@ if len(existing_data_array) == len(new_data_array):
             intro_update = ''.join([x[2] for x in output_list if x.startswith('+ ')])
             # Add new data to database
             if not intro_update.startswith('.'):
-                cur.execute('''UPDATE nytimes SET intro_update = %s WHERE vac_id = 1''', (intro_update,))
+                print('update')
+                cur.execute('''UPDATE nytimes SET intro_update = %s WHERE intro_id = %s''', (intro_update, i))
                 conn.commit()
 
-cur.execute("DROP TABLE IF EXISTS nytimes;")
+cur.execute("SELECT nyt.vac_id, nyt.intro_update, intro FROM nytimes nyt INNER JOIN info i ON nyt.vac_id = i.vac_id"
+            " WHERE intro_update IS NOT NULL")
+id_and_update = cur.fetchall()
+cur.execute("rollback")
+for i in range(len(id_and_update)):
+    vac_id = id_and_update[i][0]
+    new_update = id_and_update[i][1]
+    vaccine_intro = id_and_update[i][2]
+    updated_intro = vaccine_intro + new_update
+    print(updated_intro)
 
-cur.execute('''CREATE TABLE nytimes(
-                    vac_id INT, 
-                    intro_id INT NOT NULL,
-                    company_name VARCHAR, 
-                    vaccine_intro VARCHAR, 
-                    update_time VARCHAR, 
-                    intro_update VARCHAR);''')
-conn.commit()
-
-# Add new data to database
-for i in range(len(new_data_array)):
-    cur.execute('''INSERT INTO nytimes(vac_id, intro_id, company_name, vaccine_intro, update_time) VALUES (%s, %s, %s, %s, %s)''',
-                (vac_id_array[i], i, new_data_array[i][0], new_data_array[i][1], new_data_array[i][2]))
+    cur.execute("UPDATE info SET intro = %s WHERE vac_id = %s", (updated_intro, vac_id))
     conn.commit()
-
+# cur.execute("SELECT vac_id, intro FROM info ")
 # # Add to companies nytimes company name
 # cur.execute("SELECT company_name from nytimes ORDER BY intro_id;")
 # nytimes_company = cur.fetchall()
