@@ -53,6 +53,15 @@ cur.execute("rollback")
 # for i in range(len(existing_news)):
 #     existing_news_array.append(existing_news[i][0])
 
+# Update table
+cur.execute("DROP TABLE if exists news_nytimes;")
+cur.execute(
+    "CREATE TABLE news_nytimes(vac_id INT, news_text VARCHAR, news_company VARCHAR, update_time VARCHAR);")
+for j in range(0, len(latest_update_array)):
+    cur.execute('''INSERT INTO news_nytimes(news_text, news_company, update_time) VALUES (%s, %s, %s)''',
+                (latest_update_array[j][0], latest_update_array[j][1], latest_update_array[j][2]))
+    conn.commit()
+
 for i in range(len(latest_update_array)):
     if latest_update_array[i][0] == existing_news_array[i][0]:
         print("No Updates")
@@ -62,6 +71,8 @@ for i in range(len(latest_update_array)):
         if latest_update_array[i][0] == existing_news_array[i - 1][0]:
             update = latest_update_array[i - 1]
             # cur.execute("add to news table")
+            # cur.execute("INSERT INTO news(news_text, date, display_order) VALUES (%s, %s, %s)",
+            #             (update, latest_update_array[i-1][2], i-1))
             break
         if latest_update_array[i][0] == existing_news_array[i - 2][0]:
             update = latest_update_array[i - 2]
@@ -103,14 +114,6 @@ for i in range(len(latest_update_array)):
             update = latest_update_array[i]
             # cur.execute("add to news table")
 
-# Update table
-cur.execute("DROP TABLE if exists news_nytimes;")
-cur.execute(
-    "CREATE TABLE news_nytimes(vac_id INT, news_text VARCHAR, news_company VARCHAR, update_time VARCHAR);")
-for j in range(0, len(latest_update_array)):
-    cur.execute('''INSERT INTO news_nytimes(news_text, news_company, update_time) VALUES (%s, %s, %s)''',
-                (latest_update_array[j][0], latest_update_array[j][1], latest_update_array[j][2]))
-    conn.commit()
 
 # Find all Phase III intro
 phase2_and_3_company_intro = soup.find_all('p', attrs={
