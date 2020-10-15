@@ -271,65 +271,64 @@ customElements.define('my-card', myCard);
 
 
 
-// class news extends HTMLElement {
-//     connectedCallback() {
-//         const shadow = this.attachShadow({ mode: 'open' });
-//
-//         // link css
-//         const linkElem1 = document.createElement('link');
-//         linkElem1.setAttribute('rel', 'stylesheet');
-//         linkElem1.setAttribute('href', '../static/css/style.css');
-//         shadow.appendChild(linkElem1);
-//
-//         const linkElem2 = document.createElement('link');
-//         linkElem2.setAttribute('rel', 'stylesheet');
-//         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-//         shadow.appendChild(linkElem2);
-//
-//
-//         // list news
-//         var list = document.createElement('li');
-//         list.setAttribute('class', 'news-text');
-//
-//         // news tag
-//         var news_tag = document.createElement('b');
-//         news_tag.setAttribute('class', 'news_tag');
-//         if (this.getAttribute('news-tag') == 'New') {
-//             news_tag.setAttribute('id', 'news_tag_new');
-//         }
-//         if (this.getAttribute('news-tag') == "Breaking News") {
-//             news_tag.setAttribute('id', 'news_tag_breaking_news');
-//         }
-//         if (this.getAttribute('news-tag') == "Top") {
-//             news_tag.setAttribute('id', 'news_tag_top');
-//         }
-//         if (this.getAttribute('news-tag') == "About this website") {
-//             news_tag.setAttribute('id', 'news_tag_about');
-//         }
-//         news_tag.innerHTML = this.getAttribute('news-tag');
-//         list.appendChild(news_tag);
-//
-//
-//         // short news intro
-//         var news_text = document.createElement('span');
-//         news_text.innerHTML = " " + this.getAttribute('news-text');
-//         // news_text.setAttribute('onclick', 'clickFunction()');
-//         list.appendChild(news_text);
-//
-//         news_text.addEventListener('click', function (){
-//
-//         })
-//
-//         // Append Date
-//         var date = document.createElement('span');
-//         date.setAttribute('class', 'date');
-//         date.innerHTML = this.getAttribute('news-date');
-//         list.appendChild(date);
-//
-//         shadow.appendChild(list);
-//         // this.attachShadow({ mode: 'close' });
-//     }
-//
-// }
-// customElements.define('latest-news', news);
-// document.createElement('latest-news');
+class news extends HTMLElement {
+    connectedCallback() {
+        const shadow = this.attachShadow({ mode: 'open' });
+
+        // link css
+        const linkElem1 = document.createElement('link');
+        linkElem1.setAttribute('rel', 'stylesheet');
+        linkElem1.setAttribute('href', '../static/css/style.css');
+        shadow.appendChild(linkElem1);
+
+        const linkElem2 = document.createElement('link');
+        linkElem2.setAttribute('rel', 'stylesheet');
+        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        shadow.appendChild(linkElem2);
+
+
+        // list news
+        var list = document.createElement('li');
+        list.setAttribute('class', 'news-text');
+
+        // news tag
+        var news_tag = document.createElement('b');
+        news_tag.setAttribute('class', 'news_tag');
+        if (this.getAttribute('news-tag') == 'New') {
+            news_tag.setAttribute('id', 'news_tag_new');
+        }
+        if (this.getAttribute('news-tag') == "Breaking News") {
+            news_tag.setAttribute('id', 'news_tag_breaking_news');
+        }
+        if (this.getAttribute('news-tag') == "Top") {
+            news_tag.setAttribute('id', 'news_tag_top');
+        }
+        if (this.getAttribute('news-tag') == "About this website") {
+            news_tag.setAttribute('id', 'news_tag_about');
+        }
+        news_tag.innerHTML = this.getAttribute('news-tag');
+        list.appendChild(news_tag);
+
+
+        // short news intro
+        var news_text = document.createElement('span');
+        news_text.innerHTML = " " + this.getAttribute('news-text');
+        // news_text.setAttribute('onclick', 'clickFunction()');
+        list.appendChild(news_text);
+
+        news_text.addEventListener('click', function (){
+
+        })
+
+        // Append Date
+        var date = document.createElement('span');
+        date.setAttribute('class', 'date');
+        date.innerHTML = this.getAttribute('news-date');
+        list.appendChild(date);
+
+        shadow.appendChild(list);
+        // this.attachShadow({ mode: 'close' });
+    }
+
+}
+customElements.define('latest-news', news);

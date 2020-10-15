@@ -5,12 +5,12 @@ import difflib
 from bs4 import BeautifulSoup
 from models.close_match_indexes import get_close_matches_indexes
 
-# case_a = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers.'
-# case_b = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers. This is an update.'
-#
-# output_list = [li for li in difflib.ndiff(case_a, case_b) if li[0] != ' ']
-# diff_nl = ''.join([x[2:] for x in output_list if x.startswith('+ ')])
-# # print(diff_nl)
+case_a = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. This is a sentence. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. Hi. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers.'
+case_b = 'Moderna develops vaccines based on messenger RNA (mRNA) to produce viral proteins in the body. They have yet to bring one to the market. In January, they began developing a vaccine for the coronavirus and since then the government has bankrolled Moderna’s efforts, providing nearly $1 billion. In partnership with National Institutes of Health, they found that the vaccine protects monkeys from the coronavirus. In March, the company put the first Covid-19 vaccine into human trials, which yielded promising results. The vaccine has progressed into Phase 3 testing, which began on July 27. The final trial is enrolling 30,000 healthy people at about 89 sites around the United States. On Aug. 11, the government awarded the company an additional $1.5 billion in exchange for 100 million doses if the vaccine proves safe and effective. Canada agreed in September to acquire 20 million doses. In July, Moderna lost a patent dispute over some of their vaccine technology. The following month, the company stated that it could not be certain it was the first to make the inventions claimed in their patents, including its coronavirus vaccine. On Sept. 17, Moderna shared their protocol for determining if their vaccine was safe and effective. They planned to wait until a significant number of volunteers became sick with Covid-19 and then see how many had been vaccinated. It may take till the end of 2020 or early 2021 to reach the necessary numbers. This is an update.'
+
+output_list = [li for li in difflib.ndiff(case_a, case_b) if li[0] != ' ']
+diff_nl = ''.join([x[2:] for x in output_list if x.startswith('+ ')])
+# print(diff_nl)
 
 # connect to database
 conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
@@ -69,10 +69,12 @@ for i in range(len(latest_update_array)):
     else:
         # if there is an update...
         if latest_update_array[i][0] == existing_news_array[i - 1][0]:
-            update = latest_update_array[i - 1]
+            update = latest_update_array[i - 1][0]
             # cur.execute("add to news table")
-            # cur.execute("INSERT INTO news(news_text, date, display_order) VALUES (%s, %s, %s)",
-            #             (update, latest_update_array[i-1][2], i-1))
+            # Error - invalid input for date, remember to add key
+            print("Hey!")
+            cur.execute("INSERT INTO news(key, news_text, display_order) VALUES (%s, %s, %s)",
+                        (2, update, i-1))
             break
         if latest_update_array[i][0] == existing_news_array[i - 2][0]:
             update = latest_update_array[i - 2]
@@ -98,18 +100,7 @@ for i in range(len(latest_update_array)):
             update = latest_update_array[i - 1]
             # cur.execute("add to news table")
             break
-        if latest_update_array[i][0] == existing_news_array[i - 5][0]:
-            update = latest_update_array[i - 5]
-            # cur.execute("add to news table")
-            update = latest_update_array[i - 4]
-            # cur.execute("add to news table")
-            update = latest_update_array[i - 3]
-            # cur.execute("add to news table")
-            update = latest_update_array[i - 2]
-            # cur.execute("add to news table")
-            update = latest_update_array[i - 1]
-            # cur.execute("add to news table")
-            break
+
         if latest_update_array[i][0] != existing_news_array[i][0]:
             update = latest_update_array[i]
             # cur.execute("add to news table")
@@ -161,6 +152,7 @@ for intro in all_vaccines_intro:
     phase3 = intro.find('span', class_="g-phase3")
     limited = intro.find('span', class_="g-limited")
     combined_phases = intro.find('span', class_="g-combined")
+    paused = intro.find('span', class_="g-paused")
 
     company_string = ""
     for i in range(len(company_names)):
@@ -188,6 +180,8 @@ for intro in all_vaccines_intro:
         intro_text = intro_text.replace(phase3.text, '')
     if limited is not None and limited.text in intro_text:
         intro_text = intro_text.replace(limited.text, '')
+    if paused is not None and paused.text in intro_text:
+        intro_text = intro_text.replace(paused.text, '')
 
     date = ""
     # Remove final "updated" time in Intro
