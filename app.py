@@ -107,7 +107,7 @@ def index():
 
             if stages == "4-1":
                 stages = "_"
-                filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35)"
+                filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
             else:
                 filter_limit = ""
 
@@ -135,7 +135,7 @@ def index():
                 stages_dis = "Approval"
             else:
                 stages_dis = "Vaccine Stage"
-            if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35)":
+            if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)":
                 stages = "4-1"
                 stages_dis = "Limited Use"
 
@@ -227,7 +227,7 @@ def mobileForm():
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
-        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35)"
+        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
     else:
         mobile_filter_limit = ""
 
