@@ -143,7 +143,13 @@ def index():
 
         data = np.array(cur.fetchall(), dtype=object)
         cur.execute("rollback")
-        return render_template("index.html", data=data, stages_dis=stages_dis, stages=stages,
+
+        cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
+                    "ORDER BY date DESC, key DESC LIMIT 6")
+        news_data = cur.fetchall()
+        cur.execute("rollback")
+
+        return render_template("index.html", data=data, news_data=news_data, stages_dis=stages_dis, stages=stages,
                                country=country, country_dis=country_dis, types=types, types_dis=types_dis,
                                scrollToAnchor="TagIWantToLoadTo")
     else:
@@ -162,9 +168,7 @@ def index():
         country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
         # print(news_data)
-        return render_template("index.html", data=data,
-                               news_data=news_data,
-                               stages_dis=stages_dis,
+        return render_template("index.html", data=data, news_data=news_data, stages_dis=stages_dis,
                                stages="Vaccine Stage", country_dis=country_dis, country="Country / Region",
                                types_dis=types_dis, types="Vaccine Platform")
 
