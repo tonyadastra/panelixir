@@ -271,64 +271,97 @@ customElements.define('my-card', myCard);
 
 
 
-// class news extends HTMLElement {
-//     connectedCallback() {
-//         const shadow = this.attachShadow({ mode: 'open' });
-//
-//         // link css
-//         const linkElem1 = document.createElement('link');
-//         linkElem1.setAttribute('rel', 'stylesheet');
-//         linkElem1.setAttribute('href', '../static/css/style.css');
-//         shadow.appendChild(linkElem1);
-//
-//         const linkElem2 = document.createElement('link');
-//         linkElem2.setAttribute('rel', 'stylesheet');
-//         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-//         shadow.appendChild(linkElem2);
-//
-//
-//         // list news
-//         var list = document.createElement('li');
-//         list.setAttribute('class', 'news-text');
-//
-//         // news tag
-//         var news_tag = document.createElement('b');
-//         news_tag.setAttribute('class', 'news_tag');
-//         if (this.getAttribute('news-tag') == 'New') {
-//             news_tag.setAttribute('id', 'news_tag_new');
-//         }
-//         if (this.getAttribute('news-tag') == "Breaking News") {
-//             news_tag.setAttribute('id', 'news_tag_breaking_news');
-//         }
-//         if (this.getAttribute('news-tag') == "Top") {
-//             news_tag.setAttribute('id', 'news_tag_top');
-//         }
-//         if (this.getAttribute('news-tag') == "About this website") {
-//             news_tag.setAttribute('id', 'news_tag_about');
-//         }
-//         news_tag.innerHTML = this.getAttribute('news-tag');
-//         list.appendChild(news_tag);
-//
-//
-//         // short news intro
-//         var news_text = document.createElement('span');
-//         news_text.innerHTML = " " + this.getAttribute('news-text');
-//         // news_text.setAttribute('onclick', 'clickFunction()');
-//         list.appendChild(news_text);
-//
-//         news_text.addEventListener('click', function (){
-//
-//         })
-//
-//         // Append Date
-//         var date = document.createElement('span');
-//         date.setAttribute('class', 'date');
-//         date.innerHTML = this.getAttribute('news-date');
-//         list.appendChild(date);
-//
-//         shadow.appendChild(list);
-//         // this.attachShadow({ mode: 'close' });
-//     }
-//
-// }
-// customElements.define('latest-news', news);
+class news extends HTMLElement {
+    connectedCallback() {
+        const shadow = this.attachShadow({ mode: 'open' });
+
+        // link css
+        const linkElem1 = document.createElement('link');
+        linkElem1.setAttribute('rel', 'stylesheet');
+        linkElem1.setAttribute('href', '../static/css/style.css');
+        shadow.appendChild(linkElem1);
+
+        const linkElem2 = document.createElement('link');
+        linkElem2.setAttribute('rel', 'stylesheet');
+        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        shadow.appendChild(linkElem2);
+
+        const linkElem3 = document.createElement('link');
+        linkElem3.setAttribute('rel', 'stylesheet');
+        linkElem3.setAttribute('href', '../static/css/card.css');
+        shadow.appendChild(linkElem3);
+
+
+        // list news
+        var list = document.createElement('li');
+        list.setAttribute('class', 'news-text');
+
+        // news tag
+        var news_tag = document.createElement('b');
+        news_tag.setAttribute('class', 'news_tag');
+        if (this.getAttribute('news-tag') == 'New') {
+            news_tag.setAttribute('id', 'news_tag_new');
+        }
+        if (this.getAttribute('news-tag') == "Breaking News") {
+            news_tag.setAttribute('id', 'news_tag_breaking_news');
+        }
+        if (this.getAttribute('news-tag') == "Top") {
+            news_tag.setAttribute('id', 'news_tag_top');
+        }
+        if (this.getAttribute('news-tag') == "About this Website") {
+            news_tag.setAttribute('id', 'news_tag_about');
+        }
+        news_tag.innerHTML = this.getAttribute('news-tag');
+        if (this.getAttribute('news-tag') != 'None') {
+            list.appendChild(news_tag);
+        }
+
+
+
+        // News Text
+        var news_text = document.createElement('span');
+
+        if (this.getAttribute('news-company') != 'None') {
+            const newsArray = this.getAttribute('news-text').split(this.getAttribute('news-company'));
+            var news_before = document.createElement('span');
+            news_before.innerHTML = " " + newsArray[0];
+            news_text.appendChild(news_before);
+            var news_company = document.createElement('span');
+            news_company.setAttribute('class', 'news-company')
+            news_company.innerHTML = this.getAttribute('news-company');
+            let vac_id = this.getAttribute('news-vac-id');
+            // console.log(vac_id)
+            news_company.addEventListener('click', function () {
+                $.ajax({
+                    url: "/display-company",
+                    data: {'company_id': vac_id},
+                    type: "GET",
+                    success: function (response) {
+                        // console.log(response)
+                        document.getElementById('append-card').innerHTML = response;
+                        $('#company-modal').modal('show');
+                    },
+                });
+            })
+            news_text.appendChild(news_company);
+            var news_after = document.createElement('span');
+            news_after.innerHTML = newsArray[1];
+            // console.log(newsArray)
+            news_text.appendChild(news_after);
+        } else {
+            news_text.innerHTML = " " + this.getAttribute('news-text');
+        }
+        list.appendChild(news_text);
+
+        // Append Date
+        var date = document.createElement('span');
+        date.setAttribute('class', 'date');
+        date.innerHTML = this.getAttribute('news-date');
+        list.appendChild(date);
+
+        shadow.appendChild(list);
+        // this.attachShadow({ mode: 'close' });
+    }
+
+}
+customElements.define('latest-news', news);

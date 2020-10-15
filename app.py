@@ -107,7 +107,8 @@ def index():
 
             if stages == "4-1":
                 stages = "_"
-                filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
+                filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
+                               "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
             else:
                 filter_limit = ""
 
@@ -135,7 +136,8 @@ def index():
                 stages_dis = "Approval"
             else:
                 stages_dis = "Vaccine Stage"
-            if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)":
+            if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 " \
+                               "or info.vac_id = 13 or info.vac_id = 119)":
                 stages = "4-1"
                 stages_dis = "Limited Use"
 
@@ -152,16 +154,16 @@ def index():
         # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
         data = cur.fetchall()
         cur.execute("rollback")
-        # cur.execute("SELECT vac_id, news_tag, news_text, date, display_order FROM news "
-        #             "ORDER BY date DESC, display_order LIMIT 6")
-        # news_data = cur.fetchall()
-        # cur.execute("rollback")
+        cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
+                    "ORDER BY date DESC, key DESC LIMIT 6")
+        news_data = cur.fetchall()
+        cur.execute("rollback")
         stages_dis = "Vaccine Stage"
         country_dis = "Country / Region"
         types_dis = "Vaccine Platform"
         # print(news_data)
         return render_template("index.html", data=data,
-                               # news_data=news_data,
+                               news_data=news_data,
                                stages_dis=stages_dis,
                                stages="Vaccine Stage", country_dis=country_dis, country="Country / Region",
                                types_dis=types_dis, types="Vaccine Platform")
@@ -227,7 +229,8 @@ def mobileForm():
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
-        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
+        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
+                              "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
     else:
         mobile_filter_limit = ""
 

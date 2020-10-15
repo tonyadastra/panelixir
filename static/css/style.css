@@ -650,151 +650,153 @@ html, body {
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
-  .news-wrapper{
-    width: 80% !important;
-  }
-  .update-time{
-    font-size: 1.3rem;
-  }
-  .mobile-filter {
-    display: none;
-  }
+    .news-wrapper {
+        width: 80% !important;
+    }
 
-  .small-screen {
-    display: none;
-  }
+    .update-time {
+        font-size: 1.3rem;
+    }
 
-  .title-bar {
-    padding: 1.5rem 2rem 1.2rem 2rem;
-    margin-bottom: 20px;
-  }
+    .mobile-filter {
+        display: none;
+    }
 
-  .title {
-    font-size: 1.2rem;
-    /* Modified */
-  }
+    .small-screen {
+        display: none;
+    }
 
-  a.style-a {
-    color: #fff;
-    text-decoration: none;
-    padding: 0 0 0.5rem;
-    position: relative;
-  }
+    .title-bar {
+        padding: 1.5rem 2rem 1.2rem 2rem;
+        margin-bottom: 20px;
+    }
 
-  /* Hover Header-bar Effect */
-  .header-text {
-    margin-top: 0.3rem;
-    color: #00008b;
-    font-family: sans-serif;
-    font-size: 0.9rem;
-    font-weight: lighter;
-    padding: 0;
-    position: relative;
-    display: inline-block;
-  }
+    .title {
+        font-size: 1.2rem;
+        /* Modified */
+    }
 
-  .header-text > a.style-a {
-    position: relative;
-    color: #000;
-    text-decoration: none;
-  }
+    a.style-a {
+        color: #fff;
+        text-decoration: none;
+        padding: 0 0 0.5rem;
+        position: relative;
+    }
 
-  .header-text > a.style-a:hover {
-    color: #000;
-  }
+    /* Hover Header-bar Effect */
+    .header-text {
+        margin-top: 0.3rem;
+        color: #00008b;
+        font-family: sans-serif;
+        font-size: 0.9rem;
+        font-weight: lighter;
+        padding: 0;
+        position: relative;
+        display: inline-block;
+    }
 
-  .header-text > a.style-a::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 0.15rem;
-    bottom: 0;
-    left: 0;
-    background-color: darkorange;
-    border-radius: 0.1rem;
-    visibility: hidden;
-    transform: scaleX(0);
-    transition: all 0.25s ease-in-out 0s;
-  }
+    .header-text > a.style-a {
+        position: relative;
+        color: #000;
+        text-decoration: none;
+    }
 
-  .header-text > a.style-a:hover::before {
-    visibility: visible;
-    transform: scaleX(1);
-  }
+    .header-text > a.style-a:hover {
+        color: #000;
+    }
 
-  /* Coming Soon Toolkit */
-  .coming-soon {
-    font-size: 1.2rem;
-  }
+    .header-text > a.style-a::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 0.15rem;
+        bottom: 0;
+        left: 0;
+        background-color: darkorange;
+        border-radius: 0.1rem;
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.25s ease-in-out 0s;
+    }
 
-  .header-text .coming-soon {
-    visibility: hidden;
-    width: 160px;
-    background-color: rgba(135, 133, 133, 0.87);
-    color: #fff;
-    text-align: center;
-    border-radius: 0.2rem;
-    padding: 5px 2px;
-    /* Position */
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 50%;
-    margin-left: -80px;
-  }
+    .header-text > a.style-a:hover::before {
+        visibility: visible;
+        transform: scaleX(1);
+    }
 
-  .header-text:hover .coming-soon {
-    visibility: visible;
-  }
+    /* Coming Soon Toolkit */
+    .coming-soon {
+        font-size: 1.2rem;
+    }
 
-  /* #headerbar {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  } */
-  .column-card {
-    float: left;
-    width: 50%;
-    margin-bottom: 16px;
-    padding: 0 8px;
-  }
+    .header-text .coming-soon {
+        visibility: hidden;
+        width: 160px;
+        background-color: rgba(135, 133, 133, 0.87);
+        color: #fff;
+        text-align: center;
+        border-radius: 0.2rem;
+        padding: 5px 2px;
+        /* Position */
+        position: absolute;
+        z-index: 1;
+        top: 100%;
+        left: 50%;
+        margin-left: -80px;
+    }
 
-  .intro-us {
-    font-size: 0.8rem;
-  }
+    .header-text:hover .coming-soon {
+        visibility: visible;
+    }
 
-  .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    margin: 0.6rem;
-    padding: 1.6rem;
-    background-color: rgba(253, 246, 236, 0.8);
-  }
+    /* #headerbar {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    } */
+    .column-card {
+        float: left;
+        width: 50%;
+        margin-bottom: 16px;
+        padding: 0 8px;
+    }
 
-  .cursive {
-    font-family: Brush Script MT, Brush Script Std, cursive;
-    color: #111b2b;
-    font-size: 2.2rem;
-  }
+    .intro-us {
+        font-size: 0.8rem;
+    }
 
-  .jumbotron {
-    padding: 1.5rem 2rem 1.2rem 2rem;
-    margin-bottom: 20px;
-  }
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        margin: 0.6rem;
+        padding: 1.6rem;
+        background-color: rgba(253, 246, 236, 0.8);
+    }
 
-  .filter-text {
-    /* text-align: center; */
-    padding: 0.375rem 0.75rem;
-    font-size: 1.25rem;
-  }
+    .cursive {
+        font-family: Brush Script MT, Brush Script Std, cursive;
+        color: #111b2b;
+        font-size: 2.2rem;
+    }
 
-  .column {
-    padding: 0.5rem 0.8rem;
-  }
+    .jumbotron {
+        padding: 1.5rem 2rem 1.2rem 2rem;
+        margin-bottom: 20px;
+    }
 
-  .align-right {
-    right: 2%;
-  }
+    .filter-text {
+        /* text-align: center; */
+        padding: 0.375rem 0.75rem;
+        font-size: 1.25rem;
+    }
+
+    .column {
+        padding: 0.5rem 0.8rem;
+    }
+
+    .align-right {
+        right: 2%;
+    }
 }
 
 /* @media screen and (min-width: 960px) and (max-width: 1199px) {
@@ -1701,8 +1703,9 @@ h1.title {
 }
 
 .news-company {
-  font-weight: 400;
-  color: #023cae;
+    font-weight: 400;
+    color: #023cae;
+    text-decoration: underline;
 }
 
 .news-company:hover {
@@ -1752,4 +1755,11 @@ tspan {
 
 #news_tag_about{
   color: dodgerblue;
+}
+
+.date {
+  font-family: Kefa, sans-serif;
+  margin-left: 0.5rem;
+  font-weight: 200;
+  color: #7a7a7a;
 }

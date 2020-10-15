@@ -137,10 +137,11 @@
     <div class="news">
         <h2 class="text-center" id="news-title">Latest News and Recent Updates</h2>
         <ul class="news-list" style="/*list-style: inside; text-align: center*/">
-{#            {% for news in news_data %}#}
-{#                <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-text="{{news[2]}}" news-date="{{news[3]}}"></latest-news>#}
-{#            {% endfor %}#}
-            {% include 'news.html' %}
+            {% for news in news_data %}
+                <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}"
+                             news-text="{{news[3]}}" news-date="{{news[4]}}"></latest-news>
+            {% endfor %}
+{#            {% include 'news.html' %}#}
         </ul>
     </div>
 </div>
