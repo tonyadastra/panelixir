@@ -72,9 +72,9 @@ for i in range(len(latest_update_array)):
             update = latest_update_array[i - 1][0]
             # cur.execute("add to news table")
             # Error - invalid input for date, remember to add key
-            print("Hey!")
-            cur.execute("INSERT INTO news(key, news_text, display_order) VALUES (%s, %s, %s)",
-                        (2, update, i-1))
+            # print("Hey!")
+            # cur.execute("INSERT INTO news(key, news_text, display_order) VALUES (%s, %s, %s)",
+            #             (2, update, i-1))
             break
         if latest_update_array[i][0] == existing_news_array[i - 2][0]:
             update = latest_update_array[i - 2]
@@ -237,31 +237,31 @@ for i in range(len(new_data_array)):
                 (vac_id_array[i], i, new_data_array[i][0], new_data_array[i][1], new_data_array[i][2]))
     conn.commit()
 
-if len(existing_data_array) == len(new_data_array):
-    for i in range(len(new_data_array)):
-        # If there is an update in vaccine intro
-        if new_data_array[i][1] != existing_data_array[i]:
-            output_list = [li for li in difflib.ndiff(existing_data_array[i], new_data_array[i][1]) if li[0] != ' ']
-            intro_update = ''.join([x[2] for x in output_list if x.startswith('+ ')])
-            # Add new data to database
-            if not intro_update.startswith('.'):
-                print('update')
-                cur.execute('''UPDATE nytimes SET intro_update = %s WHERE intro_id = %s''', (intro_update, i))
-                conn.commit()
+# if len(existing_data_array) == len(new_data_array):
+#     for i in range(len(new_data_array)):
+#         # If there is an update in vaccine intro
+#         if new_data_array[i][1] != existing_data_array[i]:
+#             output_list = [li for li in difflib.ndiff(existing_data_array[i], new_data_array[i][1]) if li[0] != ' ']
+#             intro_update = ''.join([x[2] for x in output_list if x.startswith('+ ')])
+#             # Add new data to database
+#             if not intro_update.startswith('.'):
+#                 print('update')
+#                 cur.execute('''UPDATE nytimes SET intro_update = %s WHERE intro_id = %s''', (intro_update, i))
+#                 conn.commit()
 
-cur.execute("SELECT nyt.vac_id, nyt.intro_update, intro FROM nytimes nyt INNER JOIN info i ON nyt.vac_id = i.vac_id"
-            " WHERE intro_update IS NOT NULL")
-id_and_update = cur.fetchall()
-cur.execute("rollback")
-for i in range(len(id_and_update)):
-    vac_id = id_and_update[i][0]
-    new_update = id_and_update[i][1]
-    vaccine_intro = id_and_update[i][2]
-    updated_intro = vaccine_intro + new_update
-    print(updated_intro)
-
-    cur.execute("UPDATE info SET intro = %s WHERE vac_id = %s", (updated_intro, vac_id))
-    conn.commit()
+# cur.execute("SELECT nyt.vac_id, nyt.intro_update, intro FROM nytimes nyt INNER JOIN info i ON nyt.vac_id = i.vac_id"
+#             " WHERE intro_update IS NOT NULL")
+# id_and_update = cur.fetchall()
+# cur.execute("rollback")
+# for i in range(len(id_and_update)):
+#     vac_id = id_and_update[i][0]
+#     new_update = id_and_update[i][1]
+#     vaccine_intro = id_and_update[i][2]
+#     updated_intro = vaccine_intro + new_update
+#     print(updated_intro)
+#
+#     cur.execute("UPDATE info SET intro = %s WHERE vac_id = %s", (updated_intro, vac_id))
+#     conn.commit()
 # cur.execute("SELECT vac_id, intro FROM info ")
 # # Add to companies nytimes company name
 # cur.execute("SELECT company_name from nytimes ORDER BY intro_id;")

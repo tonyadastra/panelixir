@@ -1,7 +1,6 @@
 ## PanElixir - Global COVID-19 Vaccine and Treatment Tracker
 
 **To Do List**
-* [ ] Latest News Section Update in Database (Avoid re-uploading code every time)
 * [ ] Auto-Update Data NYTimes/WHO Website
 * [ ] Register/Login => Send latest information via e-mail, Comments
 * [ ] More information in database (doses, expected release date, etc.)
@@ -12,6 +11,7 @@
 * [ ] Optimize CSS and JS files
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
+* [X] Latest News Section Update in Database (Avoid re-uploading code every time)
 * [X] Non-www redirect - all redirect to https://www.panelixir.com
 * [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
 * [X] Auto-generate Latest-Update on top based on date in database
