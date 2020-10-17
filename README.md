@@ -34,6 +34,7 @@
 3. [Bug Report - Google Forms](https://docs.google.com/forms/d/1fPws_MFtqO4bLWH_1xhLt4AEEcYHpdQt8DiRNabJc-Y/edit?usp=sharing)
 4. [D3 API Reference(Wiki)](https://github.com/d3/d3/blob/master/API.md)
 5. [Nature Article - Different Vaccine Platforms](https://www.nature.com/articles/s41563-020-0746-0)
+6. [Advanced Python Scheduler Documentation](https://apscheduler.readthedocs.io/en/stable/)
 
 **Resources**
 1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)

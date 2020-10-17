@@ -16,7 +16,9 @@ now = datetime.datetime.now()
 # # print(diff_nl)
 
 # connect to database
-conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
+# conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
+conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
+                        " dbname=vaccinedb user=postgres password=iloveNYC0704")
 cur = conn.cursor()
 
 # scrape results from the New York Times
