@@ -117,8 +117,8 @@ def update_news():
     conn.close()
 
 
-schedule.every().day.at("01:34").do(update_news)
-schedule.every().day.at("18:30").do(update_news)
+schedule.every().day.at("10:30").do(update_news)
+schedule.every().day.at("16:30").do(update_news)
 
 while True:
     schedule.run_pending()
