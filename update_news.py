@@ -20,7 +20,7 @@ cur = conn.cursor()
 cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("New",))
 news_new = cur.fetchall()
 cur.execute("rollback")
-print(news_new)
+# print(news_new)
 for i in range(len(news_new)):
     if news_new[i][1] > 3:
         cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_new[i][0]))
