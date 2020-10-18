@@ -1,45 +1,65 @@
-## PanElixir - Global COVID-19 Vaccine and Treatment Tracker
+## PanElixir - Auto-Update Latest News Division
+##### This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
-**To Do List**
-* [ ] Auto-Update Latest News Section from NYTimes Website
-* [ ] Full Auto-Update Data NYTimes/WHO Website
-* [ ] Register/Login => Send latest information via e-mail, Comments
-* [ ] More information in database (doses, expected release date, etc.)
-* [ ] Logo Design
-* [ ] Info Icon to learn more (about Special Vaccines)
-* [ ] Vaccine Type Categories Explanation
-* [ ] Weekly Report on Vaccines - (comparison?)
-* [ ] Optimize CSS and JS files
-* [ ] Add-ons to map - display country and other information on hover
-* [ ] G-Zip Compression
-* [X] Latest News Section Update in Database (Avoid re-uploading code every time)
-* [X] Non-www redirect - all redirect to https://www.panelixir.com
-* [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
-* [X] Auto-generate Latest-Update on top based on date in database
-* [X] Add update date in each vaccine introduction
-* [X] Database Security
-* [X] Add HTTPS Certificate
-* [X] Latest News Section
-* [X] Modal For Mobile Version
-* [X] WHO Vaccine Type Filtering
-* [X] Pre-Clinical Vaccines Introduction (Multi-Vaccines for same company?)
-* [X] Map Optimization (Taking up 100%+ CPU)
-* [X] Disclaimer
-* [X] Feedback Form (Submit Data & Bug Report) - Link in Quick Access
-* [X] Russia Early Approval
+#### The Lambda Function
+- This program is a lambda function that updates the Latest News Section
+    - Checks Latest News date - if over three days, it will remove the "New" tag
+    - Scrapes NYTimes Vaccine Tracker News Section
+    - Get data from existing database news_nytimes
+    - Drop and modify news_nytimes database
+    - Compares existing database and new scraped data
+    - Update the news database if there are updates
 
+#### Run Frequency
+- This program runs every day at 17:30 and 23:30 UTC under AWS CloudWatch
+- cron expression: `30 17/6 * * ? *`
 
-**Quick Access:**
-1. [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-2. [Submit Data - Google Forms](https://docs.google.com/forms/d/1UNOq6-FG93ysnf9Qz9wue7jy_IV_Kkay38vr3I4aEsc/edit?usp=sharing)
-3. [Bug Report - Google Forms](https://docs.google.com/forms/d/1fPws_MFtqO4bLWH_1xhLt4AEEcYHpdQt8DiRNabJc-Y/edit?usp=sharing)
-4. [D3 API Reference(Wiki)](https://github.com/d3/d3/blob/master/API.md)
-5. [Nature Article - Different Vaccine Platforms](https://www.nature.com/articles/s41563-020-0746-0)
+#### Project Structure
+```
+├── package
+│   ├── requests
+│   ├── psycopg2
+│   └── bs4
+│       ├── BeautifulSoup
+├── lambda_function.py
+├── close_match_indexes.py
+├── function.zip
+├── ReadMe.md
+```
+Note: lambda_function.py is a modified version of update_news.py 
+in the master branch, several modifications are made to comply with
+lambda function requirements
 
-**Resources**
-1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
-2. [The Lancet Coronavirus Resource Center](https://www.thelancet.com/coronavirus?dgcid=kr_pop-up_tlcoronavirus20)
-3. [World Health Organization Vaccine Data](https://www.who.int/publications/m/item/draft-landscape-of-covid-19-candidate-vaccines)
-4. [NYT Article - *Different Approaches to a Vaccine*](https://www.nytimes.com/interactive/2020/05/20/science/coronavirus-vaccine-development.html?action=click&module=RelatedLinks&pgtype=Article)
-5. [Operation Warp Speed - US HHS](https://www.hhs.gov/coronavirus/explaining-operation-warp-speed/index.html)
-7. [D3.ease(transition examples)](https://observablehq.com/@d3/easing-animations)
+#### To Update Lambda Function in AWS using terminal
+1. Install awscli using pip `pip install awscli`
+2. Login to AWS in terminal using `aws configure`, the access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
+3. For package modifications - add additional packages to the package folder using `pip install --target ./package [new-package]`
+4. Go to the package directory using `cd package`
+5. Zip the package folder using ` zip -r9 ${OLDPWD}/function.zip .` (`$OLDPWD` stands for **OLDP**rint**W**orking**D**irectory, which corresponds to the directory before the `cd` command)
+6. Go to the main directory `cd $OLDPWD`
+7. Zip all necessary files to upload to AWS Lambda `zip -g function.zip lambda_function.py close_match_indexes.py` Remember to include new files here if they are added to the main directory
+8. Update AWS Lambda using hte command `aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`
+9. If successful, a JSON string should be returned. <br>
+Example: 
+```
+{
+    "FunctionName": "update_news",
+    "FunctionArn": "arn:aws:lambda:us-west-1:707744075670:function:update_news",
+    "Runtime": "python3.8",
+    "Role": "arn:aws:iam::707744075670:role/service-role/update_news-role-l47za4ej",
+    "Handler": "lambda_function.lambda_handler",
+    "CodeSize": 6586322,
+    "Description": "",
+    "Timeout": 3,
+    "MemorySize": 128,
+    "LastModified": "2020-10-18T19:20:54.362+0000",
+    "CodeSha256": "Ma2f76lEij0ElcNqO8/rZUgqr4YXL1JBGYL/pz2+T84=",
+    "Version": "$LATEST",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "af50c7f2-7c23-493d-97ed-538dcf222a08",
+    "State": "Active",
+    "LastUpdateStatus": "Successful"
+}
+```
