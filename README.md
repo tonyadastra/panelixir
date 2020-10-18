@@ -37,7 +37,7 @@ lambda function requirements
 4. Go to the package directory using **`cd package`**
 5. Zip the package folder using **`zip -r9 ${OLDPWD}/function.zip .`** (`$OLDPWD` stands for **OLDP**rint**W**orking**D**irectory, which corresponds to the directory before the `cd` command)
 6. Go to the main directory **`cd $OLDPWD`**
-7. Zip all necessary files to upload to AWS Lambda **`zip -g function.zip lambda_function.py close_match_indexes.py`** Remember to include new files here if they are added to the main directory
+7. Zip all necessary files to upload to AWS Lambda **`zip -g function.zip lambda_function.py close_match_indexes.py`** Remember to include new files here if necessary
 8. Update AWS Lambda using hte command **`aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`**
 9. If successful, a JSON string should be returned. <br>
 Example: 
