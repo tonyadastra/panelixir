@@ -1,6 +1,0 @@
-# cron.yaml
-version: 1
-cron:
- - name: "scrape"
-   url: "update_news.py"
-   schedule: "* * * * *"
