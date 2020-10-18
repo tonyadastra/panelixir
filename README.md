@@ -31,14 +31,14 @@ in the master branch, several modifications are made to comply with
 lambda function requirements
 
 ### To Update Lambda Function in AWS using Terminal
-1. Install awscli using pip `pip install awscli`
-2. Login to AWS in terminal using `aws configure`, the access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
-3. For package modifications - add additional packages to the package folder using `pip install --target ./package [new-package]`
-4. Go to the package directory using `cd package`
-5. Zip the package folder using ` zip -r9 ${OLDPWD}/function.zip .` (`$OLDPWD` stands for **OLDP**rint**W**orking**D**irectory, which corresponds to the directory before the `cd` command)
-6. Go to the main directory `cd $OLDPWD`
-7. Zip all necessary files to upload to AWS Lambda `zip -g function.zip lambda_function.py close_match_indexes.py` Remember to include new files here if they are added to the main directory
-8. Update AWS Lambda using hte command `aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`
+1. Install awscli using pip **`pip install awscli`**
+2. Login to AWS in terminal using **`aws configure`**, the access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
+3. Add additional packages to the package folder using **`pip install --target ./package [new-package]`**. If no new packages are added, skip to step 7.
+4. Go to the package directory using **`cd package`**
+5. Zip the package folder using **`zip -r9 ${OLDPWD}/function.zip .`** (`$OLDPWD` stands for **OLDP**rint**W**orking**D**irectory, which corresponds to the directory before the `cd` command)
+6. Go to the main directory **`cd $OLDPWD`**
+7. Zip all necessary files to upload to AWS Lambda **`zip -g function.zip lambda_function.py close_match_indexes.py`** Remember to include new files here if they are added to the main directory
+8. Update AWS Lambda using hte command **`aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`**
 9. If successful, a JSON string should be returned. <br>
 Example: 
 ```
