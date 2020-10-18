@@ -1,7 +1,7 @@
-## PanElixir - Auto-Update Latest News Division
-##### This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
+# PanElixir - Auto-Update Latest News Division
+## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
-#### The Lambda Function
+### The Lambda Function
 - This program is a lambda function that updates the Latest News Section
     - Checks Latest News date - if over three days, it will remove the "New" tag
     - Scrapes NYTimes Vaccine Tracker News Section
@@ -10,11 +10,11 @@
     - Compares existing database and new scraped data
     - Update the news database if there are updates
 
-#### Run Frequency
-- This program runs every day at 17:30 and 23:30 UTC under AWS CloudWatch
+### Run Frequency
+- This program runs every day at 17:30 and 23:30 UTC under AWS EventBridge (CloudWatch Events)
 - cron expression: `30 17/6 * * ? *`
 
-#### Project Structure
+### Project Structure
 ```
 ├── package
 │   ├── requests
@@ -24,13 +24,13 @@
 ├── lambda_function.py
 ├── close_match_indexes.py
 ├── function.zip
-├── ReadMe.md
+├── README.md
 ```
 Note: lambda_function.py is a modified version of update_news.py 
 in the master branch, several modifications are made to comply with
 lambda function requirements
 
-#### To Update Lambda Function in AWS using terminal
+### To Update Lambda Function in AWS using Terminal
 1. Install awscli using pip `pip install awscli`
 2. Login to AWS in terminal using `aws configure`, the access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
 3. For package modifications - add additional packages to the package folder using `pip install --target ./package [new-package]`
@@ -63,3 +63,9 @@ Example:
     "LastUpdateStatus": "Successful"
 }
 ```
+
+### Related Resources
+1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
+2. [Psycopg2 Package for AWS Lambda](https://github.com/jkehler/awslambda-psycopg2) (Note: Directly downloading this package using `pip` would cause an error in deployment)
+3. [Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
+
