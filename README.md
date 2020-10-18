@@ -24,6 +24,7 @@
 ├── lambda_function.py
 ├── close_match_indexes.py
 ├── function.zip
+├── .gitignore
 ├── README.md
 ```
 Note: lambda_function.py is a modified version of update_news.py 
