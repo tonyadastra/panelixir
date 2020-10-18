@@ -29,3 +29,4 @@ Cython~=0.29.2
 requests~=2.20.1
 bs4~=0.0.1
 beautifulsoup4~=4.6.3
+schedule~=0.6.0
