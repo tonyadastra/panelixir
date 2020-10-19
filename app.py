@@ -302,8 +302,12 @@ def displayCompany():
 @app.route("/get_update_time")
 def getUpdateTime():
     # cur.execute("rollback")
-    cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM info WHERE update_date IS NOT NULL "
-                "ORDER BY update_date DESC LIMIT 1")
+    cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
+                "(SELECT update_date FROM info "
+                "WHERE update_date IS NOT NULL "
+                "UNION "
+                "SELECT date AS update_date FROM news "
+                "ORDER BY update_date DESC LIMIT 1) AS date")
     update_time = cur.fetchone()
     cur.execute("rollback")
     # while update_time is None:

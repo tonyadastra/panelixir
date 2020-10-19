@@ -4,8 +4,8 @@ import psycopg2
 from bs4 import BeautifulSoup
 from models.close_match_indexes import get_close_matches_indexes
 import datetime
-# import schedule
-# import time
+import schedule
+import time
 
 
 # def update_news():
@@ -37,7 +37,7 @@ for i in range(len(info_id_and_company)):
 # scrape results from the New York Times
 result = requests.get("https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html")
 src = result.content
-soup = BeautifulSoup(src, 'lxml')
+soup = BeautifulSoup(src, "html.parser")
 
 # Find Latest News Section
 latest_news = soup.find(text=re.compile('New additions and recent updates:')).parent.parent.parent.find_all(
