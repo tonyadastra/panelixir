@@ -12,7 +12,7 @@
 
 ### Run Frequency
 - This program runs every day at 17:30 and 23:30 UTC under AWS EventBridge (CloudWatch Events)
-- cron expression: `30 17/6 * * ? *`
+- cron expression: `30 17,23 * * ? *`
 
 ### Project Structure
 ```
