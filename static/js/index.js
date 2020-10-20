@@ -784,7 +784,7 @@ $(".submit-mobile-form").click(function () {
         },
         type: "GET",
         success: function (response) {
-            $('.all-cards').remove();
+            $('.initial-cards').remove();
             document.getElementById('mobile_container').innerHTML = response;
             mobile_count = 1;
         },

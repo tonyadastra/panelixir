@@ -1,5 +1,5 @@
 {#<script src="../static/js/card.js"></script>#}
-<div style="height: 1rem;"></div>
+{#<div style="height: 1rem;"></div>#}
 {% if data|length >= 3 %}
     {% for entry in data %}
     <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'

@@ -21,29 +21,18 @@
 <script src="../static/js/card.js"></script>
 <script src="../static/js/index.js"></script>
 
-{% if scrollToAnchor %}
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
-    });
-</script>
-{% endif %}
-
 {% endblock %}
 
 {% block content %}
 <!-- Data Visualizations-->
-{#< onresize="resize()">#}
-{#<div class="container" style="position: relative; text-align: center; background-color: white;width: 100%;max-width: none;padding: 0;margin: 0;">#}
 <div class="row">
-{#    <div class="col-xl"></div>#}
     <div class="col-xl-6 col-lg col-md-12" style="padding: 0;">
         <p class="update-time text-center" id="update_top">&nbsp;</p>
         <div id="vis1" class="vis"></div>
     </div>
     <div class="col-xl-6 col-lg col-md-12 col-xs-12 text-center">
         <div class="interactive-buttons" style="margin-bottom: 0.5rem;">
-            <button class="btn btn-outline-primary button-font active" data-value="World" value="World">World</button>
+            <button class="btn btn-outline-primary button-font active" data-value="World" value="World"><i class="fa fa-globe"></i>&nbsp;Worldwide</button>
             <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
                 America</button>
             <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
@@ -524,33 +513,15 @@
 
 
 <!-- list institutions -->
-<div class="all-cards">
+{#<div class="all-cards">#}
     <div class="institutions" id="institutions">
         <div class="initial-cards">
-            {% if data|length >= 2 %}
-                {% for entry in data %}
-                    <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-                        data-country='{{entry[5]}}' data-vactype='{{entry[6]}}' data-news='{{entry[7]}}' data-date='{{entry[8]}}'>
-                    </my-card>
-                {% endfor %}
-            {% else %}
-            {% if data|length > 0 %}
-                {% for entry in data %}
-                    <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-                        data-country='{{entry[5]}}' data-vactype='{{entry[6]}}' data-news='{{entry[7]}}' data-date='{{entry[8]}}'>
-                    </my-card>
-                {% endfor %}
-                <div style="height: 20rem;"></div>
-            {% else %}
-                <h5 class="text-center" style="color: darkslateblue"> Currently there are no results available </h5>
-                <div style="height: 35rem;"></div>
-            {% endif %}
-            {% endif %}
+            {% include 'desktop-card.html' %}
         </div>
         <div id="card_container"></div>
+        <div id="mobile_container"></div>
     </div>
-</div>
-    <div id="mobile_container"></div>
+{#</div>#}
 
 {% endblock %}
 
