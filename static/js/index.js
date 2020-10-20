@@ -652,7 +652,7 @@ $(window).scroll(function () {
             // ajax call get data from server and append to the div
             $.ajax({
                 url: '/mobile-card',
-                type: 'get',
+                type: 'GET',
                 data: {
                     'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
                     'mobile_count': mobile_count, 'limit': limit
@@ -700,7 +700,7 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
     $(this).addClass("active");
     var countryTitle = $(this).val();
     if ($(this).val() === "") {
-        countryTitle = "All";
+        countryTitle = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
     }
     // Display Title of Previous Selected Country
     document.getElementById('mobile-button').innerHTML = countryTitle;
@@ -737,7 +737,7 @@ $('.most-viewed').click(function () {
 
     // Value to All to display
     if ($(this).val() === "") {
-        countryTitle = "All";
+        countryTitle = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
     }
     // change dropdown title
     document.getElementById('mobile-button').innerHTML = countryTitle;
@@ -748,7 +748,7 @@ $('.most-viewed').click(function () {
 $('.btn-filter').click(function (){
     var activeCountry = document.querySelector('.active.mobile-dropdown-item-ctry#country').value;
     if (activeCountry === ""){
-        activeCountry = "All";
+        activeCountry = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
     }
     document.getElementById('mobile-button').innerHTML = activeCountry;
 })
@@ -894,7 +894,7 @@ $('.dropdown-item-ctry').click(function () {
     $(this).addClass('active');
     var active_country = document.querySelector('.active.desktop-dropdown#country').value;
     if (active_country === "") {
-        active_country = "Worldwide"
+        active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
     }
     var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     dropdown_title_country.innerHTML = active_country;

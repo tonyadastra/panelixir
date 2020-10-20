@@ -31,154 +31,26 @@ country = "Country / Region"
 types = "Vaccine Platform"
 status = "status"
 filter_limit = ""
-mobile_filter_limit = ""
-desktop_filter_limit = ""
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
-    # if request.method == 'POST':
-    #     global stages, country, types, status, filter_limit
-    #     stages = request.form.get("stages", "Vaccine Stage")
-    #     country = request.form.get("country", "Country / Region")
-    #     types = request.form.get("type", "Vaccine Platform")
-    #     status = request.form.get("status", "status")
-    #
-    #     prev_stages = request.form.get("prev_stages", "Vaccine Stage")
-    #     prev_country = request.form.get("prev_country", "Country / Region")
-    #     prev_types = request.form.get("prev_types", "Vaccine Platform")
-    #     country_dis = country
-    #     types_dis = types
-    #
-    #     if status == "clear":
-    #         stages_dis = "Vaccine Stage"
-    #         country_dis = "Country / Region"
-    #         types_dis = "Vaccine Platform"
-    #         cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-    #                     "TO_CHAR(update_date, 'Month FMDD') FROM info "
-    #                     "INNER JOIN companies ON info.vac_id = companies.vac_id "
-    #                     "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
-    #     else:
-    #         if stages == "Vaccine Stage":
-    #             if prev_stages != "Vaccine Stage":
-    #                 stages = prev_stages
-    #             else:
-    #                 stages = "_"
-    #
-    #         if country == "Country / Region":
-    #             if prev_country != "Country / Region":
-    #                 country = prev_country
-    #                 country_dis = prev_country
-    #                 if prev_country == "":
-    #                     country_dis = "Country / Region"
-    #             else:
-    #                 country = ""
-    #                 country_dis = "Country / Region"
-    #
-    #         if types == "Vaccine Platform":
-    #             if prev_types != "Vaccine Platform":
-    #                 types = prev_types
-    #                 types_dis = prev_types
-    #                 if prev_types == "":
-    #                     types_dis = "Vaccine Platform"
-    #             else:
-    #                 types = ""
-    #                 types_dis = "Vaccine Platform"
-    #
-    #         if types == "Genetic":
-    #             types_dis = "Nucleic Acid Vaccines"
-    #             types = "DNA%' or vac_type LIKE '%RNA"
-    #         elif types == "Protein":
-    #             types_dis = "Subunit Vaccines"
-    #         elif types == "Viral Vector":
-    #             types_dis = "Viral Vector Vaccines"
-    #         elif types == "Virus":
-    #             types_dis = "Whole-Pathogen Vaccines"
-    #             types = "Virus%' or vac_type LIKE '%Inactivated"
-    #         elif types == "VLP":
-    #             types_dis = "Nanoparticle Vaccines"
-    #         elif types == "Others":
-    #             types = "Repurposed"
-    #             types_dis = "Others"
-    #
-    #         if types_dis == "DNA%' or vac_type LIKE '%RNA":
-    #             types_dis = "Nucleic Acid Vaccines"
-    #         if types_dis == "Virus%' or vac_type LIKE '%Inactivated":
-    #             types_dis = "Whole-Pathogen Vaccines"
-    #         if types_dis == "Repurposed":
-    #             types_dis = "Others"
-    #
-    #         if stages == "4-1":
-    #             stages = "_"
-    #             filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
-    #                            "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
-    #         else:
-    #             filter_limit = ""
-    #
-    #         cur.execute("rollback")
-    #         cur.execute(
-    #             "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-    #             "TO_CHAR(update_date, 'Month FMDD')"
-    #             " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-    #             " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-    #             " AND country LIKE '%" + country + "%' "
-    #             # "AND '" + types + "' ~ vac_type "
-    #             " AND (vac_type LIKE '%" + types + "%')"
-    #             " " + filter_limit + " "
-    #             "ORDER BY stage DESC, co_name, partner_name LIMIT 10;")
-    #
-    #         if stages == "0":
-    #             stages_dis = "Pre-Clinical"
-    #         elif stages == "1":
-    #             stages_dis = "Phase I"
-    #         elif stages == "2":
-    #             stages_dis = "Phase II"
-    #         elif stages == "3":
-    #             stages_dis = "Phase III"
-    #         elif stages == "4":
-    #             stages_dis = "Approval"
-    #         else:
-    #             stages_dis = "Vaccine Stage"
-    #         if filter_limit == "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 or info.vac_id = 35 " \
-    #                            "or info.vac_id = 13 or info.vac_id = 119)":
-    #             stages = "4-1"
-    #             stages_dis = "Limited Use"
-    #
-    #     data = np.array(cur.fetchall(), dtype=object)
-    #     cur.execute("rollback")
-    #
-    #     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
-    #                 "ORDER BY date DESC, key DESC LIMIT 6")
-    #     news_data = cur.fetchall()
-    #     cur.execute("rollback")
-    #
-    #     return render_template("index.html", data=data, news_data=news_data, stages_dis=stages_dis, stages=stages,
-    #                            country=country, country_dis=country_dis, types=types, types_dis=types_dis,
-    #                            scrollToAnchor="TagIWantToLoadTo")
-    # else:
     cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD')"
                 " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
-    # "OFFSET 0 ROWS FETCH FIRST 5 ROW O NLY")
     data = cur.fetchall()
     cur.execute("rollback")
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
                 "ORDER BY date DESC, key DESC LIMIT 6")
     news_data = cur.fetchall()
     cur.execute("rollback")
-    stages_dis = "Vaccine Stage"
-    country_dis = "Country / Region"
-    types_dis = "Vaccine Platform"
-    # print(news_data)
-    return render_template("index.html", data=data, news_data=news_data, stages_dis=stages_dis,
-                           stages="Vaccine Stage", country_dis=country_dis, country="Country / Region",
-                           types_dis=types_dis, types="Vaccine Platform")
+    return render_template("index.html", data=data, news_data=news_data)
 
 
 @app.route("/desktop-form", methods=['GET'])
 def desktopForm():
-    global desktop_filter_limit
+    global filter_limit
     # global desktop_stages, desktop_country, desktop_type
     desktop_stages = str(request.args.get('desktop_stage'))
     desktop_country = str(request.args.get('desktop_country'))
@@ -193,10 +65,10 @@ def desktopForm():
 
     if desktop_stages == "4-1":
         desktop_stages = "_"
-        desktop_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
+        filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
                               "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
     else:
-        desktop_filter_limit = ""
+        filter_limit = ""
 
     cur.execute(
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
@@ -205,7 +77,7 @@ def desktopForm():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
-        "" + desktop_filter_limit + " "
+        "" + filter_limit + " "
         "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
@@ -215,40 +87,6 @@ def desktopForm():
 
 @app.route("/card", methods=['GET'])
 def card():
-
-    # if status == "clear" or (stages == "Vaccine Stage" and country == "Country / Region" and types == "Vaccine Platform"):
-    #     cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-    #                 "TO_CHAR(update_date, 'Month FMDD')"
-    #                 " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id"
-    #                 " ORDER BY stage DESC, company, partner_name "
-    #                 "OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-    #
-    # elif stages != "Vaccine Stage" or country != "Country / Region" or types != "Vaccine Platform":
-    #     # print('2')
-    #     #     if types == "Genetic":
-    #     #         types = "DNA%' or vac_type LIKE '%RNA"
-    #
-    #     cur.execute(
-    #         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-    #         "TO_CHAR(update_date, 'Month FMDD')"
-    #         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-    #         " WHERE CAST(stage AS VARCHAR(1)) LIKE '" + stages + "' "
-    #         " AND country LIKE '%" + country + "%' "
-    #         " AND (vac_type LIKE '%" + types + "%') "
-    #         "" + filter_limit + " "
-    #         " ORDER BY stage DESC, co_name, partner_name "
-    #         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-    #
-    # else:
-    #     cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-    #                 "TO_CHAR(update_date, 'Month FMDD')"
-    #                 " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-    #                 " ORDER BY stage DESC, company, partner_name "
-    #                 " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
-    #
-    # data = cur.fetchall()
-    # cur.execute("rollback")
-    # return render_template("card.html", data=data)
     desktop_stages = str(request.args.get('desktop_stage'))
     desktop_country = str(request.args.get('desktop_country'))
     desktop_type = str(request.args.get('desktop_type'))
@@ -262,7 +100,7 @@ def card():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
-        "" + desktop_filter_limit + " "
+        "" + filter_limit + " "
         " ORDER BY stage DESC, co_name, partner_name "
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
@@ -273,7 +111,7 @@ def card():
 
 @app.route("/mobile-form", methods=['GET'])
 def mobileForm():
-    global mobile_filter_limit
+    global filter_limit
     # global mobile_stages, mobile_country, mobile_type
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
@@ -288,10 +126,10 @@ def mobileForm():
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
-        mobile_filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
+        filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
                               "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
     else:
-        mobile_filter_limit = ""
+        filter_limit = ""
 
     cur.execute(
         "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
@@ -300,7 +138,7 @@ def mobileForm():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
-        "" + mobile_filter_limit + " "
+        "" + filter_limit + " "
         "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
 
     data = cur.fetchall()
@@ -308,7 +146,7 @@ def mobileForm():
     return render_template("mobile-card.html", data=data)
 
 
-@app.route("/mobile-card")
+@app.route("/mobile-card", methods=['GET'])
 def mobileAppendCards():
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
@@ -322,7 +160,7 @@ def mobileAppendCards():
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
-        "" + mobile_filter_limit + " "
+        "" + filter_limit + " "
         " ORDER BY stage DESC, co_name, partner_name "
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
@@ -350,7 +188,7 @@ def displayCompany():
     return render_template("card.html", data=data)
 
 
-@app.route("/get_update_time")
+@app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
     # cur.execute("rollback")
     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
@@ -370,14 +208,8 @@ def getUpdateTime():
         return update_time[0]
 
 
-@app.route("/get_bars_data")
+@app.route("/get_bars_data", methods=['GET'])
 def getBarsData():
-    # cur.execute("rollback")
-    # cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth') FROM info WHERE update_date IS NOT NULL "
-    #             "ORDER BY update_date DESC LIMIT 1")
-    # update_time = cur.fetchone()
-    # cur.execute("rollback")
-    # print(update_time[0])
     continent = str(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
