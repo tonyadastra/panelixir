@@ -923,9 +923,7 @@ $('.dropdown-item-type').click(function () {
     else if (active_type === "VLP"){
         active_type = "Nanoparticle Vaccines"
     }
-    else {
-        active_type = "Vaccine Platform"
-    }
+
     var dropdown_title_type = document.getElementById('dropdown-desktop-type')
     dropdown_title_type.innerHTML = active_type;
     document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
