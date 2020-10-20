@@ -1526,23 +1526,23 @@ span.highlight {
 
 .btn-clear:hover {
   color: #fff;
-  background-color: #ae3c3c;
-  border-color: #942323;
+  background-color: #de5151;
+  border-color: #d44f4f;
 }
 
-.btn-clear:not(:disabled):not(.disabled):active,
-.btn-clear:not(:disabled):not(.disabled).active,
-.show > .btn-clear.dropdown-toggle {
-  color: #fff;
-  background-color: #d35b00;
-  border-color: #a54a04;
-}
+/*.btn-clear:not(:disabled):not(.disabled):active,*/
+/*.btn-clear:not(:disabled):not(.disabled).active,*/
+/*.show > .btn-clear.dropdown-toggle {*/
+/*  color: #fff;*/
+/*  background-color: #d35b00;*/
+/*  border-color: #a54a04;*/
+/*}*/
 
-.btn-clear:not(:disabled):not(.disabled):active:focus,
-.btn-clear:not(:disabled):not(.disabled).active:focus,
-.show > .btn-clear.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.05rem rgb(255, 114, 7);
-}
+/*.btn-clear:not(:disabled):not(.disabled):active:focus,*/
+/*.btn-clear:not(:disabled):not(.disabled).active:focus,*/
+/*.show > .btn-clear.dropdown-toggle:focus {*/
+/*  box-shadow: 0 0 0 0.05rem rgb(255, 114, 7);*/
+/*}*/
 
 .dropdown-mobile {
   position: relative;

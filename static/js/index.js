@@ -639,6 +639,9 @@ var mobile_country = ''
 var mobile_type = ''
 var prev_response = ''
 var prev_response_mobile = ''
+var desktop_stage = ''
+var desktop_country = ''
+var desktop_type = ''
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
@@ -670,9 +673,9 @@ $(window).scroll(function () {
             $.ajax({
                 url: '/card',
                 type: 'get',
-                data: { 'count': count, 'limit': limit },
+                data: { 'desktop_stage': desktop_stage, 'desktop_country': desktop_country, 'desktop_type': desktop_type,
+                    'count': count, 'limit': limit },
                 success: function (response) {
-                    // console.log(response)
                     if (response !== prev_response){
                         $('#card_container').append(response);
                         count = count + 1;
@@ -743,18 +746,36 @@ $('.most-viewed').click(function () {
 
 // Display Title of Previous Selected Country when Reopening
 $('.btn-filter').click(function (){
-    var activeCountry = document.querySelector('.active#country').value;
+    var activeCountry = document.querySelector('.active.mobile-dropdown-item-ctry#country').value;
     if (activeCountry === ""){
         activeCountry = "All";
     }
     document.getElementById('mobile-button').innerHTML = activeCountry;
 })
 
+$('.btn-clear').click(function () {
+    $(".btn-group-1 > .btn").removeClass("active");
+    $(".btn-group-2 > .btn").removeClass("active");
+    $(".btn-group-3 > .btn").removeClass("active");
+
+    // $(".btn.btn-default.btn-mobile-stage.mobile-font.stages-all").click();
+    // $(".btn.btn-default.btn-mobile-country.mobile-font.most-viewed.country-all").click();
+    // $(".btn.btn-default.btn-mobile-type.mobile-font.type-all").click();
+
+    $(".btn.btn-default.btn-mobile-stage.mobile-font.stages-all").addClass('active');
+    $(".btn.btn-default.btn-mobile-country.mobile-font.most-viewed.country-all").addClass('active');
+    $(".btn.btn-default.btn-mobile-type.mobile-font.type-all").addClass('active');
+
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+})
+
 // AJAX Request for submitting mobile form
-$("#submit-form").click(function () {
-    mobile_stage = document.querySelector('.active#stages').value;
-    mobile_country = document.querySelector('.active#country').value;
-    mobile_type = document.querySelector('.active#type').value;
+$(".submit-mobile-form").click(function () {
+    mobile_stage = document.querySelector('.active.btn-mobile-stage#stages').value;
+    mobile_country = document.querySelector('.active.mobile-dropdown-item-ctry#country').value;
+    mobile_type = document.querySelector('.active.btn-mobile-type#type').value;
     $.ajax({
         url: "/mobile-form",
         data: {
@@ -836,99 +857,124 @@ $('.news-company').click(function () {
     return false;
 })
 
-// DESKTOP - Make clicked dropdown item active - Stages
-$('.btn-stage').click(function () {
-    var stage_Desktop = document.getElementsByClassName('btn btn-stage dropdown-toggle')[0];
-    var stageTitle_Desktop = stage_Desktop.innerText;
-    if (stageTitle_Desktop === "Pre-Clinical "){
-        stageTitle_Desktop = "0"
+
+
+$('.dropdown-item-stages').click(function () {
+    $(".dropdown-item-stages").removeClass('active');
+    $(this).addClass('active');
+    var active_stage = document.querySelector('.active.desktop-dropdown#stages').value;
+    if (active_stage === "_") {
+        active_stage = "All Stages"
     }
-    if (stageTitle_Desktop === "Phase I "){
-        stageTitle_Desktop = "1"
+    else if (active_stage === "0") {
+        active_stage = "Pre-Clinical"
     }
-    if (stageTitle_Desktop === "Phase II "){
-        stageTitle_Desktop = "2"
+    else if (active_stage === "1") {
+        active_stage = "Phase I"
     }
-    if (stageTitle_Desktop === "Phase III "){
-        stageTitle_Desktop = "3"
+    else if (active_stage === "2") {
+        active_stage = "Phase II"
     }
-    if (stageTitle_Desktop === "Limited Use "){
-        stageTitle_Desktop = "4-1"
+    else if (active_stage === "3") {
+        active_stage = "Phase III"
     }
-    if (stageTitle_Desktop === "Approval "){
-        stageTitle_Desktop = "4"
+    else if (active_stage === "4") {
+        active_stage = "Approval"
     }
-    // console.log(stageTitle_Desktop)
-    d3.selectAll(".dropdown-item-0")
-        .filter(function () {
-            //  console.log(d3.select(this).attr("value"))
-            // console.log(stageTitle_Desktop);
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-0');
-    d3.selectAll(".dropdown-item-1")
-        .filter(function () {
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-1');
-    d3.selectAll(".dropdown-item-2")
-        .filter(function () {
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-2');
-    d3.selectAll(".dropdown-item-3")
-        .filter(function () {
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-3');
-    d3.selectAll(".dropdown-item-4-1")
-        .filter(function () {
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-4-1');
-    d3.selectAll(".dropdown-item-4")
-        .filter(function () {
-            return d3.select(this).attr("value") === stageTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-4');
+    else if (active_stage === "4-1") {
+        active_stage = "Limited Use"
+    }
+    var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
+    dropdown_title_stage.innerHTML = active_stage;
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
 })
 
-// DESKTOP - Make clicked dropdown item active - Country
-$('.btn-country').click(function () {
-    var country_Desktop = document.getElementsByClassName('btn btn-country dropdown-toggle')[0];
-    var countryTitle_Desktop = country_Desktop.innerText;
-    d3.selectAll(".dropdown-item-ctry")
-        .filter(function () {
-            // console.log(d3.select(this).attr("value"))
-            // console.log(countryTitle_Desktop);
-            // console.log(d3.select(this).attr("value") + " " === countryTitle_Desktop)
-            return d3.select(this).attr("value") + " " === countryTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-ctry');
+$('.dropdown-item-ctry').click(function () {
+    $(".dropdown-item-ctry").removeClass('active');
+    $(this).addClass('active');
+    var active_country = document.querySelector('.active.desktop-dropdown#country').value;
+    if (active_country === "") {
+        active_country = "Worldwide"
+    }
+    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    dropdown_title_country.innerHTML = active_country;
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
 })
 
-// DESKTOP - Make clicked dropdown item active - Types
-$('.btn-types').click(function () {
-    var types_Desktop = document.getElementsByClassName('btn btn-types dropdown-toggle')[0];
-    var typesTitle_Desktop = types_Desktop.innerText;
-    if (typesTitle_Desktop === "Subunit Vaccines "){
-        typesTitle_Desktop = "Protein"
+$('.dropdown-item-type').click(function () {
+    $(".dropdown-item-type").removeClass('active');
+    $(this).addClass('active');
+    var active_type = document.querySelector('.active.desktop-dropdown#type').value;
+    if (active_type === ""){
+        active_type = "All Platforms"
     }
-    if (typesTitle_Desktop === "Nucleic Acid Vaccines "){
-        typesTitle_Desktop = "Genetic"
+    else if (active_type === "Protein"){
+        active_type = "Subunit Vaccines"
     }
-    if (typesTitle_Desktop === "Viral Vector Vaccines "){
-        typesTitle_Desktop = "Viral Vector"
+    else if (active_type === "Genetic"){
+        active_type = "Nucleic Acid Vaccines"
     }
-    if (typesTitle_Desktop === "Whole-Pathogen Vaccines "){
-        typesTitle_Desktop = "Virus"
+    else if (active_type === "Viral Vector"){
+        active_type = "Viral Vector Vaccines"
     }
-    if (typesTitle_Desktop === "Nanoparticle Vaccines "){
-        typesTitle_Desktop = "VLP"
+    else if (active_type === "Virus"){
+        active_type = "Whole-Pathogen Vaccines"
     }
-    d3.selectAll(".dropdown-item-type")
-        .filter(function () {
-            return d3.select(this).attr("value") === typesTitle_Desktop; // filter by single attribute
-        })
-        .attr('class', 'active dropdown-item-type');
+    else if (active_type === "VLP"){
+        active_type = "Nanoparticle Vaccines"
+    }
+    else {
+        active_type = "Vaccine Platform"
+    }
+    var dropdown_title_type = document.getElementById('dropdown-desktop-type')
+    dropdown_title_type.innerHTML = active_type;
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+})
+
+$('.clear-filter').click(function () {
+    $(".dropdown-item-stages").removeClass('active');
+    $(".dropdown-item-ctry").removeClass('active');
+    $(".dropdown-item-type").removeClass('active');
+
+    $(".desktop-dropdown.dropdown-item-stages.dropdown-item-4.all-stages").addClass('active');
+    $(".desktop-dropdown.dropdown-item-ctry.worldwide-countries").addClass('active');
+    $(".desktop-dropdown.dropdown-item-type.all-platforms").addClass('active');
+
+    var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
+    dropdown_title_stage.innerHTML = "Vaccine Stage ";
+    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    dropdown_title_country.innerHTML= "Country / Region ";
+    var dropdown_title_type = document.getElementById('dropdown-desktop-type')
+    dropdown_title_type.innerHTML = "Vaccine Platform ";
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    // });
+})
+
+$('.desktop-dropdown').click(function () {
+    $('#dropdown-desktop-stage').dropdown('hide');
+    $('#dropdown-desktop-country').dropdown('hide');
+    $('#dropdown-desktop-type').dropdown('hide');
+    desktop_stage = document.querySelector('.active.desktop-dropdown#stages').value;
+    desktop_country = document.querySelector('.active.desktop-dropdown#country').value;
+    desktop_type = document.querySelector('.active.desktop-dropdown#type').value;
+    $.ajax({
+        url: "/desktop-form",
+        data: {
+            'desktop_stage': desktop_stage, 'desktop_country': desktop_country, 'desktop_type': desktop_type,
+            'limit': limit, 'desktop_count': count
+        },
+        type: "GET",
+        success: function (response) {
+            $('.initial-cards').remove();
+            document.getElementById('card_container').innerHTML = response;
+            count = 1;
+        },
+    });
+    return false;
+})
+
+$(".btn.btn-light").mouseup(function(){
+    $(this).blur();
 })
