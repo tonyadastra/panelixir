@@ -384,11 +384,11 @@
 <!--Filter Data-->
 <div class="filter">
     <div class="row">
-        <div class="column filter-text">
+        <div class="col-2 column filter-text">
             <i class="fa fa-filter"></i>&nbsp;<b>Filter Vaccines</b>
         </div>
         <!--            Vaccine Stage-->
-        <div class="column">
+        <div class="col column">
             <div class="dropdown">
                 <button type="button" class="btn btn-stage dropdown-toggle" id="dropdown-desktop-stage" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -412,7 +412,7 @@
         </div>
 
         <!-- Country-->
-        <div class="column">
+        <div class="col column">
             <!-- country dropdown -->
             <div class="dropdown">
                 <button class="btn btn-country dropdown-toggle" type="button" id="dropdown-desktop-country"
@@ -476,7 +476,7 @@
         </div>
 
         <!-- Vaccine Platforms-->
-        <div class="column">
+        <div class="col column">
             <!-- types dropdown -->
             <div class="dropdown">
                 <button class="btn btn-types dropdown-toggle" type="button" id="dropdown-desktop-type"
@@ -501,12 +501,15 @@
                 </div>
             </div>
         </div>
-        <div class="column clear_filter" style="float: right;">
+{#        <div class="col"></div>#}
+        <div class="col-2"></div>
+        <div class="col column clear_filter" style="float: right;">
             <button class="btn btn-light align-right desktop-dropdown clear-filter" style="border-bottom: 2px solid #d2d1d1"
                 value="clear">
                 <b style="color: midnightblue;">Clear Filter</b>
             </button>
         </div>
+        <div class="col-1"></div>
     </div>
 </div>
 
@@ -514,7 +517,7 @@
 <!-- list institutions -->
 <div class="institutions" id="institutions">
     <div class="initial-cards">
-        {% include 'desktop-card.html' %}
+        {% include 'institutions.html' %}
     </div>
     <div id="card_container"></div>
     <div id="mobile_container"></div>

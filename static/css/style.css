@@ -69,6 +69,18 @@ html, body {
         overflow-x: hidden;
     }
 
+    .blank-1{
+        height: 2rem;
+    }
+    .blank-2 {
+        height: 5rem;
+    }
+
+    .no-results {
+         margin-top: 1rem;
+        font-size: 0.8rem;
+    }
+
     .btn-mobile-stage {
         font-size: 0.6rem !important;
         padding: 0.3rem 0.4rem;
@@ -422,6 +434,18 @@ html, body {
     }
 }
 @media screen and (min-width: 426px) and (max-width: 576px) {
+    .blank-1{
+        height: 2rem!important;
+    }
+    .blank-2 {
+        height: 5rem!important;
+    }
+
+    .no-results {
+         margin-top: 1rem!important;
+        font-size: 0.8rem!important;
+    }
+
     .news-list {
         margin-top: 0.8rem !important;
         padding-left: 2rem !important;
@@ -508,6 +532,12 @@ html, body {
 
 /* 426-767px - Tablet */
 @media screen and (min-width: 426px) and (max-width: 767px) {
+    .blank-1{
+        height: 20rem;
+    }
+    .blank-2 {
+        height: 35rem;
+    }
     .news-list {
         margin-top: 0.8rem !important;
         padding-left: 2rem !important;
@@ -650,6 +680,12 @@ html, body {
 /* Tablet-iPad-Mini-Laptop 768-1200px */
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
+    .blank-1{
+        height: 20rem;
+    }
+    .blank-2 {
+        height: 35rem;
+    }
     .news-wrapper {
         width: 80% !important;
     }
@@ -809,6 +845,13 @@ html, body {
 /* Normal Computer Screen 1440px */
 
 @media screen and (min-width: 1200px) {
+    .blank-1{
+        height: 20rem;
+    }
+    .blank-2 {
+        height: 35rem;
+    }
+
     .update-time {
         font-size: 1.6rem;
     }
@@ -1762,4 +1805,8 @@ tspan {
   margin-left: 0.5rem;
   font-weight: 200;
   color: #7a7a7a;
+}
+
+.no-results {
+    color: darkslateblue;
 }

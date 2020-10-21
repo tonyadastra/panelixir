@@ -74,7 +74,7 @@ def desktopForm():
 
     data = cur.fetchall()
     cur.execute("rollback")
-    return render_template("desktop-card.html", data=data)
+    return render_template("institutions.html", data=data)
 
 
 @app.route("/card", methods=['GET'])
@@ -127,7 +127,7 @@ def mobileForm():
 
     data = cur.fetchall()
     cur.execute("rollback")
-    return render_template("mobile-card.html", data=data)
+    return render_template("institutions.html", data=data)
 
 
 @app.route("/mobile-card", methods=['GET'])
@@ -273,6 +273,7 @@ if __name__ == '__main__':
     app.secret_key = ''.join(random.choice(string.printable)
                              for _ in range(20))
     app.run(debug=True)
+
 
 # cur.close()
 # conn.close()
