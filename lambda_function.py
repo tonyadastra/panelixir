@@ -1,7 +1,5 @@
 import json
 import requests
-# from botocore.vendored import requests
-import re
 from bs4 import BeautifulSoup
 import psycopg2
 from close_match_indexes import get_close_matches_indexes
@@ -10,7 +8,7 @@ import datetime
 
 def lambda_handler(event, context):
     # TODO implement
-
+    response = ""
     now = datetime.datetime.now()
     # connect to database
     # conn = psycopg2.connect("host=localhost dbname=vaccinedb user=tonyliu")
@@ -42,11 +40,13 @@ def lambda_handler(event, context):
     soup = BeautifulSoup(src, "html.parser")
 
     # Find Latest News Section
-    latest_news = soup.find(text=re.compile('New additions and recent updates:')).parent.parent.parent.find_all(
-        'p', attrs={"class": "g-body "})
+    nytimes_news = soup.find_all('p', attrs={"class": "g-body"})
+    latest_news = []
+    for news in nytimes_news:
+        if '•' in news.text:
+            latest_news.append(news)
 
     latest_update_array = []
-    matched_array_indexes = []
     for news in latest_news:
         news_array = []
         update_time = news.find('span', class_="g-updated")
@@ -63,7 +63,6 @@ def lambda_handler(event, context):
                     company_string += news_company[i].a.text + ", "
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.4)
-            # print(index)
             try:
                 vaccine_id = info_id_and_company[index[0]][0]
             except IndexError:
@@ -98,12 +97,12 @@ def lambda_handler(event, context):
 
     for i in range(len(latest_update_array)):
         if latest_update_array[0][0] == existing_news_array[0][0]:
-            print("No Updates")
+            response = "No Updates"
             break
         else:
             # if there is an update...
             if latest_update_array[i][0] == existing_news_array[0][0]:
-                print(str(i - 1) + "updates found")
+                response = str(i) + " updates found"
                 for j in range(1, i + 1):
                     update = latest_update_array[i - j][0]
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
@@ -115,11 +114,7 @@ def lambda_handler(event, context):
                                  latest_update_array[i - j][2]))
                     conn.commit()
 
-    cur.close()
-    conn.close()
-
-
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'body': json.dumps(response)
     }
