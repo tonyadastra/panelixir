@@ -3,7 +3,7 @@
 
 ### Version History
 - v1.1 - Switch to html.parser, fix bugs that caused an empty response October 20, 2020
-- v1.0 - Initial release October 18,2020
+- v1.0 - Initial release October 18, 2020
 
 ### The Lambda Function
 - This program is a lambda function that updates the Latest News Section
@@ -36,14 +36,14 @@ in the master branch, several modifications are made to comply with
 lambda function requirements
 
 ### To Update Lambda Function in AWS using Terminal
-1. Install awscli using pip **`pip install awscli`**
-2. Login to AWS in terminal using **`aws configure`**, the access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
-3. Add additional packages to the package folder using **`pip install --target ./package [new-package]`**. If no new packages are added, skip to step 7.
-4. Go to the package directory using **`cd package`**
-5. Zip the package folder using **`zip -r9 ${OLDPWD}/function.zip .`** <br>(`$OLDPWD` stands for OLDPrintWorkingDirectory, which corresponds to the directory before the `cd` command)
-6. Go to the main directory **`cd $OLDPWD`**
-7. Zip all necessary files to upload to AWS Lambda **`zip -g function.zip lambda_function.py close_match_indexes.py`** Remember to include new files here if necessary
-8. Update AWS Lambda using hte command **`aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`**
+1. **`pip install awscli`** Install awscli using pip 
+2. **`aws configure`** Login to AWS in terminal. The access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
+3. **`pip install --target ./package [new-package]`** Add additional packages to the package folder if necessary. If no new packages are added, skip to step 7.
+4. **`cd package`** Go to the package directory using
+5.  **`zip -r9 ${OLDPWD}/function.zip .`** Zip the package folder (`$OLDPWD` stands for OLDPrintWorkingDirectory, which corresponds to the directory before the `cd` command)
+6. **`cd $OLDPWD`** Return to the main directory
+7. **`zip -g function.zip lambda_function.py close_match_indexes.py`** Zip all necessary files to upload to AWS Lambda. Remember to include new files here if necessary
+8. **`aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`** Send updates to AWS Lambda
 9. If successful, a JSON string should be returned. <br>
 Example: 
 ```
