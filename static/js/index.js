@@ -783,6 +783,14 @@ $(".submit-mobile-form").click(function () {
             'limit': limit, 'mobile_count': mobile_count
         },
         type: "GET",
+        beforeSend: function() {
+            // show the preloader (progress bar)
+            $('#TagIWantToLoadTo').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+        },
+        complete: function () {
+            // hide the preloader (progress bar)
+            $('#TagIWantToLoadTo').html("");
+        },
         success: function (response) {
             $('.initial-cards').remove();
             // $('#card_container').remove();
@@ -968,6 +976,15 @@ $('.desktop-dropdown').click(function () {
             'limit': limit, 'desktop_count': count
         },
         type: "GET",
+        beforeSend: function() {
+            // show the preloader (progress bar)
+            $('#TagIWantToLoadTo').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+            // setTimeout(() => {}, 2000);
+        },
+        complete: function () {
+            // hide the preloader (progress bar)
+            $('#TagIWantToLoadTo').html("");
+        },
         success: function (response) {
             $('.initial-cards').remove();
             // $('#mobile_container').remove();
