@@ -130,7 +130,6 @@
                 <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}"
                              news-text="{{news[3]}}" news-date="{{news[4]}}"></latest-news>
             {% endfor %}
-{#            {% include 'news.html' %}#}
         </ul>
     </div>
 </div>
@@ -356,12 +355,12 @@
                                 <button type="button" class="active btn btn-default btn-mobile-type mobile-font type-all" id="type" value="" style="padding: 0.3rem 0.75rem!important;min-width: 0!important;">All Platforms</button>
 {#                            </div>#}
 {#                            <div class="btn-group btn-group-3">#}
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Genetic">Nucleic Acid</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="DNA%' or vac_type LIKE '%RNA">Nucleic Acid</button>
                                 <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Viral Vector">Viral Vector</button>
                                 <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Protein">Subunit</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Virus">Whole-Pathogen</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Virus%' or vac_type LIKE '%Inactivated">Whole-Pathogen</button>
                                 <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="VLP">Nanoparticle</button>
-                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Others">Others</button>
+                                <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Repurposed">Others</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -476,7 +475,7 @@
             </div>
         </div>
 
-        <!-- Vaccine Types-->
+        <!-- Vaccine Platforms-->
         <div class="column">
             <!-- types dropdown -->
             <div class="dropdown">
@@ -487,18 +486,18 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <button class="desktop-dropdown dropdown-item-type all-platforms active" type="submit" id="type" value="">All Platforms</button>
                     <div class="dropdown-divider"></div>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Genetic">
+                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="DNA%' or vac_type LIKE '%RNA">
                         Nucleic Acid Vaccines</button>
                     <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Protein">
                         Subunit Vaccines</button>
                     <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Viral Vector">
                         Viral Vector Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Virus">
+                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Virus%' or vac_type LIKE '%Inactivated">
                         Whole-Pathogen Vaccines</button>
                     <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="VLP">
                         Nanoparticle Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Others">
-                        Others</button>
+                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Repurposed">
+                        Other Platforms</button>
                 </div>
             </div>
         </div>
@@ -513,15 +512,13 @@
 
 
 <!-- list institutions -->
-{#<div class="all-cards">#}
-    <div class="institutions" id="institutions">
-        <div class="initial-cards">
-            {% include 'desktop-card.html' %}
-        </div>
-        <div id="card_container"></div>
-        <div id="mobile_container"></div>
+<div class="institutions" id="institutions">
+    <div class="initial-cards">
+        {% include 'desktop-card.html' %}
     </div>
-{#</div>#}
+    <div id="card_container"></div>
+    <div id="mobile_container"></div>
+</div>
 
 {% endblock %}
 

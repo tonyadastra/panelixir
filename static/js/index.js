@@ -911,17 +911,20 @@ $('.dropdown-item-type').click(function () {
     else if (active_type === "Protein"){
         active_type = "Subunit Vaccines"
     }
-    else if (active_type === "Genetic"){
+    else if (active_type === "DNA%' or vac_type LIKE '%RNA"){
         active_type = "Nucleic Acid Vaccines"
     }
     else if (active_type === "Viral Vector"){
         active_type = "Viral Vector Vaccines"
     }
-    else if (active_type === "Virus"){
+    else if (active_type === "Virus%' or vac_type LIKE '%Inactivated"){
         active_type = "Whole-Pathogen Vaccines"
     }
     else if (active_type === "VLP"){
         active_type = "Nanoparticle Vaccines"
+    }
+    else if (active_type === "Repurposed") {
+        active_type = "Other Platforms"
     }
 
     var dropdown_title_type = document.getElementById('dropdown-desktop-type')

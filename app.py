@@ -51,17 +51,9 @@ def index():
 @app.route("/desktop-form", methods=['GET'])
 def desktopForm():
     global filter_limit
-    # global desktop_stages, desktop_country, desktop_type
     desktop_stages = str(request.args.get('desktop_stage'))
     desktop_country = str(request.args.get('desktop_country'))
     desktop_type = str(request.args.get('desktop_type'))
-
-    if desktop_type == "Genetic":
-        desktop_type = "DNA%' or vac_type LIKE '%RNA"
-    elif desktop_type == "Others":
-        desktop_type = "Repurposed"
-    elif desktop_type == "Virus":
-        desktop_type = "Virus%' or vac_type LIKE '%Inactivated"
 
     if desktop_stages == "4-1":
         desktop_stages = "_"
@@ -112,17 +104,9 @@ def card():
 @app.route("/mobile-form", methods=['GET'])
 def mobileForm():
     global filter_limit
-    # global mobile_stages, mobile_country, mobile_type
     mobile_stages = str(request.args.get('mobile_stage'))
     mobile_country = str(request.args.get('mobile_country'))
     mobile_type = str(request.args.get('mobile_type'))
-
-    if mobile_type == "Genetic":
-        mobile_type = "DNA%' or vac_type LIKE '%RNA"
-    elif mobile_type == "Others":
-        mobile_type = "Repurposed"
-    elif mobile_type == "Virus":
-        mobile_type = "Virus%' or vac_type LIKE '%Inactivated"
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
@@ -184,7 +168,6 @@ def displayCompany():
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()
     cur.execute("rollback")
-    # print(company)
     return render_template("card.html", data=data)
 
 
