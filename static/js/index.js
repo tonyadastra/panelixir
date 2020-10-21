@@ -785,7 +785,7 @@ $(".submit-mobile-form").click(function () {
         type: "GET",
         success: function (response) {
             $('.initial-cards').remove();
-            $('#card_container').remove();
+            // $('#card_container').remove();
             document.getElementById('mobile_container').innerHTML = response;
             mobile_count = 1;
         },
@@ -970,6 +970,7 @@ $('.desktop-dropdown').click(function () {
         type: "GET",
         success: function (response) {
             $('.initial-cards').remove();
+            // $('#mobile_container').remove();
             document.getElementById(    'card_container').innerHTML = response;
             count = 1;
         },
