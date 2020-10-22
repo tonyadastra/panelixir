@@ -12,9 +12,9 @@ application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.secret_key = "panelixir-key"
-conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
-                        " dbname=vaccinedb user=internetuser password=welcometopanelixir")
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
+#                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
+conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()

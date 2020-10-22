@@ -1026,3 +1026,10 @@ $('.desktop-dropdown').click(function () {
 $(".btn.btn-light").mouseup(function(){
     $(this).blur();
 })
+
+$('#dropdown-desktop-country').click(function () {
+    document.getElementById('myInput').value = '';
+    $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
+    });
+})
