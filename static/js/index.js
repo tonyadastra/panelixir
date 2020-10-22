@@ -756,6 +756,7 @@ $('.btn-filter').click(function (){
 $('.btn-clear').click(function () {
     $(".btn-group-1 > .btn").removeClass("active");
     $(".btn-group-2 > .btn").removeClass("active");
+    $(".mobile-dropdown-item-ctry").removeClass("active");
     $(".btn-group-3 > .btn").removeClass("active");
 
     // $(".btn.btn-default.btn-mobile-stage.mobile-font.stages-all").click();
@@ -764,6 +765,7 @@ $('.btn-clear').click(function () {
 
     $(".btn.btn-default.btn-mobile-stage.mobile-font.stages-all").addClass('active');
     $(".btn.btn-default.btn-mobile-country.mobile-font.most-viewed.country-all").addClass('active');
+    $(".mobile-dropdown-item-ctry.mobile-dropdown-item.country-worldwide").addClass('active');
     $(".btn.btn-default.btn-mobile-type.mobile-font.type-all").addClass('active');
 
 
