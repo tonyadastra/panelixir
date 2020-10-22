@@ -13,6 +13,7 @@
 * [ ] G-Zip Compression
 * [X] Auto-Update Latest News Section from NYTimes Website
 * [X] Latest News Section Update in Database (Avoid re-uploading code every time)
+* [X] Add "search" on Country / Region Dropdown
 * [X] Non-www redirect - all redirect to https://www.panelixir.com
 * [X] Add Preloader
 * [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
@@ -36,6 +37,8 @@
 3. [Bug Report - Google Forms](https://docs.google.com/forms/d/1fPws_MFtqO4bLWH_1xhLt4AEEcYHpdQt8DiRNabJc-Y/edit?usp=sharing)
 4. [D3 API Reference(Wiki)](https://github.com/d3/d3/blob/master/API.md)
 5. [Nature Article - Different Vaccine Platforms](https://www.nature.com/articles/s41563-020-0746-0)
+6. [US clinicaltrials.gov COVID-19 Vaccines](https://clinicaltrials.gov/ct2/results?cond=Covid19&term=&type=Intr&rslt=&age_v=&gndr=&intr=Vaccine&titles=&outc=&spons=&lead=&id=&cntry=&state=&city=&dist=&locn=&rsub=&strd_s=&strd_e=&prcd_s=&prcd_e=&sfpd_s=&sfpd_e=&rfpd_s=&rfpd_e=&lupd_s=&lupd_e=&sort=)
+7. [Chinese Clinical Trial Registration COVID-19 Vaccines](http://www.chictr.org.cn/searchprojen.aspx?title=vaccine&officialname=&subjectid=&secondaryid=&applier=&studyleader=&ethicalcommitteesanction=&sponsor=&studyailment=COVID-19&studyailmentcode=&studytype=0&studystage=0&studydesign=0&minstudyexecutetime=&maxstudyexecutetime=&recruitmentstatus=0&gender=0&agreetosign=&secsponsor=&regno=&regstatus=0&country=&province=&city=&institution=&institutionlevel=&measure=&intercode=&sourceofspends=&createyear=0&isuploadrf=&whetherpublic=&btngo=btn&verifycode=&page=1)
 
 **Resources**
 1. [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)

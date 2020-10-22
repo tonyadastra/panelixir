@@ -19,18 +19,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
 
+filter_limit = ""
+
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
-
-
-stages = "Vaccine Stage"
-country = "Country / Region"
-types = "Vaccine Platform"
-status = "status"
-filter_limit = ""
 
 
 @app.route('/', methods=['GET'])
