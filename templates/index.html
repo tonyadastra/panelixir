@@ -196,7 +196,7 @@
         </div>
     </div>
 
-{#    Only Display with Small Screen (< 768px) #}
+    {#    Only Display with Small Screen (< 768px) #}
     <div class="row small-screen">
         <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
             <p class="display-highlight row">
@@ -369,7 +369,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.5rem!important;margin-right: 0.9rem;">Cancel</button>
-                            <button type="submit" class="btn btn-primary submit-mobile-form" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
+                            <button class="btn btn-primary submit-mobile-form" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
                         </div>
                     </div>
                 </div>
@@ -398,19 +398,19 @@
                     aria-haspopup="true" aria-expanded="false">
                     Vaccine Stage
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-4 all-stages active" type="submit" id="stages" value="_">All Stages</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-stages">
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-4 all-stages active" id="stages" value="_">All Stages</button>
                     <div class="dropdown-divider"></div>
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-0" type="submit" id="stages" value="0">Pre-Clinical</button>
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-1" type="submit" id="stages" value="1">Phase I</button>
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-2" type="submit" id="stages" value="2">Phase II</button>
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-3" type="submit" id="stages" value="3">Phase III</button>
-                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-4-1" type="submit" id="stages" value="4-1">Limited Use</button>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-0" id="stages" value="0">Pre-Clinical</button>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-1" id="stages" value="1">Phase I</button>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-2" id="stages" value="2">Phase II</button>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-3" id="stages" value="3">Phase III</button>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-4-1" id="stages" value="4-1">Limited Use</button>
                     <div class="dropdown-divider"></div>
                     <!--                            Disabled-->
-                    <button class="dropdown-item disabled" type="submit" id="stages" value="4">Approval</button>
+                    <button class="dropdown-item disabled" id="stages" value="4">Approval</button>
                     <!--                            Enabled-->
-{#                        <button class="desktop-dropdown dropdown-item-stages dropdown-item-4" type="submit" id="stages" value="4">Approval</button>#}
+{#                        <button class="desktop-dropdown dropdown-item-stages dropdown-item-4" id="stages" value="4">Approval</button>#}
                 </div>
             </div>
         </div>
@@ -423,58 +423,57 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Country / Region
                 </button>
-                <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton">
-                    <button class="desktop-dropdown dropdown-item-ctry worldwide-countries active" type="submit" id="country" value="">
+                <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-country">
+                    <label><input class="form-control" id="myInput" type="text" autocomplete="off" placeholder="Search">
+                        <i style="position:absolute; right:8px;top:12px;" class="fa fa-search"></i>
+                        </label>
+                    <button class="desktop-dropdown dropdown-item-ctry worldwide-countries active" id="country" value="">
                         <i class="fa fa-globe"></i>&nbsp;Worldwide
                     </button>
-                    <button class="dropdown-item disabled" style="color: darkcyan;">Commonly
-                        Searched</button>
+                    <button class="dropdown-item disabled" style="color: darkcyan;">Top Countries</button>
                     {# <div class="dropdown-divider"></div> #}
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="United States">United
-                        States</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="United Kingdom">United
-                        Kingdom</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="China">China</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Russia">Russia</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Germany">Germany</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="United States">United States</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="United Kingdom">United Kingdom</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="China">China</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Russia">Russia</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Germany">Germany</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Australia">Australia</button>
 
-                    <div class="dropdown-divider"></div>
+{#                    <div class="dropdown-divider"></div>#}
                     <button class="dropdown-item disabled">Other countries</button>
-                    <div class="dropdown-divider"></div>
+{#                    <div class="dropdown-divider"></div>#}
 
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
-                        value="Argentina">Argentina</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Austria">Austria</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Belgium">Belgium</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Brazil">Brazil</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Canada">Canada</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Cuba">Cuba</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Egypt">Egypt</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Finland">Finland</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="France">France</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="India">India</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Israel">Israel</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Italy">Italy</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Japan">Japan</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Argentina">Argentina</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Austria">Austria</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Belgium">Belgium</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Brazil">Brazil</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Canada">Canada</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Cuba">Cuba</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Egypt">Egypt</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Finland">Finland</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="France">France</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="India">India</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Israel">Israel</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Italy">Italy</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Japan">Japan</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Kazakhstan">Kazakhstan</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Malaysia">Malaysia</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Netherlands">Netherlands</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Nigeria">Nigeria</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Singapore">Singapore</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="South Korea">South Korea</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Sweden">Sweden</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Nigeria">Nigeria</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Singapore">Singapore</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="South Korea">South Korea</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Sweden">Sweden</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Switzerland">Switzerland</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Taiwan">Taiwan</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country"
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Taiwan">Taiwan</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country"
                         value="Thailand">Thailand</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Turkey">Turkey</button>
-                    <button class="desktop-dropdown dropdown-item-ctry" type="submit" id="country" value="Vietnam">Vietnam</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Turkey">Turkey</button>
+                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Vietnam">Vietnam</button>
                 </div>
             </div>
         </div>
@@ -487,20 +486,20 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Vaccine Platform
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <button class="desktop-dropdown dropdown-item-type all-platforms active" type="submit" id="type" value="">All Platforms</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-platforms">
+                    <button class="desktop-dropdown dropdown-item-type all-platforms active" id="type" value="">All Platforms</button>
                     <div class="dropdown-divider"></div>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="DNA%' or vac_type LIKE '%RNA">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="DNA%' or vac_type LIKE '%RNA">
                         Nucleic Acid Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Protein">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="Protein">
                         Subunit Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Viral Vector">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="Viral Vector">
                         Viral Vector Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Virus%' or vac_type LIKE '%Inactivated">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="Virus%' or vac_type LIKE '%Inactivated">
                         Whole-Pathogen Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="VLP">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="VLP">
                         Nanoparticle Vaccines</button>
-                    <button class="desktop-dropdown dropdown-item-type" type="submit" id="type" value="Repurposed">
+                    <button class="desktop-dropdown dropdown-item-type" id="type" value="Repurposed">
                         Other Platforms</button>
                 </div>
             </div>

@@ -14,6 +14,7 @@
 * [X] Auto-Update Latest News Section from NYTimes Website
 * [X] Latest News Section Update in Database (Avoid re-uploading code every time)
 * [X] Non-www redirect - all redirect to https://www.panelixir.com
+* [X] Add Preloader
 * [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
 * [X] Auto-generate Latest-Update on top based on date in database
 * [X] Add update date in each vaccine introduction

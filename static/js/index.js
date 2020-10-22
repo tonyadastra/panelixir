@@ -812,6 +812,32 @@ $(document).ready(function() {
         // Scroll Into View, (true)=top, (false)=bottom
         element.scrollIntoView();
     })
+
+    // Search function for Country / Region Dropdown
+    $("#myInput").on("keyup", function () {
+        var input_value = $(this).val().toLowerCase();
+        $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(input_value) > -1)
+        });
+        // Hide "Top countries" and "other countries" when searching
+        $("#all-dropdown-items-country .disabled").hide()
+        // Show "Top countries" and "other countries" when input field becomes empty again
+        if (input_value === '') {
+            $("#all-dropdown-items-country .disabled").show()
+        }
+    });
+
+    // Prevent dropdowns from hiding when clicking inside
+    $('#all-dropdown-items-country').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $('#all-dropdown-items-stages').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $('#all-dropdown-items-platforms').on('click', function (event) {
+        event.stopPropagation();
+    });
+
 });
 
 // Keep Interactive Button Active after clicking outside
