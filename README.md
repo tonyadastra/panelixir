@@ -68,6 +68,9 @@ Example:
     "LastUpdateStatus": "Successful"
 }
 ```
+### Invoke the Lambda Function in Terminal
+`aws lambda invoke --function-name update_news return --log-type Tail --query 'LogResult' --output text |  base64 -d`<br>
+Execution results will be saved to a file called return
 
 ### Related Resources
 1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)

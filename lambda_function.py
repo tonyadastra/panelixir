@@ -22,7 +22,7 @@ def lambda_handler(event, context):
     cur.execute("rollback")
     # print(news_new)
     for i in range(len(news_new)):
-        if news_new[i][1] > 3:
+        if news_new[i][1] >= 3:
             cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_new[i][0]))
             conn.commit()
 
