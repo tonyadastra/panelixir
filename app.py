@@ -37,7 +37,7 @@ def index():
     data = cur.fetchall()
     cur.execute("rollback")
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
-                "ORDER BY date DESC, key DESC LIMIT 6")
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC")
     news_data = cur.fetchall()
     cur.execute("rollback")
     return render_template("index.html", data=data, news_data=news_data)
