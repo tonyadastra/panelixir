@@ -36,14 +36,22 @@ in the master branch, several modifications are made to comply with
 lambda function requirements
 
 ### To Update Lambda Function in AWS using Terminal
-1. **`pip install awscli`** Install awscli using pip 
-2. **`aws configure`** Login to AWS in terminal. The access key ID and password can be found in AWS Credentials. For default region, use `us-west-1`
-3. **`pip install --target ./package [new-package]`** Add additional packages to the package folder if necessary. If no new packages are added, skip to step 7.
-4. **`cd package`** Go to the package directory using
-5.  **`zip -r9 ${OLDPWD}/function.zip .`** Zip the package folder (`$OLDPWD` stands for OLDPrintWorkingDirectory, which corresponds to the directory before the `cd` command)
-6. **`cd $OLDPWD`** Return to the main directory
-7. **`zip -g function.zip lambda_function.py close_match_indexes.py`** Zip all necessary files to upload to AWS Lambda. Remember to include new files here if necessary
-8. **`aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`** Send updates to AWS Lambda
+1. Install awscli using pip 
+    + `pip install awscli`
+2. Login to AWS in terminal. The access key ID and password can be found in AWS Credentials. For default region, use us-west-1
+    + `aws configure`
+3. Add additional packages to the package folder if necessary. If no new packages are added, skip to step 7.
+    + `pip install --target ./package [new-package]`
+4. Go to the package directory
+    + `cd package`
+5. Zip the package folder (`$OLDPWD` stands for OLDPrintWorkingDirectory, which corresponds to the directory before the `cd` command)
+    + `zip -r9 ${OLDPWD}/function.zip .`
+6. Return to the main directory
+    + `cd $OLDPWD`
+7. Zip all necessary files to upload to AWS Lambda. Remember to include new files here if necessary
+    + `zip -g function.zip lambda_function.py close_match_indexes.py`
+8. Send updates to AWS Lambda
+    + `aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`
 9. If successful, a JSON string should be returned. <br>
 Example: 
 ```
