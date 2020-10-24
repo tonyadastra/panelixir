@@ -104,7 +104,9 @@ def lambda_handler(event, context):
             if latest_update_array[i][0] == existing_news_array[0][0]:
                 response = str(i) + " updates found"
                 for j in range(1, i + 1):
-                    update = latest_update_array[i - j][0]
+                    update = latest_update_array[i - j][0]\
+                        .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')\
+                        .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III')
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                     VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                                 (latest_update_array[i - j][3],
