@@ -18,6 +18,7 @@
 * [X] Add Preloader
 * [X] Optimize HTML Documents (remove unnecessary HTMLs for vaccine introduction AJAX)
 * [X] Auto-generate Latest-Update on top based on date in database
+* [X] Latest News ORDER BY Top
 * [X] Add update date in each vaccine introduction
 * [X] Database Security
 * [X] Add HTTPS Certificate
