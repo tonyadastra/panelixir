@@ -17,7 +17,7 @@ def lambda_handler(event, context):
                             " dbname=vaccinedb user=postgres password=iloveNYC0704")
     cur = conn.cursor()
 
-    # Remove News Tag IF more than three days - TO BE CONTINUED
+    # Remove News Tag IF more than two days
     cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("New",))
     news_new = cur.fetchall()
     cur.execute("rollback")
@@ -25,6 +25,15 @@ def lambda_handler(event, context):
     for i in range(len(news_new)):
         if news_new[i][1] >= 3:
             cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_new[i][0]))
+            conn.commit()
+
+    # Remove Breaking News Tag IF more than two days
+    cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("Breaking News",))
+    news_breaking_news = cur.fetchall()
+    cur.execute("rollback")
+    for i in range(len(news_breaking_news)):
+        if news_breaking_news[i][1] >= 3:
+            cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_breaking_news[i][0]))
             conn.commit()
 
     cur.execute("SELECT vac_id, company_nytimes FROM companies WHERE company_nytimes IS NOT NULL")
