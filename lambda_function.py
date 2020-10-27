@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import psycopg2
 from close_match_indexes import get_close_matches_indexes
 import datetime
+import difflib
 
 
 def lambda_handler(event, context):
@@ -62,11 +63,25 @@ def lambda_handler(event, context):
                 else:
                     company_string += news_company[i].a.text + ", "
 
-            index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.4)
+            index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
             try:
                 vaccine_id = info_id_and_company[index[0]][0]
             except IndexError:
-                vaccine_id = -1
+                for a in range(len(info_id_and_company)):
+                    each_id_company = company_array_possibilities[a].split(', ')
+                    match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                    if match:
+                        vaccine_id = info_id_and_company[a][0]
+                        break
+                    else:
+                        vaccine_id = -1
+                if vaccine_id == -1:
+                    modified_string = company_string + " Biological"
+                    index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
+                    try:
+                        vaccine_id = info_id_and_company[index[0]][0]
+                    except IndexError:
+                        vaccine_id = -1
 
             news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
             news_array.append(company_string)

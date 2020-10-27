@@ -2,6 +2,7 @@
 ## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
 ### Version History
+- v1.2 - Update Algorithm to find vaccine_id of Latest News October 26, 2020
 - v1.1 - Switch to html.parser, fix bugs that caused an empty response October 20, 2020
 - v1.0 - Initial release October 18, 2020
 
@@ -77,8 +78,8 @@ Example:
 }
 ```
 ### Invoke the Lambda Function in Terminal
-`aws lambda invoke --function-name update_news return --log-type Tail --query 'LogResult' --output text |  base64 -d`<br>
-Execution results will be saved to a file called return
++ `aws lambda invoke --function-name update_news return --log-type Tail --query 'LogResult' --output text |  base64 -d`
++ Execution results will be saved to a file called return
 
 ### Related Resources
 1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
