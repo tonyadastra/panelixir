@@ -28,7 +28,6 @@ try:
         # get the table
         df = tabula.read_pdf("data.pdf", pages=i, pandas_options={'header': None})
         table = df[0].to_numpy()
-        # print(len(table))
 
 
         for j in range(0,len(table)):

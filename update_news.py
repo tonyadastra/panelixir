@@ -3,6 +3,7 @@ import psycopg2
 from bs4 import BeautifulSoup
 from models.close_match_indexes import get_close_matches_indexes
 import datetime
+import difflib
 
 response = ""
 now = datetime.datetime.now()
@@ -12,14 +13,23 @@ conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.c
                         " dbname=vaccinedb user=postgres password=iloveNYC0704")
 cur = conn.cursor()
 
-# Remove News Tag IF more than three days - TO BE CONTINUED
+# Remove News Tag IF more than two days
 cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("New",))
 news_new = cur.fetchall()
 cur.execute("rollback")
 # print(news_new)
 for i in range(len(news_new)):
-    if news_new[i][1] > 3:
+    if news_new[i][1] >= 3:
         cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_new[i][0]))
+        conn.commit()
+
+# Remove Breaking News Tag IF more than two days
+cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("Breaking News",))
+news_breaking_news = cur.fetchall()
+cur.execute("rollback")
+for i in range(len(news_breaking_news)):
+    if news_breaking_news[i][1] >= 3:
+        cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_breaking_news[i][0]))
         conn.commit()
 
 cur.execute("SELECT vac_id, company_nytimes FROM companies WHERE company_nytimes IS NOT NULL")
@@ -36,14 +46,13 @@ src = result.content
 soup = BeautifulSoup(src, "html.parser")
 
 # Find Latest News Section
-nytimes_news = soup.find_all('p', attrs={"class": "g-body "})
+nytimes_news = soup.find_all('p', attrs={"class": "g-body"})
 latest_news = []
 for news in nytimes_news:
     if '•' in news.text:
         latest_news.append(news)
 
 latest_update_array = []
-matched_array_indexes = []
 for news in latest_news:
     news_array = []
     update_time = news.find('span', class_="g-updated")
@@ -59,11 +68,25 @@ for news in latest_news:
             else:
                 company_string += news_company[i].a.text + ", "
 
-        index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.4)
+        index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
         try:
             vaccine_id = info_id_and_company[index[0]][0]
         except IndexError:
-            vaccine_id = -1
+            for a in range(len(info_id_and_company)):
+                each_id_company = company_array_possibilities[a].split(', ')
+                match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                if match:
+                    vaccine_id = info_id_and_company[a][0]
+                    break
+                else:
+                    vaccine_id = -1
+            if vaccine_id == -1:
+                modified_string = company_string + " Biological"
+                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
+                try:
+                    vaccine_id = info_id_and_company[index[0]][0]
+                except IndexError:
+                    vaccine_id = -1
 
         news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
         news_array.append(company_string)
@@ -92,8 +115,6 @@ for j in range(0, len(latest_update_array)):
                  latest_update_array[j][2]))
     conn.commit()
 
-print(latest_update_array)
-print(existing_news_array)
 for i in range(len(latest_update_array)):
     if latest_update_array[0][0] == existing_news_array[0][0]:
         response = "No Updates"
@@ -103,7 +124,9 @@ for i in range(len(latest_update_array)):
         if latest_update_array[i][0] == existing_news_array[0][0]:
             response = str(i) + " updates found"
             for j in range(1, i + 1):
-                update = latest_update_array[i - j][0]
+                update = latest_update_array[i - j][0]\
+                    .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')\
+                    .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III')
                 cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                 VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                             (latest_update_array[i - j][3],
@@ -112,4 +135,3 @@ for i in range(len(latest_update_array)):
                              update,
                              latest_update_array[i - j][2]))
                 conn.commit()
-

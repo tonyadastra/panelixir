@@ -327,22 +327,23 @@ class news extends HTMLElement {
             news_before.innerHTML = " " + newsArray[0];
             news_text.appendChild(news_before);
             var news_company = document.createElement('span');
-            news_company.setAttribute('class', 'news-company')
             news_company.innerHTML = this.getAttribute('news-company');
             let vac_id = this.getAttribute('news-vac-id');
-            // console.log(vac_id)
-            news_company.addEventListener('click', function () {
-                $.ajax({
-                    url: "/display-company",
-                    data: {'company_id': vac_id},
-                    type: "GET",
-                    success: function (response) {
-                        // console.log(response)
-                        document.getElementById('append-card').innerHTML = response;
-                        $('#company-modal').modal('show');
-                    },
-                });
-            })
+            if (vac_id !== '-1') {
+                news_company.setAttribute('class', 'news-company')
+                news_company.addEventListener('click', function () {
+                    $.ajax({
+                        url: "/display-company",
+                        data: {'company_id': vac_id},
+                        type: "GET",
+                        success: function (response) {
+                            // console.log(response)
+                            document.getElementById('append-card').innerHTML = response;
+                            $('#company-modal').modal('show');
+                        },
+                    });
+                })
+            }
             news_text.appendChild(news_company);
             var news_after = document.createElement('span');
             news_after.innerHTML = newsArray[1];

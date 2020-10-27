@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import datetime
 import io
 from PyPDF2 import PdfFileReader
+import tabula
+import re
 
 now = datetime.datetime.now()
 # connect to database
@@ -24,5 +26,31 @@ who_document_link = who_download_button.a['href'].split('?')[0]
 result_pdf = requests.get(who_document_link)
 f = io.BytesIO(result_pdf.content)
 reader = PdfFileReader(f)
-# contents = reader.getPage(1).extractText().split('\n')
-print(reader.numPages)
+# df = tabula.read_pdf("https://www.who.int/docs/default-source/coronaviruse/novel-coronavirus-landscape-covid-19cc0232c16129498983a6a0e30ca94000.pdf", pages=1)
+# print(df)
+# print(reader.numPages)
+
+# String to Search
+String = "Developer"
+page_divider = -1
+
+# Search for page with keyword "Developer" - separate section Clinical Trials and Pre-Clinical
+for i in range(0, reader.numPages):
+    PageObj = reader.getPage(i)
+    Text = PageObj.extractText()
+    ResSearch = re.search(String, Text)
+    # print(ResSearch)
+    if ResSearch is not None:
+        page_divider = i + 1
+        break
+
+
+for j in range(1, page_divider):
+    df = tabula.read_pdf(who_document_link, pages=j, pandas_options={'header': None})
+    table = df[0].to_numpy()
+    #     # contents = reader.getPage(i).extractText()
+    #     # print(contents)
+    # print(df[0])
+    for k in range(len(table)):
+        if str(table[k, 0]) != 'nan':
+            print(table[k, 0])
