@@ -9,3 +9,4 @@ dump
 README.md
 who-scrape.py
 venv
+.gitignore
