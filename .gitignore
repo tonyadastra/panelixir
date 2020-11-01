@@ -8,3 +8,14 @@ venv
 #.ebextensions/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+data.pdf
+seed.py
+update.py
+update_news.py
+updates.csv
+.flaskenv
+latest.dump
+#dump
+README.md
+who-scrape.py
