@@ -2,7 +2,7 @@
 .idea
 .DS_store
 dump
-venv
+#venv
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 #.ebextensions/*
