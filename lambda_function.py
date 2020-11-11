@@ -84,6 +84,36 @@ def lambda_handler(event, context):
                         break
                     else:
                         vaccine_id = -1
+
+                if vaccine_id == -1 and len(news_company) > 1:
+                    count = 0
+                    increment = 0
+                    while count < len(news_company) and vaccine_id == -1:
+                        order_start = 1 + increment
+                        order_count = 0
+                        if order_start >= len(news_company):
+                            order_start = 0
+                        new_company_string = ""
+                        while order_count < len(news_company):
+                            if order_count == len(news_company) - 1:
+                                new_company_string += news_company[order_start].a.text
+                            else:
+                                new_company_string += news_company[order_start].a.text + ", "
+                            order_count += 1
+                            if order_start >= len(news_company) - 1:
+                                order_start = 0
+                            else:
+                                order_start += 1
+
+                        index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
+                                                          cutoff=0.6)
+                        try:
+                            vaccine_id = info_id_and_company[index[0]][0]
+                        except IndexError:
+                            vaccine_id = -1
+                        increment += 1
+                        count += 1
+
                 if vaccine_id == -1:
                     modified_string = company_string + " Biological"
                     index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
