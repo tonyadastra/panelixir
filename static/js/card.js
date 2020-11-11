@@ -321,7 +321,7 @@ class news extends HTMLElement {
         // News Text
         var news_text = document.createElement('span');
 
-        if (this.getAttribute('news-company') != 'None') {
+        if (this.getAttribute('news-company') != 'None' && this.getAttribute('news-text').includes(this.getAttribute('news-company'))) {
             const newsArray = this.getAttribute('news-text').split(this.getAttribute('news-company'));
             var news_before = document.createElement('span');
             news_before.innerHTML = " " + newsArray[0];

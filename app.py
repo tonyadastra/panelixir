@@ -168,7 +168,6 @@ def displayCompany():
 
 @app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
-    # cur.execute("rollback")
     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
                 "(SELECT update_date FROM info "
                 "WHERE update_date IS NOT NULL "
@@ -191,23 +190,29 @@ def getBarsData():
     continent = str(request.args.get('continent'))
     if request.args.get('continent') is None or continent == "World":
         continent = ""
+
+    # interactive bars
     cur.execute("SELECT json_agg(json_build_object('company', company, "
                 "'stage', stage,"
                 " 'country', country,"
                 " 'flag', flag, "
-                " 'vac_id', info.vac_id )) "
+                " 'vac_id', info.vac_id, "
+                " 'company', company)) "
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
-                " WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage, co_name, partner_name ORDER BY stage DESC, co_name, partner_name LIMIT 5;")
+                " WHERE continent LIKE %s"
+                " GROUP BY stage, progress, phase3_start_date, company"
+                " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company LIMIT 5;",
+                ("%" + continent + "%", ))
     bars_data = cur.fetchall()
     cur.execute("rollback")
 
-    # bar chart
+    # progress bar
     cur.execute("SELECT stage, COUNT(stage) as count "
                 " FROM info "
-                " WHERE continent LIKE '%" + continent + "%' "
-                "GROUP BY stage ORDER BY stage")
+                " WHERE continent LIKE %s"
+                " GROUP BY stage ORDER BY stage",
+                ("%" + continent + "%", ))
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
     data_arr = []
@@ -224,7 +229,7 @@ def getBarsData():
         bars_data_json['bars_data'].append(bars_data[i][0][0])
     # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
 
-    # map
+    # map data
     vaccines_json = {'vaccines': []}
     vaccines = Vaccine.query.all()
     for vaccine in vaccines:
