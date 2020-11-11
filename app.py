@@ -31,11 +31,13 @@ def favicon():
 @app.route('/', methods=['GET'])
 def index():
     cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-                "TO_CHAR(update_date, 'Month FMDD')"
-                " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-                "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+                "TO_CHAR(update_date, 'Month FMDD') "
+                "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
+                "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
+                "LIMIT 10")
     data = cur.fetchall()
     cur.execute("rollback")
+
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
                 "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
     news_data = cur.fetchall()
@@ -65,7 +67,8 @@ def desktopForm():
         " AND country LIKE '%" + desktop_country + "%' "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
+        "LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -88,7 +91,7 @@ def card():
         " AND country LIKE '%" + desktop_country + "%' "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
         "" + filter_limit + " "
-        " ORDER BY stage DESC, co_name, partner_name "
+        " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     data = cur.fetchall()
@@ -118,7 +121,8 @@ def mobileForm():
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, co_name, partner_name LIMIT 10")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
+        "LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -140,7 +144,7 @@ def mobileAppendCards():
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
-        " ORDER BY stage DESC, co_name, partner_name "
+        " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company"
         " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
 
     data = cur.fetchall()
