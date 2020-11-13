@@ -17,7 +17,7 @@ def lambda_handler(event, context):
                             " dbname=vaccinedb user=postgres password=iloveNYC0704")
     cur = conn.cursor()
 
-    # Remove News Tag IF more than two days
+    # Remove News Tag IF three days or more
     cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("New",))
     news_new = cur.fetchall()
     cur.execute("rollback")
@@ -27,12 +27,12 @@ def lambda_handler(event, context):
             cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_new[i][0]))
             conn.commit()
 
-    # Remove Breaking News Tag IF more than two days
+    # Remove Breaking News Tag IF more than three days
     cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s", ("Breaking News",))
     news_breaking_news = cur.fetchall()
     cur.execute("rollback")
     for i in range(len(news_breaking_news)):
-        if news_breaking_news[i][1] >= 3:
+        if news_breaking_news[i][1] > 3:
             cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_breaking_news[i][0]))
             conn.commit()
 
@@ -158,17 +158,60 @@ def lambda_handler(event, context):
             if latest_update_array[i][0] == existing_news_array[0][0]:
                 response = str(i) + " updates found"
                 for j in range(1, i + 1):
-                    update = latest_update_array[i - j][0]\
-                        .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')\
-                        .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III')
+                    update = latest_update_array[i - j][0] \
+                        .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
+                        .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
+                    VaccineID = latest_update_array[i - j][3]
+
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                     VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
-                                (latest_update_array[i - j][3],
+                                (VaccineID,
                                  "New",
                                  latest_update_array[i - j][1],
                                  update,
                                  latest_update_array[i - j][2]))
                     conn.commit()
+
+                    if VaccineID != -1:
+                        if "Phase" in update:
+                            # Phrases to identify new Phase for vaccine
+                            if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
+                                    or "moves into" in update or "move into" in update:
+                                new_phase = -1
+
+                                if "Phase I/II" in update:
+                                    new_phase = 2
+                                elif "Phase II/III" in update:
+                                    new_phase = 3
+                                elif "Phase I" in update:
+                                    new_phase = 1
+                                elif "Phase II" in update:
+                                    new_phase = 2
+                                elif "Phase III" in update:
+                                    new_phase = 3
+
+                                # Fetch existing stage of this vaccine from INFO database
+                                cur.execute("SELECT stage FROM info WHERE vac_id = %s", (VaccineID,))
+                                existing_info_stage = cur.fetchone()
+                                cur.execute("rollback")
+
+                                # determine whether it is already updated in INFO database
+                                isUpdated = True
+                                if new_phase != existing_info_stage[0]:
+                                    isUpdated = False
+
+                                # If not updated and the algorithm can identify the new Phase
+                                if new_phase != -1 and not isUpdated:
+                                    # update stage in info database
+                                    cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE "
+                                                "WHERE vac_id = %s",
+                                                (new_phase, VaccineID))
+                                    conn.commit()
+                                    response += "\nUpdated INFO database of VaccineID " + str(VaccineID) \
+                                                + " to Phase " + str(new_phase)
+                                # Return error if the algorithm cannot identify new Phase (new_phase = -1)
+                                elif new_phase == -1:
+                                    response += "\nERROR: Cannot find the keyword in NEWS to update INFO database."
 
     return {
         'statusCode': 200,
