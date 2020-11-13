@@ -196,10 +196,10 @@ def getBarsData():
         continent = ""
 
     # interactive bars
-    cur.execute("SELECT json_agg(json_build_object('company', company, "
-                "'stage', stage,"
+    cur.execute("SELECT json_agg(json_build_object('company', company,"
+                " 'stage', stage,"
                 " 'country', country,"
-                " 'flag', flag, "
+                # " 'flag', flag, "
                 " 'vac_id', info.vac_id, "
                 " 'company', company)) "
                 " FROM info "
@@ -210,6 +210,19 @@ def getBarsData():
                 ("%" + continent + "%", ))
     bars_data = cur.fetchall()
     cur.execute("rollback")
+    # Add 'flag' to JSON - replace column 'flag' in database
+    for data in bars_data:
+        country_array = data[0][0]['country'].replace(', ', ',').split(',')
+        flag_array = []
+        for country in country_array:
+            if country == "United States":
+                country = "USA"
+            if country == "United Kingdom":
+                country = "UK"
+            flag = '../static/img/flag/' + country.replace(' ', '') + '.png'
+            flag_array.append(flag)
+        data[0][0]['flag'] = flag_array
+        # print(data[0][0]['flag'])
 
     # progress bar
     cur.execute("SELECT stage, COUNT(stage) as count "

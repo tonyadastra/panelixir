@@ -383,7 +383,6 @@ $(document).ready(function () {
                 /** Interactive Bars Response **/
                 // Call d3 function
                 window.bars_data_response = JSON.parse(response).bars_data.bars_data
-                // console.log(window.bars_data_response)
                 // clear vis2 workspace
                 d3.select('#vis2').remove()
                 let svgW = 700, svgH = 370;
@@ -413,7 +412,6 @@ $(document).ready(function () {
                     .attr("y", 50)
                     .attr("text-anchor", "middle")
                     .style("font-size", "18px")
-                    // .style("font-style", "italic")
                     .attr("font-weight", "bold")
                     .text("Top 5 Candidates");
 
