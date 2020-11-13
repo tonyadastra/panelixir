@@ -813,17 +813,32 @@ $(document).ready(function() {
         element.scrollIntoView();
     })
 
+    $(".dropdown > .btn-country").click(function () {
+        var input_country = document.getElementsByClassName("form-control search-country")[0];
+        input_country.focus()
+        input_country.select()
+        // Show Top/Other Countries tag
+        $("#all-dropdown-items-country .disabled").show()
+        // Scroll Into View, (true)=top, (false)=bottom
+        // element.scrollIntoView();
+    })
+
     // Search function for Country / Region Dropdown
     $("#myInput").on("keyup", function () {
         var input_value = $(this).val().toLowerCase();
+        console.log(input_value)
         $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(input_value) > -1)
         });
-        // Hide "Top countries" and "other countries" when searching
-        $("#all-dropdown-items-country .disabled").hide()
+
+
         // Show "Top countries" and "other countries" when input field becomes empty again
         if (input_value === '') {
             $("#all-dropdown-items-country .disabled").show()
+        }
+        else {
+            // Hide "Top countries" and "other countries" when searching
+            $("#all-dropdown-items-country .disabled").hide()
         }
     });
 
@@ -975,6 +990,8 @@ $('.desktop-dropdown').click(function () {
     desktop_stage = document.querySelector('.active.desktop-dropdown#stages').value;
     desktop_country = document.querySelector('.active.desktop-dropdown#country').value;
     desktop_type = document.querySelector('.active.desktop-dropdown#type').value;
+    // clear input field
+    document.getElementsByClassName("form-control search-country")[0].value='';
     $.ajax({
         url: "/desktop-form",
         data: {
