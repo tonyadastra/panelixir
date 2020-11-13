@@ -1958,6 +1958,6 @@ tspan {
 }
 
 .dropdown-item-border{
-    border-top: 2px solid lightblue;
-    border-bottom: 2px solid lightblue;
+    border-top: 1px solid lightblue;
+    border-bottom: 1px solid lightblue;
 }

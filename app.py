@@ -3,6 +3,7 @@ import string
 import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from models.vaccine_info import Db, Vaccine
+from models.match_company_to_logo import match_logo
 import psycopg2
 import numpy as np
 import json
@@ -30,13 +31,16 @@ def favicon():
 
 @app.route('/', methods=['GET'])
 def index():
-    cur.execute("SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-                "TO_CHAR(update_date, 'Month FMDD') "
+    cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+                "TO_CHAR(update_date, 'Month FMDD'), company "
                 "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
                 "LIMIT 10")
+
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
                 "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
@@ -60,8 +64,8 @@ def desktopForm():
         filter_limit = ""
 
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD')"
+        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+        "TO_CHAR(update_date, 'Month FMDD'), company"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -72,6 +76,8 @@ def desktopForm():
 
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
     return render_template("institutions.html", data=data)
 
 
@@ -84,8 +90,8 @@ def card():
     count = int(request.args.get('count'))
 
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD')"
+        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+        "TO_CHAR(update_date, 'Month FMDD'), company"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -96,6 +102,8 @@ def card():
 
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
     return render_template("card.html", data=data)
 
 
@@ -114,8 +122,8 @@ def mobileForm():
         filter_limit = ""
 
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD')"
+        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
+        "TO_CHAR(update_date, 'Month FMDD'), company"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -126,6 +134,8 @@ def mobileForm():
 
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
     return render_template("institutions.html", data=data)
 
 
@@ -137,8 +147,8 @@ def mobileAppendCards():
     count = int(request.args.get('mobile_count'))
     limit = int(request.args.get('limit'))
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD')"
+        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+        "TO_CHAR(update_date, 'Month FMDD'), company"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -149,6 +159,8 @@ def mobileAppendCards():
 
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
     return render_template("card.html", data=data)
 
 
@@ -161,12 +173,14 @@ def aboutUs():
 def displayCompany():
     companyID = str(request.args.get('company_id'))
     cur.execute(
-        "SELECT info.vac_id, stage, website, logo, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD')"
+        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+        "TO_CHAR(update_date, 'Month FMDD'), company"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()
     cur.execute("rollback")
+    # call function match_logo([data], [position of company in data])
+    match_logo(data, 8)
     return render_template("card.html", data=data)
 
 
@@ -199,7 +213,6 @@ def getBarsData():
     cur.execute("SELECT json_agg(json_build_object('company', company,"
                 " 'stage', stage,"
                 " 'country', country,"
-                # " 'flag', flag, "
                 " 'vac_id', info.vac_id, "
                 " 'company', company)) "
                 " FROM info "
@@ -210,6 +223,7 @@ def getBarsData():
                 ("%" + continent + "%", ))
     bars_data = cur.fetchall()
     cur.execute("rollback")
+
     # Add 'flag' to JSON - replace column 'flag' in database
     for data in bars_data:
         country_array = data[0][0]['country'].replace(', ', ',').split(',')
@@ -222,7 +236,6 @@ def getBarsData():
             flag = '../static/img/flag/' + country.replace(' ', '') + '.png'
             flag_array.append(flag)
         data[0][0]['flag'] = flag_array
-        # print(data[0][0]['flag'])
 
     # progress bar
     cur.execute("SELECT stage, COUNT(stage) as count "

@@ -11,6 +11,9 @@
 * [ ] Optimize CSS and JS files
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
+* [X] Optimize INFO database - remove 'logo' column (Auto-generated based on 'company' and 'vac_id'!)
+* [X] Optimize lambda function to update INFO database(stage and update_time) and return statements
+* [X] Optimize INFO database - remove 'flag' column (Auto-generated based on 'country'!)
 * [X] Auto-Update Latest News Section from NYTimes Website
 * [X] Latest News Section Update in Database (Avoid re-uploading code every time)
 * [X] Add "search" on Country / Region Dropdown
