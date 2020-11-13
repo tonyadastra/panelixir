@@ -9,6 +9,7 @@ import difflib
 
 def lambda_handler(event, context):
     # TODO implement
+    id_response = ""
     response = ""
     now = datetime.datetime.now()
     # connect to database
@@ -57,7 +58,7 @@ def lambda_handler(event, context):
             latest_news.append(news)
 
     latest_update_array = []
-    for news in latest_news:
+    for idx, news in enumerate(latest_news):
         news_array = []
         update_time = news.find('span', class_="g-updated")
         if update_time is not None and update_time.text in news.text:
@@ -76,15 +77,21 @@ def lambda_handler(event, context):
             try:
                 vaccine_id = info_id_and_company[index[0]][0]
             except IndexError:
+                # Find match for vaccines with multiple companies but only one shows in news
+                # Problem: possible repeats in companies!
                 for a in range(len(info_id_and_company)):
                     each_id_company = company_array_possibilities[a].split(', ')
                     match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
                     if match:
                         vaccine_id = info_id_and_company[a][0]
+                        id_response += "Found match for news #" + str(idx + 1) + \
+                                       " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
                         break
                     else:
                         vaccine_id = -1
 
+                # Find match for vaccines with multiple companies - rearrange the order in company_string
+                # Iterate through every possible combination of company names to find match
                 if vaccine_id == -1 and len(news_company) > 1:
                     count = 0
                     increment = 0
@@ -109,6 +116,8 @@ def lambda_handler(event, context):
                                                           cutoff=0.6)
                         try:
                             vaccine_id = info_id_and_company[index[0]][0]
+                            id_response += "Found match for news #" + str(idx + 1) + \
+                                           " in try-except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
                         except IndexError:
                             vaccine_id = -1
                         increment += 1
@@ -119,6 +128,8 @@ def lambda_handler(event, context):
                     index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
                     try:
                         vaccine_id = info_id_and_company[index[0]][0]
+                        id_response += "Found match for news #" + str(idx + 1) + \
+                                       " in try-except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
                     except IndexError:
                         vaccine_id = -1
 
@@ -151,12 +162,12 @@ def lambda_handler(event, context):
 
     for i in range(len(latest_update_array)):
         if latest_update_array[0][0] == existing_news_array[0][0]:
-            response = "No Updates"
+            response += "No Updates"
             break
         else:
             # if there is an update...
             if latest_update_array[i][0] == existing_news_array[0][0]:
-                response = str(i) + " updates found"
+                response += str(i) + " updates found.||"
                 for j in range(1, i + 1):
                     update = latest_update_array[i - j][0] \
                         .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
@@ -174,7 +185,7 @@ def lambda_handler(event, context):
 
                     if VaccineID != -1:
                         if "Phase" in update:
-                            # Phrases to identify new Phase for vaccine
+                            # Algorithm to identify new Phase for vaccine
                             if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
                                     or "moves into" in update or "move into" in update:
                                 new_phase = -1
@@ -199,6 +210,8 @@ def lambda_handler(event, context):
                                 isUpdated = True
                                 if new_phase != existing_info_stage[0]:
                                     isUpdated = False
+                                else:
+                                    response += "No INFO update executed."
 
                                 # If not updated and the algorithm can identify the new Phase
                                 if new_phase != -1 and not isUpdated:
@@ -207,13 +220,15 @@ def lambda_handler(event, context):
                                                 "WHERE vac_id = %s",
                                                 (new_phase, VaccineID))
                                     conn.commit()
-                                    response += "\nUpdated INFO database of VaccineID " + str(VaccineID) \
-                                                + " to Phase " + str(new_phase)
+                                    response += "Updated INFO database of VaccineID " + str(VaccineID) \
+                                                + " to Phase " + str(new_phase) + ".||"
                                 # Return error if the algorithm cannot identify new Phase (new_phase = -1)
                                 elif new_phase == -1:
-                                    response += "\nERROR: Cannot find the keyword in NEWS to update INFO database."
+                                    response += "ERROR: Cannot find the keyword in NEWS to update INFO database.||"
+                break
 
     return {
         'statusCode': 200,
-        'body': json.dumps(response)
+        'VaccineID Algorithm': id_response,
+        'News Update': response
     }
