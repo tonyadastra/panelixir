@@ -1956,3 +1956,8 @@ tspan {
 .dropdown-item.disabled:hover {
     cursor: text;
 }
+
+.dropdown-item-border{
+    border-top: 2px solid lightblue;
+    border-bottom: 2px solid lightblue;
+}
