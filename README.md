@@ -1,7 +1,8 @@
-# PanElixir - Auto-Update Latest News Division
+# PanElixir - Auto-Update NYTimes Division
 ## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
 ### Version History
+- v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data November 15, 2020
 - v1.3 - Optimize VaccineID Algorithm and simultaneously update INFO if latest news updates stage November 12, 2020
 - v1.2 - Update Algorithm to find vaccine_id of Latest News October 26, 2020
 - v1.1 - Switch to html.parser, fix bugs that caused an empty response October 20, 2020
@@ -29,6 +30,7 @@
 │       ├── BeautifulSoup
 ├── lambda_function.py
 ├── close_match_indexes.py
+├── format_nytimes_intro.py
 ├── function.zip
 ├── .gitignore
 ├── README.md
@@ -51,35 +53,35 @@ lambda function requirements
 6. Return to the main directory
     + `cd $OLDPWD`
 7. Zip all necessary files to upload to AWS Lambda. Remember to include new files here if necessary
-    + `zip -g function.zip lambda_function.py close_match_indexes.py`
+    + `zip -g function.zip lambda_function.py close_match_indexes.py format_nytimes_intro.py`
 8. Send updates to AWS Lambda
-    + `aws lambda update-function-code --function-name update_news --zip-file fileb://function.zip`
+    + `aws lambda update-function-code --function-name auto_update_nytimes --zip-file fileb://function.zip`
 9. If successful, a JSON string should be returned. <br>
 Example: 
 ```
 {
-    "FunctionName": "update_news",
-    "FunctionArn": "arn:aws:lambda:us-west-1:707744075670:function:update_news",
+    "FunctionName": "auto_update_nytimes",
+    "FunctionArn": "arn:aws:lambda:us-west-1:707744075670:function:auto_update_nytimes",
     "Runtime": "python3.8",
-    "Role": "arn:aws:iam::707744075670:role/service-role/update_news-role-l47za4ej",
+    "Role": "arn:aws:iam::707744075670:role/service-role/auto_update_nytimes-role-24k9z0qv",
     "Handler": "lambda_function.lambda_handler",
-    "CodeSize": 6586322,
+    "CodeSize": 2140564,
     "Description": "",
     "Timeout": 3,
     "MemorySize": 128,
-    "LastModified": "2020-10-18T19:20:54.362+0000",
-    "CodeSha256": "Ma2f76lEij0ElcNqO8/rZUgqr4YXL1JBGYL/pz2+T84=",
+    "LastModified": "2020-11-15T23:33:06.912+0000",
+    "CodeSha256": "LLn5Zbm1UUT9NUlLkgl+HXLGhPH4dx/gyy9420U9gYw=",
     "Version": "$LATEST",
     "TracingConfig": {
         "Mode": "PassThrough"
     },
-    "RevisionId": "af50c7f2-7c23-493d-97ed-538dcf222a08",
+    "RevisionId": "3fb5003a-7662-492f-bf5d-2816755d2e97",
     "State": "Active",
     "LastUpdateStatus": "Successful"
 }
 ```
 ### Invoke the Lambda Function in Terminal
-+ `aws lambda invoke --function-name update_news return --log-type Tail --query 'LogResult' --output text |  base64 -d`
++ `aws lambda invoke --function-name auto_update_nytimes return --log-type Tail --query 'LogResult' --output text |  base64 -d`
 + Execution results will be saved to a file called return
 
 ### Related Resources
