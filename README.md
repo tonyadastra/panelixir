@@ -32,12 +32,10 @@
 ├── close_match_indexes.py
 ├── format_nytimes_intro.py
 ├── function.zip
+├── return
 ├── .gitignore
 ├── README.md
 ```
-Note: lambda_function.py is a modified version of update_news.py 
-in the master branch, several modifications are made to comply with
-lambda function requirements
 
 ### To Update Lambda Function in AWS using Terminal
 1. Install awscli using pip 
