@@ -16,6 +16,14 @@
     - Drop and modify news_nytimes database
     - Compares existing database and new scraped data
     - Update the news database if there are updates
+    
+- This program also updates the Vaccine Introductions Section
+    - Scrapes NYTimes Vaccine Tracker Intro Section
+    - Get data from existing database nytimes
+    - Compares existing database and new scraped data
+    - Modify nytimes database if updates are present
+    - Update the info database - columns(intro, stage, date, early_approval, combined_phases, paused) if there are updates
+    - To turn off auto-update: Set all values of allow_auto_update in info to False
 
 ### Run Frequency
 - This program runs every day at 17:30 and 23:30 UTC under AWS EventBridge (CloudWatch Events)
