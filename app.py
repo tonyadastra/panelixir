@@ -12,7 +12,6 @@ import csv
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
-app.secret_key = "panelixir-key"
 conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
@@ -58,8 +57,7 @@ def desktopForm():
 
     if desktop_stages == "4-1":
         desktop_stages = "_"
-        filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
-                              "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
+        filter_limit = "AND early_approval"
     else:
         filter_limit = ""
 
@@ -116,8 +114,7 @@ def mobileForm():
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
-        filter_limit = "AND (info.vac_id = 29 or info.vac_id = 12 or info.vac_id = 28 " \
-                              "or info.vac_id = 35 or info.vac_id = 13 or info.vac_id = 119)"
+        filter_limit = "AND early_approval"
     else:
         filter_limit = ""
 
@@ -194,11 +191,6 @@ def getUpdateTime():
                 "ORDER BY update_date DESC LIMIT 1) AS date")
     update_time = cur.fetchone()
     cur.execute("rollback")
-    # while update_time is None:
-    #     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth') FROM info WHERE update_date IS NOT NULL "
-    #                 "ORDER BY update_date DESC LIMIT 1")
-    #     update_time = cur.fetchone()
-    #     cur.execute("rollback")
     if update_time is not None:
         return update_time[0]
 
