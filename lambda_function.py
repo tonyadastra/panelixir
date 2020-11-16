@@ -158,7 +158,7 @@ def lambda_handler(event, context):
                                     update_time date);''')
     for j in range(0, len(latest_update_array)):
         cur.execute('''INSERT INTO news_nytimes(vac_id, news_text, news_company, update_time)
-        VALUES (%s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
+            VALUES (%s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                     (latest_update_array[j][3],
                      latest_update_array[j][0],
                      latest_update_array[j][1],
@@ -180,7 +180,7 @@ def lambda_handler(event, context):
                     VaccineID = latest_update_array[i - j][3]
 
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
-                    VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
+                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                                 (VaccineID,
                                  "New",
                                  latest_update_array[i - j][1],
@@ -192,18 +192,19 @@ def lambda_handler(event, context):
                         if "Phase" in update:
                             # Algorithm to identify new Phase for vaccine
                             if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
-                                    or "moves into" in update or "move into" in update:
+                                    or "moves into" in update or "move into" in update or "moves from" in update:
                                 new_phase = -1
+
+                                if "Phase I" in update:
+                                    new_phase = 1
+                                if "Phase II" in update:
+                                    new_phase = 2
+                                if "Phase III" in update:
+                                    new_phase = 3
 
                                 if "Phase I/II" in update:
                                     new_phase = 2
-                                elif "Phase II/III" in update:
-                                    new_phase = 3
-                                elif "Phase I" in update:
-                                    new_phase = 1
-                                elif "Phase II" in update:
-                                    new_phase = 2
-                                elif "Phase III" in update:
+                                if "Phase II/III" in update:
                                     new_phase = 3
 
                                 # Fetch existing stage of this vaccine from INFO database
@@ -422,6 +423,10 @@ def lambda_handler(event, context):
     cur.execute("SELECT * from nytimes ORDER BY intro_id;")
     existing_data_array = cur.fetchall()
     cur.execute("rollback")
+    existing_id_array = []
+    for i in range(len(existing_data_array)):
+        existing_id = existing_data_array[i][0]
+        existing_id_array.append(existing_id)
 
     for i in range(len(new_data_array)):
         new_vaccine_id = new_data_array[i][0]
@@ -441,11 +446,27 @@ def lambda_handler(event, context):
         old_is_combined_phases = str(existing_data_array[i][5])
         old_is_early = str(existing_data_array[i][6])
         old_is_paused = str(existing_data_array[i][7])
-        # if len(existing_data_array) == len(new_data_array):
+
         proceed = False
+        found_index = -1
         # Add check
         if new_vaccine_id == old_vaccine_id:
             proceed = True
+        else:
+            if new_vaccine_id in existing_id_array:
+                for idx, existing_vaccine_id in enumerate(existing_id_array):
+                    if new_vaccine_id == existing_vaccine_id:
+                        found_index = idx
+                        old_vaccine_id = existing_data_array[found_index][0]
+                        old_stage = existing_data_array[found_index][1]
+                        old_company_name = existing_data_array[found_index][2]
+                        old_vaccine_intro = existing_data_array[found_index][3]
+                        old_date = existing_data_array[found_index][4]
+                        old_is_combined_phases = str(existing_data_array[found_index][5])
+                        old_is_early = str(existing_data_array[found_index][6])
+                        old_is_paused = str(existing_data_array[found_index][7])
+                        proceed = True
+                        break
 
         if proceed:
             try:
@@ -660,8 +681,8 @@ def lambda_handler(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                                    paused, intro_id)
-                                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                                                        paused, intro_id)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_assigned_id, new_stage, new_company_name, new_vaccine_intro,
                                         new_is_combined_phases,
@@ -670,15 +691,15 @@ def lambda_handler(event, context):
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                                    early_approval, paused, intro_id)
-                                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
+                                                        early_approval, paused, intro_id)
+                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
                                     (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, new_date,
                                      new_is_combined_phases, new_is_early, new_is_paused, i))
                         conn.commit()
                     # Update INFO table
                     cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type, 
-                                                    update_date, combined_phases, early_approval, paused)
-                                                    VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s)''',
+                                                        update_date, combined_phases, early_approval, paused)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s)''',
                                 (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '', '',
                                  new_is_combined_phases, new_is_early, new_is_paused))
                     # Update COMPANIES table
@@ -692,8 +713,8 @@ def lambda_handler(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                                    paused, intro_id)
-                                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                                                        paused, intro_id)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_vaccine_id, new_stage, new_company_name, new_vaccine_intro,
                                         new_is_combined_phases,
@@ -702,8 +723,8 @@ def lambda_handler(event, context):
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                                    early_approval, paused, intro_id)
-                                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
+                                                        early_approval, paused, intro_id)
+                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
                                     (new_vaccine_id, new_stage, new_company_name, new_vaccine_intro, new_date,
                                      new_is_combined_phases, new_is_early, new_is_paused, i))
                         conn.commit()
