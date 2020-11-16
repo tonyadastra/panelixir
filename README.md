@@ -1,7 +1,8 @@
 ## PanElixir - Global COVID-19 Vaccine and Treatment Tracker
 
 **To Do List**
-* [ ] Full Auto-Update Data NYTimes/WHO Website
+* [ ] WHO Website Auto-Update
+* [ ] Country Dropdown Query from Database
 * [ ] Register/Login => Send latest information via e-mail, Comments
 * [ ] More information in database (doses, expected release date, etc.)
 * [ ] Logo Design
@@ -11,6 +12,7 @@
 * [ ] Optimize CSS and JS files
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
+* [X] Full Auto-Update Data NYTimes Website
 * [X] Optimize INFO database - remove 'logo' column (Auto-generated based on 'company' and 'vac_id'!)
 * [X] Optimize lambda function to update INFO database(stage and update_time) and return statements
 * [X] Optimize INFO database - remove 'flag' column (Auto-generated based on 'country'!)
