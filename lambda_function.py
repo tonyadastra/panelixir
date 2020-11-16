@@ -568,7 +568,7 @@ def lambda_handler(event, context):
             cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
             intro_updates = cur.fetchone()[0]
             # Update INFO
-            if allow_auto_update and intro_updates is not None:
+            if allow_auto_update and intro_updates is not None and intro_updates != '':
                 cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
                 existing_latest_news = cur.fetchone()[0]
 
