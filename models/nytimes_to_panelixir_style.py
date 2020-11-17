@@ -10,6 +10,7 @@ def arrange_nytimes_info(info):
     # Styling for 'Phase' (Example: Phase 1 => Phase I)
     info = info.replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
         .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
+    info = info.replace('Covid-19', 'COVID-19')
     if "Jan." in info:
         info = info.replace('Jan.', 'January')
     if "Feb." in info:
