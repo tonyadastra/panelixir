@@ -1,5 +1,8 @@
 ## PanElixir - Global COVID-19 Vaccine and Treatment Tracker
 
+####**Divisions and Internal Links**
++ #####[Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
+
 **Recent Updates**
 + November 16 - Bug Fixes, Append logo and other tags if values are not empty in database
 + November 15 - Full Auto-Update NYTimes Deployed
