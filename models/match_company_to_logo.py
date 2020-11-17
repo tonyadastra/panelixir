@@ -4,6 +4,7 @@
     @description This program will find the corresponding logo path for each vaccine company to be processed in the
     JAVASCRIPT document and displayed on the webpage
 """
+import os
 
 
 def match_logo(data, company_pos):
@@ -20,6 +21,7 @@ def match_logo(data, company_pos):
         for idx, company in enumerate(company_array):
             # Logo format:
             logo = '../static/img/' + str(vaccine_id) + '-' + str(idx + 1) + '.png'
-            logo_array.append(logo)
+            if os.path.isfile(logo.replace('..', '.')):
+                logo_array.append(logo)
         intro_list.insert(3, logo_array)
         data[i] = intro_list

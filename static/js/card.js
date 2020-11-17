@@ -1,6 +1,6 @@
 class myCard extends HTMLElement {
     connectedCallback() {
-        const shadow = this.attachShadow({ mode: 'open' });
+        const shadow = this.attachShadow({mode: 'open'});
 
         // link css
         const linkElem1 = document.createElement('link');
@@ -39,7 +39,6 @@ class myCard extends HTMLElement {
         }
 
 
-
         if (this.getAttribute('data-vactype') !== '') {
             // vaccine type tag
             var vac_tag = document.createElement('span');
@@ -52,17 +51,22 @@ class myCard extends HTMLElement {
 
         wrapper.appendChild(tag_wrapper);
 
+        var img_wrapper = document.createElement('div');
+        img_wrapper.setAttribute('style', 'height: 70px')
         // logo image
         if (this.hasAttribute('data-img')) {
             const imgUrlArr = this.getAttribute('data-img').split(',')
             imgUrlArr.forEach((imgUrl) => {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
-                const img = document.createElement('img');
-                img.setAttribute('height', '60px');
-                img.src = imgUrl;
-                wrapper.appendChild(img);
+                const image = new Image();
+                image.setAttribute('height', '60px');
+                image.src = imgUrl;
+                img_wrapper.appendChild(image);
+
+
             })
         }
+        wrapper.appendChild(img_wrapper)
         // else {
         //     let imgUrl = '../static/img/Untitled.png';
         //     const img = document.createElement('img');
@@ -70,7 +74,6 @@ class myCard extends HTMLElement {
         //     img.src = imgUrl;
         //     wrapper.appendChild(img);
         // }
-
 
         // progress bar
         var bar_wrapper = document.createElement('div');
@@ -130,14 +133,13 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
 
-        if (this.getAttribute('data-id') === '29'|| this.getAttribute('data-id') === '12' || this.getAttribute('data-id') === '28' || this.getAttribute('data-id') === '35' || this.getAttribute('data-id') === '13' || this.getAttribute('data-id') === '119') {
+        if (this.getAttribute('data-id') === '29' || this.getAttribute('data-id') === '12' || this.getAttribute('data-id') === '28' || this.getAttribute('data-id') === '35' || this.getAttribute('data-id') === '13' || this.getAttribute('data-id') === '119') {
             bar_wrapper.appendChild(pbar7);
         }
 
         // if (this.getAttribute('data-id') === '13'){
         //     bar_wrapper.appendChild(pbar6);
         // }
-
 
 
         // if (this.getAttribute('data-stage') === '0') {
