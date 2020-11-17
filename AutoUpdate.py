@@ -2,14 +2,14 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import psycopg2
-from close_match_indexes import get_close_matches_indexes
-from format_nytimes_intro import format_intro
-from nytimes_to_panelixir_style import arrange_nytimes_info
+from models.close_match_indexes import get_close_matches_indexes
+from models.format_nytimes_intro import format_intro
+from models.nytimes_to_panelixir_style import arrange_nytimes_info
 import datetime
 import difflib
 
 
-def lambda_handler(event, context):
+def auto_update_nytimes(event, context):
     id_response = ""
     response = ""
     now = datetime.datetime.now()
@@ -451,6 +451,7 @@ def lambda_handler(event, context):
         old_is_paused = str(existing_data_array[i][7])
 
         proceed = False
+        found_index = -1
         # Add check
         if new_vaccine_id == old_vaccine_id:
             proceed = True
@@ -756,6 +757,39 @@ def lambda_handler(event, context):
 
                 new_companies_added += 1
     # TODO: Add exception handler: id different(not proceed), company same
+    return_response = {
+        'news_update': {
+            'statusCode': 200,
+            'VaccineID Algorithm': id_response,
+            'News Update': response
+        },
+
+        'intro_update': {
+
+            'statusCode': 200,
+            'vaccine_count': {
+                'Pre-Clinical': phase0_count,
+                'Phase I': phase1_count,
+                'Phase II': phase2_count,
+                'Phase III': phase3_count
+            },
+            'updates_count': {
+                'date': update_date_count,
+                'stage': update_stage_count,
+                'combined_phases': update_is_combined_count,
+                'early_approval': update_is_early_count,
+                'paused': update_is_paused_count,
+                'intro': update_intro_count
+            },
+            'new_vaccines': {
+                'total_new_added': new_companies_added,
+                'number of vaccine_id assigned': new_assigned_id_count
+            }
+
+        }
+    }
+
+    print(json.dumps(return_response))
 
     return {
         'news_update': {
