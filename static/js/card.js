@@ -23,18 +23,11 @@ class myCard extends HTMLElement {
 
         // country tag
         // #e37222'
-        const countryArr = this.getAttribute('data-country').split(',')
-        if (window.screen.width >= 768) {
-            const countryArr_ordered = countryArr.reverse()
-            countryArr_ordered.forEach((country) => {
-                // country = country.trim();
-                var country_tag = document.createElement('span');
-                country_tag.setAttribute('class', 'country_tag');
-                country_tag.setAttribute('style', 'background-color:rgba(236, 112, 30, 0.74)');
-                country_tag.innerHTML = country.trim();
-                tag_wrapper.appendChild(country_tag);
-            })
-        } else {
+        if (this.getAttribute('data-country') !== '') {
+            var countryArr = this.getAttribute('data-country').split(',')
+            if (window.screen.width >= 768) {
+                countryArr = countryArr.reverse()
+            }
             countryArr.forEach((country) => {
                 // country = country.trim();
                 var country_tag = document.createElement('span');
@@ -47,13 +40,15 @@ class myCard extends HTMLElement {
 
 
 
-        // vaccine type tag
-        var vac_tag = document.createElement('span');
-        vac_tag.setAttribute('class', 'vac_tag');
-        // vac_tag.setAttribute('padding-top','30px');
-        vac_tag.setAttribute('style', 'background-color:rgba(182, 131, 236, 0.74)');
-        vac_tag.innerHTML = this.getAttribute('data-vactype')+" Vaccine";
-        tag_wrapper.appendChild(vac_tag);
+        if (this.getAttribute('data-vactype') !== '') {
+            // vaccine type tag
+            var vac_tag = document.createElement('span');
+            vac_tag.setAttribute('class', 'vac_tag');
+            // vac_tag.setAttribute('padding-top','30px');
+            vac_tag.setAttribute('style', 'background-color:rgba(182, 131, 236, 0.74)');
+            vac_tag.innerHTML = this.getAttribute('data-vactype') + " Vaccine";
+            tag_wrapper.appendChild(vac_tag);
+        }
 
         wrapper.appendChild(tag_wrapper);
 
@@ -85,7 +80,7 @@ class myCard extends HTMLElement {
         var pbar1 = document.createElement('div');
         pbar1.setAttribute('class', 'progress-bar');
         pbar1.setAttribute('id', 'pbar1');
-        pbar1.innerHTML = 'PRECLICNICAL';
+        pbar1.innerHTML = 'PRE-CLINICAL';
 
 
         var pbar2 = document.createElement('div');

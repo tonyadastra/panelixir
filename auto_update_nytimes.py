@@ -176,11 +176,14 @@ for i in range(len(latest_update_array)):
                     .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
                     .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
                 VaccineID = latest_update_array[i - j][3]
+                tag = "New"
+                if "promising" in update:
+                    tag = "Breaking News"
 
                 cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                     VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                             (VaccineID,
-                             "New",
+                             tag,
                              latest_update_array[i - j][1],
                              update,
                              latest_update_array[i - j][2]))
@@ -190,18 +193,19 @@ for i in range(len(latest_update_array)):
                     if "Phase" in update:
                         # Algorithm to identify new Phase for vaccine
                         if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
-                                or "moves into" in update or "move into" in update:
+                                or "moves into" in update or "move into" in update or "moves from" in update:
                             new_phase = -1
+
+                            if "Phase I" in update:
+                                new_phase = 1
+                            if "Phase II" in update:
+                                new_phase = 2
+                            if "Phase III" in update:
+                                new_phase = 3
 
                             if "Phase I/II" in update:
                                 new_phase = 2
-                            elif "Phase II/III" in update:
-                                new_phase = 3
-                            elif "Phase I" in update:
-                                new_phase = 1
-                            elif "Phase II" in update:
-                                new_phase = 2
-                            elif "Phase III" in update:
+                            if "Phase II/III" in update:
                                 new_phase = 3
 
                             # Fetch existing stage of this vaccine from INFO database
@@ -420,6 +424,11 @@ for intro in all_vaccines_intro:
 cur.execute("SELECT * from nytimes ORDER BY intro_id;")
 existing_data_array = cur.fetchall()
 cur.execute("rollback")
+existing_id_array = []
+for i in range(len(existing_data_array)):
+    existing_id = existing_data_array[i][0]
+    existing_id_array.append(existing_id)
+
 
 for i in range(len(new_data_array)):
     new_vaccine_id = new_data_array[i][0]
@@ -439,11 +448,27 @@ for i in range(len(new_data_array)):
     old_is_combined_phases = str(existing_data_array[i][5])
     old_is_early = str(existing_data_array[i][6])
     old_is_paused = str(existing_data_array[i][7])
-    # if len(existing_data_array) == len(new_data_array):
+
     proceed = False
+    found_index = -1
     # Add check
     if new_vaccine_id == old_vaccine_id:
         proceed = True
+    else:
+        if new_vaccine_id in existing_id_array:
+            for idx, existing_vaccine_id in enumerate(existing_id_array):
+                if new_vaccine_id == existing_vaccine_id:
+                    found_index = idx
+                    old_vaccine_id = existing_data_array[found_index][0]
+                    old_stage = existing_data_array[found_index][1]
+                    old_company_name = existing_data_array[found_index][2]
+                    old_vaccine_intro = existing_data_array[found_index][3]
+                    old_date = existing_data_array[found_index][4]
+                    old_is_combined_phases = str(existing_data_array[found_index][5])
+                    old_is_early = str(existing_data_array[found_index][6])
+                    old_is_paused = str(existing_data_array[found_index][7])
+                    proceed = True
+                    break
 
     if proceed:
         try:
@@ -565,8 +590,10 @@ for i in range(len(new_data_array)):
         if allow_auto_update and intro_updates is not None and intro_updates != '':
             cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
             existing_latest_news = cur.fetchone()[0]
-
-            updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+            try:
+                updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+            except TypeError:
+                updated_latest_news = intro_updates
             cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
                         (updated_latest_news, new_vaccine_id))
             conn.commit()
