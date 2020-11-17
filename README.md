@@ -1,5 +1,9 @@
 ## PanElixir - Global COVID-19 Vaccine and Treatment Tracker
 
+**Recent Updates**
++ November 16 - Bug Fixes, Append logo and other tags if values are not empty in database
++ November 15 - Full Auto-Update NYTimes Deployed
+
 **To Do List**
 * [ ] WHO Website Auto-Update
 * [ ] Country Dropdown Query from Database
@@ -13,6 +17,8 @@
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
 * [X] Full Auto-Update Data NYTimes Website
+* [X] Only append logo, country tag, type tag if values in database are not empty
+* [X] Find AutoUpdateNYTimes AWS Lambda Function Logs
 * [X] Optimize INFO database - remove 'logo' column (Auto-generated based on 'company' and 'vac_id'!)
 * [X] Optimize lambda function to update INFO database(stage and update_time) and return statements
 * [X] Optimize INFO database - remove 'flag' column (Auto-generated based on 'country'!)

@@ -104,6 +104,9 @@ span.highlight-warp-speed {
 }
 
 @media screen and (max-width: 767px) {
+  .img_wrapper {
+    margin-bottom: 8px!important;
+  }
 
   span.highlight-warp-speed {
     padding: 0.2rem 0.3rem;

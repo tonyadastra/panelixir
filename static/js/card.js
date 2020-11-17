@@ -52,6 +52,7 @@ class myCard extends HTMLElement {
         wrapper.appendChild(tag_wrapper);
 
         var img_wrapper = document.createElement('div');
+        img_wrapper.setAttribute('class', 'img_wrapper')
         img_wrapper.setAttribute('style', 'height: 70px')
         // logo image
         if (this.hasAttribute('data-img')) {
