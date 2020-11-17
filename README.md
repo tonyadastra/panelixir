@@ -2,7 +2,8 @@
 ## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
 ### Version History
-- v2.1 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020
+- v2.1.1 - Update the format of new updates in intro using a new function
+- v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020
 - v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data November 15, 2020
 - v1.3 - Optimize VaccineID Algorithm and simultaneously update INFO if latest news updates stage November 12, 2020
 - v1.2 - Update Algorithm to find vaccine_id of Latest News October 26, 2020

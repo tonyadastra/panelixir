@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import psycopg2
 from close_match_indexes import get_close_matches_indexes
 from format_nytimes_intro import format_intro
+from nytimes_to_panelixir_style import arrange_nytimes_info
 import datetime
 import difflib
 
@@ -450,7 +451,6 @@ def lambda_handler(event, context):
         old_is_paused = str(existing_data_array[i][7])
 
         proceed = False
-        found_index = -1
         # Add check
         if new_vaccine_id == old_vaccine_id:
             proceed = True
