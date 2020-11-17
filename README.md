@@ -40,6 +40,7 @@
 ├── lambda_function.py
 ├── close_match_indexes.py
 ├── format_nytimes_intro.py
+├── nytimes_to_panelixir_style.py
 ├── function.zip
 ├── return
 ├── .gitignore
@@ -60,7 +61,7 @@
 6. Return to the main directory
     + `cd $OLDPWD`
 7. Zip all necessary files to upload to AWS Lambda. Remember to include new files here if necessary
-    + `zip -g function.zip lambda_function.py close_match_indexes.py format_nytimes_intro.py`
+    + `zip -g function.zip lambda_function.py close_match_indexes.py format_nytimes_intro.py nytimes_to_panelixir_style.py`
 8. Send updates to AWS Lambda
     + `aws lambda update-function-code --function-name auto_update_nytimes --zip-file fileb://function.zip`
 9. If successful, a JSON string should be returned. <br>

@@ -174,15 +174,17 @@ def lambda_handler(event, context):
             if latest_update_array[i][0] == existing_news_array[0][0]:
                 response += str(i) + " update(s) found.||"
                 for j in range(1, i + 1):
-                    update = latest_update_array[i - j][0] \
-                        .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
-                        .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
+                    # Change the format of the new update
+                    update = arrange_nytimes_info(latest_update_array[i - j][0])
                     VaccineID = latest_update_array[i - j][3]
+                    tag = "New"
+                    if "promising" in update:
+                        tag = "Breaking News"
 
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                         VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                                 (VaccineID,
-                                 "New",
+                                 tag,
                                  latest_update_array[i - j][1],
                                  update,
                                  latest_update_array[i - j][2]))
@@ -574,13 +576,15 @@ def lambda_handler(event, context):
                             new_update = existing_update + new_intro
                         else:
                             new_update = new_intro
+                        # Update format of new_update
+                        new_update = arrange_nytimes_info(new_update)
                         cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
                                     (new_update, new_vaccine_id))
                         conn.commit()
 
-                        cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
-                                    (new_vaccine_intro, new_vaccine_id))
-                        conn.commit()
+                cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
+                            (new_vaccine_intro, new_vaccine_id))
+                conn.commit()
 
             cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
             intro_updates = cur.fetchone()[0]
@@ -588,8 +592,11 @@ def lambda_handler(event, context):
             if allow_auto_update and intro_updates is not None and intro_updates != '':
                 cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
                 existing_latest_news = cur.fetchone()[0]
-
-                updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+                try:
+                    updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+                # If existing_latest_news is None -- raise TypeError
+                except TypeError:
+                    updated_latest_news = intro_updates
                 cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
                             (updated_latest_news, new_vaccine_id))
                 conn.commit()
@@ -748,7 +755,7 @@ def lambda_handler(event, context):
                                     (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused))
 
                 new_companies_added += 1
-            # TODO: Add exception handler: id different(not proceed), company same
+    # TODO: Add exception handler: id different(not proceed), company same
 
     return {
         'news_update': {
