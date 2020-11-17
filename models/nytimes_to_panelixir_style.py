@@ -1,5 +1,13 @@
+""" @author Tony Liu
+    @version v1.0 - November 16, 2020
+    @project PanElixir - Global COVID-19 Vaccine Tracker
+    @description This program will adjust the format of the parameter passed in to fit the style of the
+    PanElixir website
+"""
+
+
 def arrange_nytimes_info(info):
-    # Styling for 'Phase'
+    # Styling for 'Phase' (Example: Phase 1 => Phase I)
     info = info.replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
         .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
     if "Jan." in info:

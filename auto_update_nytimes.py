@@ -4,6 +4,7 @@ import difflib
 from bs4 import BeautifulSoup
 from models.close_match_indexes import get_close_matches_indexes
 from models.format_nytimes_intro import format_intro
+from models.nytimes_to_panelixir_style import arrange_nytimes_info
 import datetime
 import json
 
@@ -172,9 +173,8 @@ for i in range(len(latest_update_array)):
         if latest_update_array[i][0] == existing_news_array[0][0]:
             response += str(i) + " update(s) found.||"
             for j in range(1, i + 1):
-                update = latest_update_array[i - j][0] \
-                    .replace('Phase 1/2', 'Phase I/II').replace('Phase 2/3', 'Phase II/III') \
-                    .replace('Phase 1', 'Phase I').replace('Phase 2', 'Phase II').replace('Phase 3', 'Phase III')
+                # Change the format of the new update
+                update = arrange_nytimes_info(latest_update_array[i - j][0])
                 VaccineID = latest_update_array[i - j][3]
                 tag = "New"
                 if "promising" in update:
@@ -576,13 +576,15 @@ for i in range(len(new_data_array)):
                         new_update = existing_update + new_intro
                     else:
                         new_update = new_intro
+                    # Update format of new_update
+                    new_update = arrange_nytimes_info(new_update)
                     cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
                                 (new_update, new_vaccine_id))
                     conn.commit()
 
-                    cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
-                                (new_vaccine_intro, new_vaccine_id))
-                    conn.commit()
+            cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
+                        (new_vaccine_intro, new_vaccine_id))
+            conn.commit()
 
         cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
         intro_updates = cur.fetchone()[0]
@@ -592,6 +594,7 @@ for i in range(len(new_data_array)):
             existing_latest_news = cur.fetchone()[0]
             try:
                 updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+            # If existing_latest_news is None -- raise TypeError
             except TypeError:
                 updated_latest_news = intro_updates
             cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",

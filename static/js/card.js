@@ -80,7 +80,7 @@ class myCard extends HTMLElement {
         var pbar1 = document.createElement('div');
         pbar1.setAttribute('class', 'progress-bar');
         pbar1.setAttribute('id', 'pbar1');
-        pbar1.innerHTML = 'PRE-CLINICAL';
+        pbar1.innerHTML = 'PRECLINICAL';
 
 
         var pbar2 = document.createElement('div');
