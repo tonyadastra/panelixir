@@ -1,6 +1,6 @@
 import json
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 import psycopg2
 from models.close_match_indexes import get_close_matches_indexes
 from models.format_nytimes_intro import format_intro
@@ -249,184 +249,225 @@ def auto_update_nytimes(event, context):
     new_companies_added = 0
     new_assigned_id_count = 0
 
-    # Find all Phase III intro
-    phase2_and_3_company_intro = soup.find_all('p', attrs={
-        "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3"})
-    phase3_and_limited_approval_company_intro = soup.find_all('p', attrs={
-        "class": "g-body g-list-item g-filter-item g-filter-phase3 g-filter-approved"})
-    phase3_company_intro = soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase3"})
-    all_phase3_intro = phase3_company_intro + phase3_and_limited_approval_company_intro + phase2_and_3_company_intro
-    phase3_count = len(all_phase3_intro)
+    phase0_count = 0
+    phase1_count = 0
+    phase2_count = 0
+    phase3_count = 0
 
-    # Find all Phase II intro
-    phase2_company_intro = soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase2"})
-    phase1_and_2_company_intro = soup.find_all('p', attrs={
-        "class": "g-body g-list-item g-filter-item g-filter-phase1 g-filter-phase2"})
-    phase1_and_2_and_approval_intro = soup.find_all('p', attrs={
-        "class": "g-body g-list-item g-filter-item g-filter-phase1 g-filter-phase2 g-filter-approved"})
-    all_phase2_intro = phase2_company_intro + phase1_and_2_company_intro + phase1_and_2_and_approval_intro
-    phase2_count = len(all_phase2_intro)
+    vaccine_platform_heading = soup.find_all('h2', attrs={"class": "g-subhed g-optimize-type g-filtered"})
+    # print(vaccine_platform_heading)
+    text = ''
+    for child in soup:
+        if isinstance(child, NavigableString):
+            text += str(child)
+        elif isinstance(child, Tag):
+            # print(child['class'])
+            if child.name == 'h2' and ("g-subhed" in child['class'] and "g-optimize-type" in child['class']
+                                       and "g-filtered" in child['class']):
+                text += '<split>'
+            else:
+                text += str(child)
 
-    # Find all Phase I intro
-    all_phase1_company_intro = soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase1"})
-    phase1_count = len(all_phase1_company_intro)
-
-    all_preclinical_intro = soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase0"})
-    phase0_count = len(all_preclinical_intro)
-
-    all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro + all_preclinical_intro
+    soup_split = text.split('<split>')
+    platforms_found = len(soup_split) - 1
 
     new_data_array = []
-    for intro in all_vaccines_intro:
-        vaccine_array = []
-        discard = False
-        for br in intro.find_all('br'):
-            br.replace_with(' ')
-        intro_text = intro.text
+    for i_platform, info in enumerate(soup_split):
+        new_soup = BeautifulSoup(info, 'html.parser')
 
-        update_time = intro.find('span', class_="g-updated")
-        company_names = intro.find_all('strong')
-        phase0 = intro.find('span', class_="g-phase0")
-        phase1 = intro.find('span', class_="g-phase1")
-        phase2 = intro.find('span', class_="g-phase2")
-        phase3 = intro.find('span', class_="g-phase3")
-        limited = intro.find('span', class_="g-limited")
-        combined_phases = intro.find('span', class_="g-combined")
-        paused = intro.find('span', class_="g-paused")
+        if i_platform == 0:
+            continue
 
-        company_string = ""
-        for i in range(len(company_names)):
-            if i == len(company_names) - 1:
-                company_string += company_names[i].text
-            else:
-                company_string += company_names[i].text + ", "
-        if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
-            company_string += "-2"
+        # Find all Phase III intro
+        phase2_and_3_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3"})
+        phase3_and_limited_approval_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase3 g-filter-approved"})
+        phase3_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase3"})
+        all_phase3_intro = phase3_company_intro + phase3_and_limited_approval_company_intro + phase2_and_3_company_intro
+        phase3_count += len(all_phase3_intro)
 
-        index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
-        try:
-            vaccine_id = info_id_and_company[index[0]][0]
-        except IndexError:
-            vaccine_id = -1
-            # Find match for vaccines with multiple companies but only one shows in news
-            # Problem: possible repeats in companies!
-            for a in range(len(info_id_and_company)):
-                each_id_company = company_array_possibilities[a].split(', ')
-                match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
-                if match:
-                    vaccine_id = info_id_and_company[a][0]
-                    # intro_id_response += "Found match for news #" + str(idx + 1) + \
-                    #                " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
-                    break
+        # Find all Phase II intro
+        phase2_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase2"})
+        phase1_and_2_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase1 g-filter-phase2"})
+        phase1_and_2_and_approval_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase1 g-filter-phase2 g-filter-approved"})
+        all_phase2_intro = phase2_company_intro + phase1_and_2_company_intro + phase1_and_2_and_approval_intro
+        phase2_count += len(all_phase2_intro)
+
+        # Find all Phase I intro
+        all_phase1_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase1"})
+        phase1_count += len(all_phase1_company_intro)
+
+        all_preclinical_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase0"})
+        phase0_count += len(all_preclinical_intro)
+
+        all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro + all_preclinical_intro
+
+        for intro in all_vaccines_intro:
+            vaccine_array = []
+            discard = False
+            for br in intro.find_all('br'):
+                br.replace_with(' ')
+            intro_text = intro.text
+
+            update_time = intro.find('span', class_="g-updated")
+            company_names = intro.find_all('strong')
+            phase0 = intro.find('span', class_="g-phase0")
+            phase1 = intro.find('span', class_="g-phase1")
+            phase2 = intro.find('span', class_="g-phase2")
+            phase3 = intro.find('span', class_="g-phase3")
+            limited = intro.find('span', class_="g-limited")
+            combined_phases = intro.find('span', class_="g-combined")
+            paused = intro.find('span', class_="g-paused")
+
+            company_string = ""
+            for i in range(len(company_names)):
+                if i == len(company_names) - 1:
+                    company_string += company_names[i].text
                 else:
-                    vaccine_id = -1
+                    company_string += company_names[i].text + ", "
+            if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
+                company_string += "-2"
 
-            # Find match for vaccines with multiple companies - rearrange the order in company_string
-            # Iterate through every possible combination of company names to find match
-            if vaccine_id == -1 and len(company_names) > 1:
-                count = 0
-                increment = 0
-                while count < len(company_names) and vaccine_id == -1:
-                    order_start = 1 + increment
-                    order_count = 0
-                    if order_start >= len(company_names):
-                        order_start = 0
-                    new_company_string = ""
-                    while order_count < len(company_names):
-                        if order_count == len(company_names) - 1:
-                            new_company_string += company_names[order_start].text
-                        else:
-                            new_company_string += company_names[order_start].text + ", "
-                        order_count += 1
-                        if order_start >= len(company_names) - 1:
+            index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
+            try:
+                vaccine_id = info_id_and_company[index[0]][0]
+            except IndexError:
+                vaccine_id = -1
+                # Find match for vaccines with multiple companies but only one shows in news
+                # Problem: possible repeats in companies!
+                for a in range(len(info_id_and_company)):
+                    each_id_company = company_array_possibilities[a].split(', ')
+                    match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                    if match:
+                        vaccine_id = info_id_and_company[a][0]
+                        # intro_id_response += "Found match for news #" + str(idx + 1) + \
+                        #                " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
+                        break
+                    else:
+                        vaccine_id = -1
+
+                # Find match for vaccines with multiple companies - rearrange the order in company_string
+                # Iterate through every possible combination of company names to find match
+                if vaccine_id == -1 and len(company_names) > 1:
+                    count = 0
+                    increment = 0
+                    while count < len(company_names) and vaccine_id == -1:
+                        order_start = 1 + increment
+                        order_count = 0
+                        if order_start >= len(company_names):
                             order_start = 0
-                        else:
-                            order_start += 1
+                        new_company_string = ""
+                        while order_count < len(company_names):
+                            if order_count == len(company_names) - 1:
+                                new_company_string += company_names[order_start].text
+                            else:
+                                new_company_string += company_names[order_start].text + ", "
+                            order_count += 1
+                            if order_start >= len(company_names) - 1:
+                                order_start = 0
+                            else:
+                                order_start += 1
 
-                    index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
-                                                      cutoff=0.6)
+                        index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
+                                                          cutoff=0.6)
+                        try:
+                            vaccine_id = info_id_and_company[index[0]][0]
+                            # id_response += "Found match for news #" + str(idx + 1) + \
+                            #                " in try-except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
+                        except IndexError:
+                            vaccine_id = -1
+                        increment += 1
+                        count += 1
+
+                if vaccine_id == -1:
+                    modified_string = company_string + " Biological"
+                    index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
                     try:
                         vaccine_id = info_id_and_company[index[0]][0]
                         # id_response += "Found match for news #" + str(idx + 1) + \
-                        #                " in try-except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
+                        #                " in try-except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
                     except IndexError:
                         vaccine_id = -1
-                    increment += 1
-                    count += 1
 
-            if vaccine_id == -1:
-                modified_string = company_string + " Biological"
-                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
-                try:
-                    vaccine_id = info_id_and_company[index[0]][0]
-                    # id_response += "Found match for news #" + str(idx + 1) + \
-                    #                " in try-except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
-                except IndexError:
-                    vaccine_id = -1
+            company_string = company_string.replace('-2', '')
 
-        company_string = company_string.replace('-2', '')
+            vaccine_stage = -1
+            is_combined_phases = False
+            is_early = False
+            is_paused = False
+            # Remove Tags from Intro
+            if phase0 is not None and phase0.text in intro_text:
+                intro_text = intro_text.replace(phase0.text, '')
+                vaccine_stage = 0
+            if phase1 is not None and phase1.text in intro_text:
+                intro_text = intro_text.replace(phase1.text, '')
+                vaccine_stage = 1
+            if phase2 is not None and phase2.text in intro_text:
+                intro_text = intro_text.replace(phase2.text, '')
+                vaccine_stage = 2
+            if combined_phases is not None and combined_phases.text in intro_text:
+                intro_text = intro_text.replace(combined_phases.text, '')
+                is_combined_phases = True
+            if phase3 is not None and phase3.text in intro_text:
+                intro_text = intro_text.replace(phase3.text, '')
+                vaccine_stage = 3
+            if limited is not None and limited.text in intro_text:
+                intro_text = intro_text.replace(limited.text, '')
+                is_early = True
+            if paused is not None and paused.text in intro_text:
+                intro_text = intro_text.replace(paused.text, '')
+                is_paused = True
 
-        vaccine_stage = -1
-        is_combined_phases = False
-        is_early = False
-        is_paused = False
-        # Remove Tags from Intro
-        if phase0 is not None and phase0.text in intro_text:
-            intro_text = intro_text.replace(phase0.text, '')
-            vaccine_stage = 0
-        if phase1 is not None and phase1.text in intro_text:
-            intro_text = intro_text.replace(phase1.text, '')
-            vaccine_stage = 1
-        if phase2 is not None and phase2.text in intro_text:
-            intro_text = intro_text.replace(phase2.text, '')
-            vaccine_stage = 2
-        if combined_phases is not None and combined_phases.text in intro_text:
-            intro_text = intro_text.replace(combined_phases.text, '')
-            is_combined_phases = True
-        if phase3 is not None and phase3.text in intro_text:
-            intro_text = intro_text.replace(phase3.text, '')
-            vaccine_stage = 3
-        if limited is not None and limited.text in intro_text:
-            intro_text = intro_text.replace(limited.text, '')
-            is_early = True
-        if paused is not None and paused.text in intro_text:
-            intro_text = intro_text.replace(paused.text, '')
-            is_paused = True
+            # Discard the "Other" section of Pre-Clinical from NYTimes
+            if vaccine_stage == 0 and "Other" in company_string and ":" in intro_text:
+                discard = True
 
-        # Discard the "Other" section of Pre-Clinical from NYTimes
-        if vaccine_stage == 0 and "Other" in company_string and ":" in intro_text:
-            discard = True
-
-        date = ""
-        # Remove final "updated" time in Intro
-        if update_time is not None and update_time.text in intro_text:
-            date = update_time.text.replace('Updated ', '')
-            if "June" in date:
-                date = date.replace('June', 'Jun.')
-            if "July" in date:
-                date = date.replace('July', 'Jul.')
-            if "Sept." in date:
-                date = date.replace('Sept.', 'Sep.')
-            date += " " + str(now.year)
-            intro_text = intro_text.replace(update_time.text, '')
-
-        if update_time is None:
             date = ""
+            # Remove final "updated" time in Intro
+            if update_time is not None and update_time.text in intro_text:
+                date = update_time.text.replace('Updated ', '')
+                if "June" in date:
+                    date = date.replace('June', 'Jun.')
+                if "July" in date:
+                    date = date.replace('July', 'Jul.')
+                if "Sept." in date:
+                    date = date.replace('Sept.', 'Sep.')
+                date += " " + str(now.year)
+                intro_text = intro_text.replace(update_time.text, '')
 
-        formatted_intro = intro_text.replace('\n', '')
-        formatted_intro = formatted_intro.strip()
-        # print(formatted_intro)
-        if not discard:
-            vaccine_array.append(vaccine_id)
-            vaccine_array.append(vaccine_stage)
-            vaccine_array.append(company_string)
-            vaccine_array.append(formatted_intro)  # Formatting - remove redundant new lines
-            vaccine_array.append(date)
-            vaccine_array.append(str(is_combined_phases))
-            vaccine_array.append(str(is_early))
-            vaccine_array.append(str(is_paused))
+            if update_time is None:
+                date = ""
 
-            new_data_array.append(vaccine_array)
+            formatted_intro = intro_text.replace('\n', '').replace('  ', ' ')
+            formatted_intro = formatted_intro.strip()
+            if i_platform == 1:
+                vaccine_platform = "Genetic"
+            elif i_platform == 2:
+                vaccine_platform = "Viral Vector"
+            elif i_platform == 3:
+                vaccine_platform = "Protein-Based"
+            elif i_platform == 4:
+                vaccine_platform = "Inactivated or Attenuated"
+            elif i_platform == 5:
+                vaccine_platform = "Repurposed"
+            else:
+                vaccine_platform = ""
+            # print(formatted_intro)
+            if not discard:
+                vaccine_array.append(vaccine_id)
+                vaccine_array.append(vaccine_stage)
+                vaccine_array.append(company_string)
+                vaccine_array.append(formatted_intro)  # Formatting - remove redundant new lines
+                vaccine_array.append(date)
+                vaccine_array.append(str(is_combined_phases))
+                vaccine_array.append(str(is_early))
+                vaccine_array.append(str(is_paused))
+                vaccine_array.append(vaccine_platform)
+
+                new_data_array.append(vaccine_array)
 
     # Get last fetched data from database
     cur.execute("SELECT * from nytimes ORDER BY intro_id;")
@@ -446,6 +487,7 @@ def auto_update_nytimes(event, context):
         new_is_combined_phases = str(new_data_array[i][5])
         new_is_early = str(new_data_array[i][6])
         new_is_paused = str(new_data_array[i][7])
+        new_vaccine_platform = new_data_array[i][8]
 
         old_vaccine_id = existing_data_array[i][0]
         old_stage = existing_data_array[i][1]
@@ -455,6 +497,7 @@ def auto_update_nytimes(event, context):
         old_is_combined_phases = str(existing_data_array[i][5])
         old_is_early = str(existing_data_array[i][6])
         old_is_paused = str(existing_data_array[i][7])
+        old_vaccine_platform = existing_data_array[i][8]
 
         proceed = False
         found_index = -1
@@ -590,10 +633,10 @@ def auto_update_nytimes(event, context):
                         cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
                                     (new_update, new_vaccine_id))
                         conn.commit()
-                new_vaccine_intro = ''.join(intro for intro in formatted_new_intro)
-                cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
-                            (new_vaccine_intro, new_vaccine_id))
-                conn.commit()
+            new_vaccine_intro = ''.join(intro for intro in formatted_new_intro)
+            cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
+                        (new_vaccine_intro, new_vaccine_id))
+            conn.commit()
 
             cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
             intro_updates = cur.fetchone()[0]
@@ -712,12 +755,13 @@ def auto_update_nytimes(event, context):
                                     (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, new_date,
                                      new_is_combined_phases, new_is_early, new_is_paused, i))
                         conn.commit()
+
                     # Update INFO table
-                    cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type, 
+                    cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type,
                                                         update_date, combined_phases, early_approval, paused)
                                                         VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s)''',
-                                (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '', '',
-                                 new_is_combined_phases, new_is_early, new_is_paused))
+                                (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '',
+                                 new_vaccine_platform, new_is_combined_phases, new_is_early, new_is_paused))
                     # Update COMPANIES table
                     cur.execute("INSERT INTO companies(vac_id, co_name, company_nytimes) VALUES (%s, %s, %s)",
                                 (new_assigned_id, new_company_name, new_company_name))
@@ -764,6 +808,7 @@ def auto_update_nytimes(event, context):
                                     (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused))
 
                 new_companies_added += 1
+
     # TODO: Add exception handler: id different(not proceed), company same
     return_response = {
         'news_update': {
@@ -775,6 +820,7 @@ def auto_update_nytimes(event, context):
         'intro_update': {
 
             'statusCode': 200,
+            'platforms_found': platforms_found,
             'vaccine_count': {
                 'Pre-Clinical': phase0_count,
                 'Phase I': phase1_count,
@@ -799,38 +845,4 @@ def auto_update_nytimes(event, context):
 
     print(json.dumps(return_response))
 
-    return {
-        'news_update': {
-            'statusCode': 200,
-            'VaccineID Algorithm': id_response,
-            'News Update': response
-        },
-
-        'intro_update': {
-
-            'statusCode': 200,
-            'vaccine_count': {
-                'Pre-Clinical': phase0_count,
-                'Phase I': phase1_count,
-                'Phase II': phase2_count,
-                'Phase III': phase3_count
-            },
-            'updates_count': {
-                'date': update_date_count,
-                'stage': update_stage_count,
-                'combined_phases': update_is_combined_count,
-                'early_approval': update_is_early_count,
-                'paused': update_is_paused_count,
-                'intro': update_intro_count
-            },
-            'new_vaccines': {
-                'total_new_added': new_companies_added,
-                'number of vaccine_id assigned': new_assigned_id_count
-            }
-
-        }
-
-    }
-
-
-# auto_update_nytimes(1, 2)
+    return return_response

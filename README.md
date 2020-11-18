@@ -95,12 +95,17 @@ Example:
 }
 
 ```
+
 ## Invoke the Lambda Function in Terminal
 + `aws lambda invoke --function-name auto_update_nytimes return.json --log-type Tail --query 'LogResult' --output text |  base64 -d`
 + Execution results will be saved to a file called return.json
+
+### Invocation type
++ 
 
 ## Related Resources
 1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
 2. [Psycopg2 Package for AWS Lambda](https://github.com/jkehler/awslambda-psycopg2) (Note: Directly downloading this package using `pip` would cause an error in deployment)
 3. [Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
+4. [AWS Lambda Function Handler](https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html)
 
