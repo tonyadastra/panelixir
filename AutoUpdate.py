@@ -178,9 +178,11 @@ def auto_update_nytimes(event, context):
                     # Change the format of the new update
                     update = arrange_nytimes_info(latest_update_array[i - j][0])
                     VaccineID = latest_update_array[i - j][3]
+                    breaking_news_keywords = ["promising", "early approval"]
                     tag = "New"
-                    if "promising" in update:
-                        tag = "Breaking News"
+                    for keyword in breaking_news_keywords:
+                        if keyword in update:
+                            tag = "Breaking News"
 
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                         VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
@@ -246,6 +248,7 @@ def auto_update_nytimes(event, context):
     update_intro_count = 0
     new_companies_added = 0
     new_assigned_id_count = 0
+
     # Find all Phase III intro
     phase2_and_3_company_intro = soup.find_all('p', attrs={
         "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3"})
@@ -277,6 +280,8 @@ def auto_update_nytimes(event, context):
     for intro in all_vaccines_intro:
         vaccine_array = []
         discard = False
+        for br in intro.find_all('br'):
+            br.replace_with(' ')
         intro_text = intro.text
 
         update_time = intro.find('span', class_="g-updated")
@@ -408,8 +413,9 @@ def auto_update_nytimes(event, context):
         if update_time is None:
             date = ""
 
-        formatted_intro = intro_text.replace('\n', '').replace('  ', '')
-
+        formatted_intro = intro_text.replace('\n', '')
+        formatted_intro = formatted_intro.strip()
+        # print(formatted_intro)
         if not discard:
             vaccine_array.append(vaccine_id)
             vaccine_array.append(vaccine_stage)
@@ -562,7 +568,9 @@ def auto_update_nytimes(event, context):
             if formatted_new_intro != formatted_old_intro:
                 match_intro = False
                 for new_intro in formatted_new_intro:
+                    # new_intro = new_intro.strip()
                     for old_intro in formatted_old_intro:
+                        # old_intro = old_intro.strip()
                         if new_intro == old_intro:
                             match_intro = True
                             break
@@ -582,7 +590,7 @@ def auto_update_nytimes(event, context):
                         cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
                                     (new_update, new_vaccine_id))
                         conn.commit()
-
+                new_vaccine_intro = ''.join(intro for intro in formatted_new_intro)
                 cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
                             (new_vaccine_intro, new_vaccine_id))
                 conn.commit()
@@ -823,3 +831,6 @@ def auto_update_nytimes(event, context):
         }
 
     }
+
+
+# auto_update_nytimes(1, 2)

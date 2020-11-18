@@ -1,6 +1,9 @@
 # PanElixir - Auto-Update NYTimes Division
 ## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
+### **Divisions and Internal Links**
++ #### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
+
 ### Version History
 - v2.1.1 - Update the format of new updates in intro using a new function November 16, 2020
 - v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020

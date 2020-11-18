@@ -7,6 +7,9 @@
 
 
 def format_intro(nytimes_intro):
+    for i in range(len(nytimes_intro)):
+        nytimes_intro[i] = nytimes_intro[i].strip()
+
     join_indexes = []
     for idx, intro in enumerate(nytimes_intro):
         if intro[0].isdigit():
