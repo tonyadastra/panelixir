@@ -1,10 +1,11 @@
 # PanElixir - Auto-Update NYTimes Division
-## This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
+> This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
-### **Divisions and Internal Links**
-+ #### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
+## **Divisions and Internal Links**
++ ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
-### Version History
+## Version History
+- v2.2.0 - Add new keyword 'early approval' for 'Breaking News' and (find <br>s) update intro format
 - v2.1.1 - Update the format of new updates in intro using a new function November 16, 2020
 - v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020
 - v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data November 15, 2020
@@ -13,7 +14,7 @@
 - v1.1 - Switch to html.parser, fix bugs that caused an empty response October 20, 2020
 - v1.0 - Initial release October 18, 2020
 
-### The Lambda Function
+## The Lambda Function
 - This program is a lambda function that updates the Latest News Section
     - Checks Latest News date - if over three days, it will remove the "New" tag
     - Scrapes NYTimes Vaccine Tracker News Section
@@ -30,11 +31,11 @@
     - Update the info database - columns(intro, stage, date, early_approval, combined_phases, paused) if there are updates
     - To turn off auto-update: Set all values of allow_auto_update in info to False
 
-### Run Frequency
+## Run Frequency
 - This program runs every day at 17:30 and 23:30 UTC under AWS EventBridge (CloudWatch Events)
 - cron expression: `30 17,23 * * ? *`
 
-### Project Structure
+## Project Structure
 ```
 ├── models
 │   ├── close_match_indexes.py
@@ -52,7 +53,7 @@
 ├── README.md
 ```
 
-### To Update Lambda Function in AWS using Terminal
+## Update AWS Lambda Function using Terminal
 1. Install awscli using pip 
     + `pip install awscli`
 2. Login to AWS in terminal. The access key ID and password can be found in AWS Credentials. For default region, use us-west-1
@@ -94,11 +95,11 @@ Example:
 }
 
 ```
-### Invoke the Lambda Function in Terminal
+## Invoke the Lambda Function in Terminal
 + `aws lambda invoke --function-name auto_update_nytimes return.json --log-type Tail --query 'LogResult' --output text |  base64 -d`
 + Execution results will be saved to a file called return.json
 
-### Related Resources
+## Related Resources
 1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
 2. [Psycopg2 Package for AWS Lambda](https://github.com/jkehler/awslambda-psycopg2) (Note: Directly downloading this package using `pip` would cause an error in deployment)
 3. [Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
