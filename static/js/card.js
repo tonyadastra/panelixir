@@ -64,7 +64,6 @@ class myCard extends HTMLElement {
                 image.src = imgUrl;
                 img_wrapper.appendChild(image);
 
-
             })
         }
         wrapper.appendChild(img_wrapper)
@@ -134,60 +133,16 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
 
-        if (this.getAttribute('data-id') === '29' || this.getAttribute('data-id') === '12' || this.getAttribute('data-id') === '28' || this.getAttribute('data-id') === '35' || this.getAttribute('data-id') === '13' || this.getAttribute('data-id') === '119') {
+        if (this.getAttribute('data-early') === 'True') {
             bar_wrapper.appendChild(pbar7);
         }
-
-        // if (this.getAttribute('data-id') === '13'){
-        //     bar_wrapper.appendChild(pbar6);
-        // }
-
-
-        // if (this.getAttribute('data-stage') === '0') {
-        //     bar_wrapper.appendChild(pbar1);
-        // }
-        //
-        // else if (this.getAttribute('data-stage') === '1') {
-        //     bar_wrapper.appendChild(pbar1);
-        //     bar_wrapper.appendChild(pbar2);
-        // }
-        //
-        // else if (this.getAttribute('data-stage') === '2') {
-        //     bar_wrapper.appendChild(pbar1);
-        //     bar_wrapper.appendChild(pbar2);
-        //     bar_wrapper.appendChild(pbar3);
-        // }
-        //
-        // else if (this.getAttribute('data-stage') === '3') {
-        //     bar_wrapper.appendChild(pbar1);
-        //     bar_wrapper.appendChild(pbar2);
-        //     bar_wrapper.appendChild(pbar3);
-        //     bar_wrapper.appendChild(pbar4);
-        // }
-        //
-        // if (this.getAttribute('data-stage') === '4') {
-        //     bar_wrapper.appendChild(pbar1);
-        //     bar_wrapper.appendChild(pbar2);
-        //     bar_wrapper.appendChild(pbar3);
-        //     bar_wrapper.appendChild(pbar4);
-        //     bar_wrapper.appendChild(pbar5);
-        // }
-        //
-        // if (this.getAttribute('data-stage') === '5') {
-        //     bar_wrapper.appendChild(pbar1);
-        //     bar_wrapper.appendChild(pbar6);
-        // }
 
         wrapper.appendChild(bar_wrapper);
 
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro intro-mobile-font');
-        // text.setAttribute('style', 'text-align:justify');
-        // if (this.getAttribute('data-stage') != 0)
         text.innerHTML = this.getAttribute('data-intro');
-        // else
-        //     text.setAttribute('style', 'margin-bottom:2rem');
         wrapper.appendChild(text);
 
         var latest_news_title = document.createElement('b');
@@ -197,7 +152,7 @@ class myCard extends HTMLElement {
 
         // var line_break = document.createElement('br');
 
-        // short company intro
+        // latest news section
         var latest_news = document.createElement('p');
         latest_news.setAttribute('class', 'intro intro-mobile-font');
         latest_news.setAttribute('style', 'color:purple;');

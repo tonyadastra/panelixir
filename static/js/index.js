@@ -294,6 +294,49 @@ var needs_update = true;
 var processing = false;
 var count = 1, limit = 10, mobile_count = 1;
 
+function createDesktopDropdownCountry(country_array) {
+    var country_dropdown = document.getElementById("all-dropdown-items-country");
+    country_array.forEach((country) => {
+        var dropdown = document.createElement("button");
+        var country_flag = country
+        if (country_flag == "United States")
+            country_flag = "USA"
+        if (country_flag == "United Kingdom")
+            country_flag = "UK"
+
+        var country_wrapper = document.createElement('div')
+        country_wrapper.setAttribute('style', 'height: 18px;display:table;')
+
+        var imgUrl = '../static/img/flag/' + country_flag.replace(' ', '') + '.png'
+        const image = new Image();
+        image.setAttribute('height', '18px');
+        image.setAttribute('width', '28px');
+        image.setAttribute('style', 'display:table-cell; margin: auto;')
+        image.src = imgUrl;
+
+        var text = document.createElement('span')
+        text.innerHTML = "\t" + country
+        text.setAttribute('style', 'display:table-cell;line-height:18px;vertical-align:middle;padding-left:5px;')
+
+        country_wrapper.appendChild(image)
+        country_wrapper.appendChild(text)
+
+        dropdown.appendChild(country_wrapper)
+        // dropdown.innerHTML = country;
+        dropdown.setAttribute('class', 'desktop-dropdown dropdown-item-ctry');
+        dropdown.setAttribute('id', 'country');
+        dropdown.setAttribute('value', country);
+        dropdown.setAttribute('style', 'height: 32px;')
+        dropdown.addEventListener("click", function () {
+            $(".desktop-dropdown#country").removeClass("active");
+            dropdown.setAttribute('class', 'active desktop-dropdown dropdown-item-ctry')
+
+        })
+        dropdown.setAttribute('onclick', 'desktopClick()');
+        country_dropdown.appendChild(dropdown);
+    })
+}
+
 /** When page is loaded...**/
 $(document).ready(function () {
     $.ajax({
@@ -301,24 +344,52 @@ $(document).ready(function () {
         type: "get",
         async: true,
         success: function (date) {
+
             d3.select('#update_top').append('span')
                 .text("Latest Update: " + date.replace('   ', ' '))
-            $(function () {
-                resize();
 
-                var btn_group = document.getElementsByTagName('button');
-                for (var i = 0, length = btn_group.length; i < length; i++) {
-                    var btn = btn_group[i];
-                    if (btn.value === 'World') {
-                        btn.click();
-                        break;
-                    }
+            $.ajax({
+                url: "get_vaccine_countries",
+                type: "get",
+                async: true,
+                success: function (countries) {
+                    var country_dropdown = document.getElementById("all-dropdown-items-country");
+                    var top_countries = document.createElement("BUTTON");
+                    top_countries.innerHTML = "Top Countries";
+                    top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                    top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
+                    country_dropdown.appendChild(top_countries);
+
+                    createDesktopDropdownCountry(JSON.parse(countries).top_countries)
+
+                    var other_countries = document.createElement("BUTTON");
+                    other_countries.innerHTML = "Other Countries";
+                    other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                    other_countries.setAttribute('style', 'font-weight: bold;');
+                    country_dropdown.appendChild(other_countries);
+
+                    createDesktopDropdownCountry(JSON.parse(countries).world_countries)
+
+                    $(function () {
+                        resize();
+
+                        var btn_group = document.getElementsByTagName('button');
+                        for (var i = 0, length = btn_group.length; i < length; i++) {
+                            var btn = btn_group[i];
+                            if (btn.value === 'World') {
+                                btn.click();
+                                break;
+                            }
+                        }
+                    });
                 }
-            });
+            })
+
 
         }
 
     })
+
 
 
     /** When Interactive Buttons are Clicked... **/
@@ -922,13 +993,13 @@ $('.dropdown-item-stages').click(function () {
 $('.dropdown-item-ctry').click(function () {
     $(".dropdown-item-ctry").removeClass('active');
     $(this).addClass('active');
-    var active_country = document.querySelector('.active.desktop-dropdown#country').value;
-    if (active_country === "") {
-        active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
-    }
-    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
-    dropdown_title_country.innerHTML = active_country;
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    // var active_country = document.querySelector('.active.desktop-dropdown#country').value;
+    // if (active_country === "") {
+    //     active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+    // }
+    // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    // dropdown_title_country.innerHTML = active_country;
+    // document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
 })
 
 $('.dropdown-item-type').click(function () {
@@ -983,7 +1054,14 @@ $('.clear-filter').click(function () {
     // });
 })
 
-$('.desktop-dropdown').click(function () {
+$('.desktop-dropdown').on("click", function () {
+    desktopClick()
+    // return false;
+})
+
+function desktopClick(){
+    // console.log('click')
+
     $('#dropdown-desktop-stage').dropdown('hide');
     $('#dropdown-desktop-country').dropdown('hide');
     $('#dropdown-desktop-type').dropdown('hide');
@@ -991,7 +1069,7 @@ $('.desktop-dropdown').click(function () {
     desktop_country = document.querySelector('.active.desktop-dropdown#country').value;
     desktop_type = document.querySelector('.active.desktop-dropdown#type').value;
     // clear input field
-    document.getElementsByClassName("form-control search-country")[0].value='';
+    document.getElementsByClassName("form-control search-country")[0].value = '';
     $.ajax({
         url: "/desktop-form",
         data: {
@@ -999,7 +1077,7 @@ $('.desktop-dropdown').click(function () {
             'limit': limit, 'desktop_count': count
         },
         type: "GET",
-        beforeSend: function() {
+        beforeSend: function () {
             // show the preloader (progress bar)
             $('#TagIWantToLoadTo').html("<div class='load-progress'><div class='indeterminate'></div></div>");
             // setTimeout(() => {}, 2000);
@@ -1011,20 +1089,29 @@ $('.desktop-dropdown').click(function () {
         success: function (response) {
             $('.initial-cards').remove();
             // $('#mobile_container').remove();
-            document.getElementById(    'card_container').innerHTML = response;
+            document.getElementById('card_container').innerHTML = response;
             count = 1;
         },
     });
-    return false;
-})
+
+    var active_country = document.querySelector('.active.desktop-dropdown#country').value;
+    if (active_country === "") {
+        active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+    }
+    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    dropdown_title_country.innerHTML = active_country;
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+}
 
 $(".btn.btn-light").mouseup(function(){
     $(this).blur();
 })
+
 
 $('#dropdown-desktop-country').click(function () {
     document.getElementById('myInput').value = '';
     $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
     });
+
 })

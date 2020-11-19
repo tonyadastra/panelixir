@@ -31,14 +31,14 @@ def favicon():
 @app.route('/', methods=['GET'])
 def index():
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-                "TO_CHAR(update_date, 'Month FMDD'), company "
+                "TO_CHAR(update_date, 'Month FMDD'), company, early_approval "
                 "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
                 "LIMIT 10")
 
     data = cur.fetchall()
     cur.execute("rollback")
-    # call function match_logo([data], [position of company in data])
+    # call function match_logo([data], [position of company in data]) - insert logo at index 3
     match_logo(data, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
@@ -63,7 +63,7 @@ def desktopForm():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -89,7 +89,7 @@ def card():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -120,7 +120,7 @@ def mobileForm():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
-        "TO_CHAR(update_date, 'Month FMDD'), company"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -145,7 +145,7 @@ def mobileAppendCards():
     limit = int(request.args.get('limit'))
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -171,7 +171,7 @@ def displayCompany():
     companyID = str(request.args.get('company_id'))
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()
@@ -249,21 +249,13 @@ def getBarsData():
     bars_data_json = {'bars_data': []}
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
-    # print(json.dumps({'count': data_arr, 'bars_data': bars_data_json}))
 
-    # map data
-    vaccines_json = {'vaccines': []}
-    vaccines = Vaccine.query.all()
-    for vaccine in vaccines:
-        vaccine_info = vaccine.__dict__
-        del vaccine_info['_sa_instance_state']
-        vaccines_json['vaccines'].append(vaccine_info)
-
-    return json.dumps({'count': data_arr, 'bars_data': bars_data_json, 'map_data': vaccines_json})
+    return json.dumps({'count': data_arr, 'bars_data': bars_data_json})
 
 
 @app.route('/load_data', methods=['GET'])
 def load_data():
+    # map data - uses SQLAlchemy models/vaccine_intro.py
     vaccines_json = {'vaccines': []}
     vaccines = Vaccine.query.all()
     for vaccine in vaccines:
@@ -271,6 +263,37 @@ def load_data():
         del vaccine_info['_sa_instance_state']
         vaccines_json['vaccines'].append(vaccine_info)
     return json.dumps({'map_data': vaccines_json})
+
+
+@app.route('/get_vaccine_countries', methods=['GET'])
+def get_vaccine_countries():
+    cur.execute("SELECT country FROM info WHERE stage >= 3 "
+                "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
+                "LIMIT 5")
+    top_countries = cur.fetchall()
+    cur.execute("rollback")
+    top_countries_array = ["United States"]
+    for country in top_countries:
+        country_array = country[0].replace(', ', ',').split(',')
+        for each_country in country_array:
+            if each_country not in top_countries_array:
+                top_countries_array.append(each_country)
+
+    cur.execute("SELECT country FROM info")
+    world_countries = cur.fetchall()
+    cur.execute("rollback")
+
+    all_countries_array = []
+    for country in world_countries:
+        country_array = country[0].replace(', ', ',').split(',')
+        for each_country in country_array:
+            if each_country not in all_countries_array and each_country not in top_countries_array:
+                all_countries_array.append(each_country)
+
+    all_countries_array.sort()
+    # print(all_countries_array)
+    return json.dumps({'top_countries': top_countries_array,
+                       'world_countries': all_countries_array})
 
 
 @app.route('/data/map.json', methods=['GET'])

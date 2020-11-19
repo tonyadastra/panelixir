@@ -1,5 +1,7 @@
+{# Note: entry[3] - logo is not directly included in cur.execute, but appended in python program
+models/match_company_to_logo.py, which inserts logo array in index 3 #}
 {% for entry in data %}
     <my-card data-id='{{entry[0]}}' data-stage={{entry[1]}} data-expand='{{entry[2]}}' data-img='{{entry[3]}}' data-intro='{{entry[4]}}'
-            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}' data-news='{{entry[7]}}' data-date='{{entry[8]}}'>
+            data-country='{{entry[5]}}' data-vactype='{{entry[6]}}' data-news='{{entry[7]}}' data-date='{{entry[8]}}' data-early='{{entry[10]}}'>
     </my-card>
 {% endfor %}
