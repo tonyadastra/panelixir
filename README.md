@@ -5,6 +5,8 @@
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
+- v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to "Breaking News" November 18, 2020
+- v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website November 17, 2020
 - v2.2.0 - Add new keyword 'early approval' for 'Breaking News' and (find <br>s) update intro format
 - v2.1.1 - Update the format of new updates in intro using a new function November 16, 2020
 - v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020

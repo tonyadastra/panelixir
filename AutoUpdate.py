@@ -75,9 +75,9 @@ def auto_update_nytimes(event, context):
             company_string = ""
             for i in range(len(news_company)):
                 if i == len(news_company) - 1:
-                    company_string += news_company[i].a.text
+                    company_string += news_company[i].a.text.strip()
                 else:
-                    company_string += news_company[i].a.text + ", "
+                    company_string += news_company[i].a.text.strip() + ", "
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
             try:
@@ -109,9 +109,9 @@ def auto_update_nytimes(event, context):
                         new_company_string = ""
                         while order_count < len(news_company):
                             if order_count == len(news_company) - 1:
-                                new_company_string += news_company[order_start].a.text
+                                new_company_string += news_company[order_start].a.text.strip()
                             else:
-                                new_company_string += news_company[order_start].a.text + ", "
+                                new_company_string += news_company[order_start].a.text.strip() + ", "
                             order_count += 1
                             if order_start >= len(news_company) - 1:
                                 order_start = 0
@@ -178,7 +178,7 @@ def auto_update_nytimes(event, context):
                     # Change the format of the new update
                     update = arrange_nytimes_info(latest_update_array[i - j][0])
                     VaccineID = latest_update_array[i - j][3]
-                    breaking_news_keywords = ["promising", "early approval"]
+                    breaking_news_keywords = ["promising", "early approval", "effective"]
                     tag = "New"
                     for keyword in breaking_news_keywords:
                         if keyword in update:
@@ -254,14 +254,12 @@ def auto_update_nytimes(event, context):
     phase2_count = 0
     phase3_count = 0
 
-    vaccine_platform_heading = soup.find_all('h2', attrs={"class": "g-subhed g-optimize-type g-filtered"})
-    # print(vaccine_platform_heading)
     text = ''
-    for child in soup:
+
+    for child in nytimes_news[0].parent:
         if isinstance(child, NavigableString):
             text += str(child)
         elif isinstance(child, Tag):
-            # print(child['class'])
             if child.name == 'h2' and ("g-subhed" in child['class'] and "g-optimize-type" in child['class']
                                        and "g-filtered" in child['class']):
                 text += '<split>'
@@ -269,6 +267,7 @@ def auto_update_nytimes(event, context):
                 text += str(child)
 
     soup_split = text.split('<split>')
+
     platforms_found = len(soup_split) - 1
 
     new_data_array = []
@@ -283,12 +282,14 @@ def auto_update_nytimes(event, context):
             "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3"})
         phase3_and_limited_approval_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-phase3 g-filter-approved"})
-        phase3_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase3"})
+        phase3_company_intro = new_soup.find_all('p',
+                                                 attrs={"class": "g-body g-list-item g-filter-item g-filter-phase3"})
         all_phase3_intro = phase3_company_intro + phase3_and_limited_approval_company_intro + phase2_and_3_company_intro
         phase3_count += len(all_phase3_intro)
 
         # Find all Phase II intro
-        phase2_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase2"})
+        phase2_company_intro = new_soup.find_all('p',
+                                                 attrs={"class": "g-body g-list-item g-filter-item g-filter-phase2"})
         phase1_and_2_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-phase1 g-filter-phase2"})
         phase1_and_2_and_approval_intro = new_soup.find_all('p', attrs={
@@ -297,10 +298,12 @@ def auto_update_nytimes(event, context):
         phase2_count += len(all_phase2_intro)
 
         # Find all Phase I intro
-        all_phase1_company_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase1"})
+        all_phase1_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase1"})
         phase1_count += len(all_phase1_company_intro)
 
-        all_preclinical_intro = new_soup.find_all('p', attrs={"class": "g-body g-list-item g-filter-item g-filter-phase0"})
+        all_preclinical_intro = new_soup.find_all('p',
+                                                  attrs={"class": "g-body g-list-item g-filter-item g-filter-phase0"})
         phase0_count += len(all_preclinical_intro)
 
         all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro + all_preclinical_intro
@@ -325,11 +328,12 @@ def auto_update_nytimes(event, context):
             company_string = ""
             for i in range(len(company_names)):
                 if i == len(company_names) - 1:
-                    company_string += company_names[i].text
+                    company_string += company_names[i].text.strip()
                 else:
-                    company_string += company_names[i].text + ", "
+                    company_string += company_names[i].text.strip() + ", "
             if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
                 company_string += "-2"
+            print(company_string)
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
             try:
@@ -362,9 +366,9 @@ def auto_update_nytimes(event, context):
                         new_company_string = ""
                         while order_count < len(company_names):
                             if order_count == len(company_names) - 1:
-                                new_company_string += company_names[order_start].text
+                                new_company_string += company_names[order_start].text.strip()
                             else:
-                                new_company_string += company_names[order_start].text + ", "
+                                new_company_string += company_names[order_start].text.strip() + ", "
                             order_count += 1
                             if order_start >= len(company_names) - 1:
                                 order_start = 0
@@ -391,8 +395,8 @@ def auto_update_nytimes(event, context):
                         #                " in try-except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
                     except IndexError:
                         vaccine_id = -1
-
-            company_string = company_string.replace('-2', '')
+            if "-2" in company_string:
+                company_string = company_string.replace('-2', '')
 
             vaccine_stage = -1
             is_combined_phases = False
@@ -537,19 +541,21 @@ def auto_update_nytimes(event, context):
                 interval_info = None
                 allow_auto_update = False
 
-            # If update in date: interval!=0(not None)-->update; original None + new NOT None-->update
-            if (date_interval != 0 and date_interval is not None) or (old_date is None and new_date != ''):
-                # update date
-                cur.execute("UPDATE nytimes SET date = TO_DATE(%s, 'Mon FMDD YYYY') WHERE vac_id = %s",
-                            (new_date, new_vaccine_id))
-                conn.commit()
-
-                # If new date from NYTimes is older than info date, abort the update
-                if interval_info is not None and interval_info >= 0 and allow_auto_update:
-                    cur.execute("UPDATE info SET update_date = TO_DATE(%s, 'Mon FMDD YYYY') WHERE info.vac_id = %s",
+            def update_date():
+                global update_date_count
+                # If update in date: interval!=0(not None)-->update; original None + new NOT None-->update
+                if (date_interval is not None) or (old_date is None and new_date != ''):
+                    # update date NYTimes
+                    cur.execute("UPDATE nytimes SET date = TO_DATE(%s, 'Mon FMDD YYYY') WHERE vac_id = %s",
                                 (new_date, new_vaccine_id))
                     conn.commit()
-                    update_date_count += 1
+
+                    # If new date from NYTimes is older than info date, abort the update
+                    if interval_info is not None and interval_info >= 0 and allow_auto_update:
+                        cur.execute("UPDATE info SET update_date = TO_DATE(%s, 'Mon FMDD YYYY') WHERE info.vac_id = %s",
+                                    (new_date, new_vaccine_id))
+                        conn.commit()
+                        update_date_count += 1
 
             # update stage
             if new_stage != old_stage:
@@ -560,6 +566,7 @@ def auto_update_nytimes(event, context):
                     cur.execute("UPDATE info SET stage = %s WHERE vac_id = %s", (new_stage, new_vaccine_id))
                     conn.commit()
                     update_stage_count += 1
+                    update_date()
 
             # update combined phases
             if new_is_combined_phases != old_is_combined_phases:
@@ -573,6 +580,7 @@ def auto_update_nytimes(event, context):
                                 (new_is_combined_phases, new_vaccine_id))
                     conn.commit()
                     update_is_combined_count += 1
+                    update_date()
 
             # update early
             if new_is_early != old_is_early:
@@ -586,6 +594,7 @@ def auto_update_nytimes(event, context):
                                 (new_is_early, new_vaccine_id))
                     conn.commit()
                     update_is_early_count += 1
+                    update_date()
 
             # update paused
             if new_is_paused != old_is_paused:
@@ -597,6 +606,7 @@ def auto_update_nytimes(event, context):
                     cur.execute("UPDATE info SET paused = %s WHERE vac_id = %s", (new_is_paused, new_vaccine_id))
                     conn.commit()
                     update_is_paused_count += 1
+                    update_date()
 
             # If there is an update in vaccine intro
             new_intro_array = new_vaccine_intro.split('. ')
@@ -652,6 +662,8 @@ def auto_update_nytimes(event, context):
                 cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
                             (updated_latest_news, new_vaccine_id))
                 conn.commit()
+                # Update date
+                update_date()
 
                 # clear intro_update after update
                 cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s", ('', new_vaccine_id))
@@ -701,9 +713,9 @@ def auto_update_nytimes(event, context):
                                 new_company_string = ""
                                 while order_count < len(split_company_array):
                                     if order_count == len(split_company_array) - 1:
-                                        new_company_string += split_company_array[order_start]
+                                        new_company_string += split_company_array[order_start].strip()
                                     else:
-                                        new_company_string += split_company_array[order_start] + ", "
+                                        new_company_string += split_company_array[order_start].strip() + ", "
                                     order_count += 1
                                     if order_start >= len(split_company_array) - 1:
                                         order_start = 0
@@ -811,14 +823,13 @@ def auto_update_nytimes(event, context):
 
     # TODO: Add exception handler: id different(not proceed), company same
     return_response = {
-        'news_update': {
+        'Latest News Section': {
             'statusCode': 200,
             'VaccineID Algorithm': id_response,
             'News Update': response
         },
 
-        'intro_update': {
-
+        'Intro Section': {
             'statusCode': 200,
             'platforms_found': platforms_found,
             'vaccine_count': {
@@ -839,8 +850,8 @@ def auto_update_nytimes(event, context):
                 'total_new_added': new_companies_added,
                 'number of vaccine_id assigned': new_assigned_id_count
             }
-
         }
+
     }
 
     print(json.dumps(return_response))
