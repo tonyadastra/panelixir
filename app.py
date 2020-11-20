@@ -102,6 +102,8 @@ def card():
     cur.execute("rollback")
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
+
+    # if data:
     return render_template("card.html", data=data)
 
 
@@ -189,10 +191,13 @@ def getUpdateTime():
                 "UNION "
                 "SELECT date AS update_date FROM news "
                 "ORDER BY update_date DESC LIMIT 1) AS date")
-    update_time = cur.fetchone()
+    update_time = cur.fetchone()[0]
     cur.execute("rollback")
-    if update_time is not None:
-        return update_time[0]
+
+    cur.execute("SELECT COUNT(*) FROM info")
+    total_rows = cur.fetchone()[0]
+    cur.execute("rollback")
+    return json.dumps({'update_time': update_time, 'total_rows': total_rows})
 
 
 @app.route("/get_bars_data", methods=['GET'])

@@ -9,7 +9,6 @@
 
 ## **To Do List**
 * [ ] WHO Website Auto-Update
-* [ ] Country Dropdown Query from Database
 * [ ] Register/Login => Send latest information via e-mail, Comments
 * [ ] More information in database (doses, expected release date, etc.)
 * [ ] Logo Design
@@ -20,6 +19,9 @@
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
 * [X] Full Auto-Update Data NYTimes Website
+* [X] Country Dropdown Query from Database
+* [X] Add spinner while loading card
+* [X] Optimize Append Card JS
 * [X] Only append logo, country tag, type tag if values in database are not empty
 * [X] Find AutoUpdateNYTimes AWS Lambda Function Logs
 * [X] Optimize INFO database - remove 'logo' column (Auto-generated based on 'company' and 'vac_id'!)

@@ -353,14 +353,16 @@ function createDesktopDropdownCountry(country_array) {
         country_dropdown.appendChild(dropdown);
     })
 }
-
+var total_rows = 0;
 /** When page is loaded...**/
 $(document).ready(function () {
     $.ajax({
         url: "get_update_time",
         type: "get",
         async: true,
-        success: function (date) {
+        success: function (response) {
+            var date = JSON.parse(response).update_time
+            total_rows = JSON.parse(response).total_rows
 
             d3.select('#update_top').append('span')
                 .text("Latest Update: " + date.replace('   ', ' '))
@@ -724,7 +726,7 @@ $(document).ready(function () {
     });
 });
 
-var nearToBottom = 1500;
+var nearToBottom = 150;
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -733,47 +735,75 @@ var prev_response_mobile = ''
 var desktop_stage = ''
 var desktop_country = ''
 var desktop_type = ''
+var prev_mobile_count = 0
+var prev_count = 0
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
             $(document).height() - $('.page-footer').height() - 150) {
-            // console.log($(window).scrollTop())
-            // console.log($(window).height())
-            // console.log($(document).height())
-            // ajax call get data from server and append to the div
-            $.ajax({
-                url: '/mobile-card',
-                type: 'GET',
-                data: {
-                    'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
-                    'mobile_count': mobile_count, 'limit': limit
-                },
-                success: function (response) {
-                    if (response !== prev_response_mobile){
-                        $('#mobile_container').append(response);
-                        mobile_count = mobile_count + 1;
-                        // console.log(mobile_count)
+            if (mobile_count < (total_rows / limit) && prev_mobile_count !== mobile_count) {
+                $.ajax({
+                    url: '/mobile-card',
+                    type: 'GET',
+                    data: {
+                        'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+                        'mobile_count': mobile_count, 'limit': limit
+                    },
+                    beforeSend: function () {
+                        // show spinner when loading
+                        $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+                    },
+                    complete: function () {
+                        // hide the spinner
+                        $('#spinner').html("");
+                    },
+                    success: function (response) {
+                        if (response !== prev_response_mobile) {
+                            $('#mobile_container').append(response);
+                            mobile_count = mobile_count + 1;
+                            // console.log(mobile_count)
+                        }
+                        prev_response_mobile = response;
                     }
-                    prev_response_mobile = response;
-                }
-            });
+                });
+                prev_mobile_count = mobile_count;
+            }
         }
     } else {
-        if ($(window).scrollTop() + $(window).height() >
-            $(document).height() - nearToBottom) {
-            $.ajax({
-                url: '/card',
-                type: 'get',
-                data: { 'desktop_stage': desktop_stage, 'desktop_country': desktop_country, 'desktop_type': desktop_type,
-                    'count': count, 'limit': limit },
-                success: function (response) {
-                    if (response !== prev_response){
-                        $('#card_container').append(response);
-                        count = count + 1;
+        if ($(window).scrollTop() + $(window).height() >=
+            $(document).height() - $('.page-footer').height()) {
+            if (count < (total_rows / limit) && prev_count !== count) {
+                $.ajax({
+                    url: '/card',
+                    type: 'get',
+                    data: {
+                        'desktop_stage': desktop_stage,
+                        'desktop_country': desktop_country,
+                        'desktop_type': desktop_type,
+                        'count': count,
+                        'limit': limit
+                    },
+                    beforeSend: function () {
+                        // show spinner when loading
+                        $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+                    },
+                    complete: function () {
+                        // hide the spinner
+                        $('#spinner').html("");
+                    },
+                    success: function (response) {
+                        if (response !== prev_response) {
+                            var info = document.createElement('div');
+                            info.innerHTML = response;
+                            $('#card_container').append(info);
+                            count = count + 1;
+                        }
+                        prev_response = response;
                     }
-                    prev_response = response;
-                }
-            });
+                });
+                prev_count = count
+            }
+
         }
     }
     if (world_continents.continent === 'World'){
