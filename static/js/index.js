@@ -361,11 +361,11 @@ $(document).ready(function () {
         type: "get",
         async: true,
         success: function (response) {
-            var date = JSON.parse(response).update_time
+            var update_date = JSON.parse(response).update_time
             total_rows = JSON.parse(response).total_rows
 
             d3.select('#update_top').append('span')
-                .text("Latest Update: " + date.replace('   ', ' '))
+                .text("Latest Update: " + update_date.replace('   ', ' '))
 
             $.ajax({
                 url: "get_vaccine_countries",

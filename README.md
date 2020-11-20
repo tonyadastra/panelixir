@@ -4,6 +4,9 @@
 + ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
 
 ## **Recent Updates**
++ November 19 - Optimize Append Card JS(Does not return 'No results to fetch' for card), Spinner
++ November 18 - Auto Generate Country Dropdowns Based on INFO database
++ November 17 - Optimize AutoUpdate Algorithm and find vaccine platform using bs4
 + November 16 - Bug Fixes, Append logo and other tags if values are not empty in database
 + November 15 - Full Auto-Update NYTimes Deployed
 
