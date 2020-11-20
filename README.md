@@ -1,11 +1,14 @@
 # PanElixir - Auto-Update NYTimes Division
 > This package uses AWS Lambda Function to scrape data from NYTimes Vaccine Tracker Website and modify the news table in the AWS database
 
+> Data source: [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
+
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
-- v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to "Breaking News" November 18, 2020
+- v2.3.2 - Add keywords to combine and split, optimize update date algorithm November 19, 2020
+- v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to 'Breaking News' November 18, 2020
 - v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website November 17, 2020
 - v2.2.0 - Add new keyword 'early approval' for 'Breaking News' and (find <br>s) update intro format
 - v2.1.1 - Update the format of new updates in intro using a new function November 16, 2020
@@ -102,12 +105,9 @@ Example:
 + `aws lambda invoke --function-name auto_update_nytimes return.json --log-type Tail --query 'LogResult' --output text |  base64 -d`
 + Execution results will be saved to a file called return.json
 
-### Invocation type
-+ 
 
 ## Related Resources
 1. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
 2. [Psycopg2 Package for AWS Lambda](https://github.com/jkehler/awslambda-psycopg2) (Note: Directly downloading this package using `pip` would cause an error in deployment)
 3. [Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
 4. [AWS Lambda Function Handler](https://docs.aws.amazon.com/lambda/latest/dg/python-handler.html)
-

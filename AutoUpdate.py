@@ -8,6 +8,8 @@ from models.nytimes_to_panelixir_style import arrange_nytimes_info
 import datetime
 import difflib
 
+update_date_count = 0
+
 
 def auto_update_nytimes(event, context):
     id_response = ""
@@ -256,6 +258,9 @@ def auto_update_nytimes(event, context):
 
     text = ''
 
+    # local run
+    # for child in soup:
+    # # AWS Lambda run
     for child in nytimes_news[0].parent:
         if isinstance(child, NavigableString):
             text += str(child)
@@ -333,7 +338,6 @@ def auto_update_nytimes(event, context):
                     company_string += company_names[i].text.strip() + ", "
             if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
                 company_string += "-2"
-            print(company_string)
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
             try:
@@ -617,13 +621,12 @@ def auto_update_nytimes(event, context):
 
             formatted_new_intro = format_intro(new_intro_array)
             formatted_old_intro = format_intro(old_intro_array)
+            # print(formatted_new_intro)
 
             if formatted_new_intro != formatted_old_intro:
                 match_intro = False
                 for new_intro in formatted_new_intro:
-                    # new_intro = new_intro.strip()
                     for old_intro in formatted_old_intro:
-                        # old_intro = old_intro.strip()
                         if new_intro == old_intro:
                             match_intro = True
                             break
@@ -634,7 +637,7 @@ def auto_update_nytimes(event, context):
                         cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
                         existing_update = cur.fetchone()[0]
                         # Update database
-                        if existing_update is not None:
+                        if existing_update is not None and new_intro not in existing_update:
                             new_update = existing_update + new_intro
                         else:
                             new_update = new_intro
@@ -655,10 +658,11 @@ def auto_update_nytimes(event, context):
                 cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
                 existing_latest_news = cur.fetchone()[0]
                 try:
-                    updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+                        updated_latest_news = intro_updates.strip() + "<br><br>" + existing_latest_news
                 # If existing_latest_news is None -- raise TypeError
                 except TypeError:
-                    updated_latest_news = intro_updates
+                    updated_latest_news = intro_updates.strip()
+                # Update INFO
                 cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
                             (updated_latest_news, new_vaccine_id))
                 conn.commit()
