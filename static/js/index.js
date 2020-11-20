@@ -724,9 +724,58 @@ $(document).ready(function () {
             }
         }
     });
+
+    // Mobile - Show Active Dropdown Item when Dropdown is clicked
+    // Trigger Mobile Dropdown
+    $(".dropdown-toggle").dropdown();
+    // Scroll To Active Dropdown Item
+    $(".dropdown > .dropdown-mobile").click(function () {
+        // Get Active Item
+        var element = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0];
+        // Scroll Into View, (true)=top, (false)=bottom
+        element.scrollIntoView();
+    })
+
+    $(".dropdown > .btn-country").click(function () {
+        var input_country = document.getElementsByClassName("form-control search-country")[0];
+        input_country.focus()
+        input_country.select()
+        // Show Top/Other Countries tag
+        $("#all-dropdown-items-country .disabled").show()
+        // Scroll Into View, (true)=top, (false)=bottom
+        // element.scrollIntoView();
+    })
+
+    // Search feature for Country / Region Dropdown
+    $("#myInput").on("keyup", function () {
+        var input_value = $(this).val().toLowerCase();
+        $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(input_value) > -1)
+        });
+
+        // Show "Top countries" and "other countries" when input field becomes empty again
+        if (input_value === '') {
+            $("#all-dropdown-items-country .disabled").show()
+        }
+        else {
+            // Hide "Top countries" and "other countries" when searching
+            $("#all-dropdown-items-country .disabled").hide()
+        }
+    });
+
+    // Prevent dropdowns from hiding when clicking inside
+    $('#all-dropdown-items-country').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $('#all-dropdown-items-stages').on('click', function (event) {
+        event.stopPropagation();
+    });
+    $('#all-dropdown-items-platforms').on('click', function (event) {
+        event.stopPropagation();
+    });
 });
 
-var nearToBottom = 150;
+
 var mobile_stage = ''
 var mobile_country = ''
 var mobile_type = ''
@@ -761,7 +810,6 @@ $(window).scroll(function () {
                         if (response !== prev_response_mobile) {
                             $('#mobile_container').append(response);
                             mobile_count = mobile_count + 1;
-                            // console.log(mobile_count)
                         }
                         prev_response_mobile = response;
                     }
@@ -927,57 +975,10 @@ $(".submit-mobile-form").click(function () {
     return false;
 });
 
-$(document).ready(function() {
-    // Mobile - Show Active Dropdown Item when Dropdown is clicked
-    // Trigger Mobile Dropdown
-    $(".dropdown-toggle").dropdown();
-    // Scroll To Active Dropdown Item
-    $(".dropdown > .dropdown-mobile").click(function () {
-        // Get Active Item
-        var element = document.getElementsByClassName("active mobile-dropdown-item-ctry mobile-dropdown-item")[0];
-        // Scroll Into View, (true)=top, (false)=bottom
-        element.scrollIntoView();
-    })
-
-    $(".dropdown > .btn-country").click(function () {
-        var input_country = document.getElementsByClassName("form-control search-country")[0];
-        input_country.focus()
-        input_country.select()
-        // Show Top/Other Countries tag
-        $("#all-dropdown-items-country .disabled").show()
-        // Scroll Into View, (true)=top, (false)=bottom
-        // element.scrollIntoView();
-    })
-
-    // Search feature for Country / Region Dropdown
-    $("#myInput").on("keyup", function () {
-        var input_value = $(this).val().toLowerCase();
-        $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(input_value) > -1)
-        });
-
-        // Show "Top countries" and "other countries" when input field becomes empty again
-        if (input_value === '') {
-            $("#all-dropdown-items-country .disabled").show()
-        }
-        else {
-            // Hide "Top countries" and "other countries" when searching
-            $("#all-dropdown-items-country .disabled").hide()
-        }
-    });
-
-    // Prevent dropdowns from hiding when clicking inside
-    $('#all-dropdown-items-country').on('click', function (event) {
-        event.stopPropagation();
-    });
-    $('#all-dropdown-items-stages').on('click', function (event) {
-        event.stopPropagation();
-    });
-    $('#all-dropdown-items-platforms').on('click', function (event) {
-        event.stopPropagation();
-    });
-
-});
+// $(document).ready(function() {
+//
+//
+// });
 
 // Keep Interactive Button Active after clicking outside
 $(".button-font").on('click', function () {

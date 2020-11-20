@@ -271,17 +271,39 @@ class news extends HTMLElement {
         }
 
 
-
         // News Text
         var news_text = document.createElement('span');
 
-        if (this.getAttribute('news-company') != 'None' && this.getAttribute('news-text').includes(this.getAttribute('news-company'))) {
-            const newsArray = this.getAttribute('news-text').split(this.getAttribute('news-company'));
+        var news_company_text = this.getAttribute('news-company');
+        var found = Boolean(false);
+        if (this.getAttribute('news-text').includes(news_company_text)){
+            found = true;
+        }
+        else {
+            // Handle exception: news-company is not None but not in news-text because of format issues of NYTimes news
+            const company_array = news_company_text.split(', ')
+            for (const [index, company] of company_array.entries()){
+                if (!this.getAttribute('news-text').includes(company))
+                    break
+                if (index === company_array.length - 1){
+                    found = true
+                    var index_1 = this.getAttribute('news-text').indexOf(company_array[0])
+                    var index_2 = this.getAttribute('news-text').indexOf(company_array[company_array.length - 1]) + company_array[company_array.length - 1].length
+                    news_company_text = this.getAttribute('news-text').slice(index_1, index_2)
+                }
+
+            }
+
+        }
+
+        if (news_company_text != 'None' && found === true) {
+            const newsArray = this.getAttribute('news-text').split(news_company_text);
             var news_before = document.createElement('span');
             news_before.innerHTML = " " + newsArray[0];
             news_text.appendChild(news_before);
+
             var news_company = document.createElement('span');
-            news_company.innerHTML = this.getAttribute('news-company');
+            news_company.innerHTML = news_company_text;
             let vac_id = this.getAttribute('news-vac-id');
             if (vac_id !== '-1') {
                 news_company.setAttribute('class', 'news-company')
