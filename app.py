@@ -272,7 +272,7 @@ def get_vaccine_countries():
                 "LIMIT 5")
     top_countries = cur.fetchall()
     cur.execute("rollback")
-    top_countries_array = ["United States"]
+    top_countries_array = ["United States", "United Kingdom", "China", "Russia"]
     for country in top_countries:
         country_array = country[0].replace(', ', ',').split(',')
         for each_country in country_array:
@@ -283,17 +283,20 @@ def get_vaccine_countries():
     world_countries = cur.fetchall()
     cur.execute("rollback")
 
-    all_countries_array = []
+    world_countries_array = []
     for country in world_countries:
         country_array = country[0].replace(', ', ',').split(',')
         for each_country in country_array:
-            if each_country not in all_countries_array and each_country not in top_countries_array:
-                all_countries_array.append(each_country)
+            if each_country not in world_countries_array and each_country not in top_countries_array:
+                world_countries_array.append(each_country)
 
+    world_countries_array.sort()
+    # print(world_countries_array)
+    all_countries_array = top_countries_array + world_countries_array
     all_countries_array.sort()
-    # print(all_countries_array)
     return json.dumps({'top_countries': top_countries_array,
-                       'world_countries': all_countries_array})
+                       'world_countries': world_countries_array,
+                       'all_countries': all_countries_array})
 
 
 @app.route('/data/map.json', methods=['GET'])

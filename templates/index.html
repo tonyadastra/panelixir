@@ -315,42 +315,10 @@
                                     data-toggle="dropdown" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
                                     <span id="mobile-button">All(Default)</span> <i class="fa fa-angle-down vertical-center" style="right: 3%;" aria-hidden="true"></i>
                                 </button>
-                                <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-country-mobile">
                                     <button class="active mobile-dropdown-item-ctry mobile-dropdown-item country-worldwide" id="country" value="">
-                                        <i class="fa fa-globe"></i>&nbsp;Worldwide
+                                        <i style="padding-left: 7px" class="fa fa-globe"></i>&nbsp;<span style="padding-left: 0.5em;">Worldwide</span>
                                     </button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Argentina">Argentina</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Australia">Australia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Austria">Austria</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Belgium">Belgium</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Brazil">Brazil</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Canada">Canada</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="China">China</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Cuba">Cuba</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Egypt">Egypt</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Finland">Finland</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="France">France</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Germany">Germany</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="India">India</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Israel">Israel</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Italy">Italy</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Japan">Japan</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Kazakhstan">Kazakhstan</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Malaysia">Malaysia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Netherlands">Netherlands</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Nigeria">Nigeria</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Russia">Russia</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Singapore">Singapore</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="South Korea">South Korea</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Spain">Spain</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Sweden">Sweden</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Switzerland">Switzerland</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Taiwan">Taiwan</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Thailand">Thailand</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Turkey">Turkey</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United Kingdom">United Kingdom</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="United States">United States</button>
-                                    <button class="mobile-dropdown-item-ctry mobile-dropdown-item" id="country" value="Vietnam">Vietnam</button>
                                 </div>
                             </div>
                             <h6>Select Vaccine Platform</h6>
@@ -428,50 +396,9 @@
                         <i style="position:absolute; right:8px;top:12px;" class="fa fa-search"></i>
                     </label>
                     <button class="desktop-dropdown dropdown-item-ctry worldwide-countries active" id="country" value="" onclick="desktopClick()">
-                        <i class="fa fa-globe" style="padding-left: 5px"></i>&nbsp;&nbsp;&nbsp;Worldwide
+                        <i class="fa fa-globe" style="padding-left: 5px;"></i>&nbsp;&nbsp;&nbsp;Worldwide
                     </button>
-{#                    <button class="dropdown-item disabled dropdown-item-border" style="color: darkcyan;"><b>Top Countries</b></button>#}
-{##}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="United States">United States</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="United Kingdom">United Kingdom</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Canada">Canada</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="China">China</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Russia">Russia</button>#}
-{##}
-{#                    <button class="dropdown-item disabled dropdown-item-border"><b>Other countries</b></button>#}
-{##}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Argentina">Argentina</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Australia">Australia</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Austria">Austria</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Belgium">Belgium</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Brazil">Brazil</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Cuba">Cuba</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Egypt">Egypt</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Finland">Finland</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="France">France</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Germany">Germany</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="India">India</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Israel">Israel</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Italy">Italy</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Japan">Japan</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country"#}
-{#                        value="Kazakhstan">Kazakhstan</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country"#}
-{#                        value="Malaysia">Malaysia</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country"#}
-{#                        value="Netherlands">Netherlands</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Nigeria">Nigeria</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Singapore">Singapore</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="South Korea">South Korea</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Spain">Spain</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Sweden">Sweden</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country"#}
-{#                        value="Switzerland">Switzerland</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Taiwan">Taiwan</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country"#}
-{#                        value="Thailand">Thailand</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Turkey">Turkey</button>#}
-{#                    <button class="desktop-dropdown dropdown-item-ctry" id="country" value="Vietnam">Vietnam</button>#}
+
                 </div>
             </div>
         </div>

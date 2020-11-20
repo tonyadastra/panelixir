@@ -61,6 +61,7 @@ class myCard extends HTMLElement {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
                 const image = new Image();
                 image.setAttribute('height', '60px');
+                image.setAttribute('class', 'company-logo-image')
                 image.src = imgUrl;
                 img_wrapper.appendChild(image);
 

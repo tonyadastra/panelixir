@@ -295,7 +295,8 @@ var processing = false;
 var count = 1, limit = 10, mobile_count = 1;
 
 function createDesktopDropdownCountry(country_array) {
-    var country_dropdown = document.getElementById("all-dropdown-items-country");
+    var country_dropdown;
+
     country_array.forEach((country) => {
         var dropdown = document.createElement("button");
         var country_flag = country
@@ -323,16 +324,32 @@ function createDesktopDropdownCountry(country_array) {
 
         dropdown.appendChild(country_wrapper)
         // dropdown.innerHTML = country;
-        dropdown.setAttribute('class', 'desktop-dropdown dropdown-item-ctry');
         dropdown.setAttribute('id', 'country');
         dropdown.setAttribute('value', country);
-        dropdown.setAttribute('style', 'height: 32px;')
-        dropdown.addEventListener("click", function () {
-            $(".desktop-dropdown#country").removeClass("active");
-            dropdown.setAttribute('class', 'active desktop-dropdown dropdown-item-ctry')
+        dropdown.setAttribute('style', 'height: 32px;');
 
-        })
-        dropdown.setAttribute('onclick', 'desktopClick()');
+
+        if (window.screen.width > 768) {
+            dropdown.setAttribute('class', 'desktop-dropdown dropdown-item-ctry');
+            country_dropdown = document.getElementById("all-dropdown-items-country");
+            dropdown.addEventListener("click", function () {
+                $(".desktop-dropdown#country").removeClass("active");
+                dropdown.setAttribute('class', 'active desktop-dropdown dropdown-item-ctry')
+
+            })
+            dropdown.setAttribute('onclick', 'desktopClick()');
+        } else {
+            country_dropdown = document.getElementById("all-dropdown-items-country-mobile");
+            dropdown.setAttribute('class', 'mobile-dropdown-item-ctry mobile-dropdown-item');
+            dropdown.addEventListener("click", function () {
+                // Remove all previous active dropdown-items
+                $(".mobile-dropdown-item").removeClass("active");
+                // Set new to active
+                dropdown.setAttribute('class', 'active mobile-dropdown-item-ctry mobile-dropdown-item');
+
+            })
+            dropdown.setAttribute('onclick', 'mobileCountryClick()');
+        }
         country_dropdown.appendChild(dropdown);
     })
 }
@@ -353,22 +370,27 @@ $(document).ready(function () {
                 type: "get",
                 async: true,
                 success: function (countries) {
-                    var country_dropdown = document.getElementById("all-dropdown-items-country");
-                    var top_countries = document.createElement("BUTTON");
-                    top_countries.innerHTML = "Top Countries";
-                    top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                    top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
-                    country_dropdown.appendChild(top_countries);
+                    if (window.screen.width > 768) {
+                        var country_dropdown = document.getElementById("all-dropdown-items-country");
+                        var top_countries = document.createElement("BUTTON");
+                        top_countries.innerHTML = "Top Countries";
+                        top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                        top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
+                        country_dropdown.appendChild(top_countries);
 
-                    createDesktopDropdownCountry(JSON.parse(countries).top_countries)
+                        createDesktopDropdownCountry(JSON.parse(countries).top_countries)
 
-                    var other_countries = document.createElement("BUTTON");
-                    other_countries.innerHTML = "Other Countries";
-                    other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                    other_countries.setAttribute('style', 'font-weight: bold;');
-                    country_dropdown.appendChild(other_countries);
+                        var other_countries = document.createElement("BUTTON");
+                        other_countries.innerHTML = "Other Countries";
+                        other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                        other_countries.setAttribute('style', 'font-weight: bold;');
+                        country_dropdown.appendChild(other_countries);
 
-                    createDesktopDropdownCountry(JSON.parse(countries).world_countries)
+                        createDesktopDropdownCountry(JSON.parse(countries).world_countries)
+                    } else {
+                        // var country_dropdown_mobile = document.getElementById("all-dropdown-items-country-mobile");
+                        createDesktopDropdownCountry(JSON.parse(countries).all_countries)
+                    }
 
                     $(function () {
                         resize();
@@ -762,13 +784,9 @@ $(window).scroll(function () {
 
 // Mobile Modal
 // When Dropdown Item is Clicked
-$('.dropdown-mobile > .mobile-dropdown-item').click(function () {
-    // Remove all previous active dropdown-items
-    $('.dropdown-mobile > .mobile-dropdown-item').removeClass("active");
-    // Set new to active
-    $(this).addClass("active");
-    var countryTitle = $(this).val();
-    if ($(this).val() === "") {
+function mobileCountryClick() {
+    var countryTitle = document.querySelector('.active#country').value;
+    if (countryTitle === "") {
         countryTitle = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
     }
     // Display Title of Previous Selected Country
@@ -789,6 +807,13 @@ $('.dropdown-mobile > .mobile-dropdown-item').click(function () {
             $(".btn-group-2 > .btn").removeClass("active");
         }
     }
+}
+$('.dropdown-mobile > .mobile-dropdown-item').click(function () {
+    // Remove all previous active dropdown-items
+    $('.dropdown-mobile > .mobile-dropdown-item').removeClass("active");
+    // Set new to active
+    $(this).addClass("active");
+    mobileCountryClick();
 });
 
 // When most-viewed button is clicked
@@ -872,8 +897,8 @@ $(".submit-mobile-form").click(function () {
     return false;
 });
 
-// Mobile - Show Active Dropdown Item when Dropdown is clicked
 $(document).ready(function() {
+    // Mobile - Show Active Dropdown Item when Dropdown is clicked
     // Trigger Mobile Dropdown
     $(".dropdown-toggle").dropdown();
     // Scroll To Active Dropdown Item
@@ -894,14 +919,12 @@ $(document).ready(function() {
         // element.scrollIntoView();
     })
 
-    // Search function for Country / Region Dropdown
+    // Search feature for Country / Region Dropdown
     $("#myInput").on("keyup", function () {
         var input_value = $(this).val().toLowerCase();
-        console.log(input_value)
         $("#all-dropdown-items-country button.dropdown-item-ctry").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(input_value) > -1)
         });
-
 
         // Show "Top countries" and "other countries" when input field becomes empty again
         if (input_value === '') {

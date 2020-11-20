@@ -1,5 +1,5 @@
 """ @author Tony Liu, Lola Liu
-    @version v1.0 - November 15, 2020
+    @version v1.0.1 - November 19, 2020
     @project PanElixir - Global COVID-19 Vaccine Tracker
     @description This program will return NYTimes vaccine intro in appropriate format to determine whether an
     update is present in the latest scraped data
@@ -11,8 +11,10 @@ def format_intro(nytimes_intro):
     for idx, intro in enumerate(nytimes_intro):
         if intro[0].isdigit():
             join_indexes.append(idx - 1)
-        if intro.endswith('U.S') or intro.endswith('St'):
-            join_indexes.append(idx)
+        join_keywords = ['U.S', 'St', 'U.K', 'U.A.E', 'F.D.A', 'Dr', 'Vladimir V', 'C.E.O']
+        for keyword in join_keywords:
+            if intro.endswith(keyword):
+                join_indexes.append(idx)
 
     formatted_new_intro = []
 
@@ -52,4 +54,15 @@ def format_intro(nytimes_intro):
                 nytimes_intro[j] += ' '
             formatted_new_intro.append(nytimes_intro[j])
 
-    return formatted_new_intro
+    intro_after_split_quote = []
+    for intro in formatted_new_intro:
+        if ".” " in intro:
+            split_quote_intro = intro.split(".” ")
+            for idx, new_intro in enumerate(split_quote_intro):
+                if idx == 0:
+                    new_intro += ".” "
+                intro_after_split_quote.append(new_intro)
+        else:
+            intro_after_split_quote.append(intro)
+
+    return intro_after_split_quote
