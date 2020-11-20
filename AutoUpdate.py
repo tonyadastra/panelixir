@@ -250,6 +250,8 @@ def auto_update_nytimes(event, context):
     update_intro_count = 0
     new_companies_added = 0
     new_assigned_id_count = 0
+    new_assigned_message = ""
+    new_vaccines_message = ""
 
     phase0_count = 0
     phase1_count = 0
@@ -677,7 +679,7 @@ def auto_update_nytimes(event, context):
         else:
             if old_company_name != new_company_name:
                 if new_vaccine_id == -1:
-                    cur.execute("SELECT vac_id, company FROM info")
+                    cur.execute("SELECT vac_id, company FROM info WHERE stage < 2")
                     alternate_info_id_and_company = cur.fetchall()
                     cur.execute("rollback")
                     info_company_array_possibilities = []
@@ -753,6 +755,7 @@ def auto_update_nytimes(event, context):
                 if new_vaccine_id == -1:
                     cur.execute("SELECT vac_id FROM info ORDER BY vac_id DESC LIMIT 1")
                     new_assigned_id = cur.fetchone()[0] + 1
+                    new_assigned_message += "Found new vaccine. Assigned ID " + str(new_assigned_id) + ".||"
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
@@ -786,6 +789,7 @@ def auto_update_nytimes(event, context):
                     new_assigned_id_count += 1
                 # If found vaccine_id --> update existing intro
                 else:
+                    new_vaccines_message += "Found new vaccine. Found match id " + str(new_vaccine_id) + ".||"
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
@@ -822,6 +826,7 @@ def auto_update_nytimes(event, context):
                         cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE, intro = %s, "
                                     "combined_phases = %s, early_approval = %s, paused = %s",
                                     (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused))
+                        new_vaccines_message += "Updated INFO.||"
 
                 new_companies_added += 1
 
@@ -853,6 +858,10 @@ def auto_update_nytimes(event, context):
             'new_vaccines': {
                 'total_new_added': new_companies_added,
                 'number of vaccine_id assigned': new_assigned_id_count
+            },
+            'message': {
+                'new_assigned_id': new_assigned_message,
+                'new_vaccines': new_vaccines_message
             }
         }
 
