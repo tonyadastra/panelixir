@@ -180,11 +180,18 @@ def auto_update_nytimes(event, context):
                     # Change the format of the new update
                     update = arrange_nytimes_info(latest_update_array[i - j][0])
                     VaccineID = latest_update_array[i - j][3]
-                    breaking_news_keywords = ["promising", "early approval", "effective"]
+                    breaking_news_keywords = ["promising", "early approval", "effective", "emergency use"]
+                    top_keywords = ["approved"]
                     tag = "New"
+
+                    for keyword in top_keywords:
+                        if keyword in update:
+                            tag = "Top"
+
                     for keyword in breaking_news_keywords:
                         if keyword in update:
                             tag = "Breaking News"
+
 
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                         VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
@@ -224,7 +231,7 @@ def auto_update_nytimes(event, context):
                                 if new_phase != existing_info_stage[0]:
                                     isUpdated = False
                                 else:
-                                    response += "No INFO update executed."
+                                    response += "Detected update keyword, INFO already updated.||"
 
                                 # If not updated and the algorithm can identify the new Phase
                                 if new_phase != -1 and not isUpdated:
@@ -235,9 +242,18 @@ def auto_update_nytimes(event, context):
                                     conn.commit()
                                     response += "Updated INFO database of VaccineID " + str(VaccineID) \
                                                 + " to Phase " + str(new_phase) + ".||"
+                                    # Update phase3_start_date if new vaccine enters Phase 3
+                                    if new_phase == 3:
+                                        cur.execute("UPDATE info SET phase_3_start_date = CURRENT_DATE "
+                                                    "WHERE vac_id = %s",
+                                                    (VaccineID,))
+                                        conn.commit()
+                                        response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
+                                                    + str(VaccineID) + "'s phase3_start_date to " + \
+                                                    str(now.strftime("%Y-%m-%d")) + ".||"
                                 # Return error if the algorithm cannot identify new Phase (new_phase = -1)
                                 elif new_phase == -1:
-                                    response += "ERROR: Cannot find the keyword in NEWS to update INFO database.||"
+                                    response += "ERROR: Cannot find the stage number to update INFO database.||"
                 break
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -331,6 +347,7 @@ def auto_update_nytimes(event, context):
             limited = intro.find('span', class_="g-limited")
             combined_phases = intro.find('span', class_="g-combined")
             paused = intro.find('span', class_="g-paused")
+            approved = intro.find('span', class_="g-approved")
 
             company_string = ""
             for i in range(len(company_names)):
@@ -418,15 +435,18 @@ def auto_update_nytimes(event, context):
             if phase2 is not None and phase2.text in intro_text:
                 intro_text = intro_text.replace(phase2.text, '')
                 vaccine_stage = 2
-            if combined_phases is not None and combined_phases.text in intro_text:
-                intro_text = intro_text.replace(combined_phases.text, '')
-                is_combined_phases = True
             if phase3 is not None and phase3.text in intro_text:
                 intro_text = intro_text.replace(phase3.text, '')
                 vaccine_stage = 3
             if limited is not None and limited.text in intro_text:
                 intro_text = intro_text.replace(limited.text, '')
                 is_early = True
+            if approved is not None and approved.text in intro_text:
+                intro_text = intro_text.replace(approved.text, '')
+                vaccine_stage = 4
+            if combined_phases is not None and combined_phases.text in intro_text:
+                intro_text = intro_text.replace(combined_phases.text, '')
+                is_combined_phases = True
             if paused is not None and paused.text in intro_text:
                 intro_text = intro_text.replace(paused.text, '')
                 is_paused = True

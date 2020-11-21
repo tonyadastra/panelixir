@@ -7,6 +7,7 @@
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
+- v2.4 - Update Runtime Frequency to 8~20 EST, update breaking news keywords, update phase_3_start_date in INFO if applicable
 - v2.3.2 - Add keywords to combine and split, optimize update date algorithm November 19, 2020
 - v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to 'Breaking News' November 18, 2020
 - v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website November 17, 2020
@@ -27,18 +28,20 @@
     - Drop and modify news_nytimes database
     - Compares existing database and new scraped data
     - Update the news database if there are updates
+    - Update INFO table if the newly scraped news indicate moving to a new stage
     
 - This program also updates the Vaccine Introductions Section
-    - Scrapes NYTimes Vaccine Tracker Intro Section
+    - Scrapes NYTimes Vaccine Tracker Vaccine Intro Section
     - Get data from existing database nytimes
     - Compares existing database and new scraped data
     - Modify nytimes database if updates are present
-    - Update the info database - columns(intro, stage, date, early_approval, combined_phases, paused) if there are updates
+    - Update the info database - columns(intro, stage, vac_type, date, early_approval, combined_phases, paused) if there are updates
+    - If the new updates on NYTimes is not in INFO table, insert the new vaccine information to INFO and COMPANIES
     - To turn off auto-update: Set all values of allow_auto_update in info to False
 
 ## Run Frequency
-- This program runs every day at 17:30 and 23:30 UTC under AWS EventBridge (CloudWatch Events)
-- cron expression: `30 17,23 * * ? *`
+- This program runs every day at 1:00 and every 2 hours from 13:00-23:00 under AWS EventBridge (CloudWatch Events)
+- cron expression: `0 1,13-23/2 * * ? *`
 
 ## Project Structure
 ```
