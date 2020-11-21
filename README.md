@@ -23,8 +23,10 @@
     + Released: November 16, 2020
 - v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information 
     + Released: November 16, 2020
-- v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data November 15, 2020
-- v1.3 - Optimize VaccineID Algorithm and simultaneously update INFO if latest news updates stage November 12, 2020
+- v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data
+    + Released: November 15, 2020
+- v1.3 - Optimize VaccineID Algorithm and simultaneously update INFO if latest news updates stage
+    + Released: November 12, 2020
 - v1.2 - Update Algorithm to find vaccine_id of Latest News 
     + Released: October 26, 2020
 - v1.1 - Switch to html.parser, fix bugs that caused an empty response 
