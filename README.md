@@ -7,7 +7,7 @@
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
-- v2.4 - Update Runtime Frequency to 8~20 EST, update breaking news keywords, update phase_3_start_date in INFO if applicable
+- v2.4.0 - Update Runtime Frequency to 8~20 EST, update breaking news keywords, update phase_3_start_date in INFO if applicable
 - v2.3.2 - Add keywords to combine and split, optimize update date algorithm November 19, 2020
 - v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to 'Breaking News' November 18, 2020
 - v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website November 17, 2020
