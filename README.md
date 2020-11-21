@@ -7,18 +7,30 @@
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
+- v2.4.1 - Update algorithm to handle duplicate updates(only update latest news if new updates are not in latest news), add update message
+    + Released: November 20, 2020
 - v2.4.0 - Update Runtime Frequency to 8~20 EST, update breaking news keywords, update phase_3_start_date in INFO if applicable
-- v2.3.2 - Add keywords to combine and split, optimize update date algorithm November 19, 2020
-- v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to 'Breaking News' November 18, 2020
-- v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website November 17, 2020
+    + Released: November 20, 2020
+- v2.3.2 - Add keywords to combine and split, optimize update date algorithm 
+    + Released: November 19, 2020
+- v2.3.1 - Optimize algorithm to update date more accurately, and new keywords to 'Breaking News' 
+    + Released: November 18, 2020
+- v2.3.0 - Upgrade algorithm to find the vaccine platform from NYTimes website 
+    + Released: November 17, 2020
 - v2.2.0 - Add new keyword 'early approval' for 'Breaking News' and (find <br>s) update intro format
-- v2.1.1 - Update the format of new updates in intro using a new function November 16, 2020
-- v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information November 16, 2020
+    + Released: November 16, 2020
+- v2.1.1 - Update the format of new updates in intro using a new function 
+    + Released: November 16, 2020
+- v2.1.0 - Fix the problem that the order of the vaccine causes the program to mismatch the vaccine information 
+    + Released: November 16, 2020
 - v2.0 - Introduce Auto-Update vaccine intro, date, stage, and others based on NYTimes data November 15, 2020
 - v1.3 - Optimize VaccineID Algorithm and simultaneously update INFO if latest news updates stage November 12, 2020
-- v1.2 - Update Algorithm to find vaccine_id of Latest News October 26, 2020
-- v1.1 - Switch to html.parser, fix bugs that caused an empty response October 20, 2020
-- v1.0 - Initial release October 18, 2020
+- v1.2 - Update Algorithm to find vaccine_id of Latest News 
+    + Released: October 26, 2020
+- v1.1 - Switch to html.parser, fix bugs that caused an empty response 
+    + Released: October 20, 2020
+- v1.0 - Initial release 
+    + Released: October 18, 2020
 
 ## The Lambda Function
 - This program is a lambda function that updates the Latest News Section

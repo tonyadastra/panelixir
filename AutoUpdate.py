@@ -93,7 +93,7 @@ def auto_update_nytimes(event, context):
                     if match:
                         vaccine_id = info_id_and_company[a][0]
                         id_response += "Found match for news #" + str(idx + 1) + \
-                                       " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
+                                       " in except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
                         break
                     else:
                         vaccine_id = -1
@@ -125,7 +125,7 @@ def auto_update_nytimes(event, context):
                         try:
                             vaccine_id = info_id_and_company[index[0]][0]
                             id_response += "Found match for news #" + str(idx + 1) + \
-                                           " in try-except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
+                                           " in except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
                         except IndexError:
                             vaccine_id = -1
                         increment += 1
@@ -137,7 +137,7 @@ def auto_update_nytimes(event, context):
                     try:
                         vaccine_id = info_id_and_company[index[0]][0]
                         id_response += "Found match for news #" + str(idx + 1) + \
-                                       " in try-except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
+                                       " in except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
                     except IndexError:
                         vaccine_id = -1
 
@@ -191,7 +191,6 @@ def auto_update_nytimes(event, context):
                     for keyword in breaking_news_keywords:
                         if keyword in update:
                             tag = "Breaking News"
-
 
                     cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
                         VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
@@ -268,6 +267,7 @@ def auto_update_nytimes(event, context):
     new_assigned_id_count = 0
     new_assigned_message = ""
     new_vaccines_message = ""
+    update_message = ""
 
     phase0_count = 0
     phase1_count = 0
@@ -659,7 +659,7 @@ def auto_update_nytimes(event, context):
                         cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
                         existing_update = cur.fetchone()[0]
                         # Update database
-                        if existing_update is not None and new_intro not in existing_update:
+                        if existing_update is not None and new_intro.strip() not in existing_update:
                             new_update = existing_update + new_intro
                         else:
                             new_update = new_intro
@@ -679,17 +679,20 @@ def auto_update_nytimes(event, context):
             if allow_auto_update and intro_updates is not None and intro_updates != '':
                 cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
                 existing_latest_news = cur.fetchone()[0]
-                try:
+                if intro_updates.strip() not in existing_latest_news:
+                    try:
                         updated_latest_news = intro_updates.strip() + "<br><br>" + existing_latest_news
-                # If existing_latest_news is None -- raise TypeError
-                except TypeError:
-                    updated_latest_news = intro_updates.strip()
-                # Update INFO
-                cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
-                            (updated_latest_news, new_vaccine_id))
-                conn.commit()
-                # Update date
-                update_date()
+                    # If existing_latest_news is None -- raise TypeError
+                    except TypeError:
+                        updated_latest_news = intro_updates.strip()
+                    # Update INFO
+                    cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
+                                (updated_latest_news, new_vaccine_id))
+                    conn.commit()
+                    # Update date
+                    update_date()
+                    update_message += "Updated latest news of VaccineID " + str(new_vaccine_id) + ", new contents: " \
+                                      + intro_updates()
 
                 # clear intro_update after update
                 cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s", ('', new_vaccine_id))
@@ -849,8 +852,16 @@ def auto_update_nytimes(event, context):
                         new_vaccines_message += "Updated INFO.||"
 
                 new_companies_added += 1
+            else:
+                new_vaccines_message += "ERROR: Found vaccine with same company, but different id."
 
-    # TODO: Add exception handler: id different(not proceed), company same
+    if not update_message:
+        update_message = "No Updates"
+    if not new_assigned_message:
+        new_assigned_message = "No New ID"
+    if not new_vaccines_message:
+        new_vaccines_message = "No New Vaccines"
+
     return_response = {
         'Latest News Section': {
             'statusCode': 200,
@@ -880,6 +891,7 @@ def auto_update_nytimes(event, context):
                 'number of vaccine_id assigned': new_assigned_id_count
             },
             'message': {
+                'update_message': update_message,
                 'new_assigned_id': new_assigned_message,
                 'new_vaccines': new_vaccines_message
             }
