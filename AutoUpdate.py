@@ -798,6 +798,12 @@ def auto_update_nytimes(event, context):
                                      new_is_combined_phases, new_is_early, new_is_paused, i))
                         conn.commit()
 
+                    # Identify whether DNA or RNA for Genetic Vaccines
+                    if new_vaccine_platform == "Genetic":
+                        if "RNA" in new_vaccine_intro:
+                            new_vaccine_platform = "RNA"
+                        if "DNA" in new_vaccine_intro:
+                            new_vaccine_platform = "DNA"
                     # Update INFO table
                     cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type,
                                                         update_date, combined_phases, early_approval, paused)
