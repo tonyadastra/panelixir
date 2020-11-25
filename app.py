@@ -41,11 +41,16 @@ def index():
     # call function match_logo([data], [position of company in data]) - insert logo at index 3
     match_logo(data, 8)
 
-    cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD') FROM news "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
+    cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
+                "WHERE category = 'S' ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
     news_data = cur.fetchall()
     cur.execute("rollback")
-    return render_template("index.html", data=data, news_data=news_data)
+
+    cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
+                "WHERE category = 'G' ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 5")
+    general_news = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("index.html", data=data, news_data=news_data, general_news=general_news)
 
 
 @app.route("/desktop-form", methods=['GET'])

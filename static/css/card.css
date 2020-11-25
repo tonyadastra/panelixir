@@ -103,6 +103,14 @@ span.highlight-warp-speed {
   color: #7a7a7a;
 }
 
+.source {
+  font-family: Kefa, sans-serif;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #d72d85;
+}
+
 @media screen and (max-width: 767px) {
   .img_wrapper {
     margin-bottom: 8px!important;

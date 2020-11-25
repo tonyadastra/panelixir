@@ -126,11 +126,23 @@
 {# News Section #}
 <div class="news-wrapper">
     <div class="news">
-        <h2 class="text-center" id="news-title">Latest News and Recent Updates</h2>
+        <h2 class="text-center" id="news-title">Latest Vaccine Updates</h2>
         <ul class="news-list" style="/*list-style: inside; text-align: center*/">
             {% for news in news_data %}
-                <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}"
-                             news-text="{{news[3]}}" news-date="{{news[4]}}"></latest-news>
+                <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
+                             news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="news-wrapper" style="border-color: #9400D3">
+    <div class="news">
+        <h2 class="text-center" id="news-title">General Vaccine News</h2>
+        <ul class="news-list" style="/*list-style: inside; text-align: center*/">
+            {% for news in general_news %}
+                <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
+                             news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
             {% endfor %}
         </ul>
     </div>

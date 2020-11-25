@@ -247,7 +247,6 @@ class news extends HTMLElement {
         linkElem3.setAttribute('href', '../static/css/card.css');
         shadow.appendChild(linkElem3);
 
-
         // list news
         var list = document.createElement('li');
         list.setAttribute('class', 'news-text');
@@ -268,7 +267,7 @@ class news extends HTMLElement {
             news_tag.setAttribute('id', 'news_tag_about');
         }
         news_tag.innerHTML = this.getAttribute('news-tag');
-        if (this.getAttribute('news-tag') != 'None') {
+        if (this.getAttribute('news-tag') != 'None' && this.getAttribute('news-tag') != '') {
             list.appendChild(news_tag);
         }
 
@@ -293,49 +292,72 @@ class news extends HTMLElement {
                     var index_2 = this.getAttribute('news-text').indexOf(company_array[company_array.length - 1]) + company_array[company_array.length - 1].length
                     news_company_text = this.getAttribute('news-text').slice(index_1, index_2)
                 }
-
             }
-
         }
+        if (this.getAttribute('news-category') === 'S') {
+            if (news_company_text != 'None' && found === true) {
+                const newsArray = this.getAttribute('news-text').split(news_company_text);
+                var news_before = document.createElement('span');
+                news_before.innerHTML = " " + newsArray[0];
+                news_text.appendChild(news_before);
 
-        if (news_company_text != 'None' && found === true) {
-            const newsArray = this.getAttribute('news-text').split(news_company_text);
-            var news_before = document.createElement('span');
-            news_before.innerHTML = " " + newsArray[0];
-            news_text.appendChild(news_before);
-
-            var news_company = document.createElement('span');
-            news_company.innerHTML = news_company_text;
-            let vac_id = this.getAttribute('news-vac-id');
-            if (vac_id !== '-1') {
-                news_company.setAttribute('class', 'news-company')
-                news_company.addEventListener('click', function () {
-                    $.ajax({
-                        url: "/display-company",
-                        data: {'company_id': vac_id},
-                        type: "GET",
-                        success: function (response) {
-                            // console.log(response)
-                            document.getElementById('append-card').innerHTML = response;
-                            $('#company-modal').modal('show');
-                        },
-                    });
-                })
+                var news_company = document.createElement('span');
+                news_company.innerHTML = news_company_text;
+                let vac_id = this.getAttribute('news-vac-id');
+                if (vac_id !== '-1') {
+                    news_company.setAttribute('class', 'news-company')
+                    news_company.addEventListener('click', function () {
+                        $.ajax({
+                            url: "/display-company",
+                            data: {'company_id': vac_id},
+                            type: "GET",
+                            success: function (response) {
+                                // console.log(response)
+                                document.getElementById('append-card').innerHTML = response;
+                                $('#company-modal').modal('show');
+                            },
+                        });
+                    })
+                }
+                news_text.appendChild(news_company);
+                var news_after = document.createElement('span');
+                news_after.innerHTML = newsArray[1];
+                // console.log(newsArray)
+                news_text.appendChild(news_after);
+            } else {
+                news_text.innerHTML = " " + this.getAttribute('news-text');
             }
-            news_text.appendChild(news_company);
-            var news_after = document.createElement('span');
-            news_after.innerHTML = newsArray[1];
-            // console.log(newsArray)
-            news_text.appendChild(news_after);
-        } else {
-            news_text.innerHTML = " " + this.getAttribute('news-text');
+            list.appendChild(news_text);
         }
-        list.appendChild(news_text);
+        else if (this.getAttribute('news-category') === 'G') {
+            var link = document.createElement('a');
+            if (this.getAttribute('news-link') != 'None' && this.getAttribute('news-link') != '') {
+                link.href = this.getAttribute('news-link');
+                link.target = "_blank";
+                link.setAttribute('style', 'font-weight: bold;')
+            }
+            link.innerHTML = " " + this.getAttribute('news-text') + " ";
+            news_text.appendChild(link);
+            list.appendChild(news_text);
+
+            var source = document.createElement('span');
+            source.setAttribute('class', 'source');
+            // source.setAttribute('style', 'text-transform: uppercase; font-size')
+            source.innerHTML = this.getAttribute('news-source').replaceAll(' ', '&nbsp;');
+            list.appendChild(source);
+        }
+        // list.appendChild(news_text);
+
+        // var source = document.createElement('span');
+        // source.setAttribute('class', 'source');
+        // // source.setAttribute('style', 'text-transform: uppercase; font-size')
+        // source.innerHTML = this.getAttribute('news-source').replaceAll(' ', '&nbsp;');
+        // list.appendChild(source);
 
         // Append Date
         var date = document.createElement('span');
         date.setAttribute('class', 'date');
-        date.innerHTML = this.getAttribute('news-date');
+        date.innerHTML = this.getAttribute('news-date').replace('  ', '&nbsp;')
         list.appendChild(date);
 
         shadow.appendChild(list);
