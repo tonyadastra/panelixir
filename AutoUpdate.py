@@ -9,11 +9,31 @@ import datetime
 import difflib
 
 update_date_count = 0
+update_stage_count = 0
+update_is_early_count = 0
+update_is_paused_count = 0
+update_is_combined_count = 0
+update_intro_count = 0
+new_companies_added = 0
+new_assigned_id_count = 0
+new_assigned_message = ""
+new_vaccines_message = ""
+update_message = ""
+id_response = ""
+response = ""
+
+phase0_count = 0
+phase1_count = 0
+phase2_count = 0
+phase3_count = 0
 
 
 def auto_update_nytimes(event, context):
-    id_response = ""
-    response = ""
+    global update_date_count, update_stage_count, update_is_early_count, update_is_paused_count, \
+        update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
+        new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
+        response, phase0_count, phase1_count, phase2_count, phase3_count
+
     now = datetime.datetime.now()
     # connect to database
     conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
@@ -159,6 +179,7 @@ def auto_update_nytimes(event, context):
                                     news_text VARCHAR,
                                     news_company VARCHAR,
                                     update_time date);''')
+
     for j in range(0, len(latest_update_array)):
         cur.execute('''INSERT INTO news_nytimes(vac_id, news_text, news_company, update_time)
             VALUES (%s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
@@ -167,6 +188,26 @@ def auto_update_nytimes(event, context):
                      latest_update_array[j][1],
                      latest_update_array[j][2]))
         conn.commit()
+
+    cur.execute('''SELECT vac_id, news_company FROM news_nytimes''')
+    new_news_nytimes_id_company = cur.fetchall()
+
+    cur.execute('''SELECT vac_id, company FROM news ORDER BY date DESC, key DESC LIMIT 10''')
+    news_id_company = cur.fetchall()
+
+    # Check if new id exists when -1 is in news_id_company
+    for i in range(len(news_id_company)):
+        if news_id_company[i][0] == -1:
+            found_news_nytimes_index = -1
+            for j in range(len(new_news_nytimes_id_company)):
+                if new_news_nytimes_id_company[j][1] == news_id_company[i][1]:
+                    found_news_nytimes_index = j
+            if found_news_nytimes_index != -1:
+                new_news_updated_id = new_news_nytimes_id_company[found_news_nytimes_index][0]
+                if new_news_updated_id != -1:
+                    cur.execute('''UPDATE news SET vac_id = %s WHERE company = %s''',
+                                (new_news_updated_id, new_news_nytimes_id_company[found_news_nytimes_index][1]))
+                    conn.commit()
 
     for i in range(len(latest_update_array)):
         if latest_update_array[0][0] == existing_news_array[0][0]:
@@ -257,25 +298,7 @@ def auto_update_nytimes(event, context):
 
     # ------------------------------------------------------------------------------------------------------------------
     # Section 2: Update Vaccine Intro
-    update_date_count = 0
-    update_stage_count = 0
-    update_is_early_count = 0
-    update_is_paused_count = 0
-    update_is_combined_count = 0
-    update_intro_count = 0
-    new_companies_added = 0
-    new_assigned_id_count = 0
-    new_assigned_message = ""
-    new_vaccines_message = ""
-    update_message = ""
-
-    phase0_count = 0
-    phase1_count = 0
-    phase2_count = 0
-    phase3_count = 0
-
     text = ''
-
     # local run
     # for child in soup:
     # # AWS Lambda run
@@ -512,22 +535,34 @@ def auto_update_nytimes(event, context):
         new_vaccine_id = new_data_array[i][0]
         new_stage = new_data_array[i][1]
         new_company_name = new_data_array[i][2]
-        new_vaccine_intro = new_data_array[i][3]
+        new_vaccine_intro = arrange_nytimes_info(new_data_array[i][3])
         new_date = new_data_array[i][4]
         new_is_combined_phases = str(new_data_array[i][5])
         new_is_early = str(new_data_array[i][6])
         new_is_paused = str(new_data_array[i][7])
         new_vaccine_platform = new_data_array[i][8]
 
-        old_vaccine_id = existing_data_array[i][0]
-        old_stage = existing_data_array[i][1]
-        old_company_name = existing_data_array[i][2]
-        old_vaccine_intro = existing_data_array[i][3]
-        old_date = existing_data_array[i][4]
-        old_is_combined_phases = str(existing_data_array[i][5])
-        old_is_early = str(existing_data_array[i][6])
-        old_is_paused = str(existing_data_array[i][7])
-        old_vaccine_platform = existing_data_array[i][8]
+        try:
+            old_vaccine_id = existing_data_array[i][0]
+            old_stage = existing_data_array[i][1]
+            old_company_name = existing_data_array[i][2]
+            old_vaccine_intro = arrange_nytimes_info(existing_data_array[i][3])
+            old_date = existing_data_array[i][4]
+            old_is_combined_phases = str(existing_data_array[i][5])
+            old_is_early = str(existing_data_array[i][6])
+            old_is_paused = str(existing_data_array[i][7])
+            old_vaccine_platform = existing_data_array[i][8]
+        except IndexError:
+            # New intro might be longer than old - assign default values that would not match
+            old_vaccine_id = -1000
+            old_stage = -1
+            old_company_name = ""
+            old_vaccine_intro = ""
+            old_date = ""
+            old_is_combined_phases = False
+            old_is_early = False
+            old_is_paused = False
+            old_vaccine_platform = ""
 
         proceed = False
         found_index = -1
@@ -542,7 +577,7 @@ def auto_update_nytimes(event, context):
                         old_vaccine_id = existing_data_array[found_index][0]
                         old_stage = existing_data_array[found_index][1]
                         old_company_name = existing_data_array[found_index][2]
-                        old_vaccine_intro = existing_data_array[found_index][3]
+                        old_vaccine_intro = arrange_nytimes_info(existing_data_array[found_index][3])
                         old_date = existing_data_array[found_index][4]
                         old_is_combined_phases = str(existing_data_array[found_index][5])
                         old_is_early = str(existing_data_array[found_index][6])
@@ -645,6 +680,10 @@ def auto_update_nytimes(event, context):
             formatted_old_intro = format_intro(old_intro_array)
             # print(formatted_new_intro)
 
+            # Get existing latest news from INFO
+            cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
+            existing_latest_news = cur.fetchone()[0]
+
             if formatted_new_intro != formatted_old_intro:
                 match_intro = False
                 for new_intro in formatted_new_intro:
@@ -658,16 +697,24 @@ def auto_update_nytimes(event, context):
                     if not match_intro:
                         cur.execute("SELECT intro_update FROM nytimes WHERE vac_id = %s", (new_vaccine_id,))
                         existing_update = cur.fetchone()[0]
-                        # Update database
-                        if existing_update is not None and new_intro.strip() not in existing_update:
-                            new_update = existing_update + new_intro
-                        else:
-                            new_update = new_intro
-                        # Update format of new_update
-                        new_update = arrange_nytimes_info(new_update)
-                        cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
-                                    (new_update, new_vaccine_id))
-                        conn.commit()
+                        # Format
+                        new_intro = arrange_nytimes_info(new_intro)
+                        isAlreadyUpdated = False
+                        if existing_latest_news is not None:
+                            if new_intro.lower().replace(',', '') in existing_latest_news.lower().replace(',', ''):
+                                isAlreadyUpdated = True
+
+                        if not isAlreadyUpdated:
+                            if existing_update is not None and new_intro.strip() not in existing_update:
+                                new_update = existing_update + new_intro
+                            else:
+                                new_update = new_intro
+
+                            # Update database
+                            cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s",
+                                        (new_update, new_vaccine_id))
+                            conn.commit()
+
             new_vaccine_intro = ''.join(intro for intro in formatted_new_intro)
             cur.execute("UPDATE nytimes SET vaccine_intro = %s WHERE vac_id = %s",
                         (new_vaccine_intro, new_vaccine_id))
@@ -677,14 +724,10 @@ def auto_update_nytimes(event, context):
             intro_updates = cur.fetchone()[0]
             # Update INFO
             if allow_auto_update and intro_updates is not None and intro_updates != '':
-                cur.execute("SELECT latest_news FROM info WHERE vac_id = %s", (new_vaccine_id,))
-                existing_latest_news = cur.fetchone()[0]
-                if intro_updates.strip() not in existing_latest_news:
-                    try:
-                        updated_latest_news = intro_updates.strip() + "<br><br>" + existing_latest_news
-                    # If existing_latest_news is None -- raise TypeError
-                    except TypeError:
-                        updated_latest_news = intro_updates.strip()
+                intro_updates = intro_updates.strip()
+
+                def update_info():
+                    global update_message, update_intro_count
                     # Update INFO
                     cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
                                 (updated_latest_news, new_vaccine_id))
@@ -692,12 +735,30 @@ def auto_update_nytimes(event, context):
                     # Update date
                     update_date()
                     update_message += "Updated latest news of VaccineID " + str(new_vaccine_id) + ", new contents: " \
-                                      + intro_updates()
+                                      + intro_updates + "|| "
+                    update_intro_count += 1
+                if now.strftime("%B") in intro_updates:
+                    if existing_latest_news is not None:
+                        if intro_updates.lower().replace(',', '') not in existing_latest_news.lower().replace(',', ''):
+                            updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
+                            update_info()
+                    else:
+                        updated_latest_news = intro_updates
+                        update_info()
+                else:
+                    # Update intro section if current month not in intro_updates
+                    cur.execute("SELECT intro FROM info WHERE vac_id = %s", (new_vaccine_id,))
+                    existing_intro = cur.fetchone()[0]
+                    if existing_intro is not None and existing_intro != '':
+                        updated_intro = existing_intro + "<br><br>" + intro_updates
+                    else:
+                        updated_intro = intro_updates
+                    cur.execute("UPDATE info SET intro = %s WHERE vac_id = %s",
+                                (updated_intro, new_vaccine_id))
 
-                # clear intro_update after update
+                # clear intro_update
                 cur.execute("UPDATE nytimes SET intro_update = %s WHERE vac_id = %s", ('', new_vaccine_id))
                 conn.commit()
-                update_intro_count += 1
 
         else:
             if old_company_name != new_company_name:
@@ -822,8 +883,8 @@ def auto_update_nytimes(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                                        paused, intro_id)
-                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                                    paused, intro_id)
+                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_vaccine_id, new_stage, new_company_name, new_vaccine_intro,
                                         new_is_combined_phases,
@@ -832,8 +893,8 @@ def auto_update_nytimes(event, context):
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                                        early_approval, paused, intro_id)
-                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
+                                    early_approval, paused, intro_id)
+                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
                                     (new_vaccine_id, new_stage, new_company_name, new_vaccine_intro, new_date,
                                      new_is_combined_phases, new_is_early, new_is_paused, i))
                         conn.commit()
@@ -845,6 +906,7 @@ def auto_update_nytimes(event, context):
                         allow_auto_update = cur.fetchone()[0]
                     except TypeError:
                         allow_auto_update = False
+
                     if allow_auto_update:
                         cur.execute("SELECT intro FROM info WHERE vac_id = %s", (new_vaccine_id,))
                         existing_intro = cur.fetchone()[0]
@@ -853,8 +915,9 @@ def auto_update_nytimes(event, context):
                         else:
                             updated_intro = new_vaccine_intro
                         cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE, intro = %s, "
-                                    "combined_phases = %s, early_approval = %s, paused = %s",
-                                    (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused))
+                                    "combined_phases = %s, early_approval = %s, paused = %s WHERE vac_id = %s",
+                                    (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused,
+                                     new_vaccine_id))
                         new_vaccines_message += "Updated INFO.||"
 
                 new_companies_added += 1

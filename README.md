@@ -7,6 +7,8 @@
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 
 ## Version History
+- v2.4.2 - Optimize algorithm to handle duplicate updates, update latest news when current month in new updates. Fix bugs that causes the program to return error
+    + Released: November 24, 2020
 - v2.4.1 - Update algorithm to handle duplicate updates(only update latest news if new updates are not in latest news), add update message
     + Released: November 20, 2020
 - v2.4.0 - Update Runtime Frequency to 8~20 EST, update breaking news keywords, update phase_3_start_date in INFO if applicable
