@@ -78,6 +78,18 @@ html, body {
         height: 5rem;
     }
 
+    #display-company-title{
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+    .modal-header .close{
+        padding: 0.9rem 0.9rem;
+    }
+
+    #display-company-header{
+        height: 3rem;
+    }
+
     .no-results {
         margin-top: 1rem;
         font-size: 0.8rem;

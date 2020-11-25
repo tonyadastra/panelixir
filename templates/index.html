@@ -137,16 +137,16 @@
 </div>
 
 {# Modal Displaying Companies, hidden by default#}
-    <!-- Large modal -->
 {#<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>#}
 
 <div class="modal fade bd-example-modal-xl" id="company-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">About this Vaccine</h5>
+            <div class="modal-header" id="display-company-header">
+                <h5 class="modal-title" id="display-company-title">About this Vaccine</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fa fa-times"></i></span>
+{#                    <span aria-hidden="true"></span>#}
+                    <i class="fa fa-times"></i>
                 </button>
             </div>
             <div id="append-card"></div>

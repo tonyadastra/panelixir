@@ -160,7 +160,7 @@ class myCard extends HTMLElement {
         latest_news.innerHTML = this.getAttribute('data-news');
 
         // wrapper.appendChild(text);
-        if (this.getAttribute('data-news') !== 'None') {
+        if (this.getAttribute('data-news') !== 'None' && this.getAttribute('data-news') !== '') {
             // wrapper.appendChild(line_break);
             wrapper.appendChild(latest_news_title);
             wrapper.appendChild(latest_news);
@@ -253,16 +253,16 @@ class news extends HTMLElement {
         // news tag
         var news_tag = document.createElement('b');
         news_tag.setAttribute('class', 'news_tag');
-        if (this.getAttribute('news-tag') == 'New') {
+        if (this.getAttribute('news-tag').toLowerCase() === "New".toLowerCase()) {
             news_tag.setAttribute('id', 'news_tag_new');
         }
-        if (this.getAttribute('news-tag') == "Breaking News") {
+        if (this.getAttribute('news-tag').toLowerCase() === "Breaking News".toLowerCase()) {
             news_tag.setAttribute('id', 'news_tag_breaking_news');
         }
-        if (this.getAttribute('news-tag') == "Top") {
+        if (this.getAttribute('news-tag').toLowerCase() === "Top".toLowerCase()) {
             news_tag.setAttribute('id', 'news_tag_top');
         }
-        if (this.getAttribute('news-tag') == "About this Website") {
+        if (this.getAttribute('news-tag').toLowerCase() === "About this Website".toLowerCase()) {
             news_tag.setAttribute('id', 'news_tag_about');
         }
         news_tag.innerHTML = this.getAttribute('news-tag');
