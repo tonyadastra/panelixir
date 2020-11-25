@@ -53,7 +53,7 @@ class myCard extends HTMLElement {
 
         var img_wrapper = document.createElement('div');
         img_wrapper.setAttribute('class', 'img_wrapper')
-        img_wrapper.setAttribute('style', 'height: 70px')
+
         // logo image
         if (this.hasAttribute('data-img')) {
             const imgUrlArr = this.getAttribute('data-img').split(',')
@@ -66,6 +66,8 @@ class myCard extends HTMLElement {
                 img_wrapper.appendChild(image);
 
             })
+        } else {
+            img_wrapper.setAttribute('style', 'height: 70px')
         }
         wrapper.appendChild(img_wrapper)
         // else {
@@ -105,7 +107,7 @@ class myCard extends HTMLElement {
         var pbar5 = document.createElement('div');
         pbar5.setAttribute('class', 'progress-bar');
         pbar5.setAttribute('id', 'pbar5');
-        pbar5.innerHTML = 'APPROVAL';
+        pbar5.innerHTML = 'APPROVED';
 
         var pbar6 = document.createElement('div');
         pbar6.setAttribute('class', 'progress-bar');
