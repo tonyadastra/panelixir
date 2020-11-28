@@ -42,12 +42,14 @@ def index():
     match_logo(data, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
-                "WHERE category = 'S' ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
+                "WHERE category = 'S' AND (CURRENT_DATE - date <= 10 OR tag='Top') "
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
     news_data = cur.fetchall()
     cur.execute("rollback")
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
-                "WHERE category = 'G' ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 5")
+                "WHERE category = 'G' AND (CURRENT_DATE - date <= 2 OR tag='Top') "
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 15")
     general_news = cur.fetchall()
     cur.execute("rollback")
     return render_template("index.html", data=data, news_data=news_data, general_news=general_news)

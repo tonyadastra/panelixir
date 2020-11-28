@@ -139,12 +139,14 @@
 <div class="news-wrapper" style="border-color: #9400D3!important;">
     <div class="news">
         <h2 class="text-center" id="news-title">General Vaccine News</h2>
-        <ul class="news-list" style="/*list-style: inside; text-align: center*/">
+{#        <div class="overflow">#}
+        <ul class="news-list overflow" style="/*list-style: inside; text-align: center*/">
             {% for news in general_news %}
                 <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
                              news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
             {% endfor %}
         </ul>
+{#        </div>#}
     </div>
 </div>
 
@@ -290,7 +292,6 @@
                     <div class="modal-content" style="text-align: left">
 {#                        <div class="modal-header">#}
 {#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
-{##}
 {#                        </div>#}
                         <div class="modal-body">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
