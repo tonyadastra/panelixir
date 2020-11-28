@@ -9,6 +9,8 @@
 
 
 ## Version History
+- v1.1 - Add additional features to filter content and remove 'New' tag of previous updates
+    + Released: November 27, 2020
 - v1.0 - Initial release
     + Released: November 26, 2020
 

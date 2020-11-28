@@ -21,6 +21,16 @@ if result.status_code == 200:
     src = result.content
     soup = BeautifulSoup(src, "html.parser")
 
+    # Remove News Tag if yesterday
+    cur.execute("SELECT key, CURRENT_DATE - date AS interval FROM news WHERE tag = %s AND category = %s", ("New", 'G'))
+    news_g_new = cur.fetchall()
+    cur.execute("rollback")
+
+    for i in range(len(news_g_new)):
+        if news_g_new[i][1] >= 1:
+            cur.execute("UPDATE news SET tag = %s WHERE key = %s AND category = %s", ('', news_g_new[i][0], 'G'))
+            conn.commit()
+
     # Find Latest News Section
     cur.execute("SELECT news_text, source, link FROM news WHERE category = %s", ('G',))
     existing_articles = cur.fetchall()
@@ -57,7 +67,15 @@ if result.status_code == 200:
             if new_text == old_text or new_link == old_link:
                 proceed = False
         # TODO: Filter News from Google
-        discard_keywords = []
+        discard_keywords = ["Biden", "fact check"]
+        if "vaccine".lower() not in new_text.lower():
+            proceed = False
+
+        for keyword in discard_keywords:
+            if keyword in new_text:
+                proceed = False
+                break
+
         print(proceed)
         if proceed:
             cur.execute('''INSERT INTO news(tag, news_text, source, link, category) VALUES (%s, %s, %s, %s, %s)''',
