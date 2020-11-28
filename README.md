@@ -1,11 +1,12 @@
-# PanElixir - Global COVID-19 Vaccine and Treatment Tracker
+# PanElixir - Global COVID-19 Vaccine Tracker
 
 ## **Divisions and Internal Links**
 + ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
++ ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
 + November 24 - Optimize CSS for display-company, card.js not show 'Latest News' if data-news is not None but is empty
-+ November 19 - Optimize Append Card JS(Does not return 'No results to fetch' for card), Spinner
++ November 19 - Optimize Append Card JS(Does not return 'No results to fetch' for card), Add spinner when loading vaccine intro
 + November 18 - Auto Generate Country Dropdowns Based on INFO database
 + November 17 - Optimize AutoUpdate Algorithm and find vaccine platform using bs4
 + November 16 - Bug Fixes, Append logo and other tags if values are not empty in database
@@ -23,6 +24,7 @@
 * [ ] Add-ons to map - display country and other information on hover
 * [ ] G-Zip Compression
 * [X] Full Auto-Update Data NYTimes Website
+* [X] Update General Vaccine News from Google
 * [X] Country Dropdown Query from Database
 * [X] Add spinner while loading card
 * [X] Optimize Append Card JS
