@@ -4,8 +4,8 @@
 > Data source: [Google News](https://www.google.com/search?tbm=nws&q=vaccine+news&oq=vaccine+news)
 
 ## **Divisions and Internal Links**
-+ ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
-+ ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
++ #### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
++ #### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
 
 
 ## Version History
@@ -20,7 +20,7 @@
    
 
 ## Run Frequency
-- This program runs every 4 hours
+- This program runs every 4 hours on local machine
 - cron expression: `0 */4 * * *`
 
 ## Project Structure
@@ -43,12 +43,13 @@
 ## Run Script Using Terminal
 1. Schedule cron job in terminal
     + `crontab -e`
-2. Enter run frequency + /path/to/file
-    + `0 */4 * * * ~/Desktop/google_news_update/AutoUpdate.py`
-3. Cron Job should now run at scheduled times. For logs, check 'mail'
-4. If permission denied, try:
+2. Grant the user permission to access the folder, try:
     + `chmod +x ~/Desktop/google_news_update/`
-4. For 'Operation Time Out' and other related issues, check 'Cron Job Tutorial' in Related Resources
+3. Enter run frequency + /path/to/file
+    + `0 */4 * * * ~/Desktop/google_news_update/AutoUpdate.py`
+4. Cron Job should now run at scheduled times. For logs, check 'mail'
+5. For 'Operation Time Out' and other related issues, check 'Schedule Cron Job Tutorial' in Related Resources
 
 ## Related Resources
-1. [Cron Job Tutorial](https://www.jcchouinard.com/python-automation-with-cron-on-mac/)
+1. [Schedule Cron Job Tutorial](https://www.jcchouinard.com/python-automation-with-cron-on-mac/)
+2. [Cron Expression Wiki](https://crontab.guru/)
