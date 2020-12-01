@@ -5,8 +5,11 @@
 
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
++ ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.4.3 - Add category 'S' to NEWS to be compatible with Google News Update, add platform for new NYTimes vaccines
+    + Released: November 30, 2020
 - v2.4.2 - Optimize algorithm to handle duplicate updates, update latest news when current month in new updates. Fix bugs that causes the program to return error
     + Released: November 24, 2020
 - v2.4.1 - Update algorithm to handle duplicate updates(only update latest news if new updates are not in latest news), add update message
@@ -58,6 +61,7 @@
 ## Run Frequency
 - This program runs every day at 1:00 and every 2 hours from 13:00-23:00 under AWS EventBridge (CloudWatch Events)
 - cron expression: `0 1,13-23/2 * * ? *`
+    + Note: The cron expression AWS uses is quite different from the general cron expression. Check out [AWS Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) for more details
 
 ## Project Structure
 ```

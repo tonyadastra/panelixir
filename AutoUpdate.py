@@ -233,13 +233,14 @@ def auto_update_nytimes(event, context):
                         if keyword in update:
                             tag = "Breaking News"
 
-                    cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date)
-                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
+                    cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date, category)
+                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s)''',
                                 (VaccineID,
                                  tag,
                                  latest_update_array[i - j][1],
                                  update,
-                                 latest_update_array[i - j][2]))
+                                 latest_update_array[i - j][2]),
+                                'S')
                     conn.commit()
 
                     if VaccineID != -1:
@@ -379,6 +380,9 @@ def auto_update_nytimes(event, context):
                 else:
                     company_string += company_names[i].text.strip() + ", "
             if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
+                company_string += "-2"
+
+            if "Center for Genetic Engineering and Biotechnology of Cuba" in company_string and "Abadala" in intro_text:
                 company_string += "-2"
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
@@ -843,20 +847,20 @@ def auto_update_nytimes(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                                        paused, intro_id)
-                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                                                        paused, platform, intro_id)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_assigned_id, new_stage, new_company_name, new_vaccine_intro,
                                         new_is_combined_phases,
-                                        new_is_early, new_is_paused, i))
+                                        new_is_early, new_is_paused, new_vaccine_platform, i))
                         conn.commit()
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                                        early_approval, paused, intro_id)
-                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
+                                                        early_approval, paused, platform, intro_id)
+                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s)''',
                                     (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, new_date,
-                                     new_is_combined_phases, new_is_early, new_is_paused, i))
+                                     new_is_combined_phases, new_is_early, new_is_paused, new_vaccine_platform, i))
                         conn.commit()
 
                     # Identify whether DNA or RNA for Genetic Vaccines
@@ -883,20 +887,20 @@ def auto_update_nytimes(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                    paused, intro_id)
-                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                                    paused, platform, intro_id)
+                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_vaccine_id, new_stage, new_company_name, new_vaccine_intro,
                                         new_is_combined_phases,
-                                        new_is_early, new_is_paused, i))
+                                        new_is_early, new_is_paused, new_vaccine_platform, i))
                         conn.commit()
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                    early_approval, paused, intro_id)
-                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s)''',
+                                    early_approval, paused, platform, intro_id)
+                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s)''',
                                     (new_vaccine_id, new_stage, new_company_name, new_vaccine_intro, new_date,
-                                     new_is_combined_phases, new_is_early, new_is_paused, i))
+                                     new_is_combined_phases, new_is_early, new_is_paused, new_vaccine_platform, i))
                         conn.commit()
                     try:
                         cur.execute("SELECT allow_auto_update "
@@ -932,6 +936,8 @@ def auto_update_nytimes(event, context):
         new_vaccines_message = "No New Vaccines"
 
     return_response = {
+        'URLStatusCode': result.status_code,
+
         'Latest News Section': {
             'statusCode': 200,
             'VaccineID Algorithm': id_response,
