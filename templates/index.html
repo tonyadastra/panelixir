@@ -125,9 +125,9 @@
 
 {# News Section #}
 <div class="news-wrapper">
-    <div class="news">
-        <h2 class="text-center" id="news-title">Vaccine Development News</h2>
-        <ul class="news-list" style="/*list-style: inside; text-align: center*/">
+    <div class="news" style="margin-top: 0.5rem">
+        <h2 class="text-center" id="news-title" style="text-decoration-color: orangered">Vaccine Development News</h2>
+        <ul class="news-list overflow" style="/*list-style: inside; text-align: center*/">
             {% for news in news_data %}
                 <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
                              news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
@@ -136,17 +136,15 @@
     </div>
 </div>
 
-<div class="news-wrapper" style="border-color: #9400D3!important;">
+<div class="news-wrapper">
     <div class="news">
-        <h2 class="text-center" id="news-title">Vaccine and Life</h2>
-{#        <div class="overflow">#}
+        <h2 class="text-center" id="news-title" style="text-decoration-color: #9400D3">Vaccine and Life</h2>
         <ul class="news-list overflow" style="/*list-style: inside; text-align: center*/">
             {% for news in general_news %}
                 <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
                              news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
             {% endfor %}
         </ul>
-{#        </div>#}
     </div>
 </div>
 
@@ -171,7 +169,7 @@
 {# Stages Introductions #}
 <div class="ctr text-center">
     <div class="jumbotron" style="background-color: transparent;">
-        <h3 id="title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
+        <h3 id="news-title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
     </div>
 {#    Only Display with Large Screen (≥ 768px) #}
     <div class="row large-screen">
@@ -442,9 +440,10 @@
                 </div>
             </div>
         </div>
+
 {#        <div class="col"></div>#}
         <div class="col-2"></div>
-        <div class="col column clear_filter" style="float: right;">
+        <div class="col column" style="float: right;">
             <button class="btn btn-light align-right desktop-dropdown clear-filter" style="border-bottom: 2px solid #d2d1d1"
                 value="clear">
                 <b style="color: midnightblue;">Clear Filter</b>

@@ -55,7 +55,8 @@ class myCard extends HTMLElement {
         img_wrapper.setAttribute('class', 'img_wrapper')
 
         // logo image
-        if (this.hasAttribute('data-img')) {
+        // Note: typeof data-img is string, not array (despite having brackets)
+        if (this.getAttribute('data-img') !== '[]' && this.getAttribute('data-img') !== 'None') {
             const imgUrlArr = this.getAttribute('data-img').split(',')
             imgUrlArr.forEach((imgUrl) => {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
@@ -67,16 +68,10 @@ class myCard extends HTMLElement {
 
             })
         } else {
-            img_wrapper.setAttribute('style', 'height: 70px')
+            img_wrapper.setAttribute('style', 'height: 70px');
         }
         wrapper.appendChild(img_wrapper)
-        // else {
-        //     let imgUrl = '../static/img/Untitled.png';
-        //     const img = document.createElement('img');
-        //     img.setAttribute('height', '40px');
-        //     img.src = imgUrl;
-        //     wrapper.appendChild(img);
-        // }
+
 
         // progress bar
         var bar_wrapper = document.createElement('div');
@@ -321,11 +316,11 @@ class news extends HTMLElement {
                 }
                 news_text.appendChild(news_company);
                 var news_after = document.createElement('span');
-                news_after.innerHTML = newsArray[1];
+                news_after.innerHTML = newsArray[1] + " ";
                 // console.log(newsArray)
                 news_text.appendChild(news_after);
             } else {
-                news_text.innerHTML = " " + this.getAttribute('news-text');
+                news_text.innerHTML = " " + this.getAttribute('news-text') + " ";
             }
             list.appendChild(news_text);
         }

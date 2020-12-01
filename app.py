@@ -42,8 +42,8 @@ def index():
     match_logo(data, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
-                "WHERE category = 'S' AND (CURRENT_DATE - date <= 10 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 7")
+                "WHERE category = 'S' AND (CURRENT_DATE - date <= 20 OR tag='Top') "
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 20")
     news_data = cur.fetchall()
     cur.execute("rollback")
 

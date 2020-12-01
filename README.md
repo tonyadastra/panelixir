@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ November 30 - Restyling and fix existing bugs
 + November 27 - General Vaccine News and Optimize
 + November 24 - Optimize CSS for display-company, card.js not show 'Latest News' if data-news is not None but is empty
 + November 19 - Optimize Append Card JS(Does not return 'No results to fetch' for card), Add spinner when loading vaccine intro

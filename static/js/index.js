@@ -1113,9 +1113,16 @@ $('.desktop-dropdown').on("click", function () {
     // return false;
 })
 
-function desktopClick(){
-    // console.log('click')
+$('.clear-filter').click(function () {
+    var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
+    dropdown_title_stage.innerHTML = "Vaccine Stage ";
+    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    dropdown_title_country.innerHTML = "Country / Region ";
+    var dropdown_title_type = document.getElementById('dropdown-desktop-type')
+    dropdown_title_type.innerHTML = "Vaccine Platform ";
+})
 
+function desktopClick(){
     $('#dropdown-desktop-stage').dropdown('hide');
     $('#dropdown-desktop-country').dropdown('hide');
     $('#dropdown-desktop-type').dropdown('hide');

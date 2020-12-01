@@ -110,7 +110,7 @@ html, body {
 
     .news-wrapper {
         /*background-color: rgba(233, 233, 233, 0.7);*/
-        border: 1px solid orangered !important;
+        /*border: 1px solid orangered !important;*/
         width: 90% !important;
         margin: 1rem auto !important;
         border-radius: 0.2rem !important;
@@ -216,17 +216,10 @@ html, body {
         display: none;
     }
 
-    /*.title {*/
-    /*  font-size: 0.9rem!important;*/
-    /*  !* Modified *!*/
-    /*  margin-left: 0.5rem !important;*/
-    /*  !* New *!*/
-    /*  margin-bottom: 0.2rem !important; !* Modified *!*/
-    /*}*/
     .title {
-        font-size: 0.9rem !important;
+        font-size: 1.2rem !important;
         /* Modified */
-        max-width: 50%;
+        max-width: 60%;
         margin-left: 0.5rem !important;
         /* New */
     }
@@ -239,15 +232,9 @@ html, body {
         display: none;
     }
 
-    /*.title-bar {*/
-    /*  height: 2rem;*/
-    /*  padding: 0.75rem 1rem 0.4rem 1rem;*/
-    /*  !* Modified *!*/
-    /*  margin-bottom: 1rem;*/
-    /*  !* Modified *!*/
-    /*}*/
+
     .title-bar {
-        height: 3rem !important;
+        height: 3.7rem !important;
         /* Modified */
         padding: 0.5rem 1rem 1.75rem 0.7rem !important;
         /* Modified */
@@ -291,12 +278,12 @@ html, body {
     /*  height: 50%;*/
     /*  width: 80%;*/
     /*}*/
-    #title {
-        /*font-family: Garamond, EB Garamond, Georgia, serif;*/
-        font-size: 0.9rem;
-        font-weight: 350;
-        margin-bottom: 0;
-    }
+    /*#title {*/
+    /*    !*font-family: Garamond, EB Garamond, Georgia, serif;*!*/
+    /*    font-size: 0.9rem;*/
+    /*    font-weight: 350;*/
+    /*    margin-bottom: 0;*/
+    /*}*/
 
     /* .filter-text {
       display: inline-block;
@@ -522,12 +509,12 @@ html, body {
         width: 80% !important;
     }
 
-    #title {
-        /*font-family: Garamond, EB Garamond, Georgia, serif;*/
-        font-size: 1.2rem;
-        font-weight: 350;
-        margin-bottom: 0;
-    }
+    /*#title {*/
+    /*    !*font-family: Garamond, EB Garamond, Georgia, serif;*!*/
+    /*    font-size: 1.2rem;*/
+    /*    font-weight: 350;*/
+    /*    margin-bottom: 0;*/
+    /*}*/
 
     .jumbotron {
         margin-bottom: 0 !important;
@@ -1156,7 +1143,7 @@ html, body {
 
 .title > a.style-a {
     position: relative;
-    color: #0e9f9a;
+    /*color: #9400D3;*/
     /* Color of Title */
     text-decoration: none;
 }
@@ -1221,9 +1208,9 @@ html, body {
 }
 
 /*Vaccine Introduction*/
-#title {
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-}
+/*#title {*/
+/*    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;*/
+/*}*/
 
 .black {
     color: black;
@@ -1717,9 +1704,10 @@ h6 {
 }
 
 h1.title {
-    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    /*font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;*/
     /*font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;*/
-    font-weight: 700;
+    font-family: Kefa, sans-serif;
+    /*font-weight: 700;*/
     /*font-variant: small-caps;*/
 }
 
@@ -1742,8 +1730,8 @@ h1.title {
 }
 
 .news-wrapper {
-    /*background-color: rgba(233, 233, 233, 0.7);*/
-    border: 2px solid orangered;
+    background-color: rgba(243, 243, 243, 0.6);
+    /*border: 2px solid orangered;*/
     width: 70%;
     margin: 2rem auto;
     border-radius: 0.3rem;
@@ -1783,6 +1771,7 @@ h1.title {
     font-family: Kefa, sans-serif;
     font-variant: small-caps;
     font-size: 2.5rem;
+    text-decoration: underline solid white;
 }
 
 .bars-text:hover {
