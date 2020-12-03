@@ -334,7 +334,8 @@ function createDesktopDropdownCountry(country_array) {
             country_dropdown = document.getElementById("all-dropdown-items-country");
             dropdown.addEventListener("click", function () {
                 $(".desktop-dropdown#country").removeClass("active");
-                dropdown.setAttribute('class', 'active desktop-dropdown dropdown-item-ctry')
+                dropdown.setAttribute('class', 'active desktop-dropdown dropdown-item-ctry');
+                setDesktopCountryTitle();
 
             })
             dropdown.setAttribute('onclick', 'desktopClick()');
@@ -1155,14 +1156,28 @@ function desktopClick(){
         },
     });
 
+    // var active_country = document.querySelector('.active.desktop-dropdown#country').value;
+    // if (active_country === "") {
+    //     active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+    // }
+    // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
+    // dropdown_title_country.innerHTML = active_country;
+    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+}
+$(".desktop-dropdown.dropdown-item-ctry").click(function () {
+    setDesktopCountryTitle();
+})
+
+
+function setDesktopCountryTitle() {
     var active_country = document.querySelector('.active.desktop-dropdown#country').value;
     if (active_country === "") {
         active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
     }
     var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     dropdown_title_country.innerHTML = active_country;
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
 }
+
 
 $(".btn.btn-light").mouseup(function(){
     $(this).blur();

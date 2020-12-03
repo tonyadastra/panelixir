@@ -1771,7 +1771,7 @@ h1.title {
     font-family: Kefa, sans-serif;
     font-variant: small-caps;
     font-size: 2.5rem;
-    text-decoration: underline solid white;
+    /*text-decoration: underline solid white;*/
 }
 
 .bars-text:hover {
