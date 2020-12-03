@@ -56,7 +56,7 @@ def auto_update_nytimes(event, context):
     news_breaking_news = cur.fetchall()
     cur.execute("rollback")
     for i in range(len(news_breaking_news)):
-        if news_breaking_news[i][1] > 3:
+        if news_breaking_news[i][1] >= 3:
             cur.execute("UPDATE news SET tag = %s WHERE key = %s", ('', news_breaking_news[i][0]))
             conn.commit()
 
@@ -871,6 +871,14 @@ def auto_update_nytimes(event, context):
                             new_vaccine_platform = "RNA"
                         if "DNA" in new_vaccine_intro:
                             new_vaccine_platform = "DNA"
+
+                    # Add <b> tag for companies in database
+                    company_array = new_company_name.split(', ')
+                    for company in company_array:
+                        if company in company_array and "<b>" + company + "</b>" not in new_vaccine_intro:
+                            intro_split_array = new_vaccine_intro.split(company, 1)
+                            new_vaccine_intro = intro_split_array[0] + "<b>" + company + "</b>" + intro_split_array[1]
+
                     # Update INFO table
                     cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type,
                                                         update_date, combined_phases, early_approval, paused)
