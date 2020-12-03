@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.4.4 - Fix bugs that clogs update in News table, add constraint hasNumbers to be in latest news, otherwise, add to intro
+    + Released: December 2, 2020
 - v2.4.3 - Add category 'S' to NEWS to be compatible with Google News Update, add platform for new NYTimes vaccines
     + Released: November 30, 2020
 - v2.4.2 - Optimize algorithm to handle duplicate updates, update latest news when current month in new updates. Fix bugs that causes the program to return error

@@ -5,6 +5,7 @@ import psycopg2
 from models.close_match_indexes import get_close_matches_indexes
 from models.format_nytimes_intro import format_intro
 from models.nytimes_to_panelixir_style import arrange_nytimes_info
+from models.hasNumbers import hasNumbers
 import datetime
 import difflib
 
@@ -209,11 +210,11 @@ def auto_update_nytimes(event, context):
                                 (new_news_updated_id, new_news_nytimes_id_company[found_news_nytimes_index][1]))
                     conn.commit()
 
-    for i in range(len(latest_update_array)):
-        if latest_update_array[0][0] == existing_news_array[0][0]:
-            response += "No Updates"
-            break
-        else:
+    if latest_update_array[0][0] == existing_news_array[0][0]:
+        response += "No Updates"
+        # break
+    else:
+        for i in range(len(latest_update_array)):
             # if there is an update...
             if latest_update_array[i][0] == existing_news_array[0][0]:
                 response += str(i) + " update(s) found.||"
@@ -239,8 +240,8 @@ def auto_update_nytimes(event, context):
                                  tag,
                                  latest_update_array[i - j][1],
                                  update,
-                                 latest_update_array[i - j][2]),
-                                'S')
+                                 latest_update_array[i - j][2],
+                                 'S'))
                     conn.commit()
 
                     if VaccineID != -1:
@@ -295,6 +296,7 @@ def auto_update_nytimes(event, context):
                                 # Return error if the algorithm cannot identify new Phase (new_phase = -1)
                                 elif new_phase == -1:
                                     response += "ERROR: Cannot find the stage number to update INFO database.||"
+
                 break
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -741,7 +743,7 @@ def auto_update_nytimes(event, context):
                     update_message += "Updated latest news of VaccineID " + str(new_vaccine_id) + ", new contents: " \
                                       + intro_updates + "|| "
                     update_intro_count += 1
-                if now.strftime("%B") in intro_updates:
+                if now.strftime("%B") in intro_updates and hasNumbers(intro_updates):
                     if existing_latest_news is not None:
                         if intro_updates.lower().replace(',', '') not in existing_latest_news.lower().replace(',', ''):
                             updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
