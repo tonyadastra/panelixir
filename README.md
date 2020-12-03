@@ -8,7 +8,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
-- v2.4.5 - Add <b> and </b> before and after (respectively) the company names of new vaccines from NYTimes website
+- v2.4.5 - Add \<b\> and \</b\> tags before and after (respectively) the company names of new vaccines from NYTimes website
     + Released: December 2, 2020
 - v2.4.4 - Fix bugs that clogs update in News table, add constraint hasNumbers to be in latest news, otherwise, add to intro
     + Released: December 2, 2020
