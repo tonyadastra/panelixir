@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 from bs4 import BeautifulSoup, NavigableString, Tag
 import psycopg2
@@ -34,6 +35,14 @@ def auto_update_nytimes(event, context):
         update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
         new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
         response, phase0_count, phase1_count, phase2_count, phase3_count
+
+    def similar(phrase_a, phrase_b):
+        return difflib.SequenceMatcher(None, phrase_a, phrase_b).ratio()
+
+    def cleanhtml(raw_html):
+        cleanr = re.compile('<.*?>')
+        cleantext = re.sub(cleanr, '', raw_html)
+        return cleantext
 
     now = datetime.datetime.now()
     # connect to database
@@ -707,8 +716,14 @@ def auto_update_nytimes(event, context):
                         new_intro = arrange_nytimes_info(new_intro)
                         isAlreadyUpdated = False
                         if existing_latest_news is not None:
-                            if new_intro.lower().replace(',', '') in existing_latest_news.lower().replace(',', ''):
-                                isAlreadyUpdated = True
+                            cleaned_html_existing_latest_news = cleanhtml(existing_latest_news)
+                            existing_latest_news_array = cleaned_html_existing_latest_news.replace('<br><br>', ' ')\
+                                .replace('<br>', ' ').replace('\xa0', ' ').split('. ')
+                            formatted_existing_latest_news = format_intro(existing_latest_news_array)
+                            for formatted_news in formatted_existing_latest_news:
+                                similarity_score = similar(formatted_news, new_intro)
+                                if similarity_score >= 0.95:
+                                    isAlreadyUpdated = True
 
                         if not isAlreadyUpdated:
                             if existing_update is not None and new_intro.strip() not in existing_update:

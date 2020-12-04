@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.4.6 - Check similarity score(compare existing and new sentence) - if score > 0.95, abort the update
+    + Released: December 4, 2020
 - v2.4.5 - Add \<b\> and \</b\> tags before and after (respectively) the company names of new vaccines from NYTimes website
     + Released: December 2, 2020
 - v2.4.4 - Fix bugs that clogs update in News table, add constraint hasNumbers to be in latest news, otherwise, add to intro
