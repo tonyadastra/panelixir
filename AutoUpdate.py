@@ -22,7 +22,7 @@ new_assigned_message = ""
 new_vaccines_message = ""
 update_message = ""
 id_response = ""
-response = ""
+news_update_response = ""
 
 phase0_count = 0
 phase1_count = 0
@@ -34,7 +34,25 @@ def auto_update_nytimes(event, context):
     global update_date_count, update_stage_count, update_is_early_count, update_is_paused_count, \
         update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
         new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
-        response, phase0_count, phase1_count, phase2_count, phase3_count
+        news_update_response, phase0_count, phase1_count, phase2_count, phase3_count
+    update_date_count = 0
+    update_stage_count = 0
+    update_is_early_count = 0
+    update_is_paused_count = 0
+    update_is_combined_count = 0
+    update_intro_count = 0
+    new_companies_added = 0
+    new_assigned_id_count = 0
+    new_assigned_message = ""
+    new_vaccines_message = ""
+    update_message = ""
+    id_response = ""
+    news_update_response = ""
+
+    phase0_count = 0
+    phase1_count = 0
+    phase2_count = 0
+    phase3_count = 0
 
     def similar(phrase_a, phrase_b):
         return difflib.SequenceMatcher(None, phrase_a, phrase_b).ratio()
@@ -220,13 +238,13 @@ def auto_update_nytimes(event, context):
                     conn.commit()
 
     if latest_update_array[0][0] == existing_news_array[0][0]:
-        response += "No Updates"
+        news_update_response += "No Updates"
         # break
     else:
         for i in range(len(latest_update_array)):
             # if there is an update...
             if latest_update_array[i][0] == existing_news_array[0][0]:
-                response += str(i) + " update(s) found.||"
+                news_update_response += str(i) + " update(s) found.||"
                 for j in range(1, i + 1):
                     # Change the format of the new update
                     update = arrange_nytimes_info(latest_update_array[i - j][0])
@@ -243,14 +261,15 @@ def auto_update_nytimes(event, context):
                         if keyword in update:
                             tag = "Breaking News"
 
-                    cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date, category)
-                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s)''',
+                    cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date, category, source)
+                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s)''',
                                 (VaccineID,
                                  tag,
                                  latest_update_array[i - j][1],
                                  update,
                                  latest_update_array[i - j][2],
-                                 'S'))
+                                 'S',
+                                 'The New York Times'))
                     conn.commit()
 
                     if VaccineID != -1:
@@ -282,7 +301,7 @@ def auto_update_nytimes(event, context):
                                 if new_phase != existing_info_stage[0]:
                                     isUpdated = False
                                 else:
-                                    response += "Detected update keyword, INFO already updated.||"
+                                    news_update_response += "Detected update keyword, INFO already updated.||"
 
                                 # If not updated and the algorithm can identify the new Phase
                                 if new_phase != -1 and not isUpdated:
@@ -291,7 +310,7 @@ def auto_update_nytimes(event, context):
                                                 "WHERE vac_id = %s",
                                                 (new_phase, VaccineID))
                                     conn.commit()
-                                    response += "Updated INFO database of VaccineID " + str(VaccineID) \
+                                    news_update_response += "Updated INFO database of VaccineID " + str(VaccineID) \
                                                 + " to Phase " + str(new_phase) + ".||"
                                     # Update phase3_start_date if new vaccine enters Phase 3
                                     if new_phase == 3:
@@ -299,12 +318,12 @@ def auto_update_nytimes(event, context):
                                                     "WHERE vac_id = %s",
                                                     (VaccineID,))
                                         conn.commit()
-                                        response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
+                                        news_update_response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
                                                     + str(VaccineID) + "'s phase3_start_date to " + \
                                                     str(now.strftime("%Y-%m-%d")) + ".||"
                                 # Return error if the algorithm cannot identify new Phase (new_phase = -1)
                                 elif new_phase == -1:
-                                    response += "ERROR: Cannot find the stage number to update INFO database.||"
+                                    news_update_response += "ERROR: Cannot find the stage number to update INFO database.||"
 
                 break
 
@@ -959,6 +978,8 @@ def auto_update_nytimes(event, context):
         new_assigned_message = "No New ID"
     if not new_vaccines_message:
         new_vaccines_message = "No New Vaccines"
+    if not id_response:
+        id_response = "Matched all VaccineIDs successfully in the first round."
 
     return_response = {
         'URLStatusCode': result.status_code,
@@ -966,7 +987,7 @@ def auto_update_nytimes(event, context):
         'Latest News Section': {
             'statusCode': 200,
             'VaccineID Algorithm': id_response,
-            'News Update': response
+            'News Update': news_update_response
         },
 
         'Intro Section': {
