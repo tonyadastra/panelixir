@@ -388,9 +388,15 @@ def auto_update_nytimes(event, context):
         for intro in all_vaccines_intro:
             vaccine_array = []
             discard = False
-            for br in intro.find_all('br'):
-                br.replace_with(' ')
+
             intro_text = intro.text
+            for index_br, br in enumerate(intro.find_all('br')):
+                # Update December 9 to be compatible with new version
+                if "STORAGE".lower() in intro.text.lower() and index_br == 6:
+                    br.replace_with('$REMOVE_ALL_PREVIOUS_TEXT$')
+                    intro_text = intro.text.split('$REMOVE_ALL_PREVIOUS_TEXT$')[1].strip()
+                else:
+                    br.replace_with(' ')
 
             update_time = intro.find('span', class_="g-updated")
             company_names = intro.find_all('strong')

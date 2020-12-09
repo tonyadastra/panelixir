@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.4.8 - Update format to be compatible with new NYTimes format with 'name', 'storage', etc
+    + Released: December 9, 2020
 - v2.4.7 - Fix messaging duplicates and add source 'The New York Times' to database
     + Released: December 8, 2020
 - v2.4.6 - Check similarity score(compare existing and new sentence) - if score > 0.95, abort the update
