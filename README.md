@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ December 9 - Release Approval and Detailed Vaccine Information
 + November 30 - Restyling and fix existing bugs
 + November 27 - General Vaccine News and Optimize
 + November 24 - Optimize CSS for display-company, card.js not show 'Latest News' if data-news is not None but is empty
