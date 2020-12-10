@@ -31,7 +31,8 @@ def favicon():
 @app.route('/', methods=['GET'])
 def index():
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-                "TO_CHAR(update_date, 'Month FMDD'), company, early_approval "
+                "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+                "dose, injection_type, storage "
                 "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
                 "LIMIT 10")
@@ -42,14 +43,14 @@ def index():
     match_logo(data, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
-                "WHERE category = 'S' AND (CURRENT_DATE - date <= 20 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 20")
+                "WHERE category = 'S' AND (CURRENT_DATE - date <= 30 OR tag='Top') "
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
     news_data = cur.fetchall()
     cur.execute("rollback")
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
                 "WHERE category = 'G' AND (CURRENT_DATE - date <= 3 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 20")
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
     general_news = cur.fetchall()
     cur.execute("rollback")
     return render_template("index.html", data=data, news_data=news_data, general_news=general_news)
@@ -70,7 +71,8 @@ def desktopForm():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+        "dose, injection_type, storage"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -96,7 +98,8 @@ def card():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+        "dose, injection_type, storage"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -129,7 +132,8 @@ def mobileForm():
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+        "dose, injection_type, storage"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -154,7 +158,8 @@ def mobileAppendCards():
     limit = int(request.args.get('limit'))
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+        "dose, injection_type, storage"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -180,7 +185,8 @@ def displayCompany():
     companyID = str(request.args.get('company_id'))
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval"
+        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+        "dose, injection_type, storage"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()

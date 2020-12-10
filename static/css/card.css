@@ -54,7 +54,7 @@
 }
 
 #early{
-  background-color: rgba(58, 175, 169, 0.6);
+  background-color: rgb(124, 205, 201);
 }
 
 span.highlight-warp-speed {
@@ -344,6 +344,10 @@ span.highlight-warp-speed {
   margin: 0;
 }
 
-#elixir{
-  color: #9400D3!important;
+.info-tag > b {
+  margin: 0;
+}
+
+.info-tag {
+  color: #0b58de;
 }

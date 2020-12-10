@@ -130,12 +130,51 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-stage') == 4)
             bar_wrapper.appendChild(pbar5);
-
-        if (this.getAttribute('data-early') === 'True') {
-            bar_wrapper.appendChild(pbar7);
+        else {
+            if (this.getAttribute('data-early') === 'True') {
+                bar_wrapper.appendChild(pbar7);
+            }
         }
 
+
+
         wrapper.appendChild(bar_wrapper);
+
+        // vaccine info
+        if (this.getAttribute('data-candidate') !== 'None' && this.getAttribute('data-candidate') !== '') {
+            var candidate_name = document.createElement('span');
+            candidate_name.setAttribute('class', 'info-tag');
+            candidate_name.innerHTML = "<b>Candidate Name: </b>" + this.getAttribute('data-candidate');
+            wrapper.appendChild(candidate_name);
+        }
+
+        if (this.getAttribute('data-efficacy') !== 'None' && this.getAttribute('data-efficacy') !== 'Unknown' && this.getAttribute('data-efficacy') !== '') {
+            var efficacy = document.createElement('p');
+            efficacy.setAttribute('class', 'info-tag');
+            efficacy.innerHTML = "<b>Efficacy: </b>" + this.getAttribute('data-efficacy');
+            wrapper.appendChild(efficacy);
+        }
+
+        if (this.getAttribute('data-dose') !== 'None' && this.getAttribute('data-dose') !== '') {
+            var dose = document.createElement('p');
+            dose.setAttribute('class', 'info-tag');
+            dose.innerHTML = "<b>Dose: </b>" + this.getAttribute('data-dose');
+            wrapper.appendChild(dose);
+        }
+
+        if (this.getAttribute('data-injection-type') !== 'None' && this.getAttribute('data-injection-type') !== '') {
+            var injection_type = document.createElement('p');
+            injection_type.setAttribute('class', 'info-tag');
+            injection_type.innerHTML = "<b>Injection Type: </b>" + this.getAttribute('data-injection-type');
+            wrapper.appendChild(injection_type);
+        }
+
+        if (this.getAttribute('data-storage') !== 'None' && this.getAttribute('data-storage') !== '') {
+            var storage = document.createElement('p');
+            storage.setAttribute('class', 'info-tag');
+            storage.innerHTML = "<b>Storage Requirements: </b>" + this.getAttribute('data-storage');
+            wrapper.appendChild(storage);
+        }
 
         // short company intro
         var text = document.createElement('p');
@@ -171,31 +210,31 @@ class myCard extends HTMLElement {
         }
 
         // button to learn more
-        var btn = document.createElement('button');
-        btn.setAttribute('class', 'collapsible');
-        btn.setAttribute('type', 'button');
-        btn.innerHTML = 'Learn More';
-
-        var content = document.createElement('a');
-
-        var url = this.getAttribute('data-expand');
-        content.setAttribute("href", url);
-        content.innerHTML = url;
-        // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-        content.setAttribute('class', 'content');
-        // wrapper.appendChild(btn);
-        // wrapper.appendChild(content);
-
-        //toggle
-        btn.addEventListener("click", function () {
-            this.classList.toggle("active");
-            if (content.style.display === "block") {
-                content.style.display = "none";
-                // document.get
-            } else {
-                content.style.display = "block";
-            }
-        });
+        // var btn = document.createElement('button');
+        // btn.setAttribute('class', 'collapsible');
+        // btn.setAttribute('type', 'button');
+        // btn.innerHTML = 'Learn More';
+        //
+        // var content = document.createElement('a');
+        //
+        // var url = this.getAttribute('data-expand');
+        // content.setAttribute("href", url);
+        // content.innerHTML = url;
+        // // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+        // content.setAttribute('class', 'content');
+        // // wrapper.appendChild(btn);
+        // // wrapper.appendChild(content);
+        //
+        // //toggle
+        // btn.addEventListener("click", function () {
+        //     this.classList.toggle("active");
+        //     if (content.style.display === "block") {
+        //         content.style.display = "none";
+        //         // document.get
+        //     } else {
+        //         content.style.display = "block";
+        //     }
+        // });
 
 
         shadow.appendChild(wrapper);
