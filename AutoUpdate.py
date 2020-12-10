@@ -35,6 +35,8 @@ def auto_update_nytimes(event, context):
         update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
         new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
         news_update_response, phase0_count, phase1_count, phase2_count, phase3_count
+
+    # Reset count
     update_date_count = 0
     update_stage_count = 0
     update_is_early_count = 0
@@ -135,20 +137,10 @@ def auto_update_nytimes(event, context):
             except IndexError:
                 # Find match for vaccines with multiple companies but only one shows in news
                 # Problem: possible repeats in companies!
-                for a in range(len(info_id_and_company)):
-                    each_id_company = company_array_possibilities[a].split(', ')
-                    match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
-                    if match:
-                        vaccine_id = info_id_and_company[a][0]
-                        id_response += "Found match for news #" + str(idx + 1) + \
-                                       " in except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
-                        break
-                    else:
-                        vaccine_id = -1
-
+                vaccine_id = -1
                 # Find match for vaccines with multiple companies - rearrange the order in company_string
                 # Iterate through every possible combination of company names to find match
-                if vaccine_id == -1 and len(news_company) > 1:
+                if len(news_company) > 1:
                     count = 0
                     increment = 0
                     while count < len(news_company) and vaccine_id == -1:
@@ -178,6 +170,16 @@ def auto_update_nytimes(event, context):
                             vaccine_id = -1
                         increment += 1
                         count += 1
+
+                if vaccine_id == -1:
+                    for a in range(len(info_id_and_company)):
+                        each_id_company = company_array_possibilities[a].split(', ')
+                        match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                        if match:
+                            vaccine_id = info_id_and_company[a][0]
+                            id_response += "Found match for news #" + str(idx + 1) + \
+                                           " in except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
+                            break
 
                 if vaccine_id == -1:
                     modified_string = company_string + " Biological"
@@ -311,7 +313,7 @@ def auto_update_nytimes(event, context):
                                                 (new_phase, VaccineID))
                                     conn.commit()
                                     news_update_response += "Updated INFO database of VaccineID " + str(VaccineID) \
-                                                + " to Phase " + str(new_phase) + ".||"
+                                                            + " to Phase " + str(new_phase) + ".||"
                                     # Update phase3_start_date if new vaccine enters Phase 3
                                     if new_phase == 3:
                                         cur.execute("UPDATE info SET phase_3_start_date = CURRENT_DATE "
@@ -319,8 +321,8 @@ def auto_update_nytimes(event, context):
                                                     (VaccineID,))
                                         conn.commit()
                                         news_update_response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
-                                                    + str(VaccineID) + "'s phase3_start_date to " + \
-                                                    str(now.strftime("%Y-%m-%d")) + ".||"
+                                                                + str(VaccineID) + "'s phase3_start_date to " + \
+                                                                str(now.strftime("%Y-%m-%d")) + ".||"
                                 # Return error if the algorithm cannot identify new Phase (new_phase = -1)
                                 elif new_phase == -1:
                                     news_update_response += "ERROR: Cannot find the stage number to update INFO database.||"
@@ -329,10 +331,10 @@ def auto_update_nytimes(event, context):
 
     # ------------------------------------------------------------------------------------------------------------------
     # Section 2: Update Vaccine Intro
-    text = ''
+    text = ""
     # local run
     # for child in soup:
-    # # AWS Lambda run
+        # # AWS Lambda run
     for child in nytimes_news[0].parent:
         if isinstance(child, NavigableString):
             text += str(child)
@@ -384,19 +386,69 @@ def auto_update_nytimes(event, context):
         phase0_count += len(all_preclinical_intro)
 
         all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro + all_preclinical_intro
-
         for intro in all_vaccines_intro:
             vaccine_array = []
             discard = False
+            for br in intro.find_all('br'):
+                br.replace_with('<THIS IS A LINE BREAK>')
+            intro_text = intro.text.replace('\n', '')
+            intro_text = intro_text.replace('<THIS IS A LINE BREAK>', '\n')
 
-            intro_text = intro.text
-            for index_br, br in enumerate(intro.find_all('br')):
-                # Update December 9 to be compatible with new version
-                if "STORAGE".lower() in intro.text.lower() and index_br == 6:
-                    br.replace_with('$REMOVE_ALL_PREVIOUS_TEXT$')
-                    intro_text = intro.text.split('$REMOVE_ALL_PREVIOUS_TEXT$')[1].strip()
-                else:
-                    br.replace_with(' ')
+            vaccine_info_html = intro.find_all('span', class_="g-info")
+            candidate_name = ""
+            efficacy = ""
+            dose = ""
+            injection_type = ""
+            storage = ""
+
+            if vaccine_info_html:
+                all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1]\
+                    .split('\n\n', 1)[1].strip()
+                all_intro_text = all_intro_text.replace('\n', ' ')
+
+                vaccine_info_text = "Vaccine Name:" + \
+                                    (intro_text.split(vaccine_info_html[0].text, 1)[1]
+                                        .split('\n\n', 1)[0])
+
+                vaccine_info_text_array = vaccine_info_text.split('\n')
+                print(vaccine_info_text_array)
+
+                for vaccine_info in vaccine_info_text_array:
+                    if "Vaccine Name" in vaccine_info:
+                        start_index = vaccine_info.find(': ') + 2
+                        if start_index != -1:
+                            candidate_name = vaccine_info[start_index:]
+                        else:
+                            candidate_name = ""
+                    if "Efficacy" in vaccine_info:
+                        start_index = vaccine_info.find(': ') + 2
+                        if start_index != -1:
+                            efficacy = vaccine_info[start_index:]
+                        else:
+                            efficacy = ""
+                    if "Dose" in vaccine_info:
+                        start_index = vaccine_info.find(': ') + 2
+                        if start_index != -1:
+                            dose = vaccine_info[start_index:]
+                        else:
+                            dose = ""
+                    if "Type" in vaccine_info:
+                        start_index = vaccine_info.find(': ') + 2
+                        if start_index != -1:
+                            injection_type = vaccine_info[start_index:]
+                        else:
+                            injection_type = ""
+                    if "Storage" in vaccine_info:
+                        start_index = vaccine_info.find(': ') + 2
+                        if start_index != -1:
+                            storage = vaccine_info[start_index:]
+                        else:
+                            storage = ""
+            else:
+                all_intro_text = intro_text.replace('\n', ' ')
+
+            # if vaccine_info_html:
+            #     print(intro_text)
 
             update_time = intro.find('span', class_="g-updated")
             company_names = intro.find_all('strong')
@@ -415,10 +467,10 @@ def auto_update_nytimes(event, context):
                     company_string += company_names[i].text.strip()
                 else:
                     company_string += company_names[i].text.strip() + ", "
-            if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in intro_text:
+            if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in all_intro_text:
                 company_string += "-2"
 
-            if "Center for Genetic Engineering and Biotechnology of Cuba" in company_string and "Abadala" in intro_text:
+            if "Center for Genetic Engineering and Biotechnology of Cuba" in company_string and "Abadala" in all_intro_text:
                 company_string += "-2"
 
             index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
@@ -426,22 +478,9 @@ def auto_update_nytimes(event, context):
                 vaccine_id = info_id_and_company[index[0]][0]
             except IndexError:
                 vaccine_id = -1
-                # Find match for vaccines with multiple companies but only one shows in news
-                # Problem: possible repeats in companies!
-                for a in range(len(info_id_and_company)):
-                    each_id_company = company_array_possibilities[a].split(', ')
-                    match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
-                    if match:
-                        vaccine_id = info_id_and_company[a][0]
-                        # intro_id_response += "Found match for news #" + str(idx + 1) + \
-                        #                " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
-                        break
-                    else:
-                        vaccine_id = -1
-
                 # Find match for vaccines with multiple companies - rearrange the order in company_string
                 # Iterate through every possible combination of company names to find match
-                if vaccine_id == -1 and len(company_names) > 1:
+                if len(company_names) > 1:
                     count = 0
                     increment = 0
                     while count < len(company_names) and vaccine_id == -1:
@@ -472,6 +511,20 @@ def auto_update_nytimes(event, context):
                         increment += 1
                         count += 1
 
+                # Find match for vaccines with multiple companies but only one shows in news
+                # Problem: possible repeats in companies!
+                if vaccine_id == -1:
+                    for a in range(len(info_id_and_company)):
+                        each_id_company = company_array_possibilities[a].split(', ')
+                        match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                        if match:
+                            vaccine_id = info_id_and_company[a][0]
+                            # intro_id_response += "Found match for news #" + str(idx + 1) + \
+                            #                " in try-except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
+                            break
+                        else:
+                            vaccine_id = -1
+
                 if vaccine_id == -1:
                     modified_string = company_string + " Biological"
                     index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
@@ -489,38 +542,38 @@ def auto_update_nytimes(event, context):
             is_early = False
             is_paused = False
             # Remove Tags from Intro
-            if phase0 is not None and phase0.text in intro_text:
-                intro_text = intro_text.replace(phase0.text, '')
+            if phase0 is not None and phase0.text in intro.text:
+                all_intro_text = all_intro_text.replace(phase0.text, '')
                 vaccine_stage = 0
-            if phase1 is not None and phase1.text in intro_text:
-                intro_text = intro_text.replace(phase1.text, '')
+            if phase1 is not None and phase1.text in intro.text:
+                all_intro_text = all_intro_text.replace(phase1.text, '')
                 vaccine_stage = 1
-            if phase2 is not None and phase2.text in intro_text:
-                intro_text = intro_text.replace(phase2.text, '')
+            if phase2 is not None and phase2.text in intro.text:
+                all_intro_text = all_intro_text.replace(phase2.text, '')
                 vaccine_stage = 2
-            if phase3 is not None and phase3.text in intro_text:
-                intro_text = intro_text.replace(phase3.text, '')
+            if phase3 is not None and phase3.text in intro.text:
+                all_intro_text = all_intro_text.replace(phase3.text, '')
                 vaccine_stage = 3
-            if limited is not None and limited.text in intro_text:
-                intro_text = intro_text.replace(limited.text, '')
+            if limited is not None and limited.text in intro.text:
+                all_intro_text = all_intro_text.replace(limited.text, '')
                 is_early = True
-            if approved is not None and approved.text in intro_text:
-                intro_text = intro_text.replace(approved.text, '')
+            if approved is not None and approved.text in intro.text:
+                all_intro_text = all_intro_text.replace(approved.text, '')
                 vaccine_stage = 4
-            if combined_phases is not None and combined_phases.text in intro_text:
-                intro_text = intro_text.replace(combined_phases.text, '')
+            if combined_phases is not None and combined_phases.text in intro.text:
+                all_intro_text = all_intro_text.replace(combined_phases.text, '')
                 is_combined_phases = True
-            if paused is not None and paused.text in intro_text:
-                intro_text = intro_text.replace(paused.text, '')
+            if paused is not None and paused.text in intro.text:
+                all_intro_text = all_intro_text.replace(paused.text, '')
                 is_paused = True
 
             # Discard the "Other" section of Pre-Clinical from NYTimes
-            if vaccine_stage == 0 and "Other" in company_string and ":" in intro_text:
+            if vaccine_stage == 0 and "Other" in company_string and ":" in all_intro_text:
                 discard = True
 
             date = ""
             # Remove final "updated" time in Intro
-            if update_time is not None and update_time.text in intro_text:
+            if update_time is not None and update_time.text in all_intro_text:
                 date = update_time.text.replace('Updated ', '')
                 if "June" in date:
                     date = date.replace('June', 'Jun.')
@@ -529,12 +582,12 @@ def auto_update_nytimes(event, context):
                 if "Sept." in date:
                     date = date.replace('Sept.', 'Sep.')
                 date += " " + str(now.year)
-                intro_text = intro_text.replace(update_time.text, '')
+                all_intro_text = all_intro_text.replace(update_time.text, '')
 
             if update_time is None:
                 date = ""
 
-            formatted_intro = intro_text.replace('\n', '').replace('  ', ' ')
+            formatted_intro = all_intro_text.replace('\n', '').replace('  ', ' ')
             formatted_intro = formatted_intro.strip()
             if i_platform == 1:
                 vaccine_platform = "Genetic"
@@ -560,6 +613,12 @@ def auto_update_nytimes(event, context):
                 vaccine_array.append(str(is_paused))
                 vaccine_array.append(vaccine_platform)
 
+                vaccine_array.append(candidate_name)
+                vaccine_array.append(efficacy)
+                vaccine_array.append(dose)
+                vaccine_array.append(injection_type)
+                vaccine_array.append(storage)
+
                 new_data_array.append(vaccine_array)
 
     # Get last fetched data from database
@@ -581,6 +640,11 @@ def auto_update_nytimes(event, context):
         new_is_early = str(new_data_array[i][6])
         new_is_paused = str(new_data_array[i][7])
         new_vaccine_platform = new_data_array[i][8]
+        new_candidate_name = new_data_array[i][9]
+        new_efficacy = new_data_array[i][10]
+        new_dose = new_data_array[i][11]
+        new_injection_type = new_data_array[i][12]
+        new_storage = new_data_array[i][13]
 
         try:
             old_vaccine_id = existing_data_array[i][0]
@@ -592,6 +656,11 @@ def auto_update_nytimes(event, context):
             old_is_early = str(existing_data_array[i][6])
             old_is_paused = str(existing_data_array[i][7])
             old_vaccine_platform = existing_data_array[i][8]
+            old_candidate_name = existing_data_array[i][9]
+            old_efficacy = existing_data_array[i][10]
+            old_dose = existing_data_array[i][11]
+            old_injection_type = existing_data_array[i][12]
+            old_storage = existing_data_array[i][13]
         except IndexError:
             # New intro might be longer than old - assign default values that would not match
             old_vaccine_id = -1000
@@ -603,6 +672,11 @@ def auto_update_nytimes(event, context):
             old_is_early = False
             old_is_paused = False
             old_vaccine_platform = ""
+            old_candidate_name = ""
+            old_efficacy = ""
+            old_dose = ""
+            old_injection_type = ""
+            old_storage = ""
 
         proceed = False
         found_index = -1
@@ -622,6 +696,12 @@ def auto_update_nytimes(event, context):
                         old_is_combined_phases = str(existing_data_array[found_index][5])
                         old_is_early = str(existing_data_array[found_index][6])
                         old_is_paused = str(existing_data_array[found_index][7])
+                        old_vaccine_platform = existing_data_array[found_index][8]
+                        old_candidate_name = existing_data_array[found_index][9]
+                        old_efficacy = existing_data_array[found_index][10]
+                        old_dose = existing_data_array[found_index][11]
+                        old_injection_type = existing_data_array[found_index][12]
+                        old_storage = existing_data_array[found_index][13]
                         proceed = True
                         break
 
@@ -709,6 +789,68 @@ def auto_update_nytimes(event, context):
                     update_is_paused_count += 1
                     update_date()
 
+            # update candidate name
+            if new_candidate_name != old_candidate_name:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET candidate = %s WHERE vac_id = %s",
+                            (new_candidate_name, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET candidate_name = %s WHERE vac_id = %s",
+                                (new_candidate_name, new_vaccine_id))
+                    conn.commit()
+                    update_date()
+
+            # update efficacy
+            if new_efficacy != old_efficacy:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET efficacy = %s WHERE vac_id = %s", (new_efficacy, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET efficacy = %s WHERE vac_id = %s",
+                                (new_efficacy, new_vaccine_id))
+                    conn.commit()
+                    update_date()
+
+            # update dose
+            if new_dose != old_dose:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET dose = %s WHERE vac_id = %s", (new_dose, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET dose = %s WHERE vac_id = %s",
+                                (new_dose, new_vaccine_id))
+                    conn.commit()
+                    update_date()
+
+            # update injection_type
+            if new_injection_type != old_injection_type:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET injection_type = %s WHERE vac_id = %s",
+                            (new_injection_type, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET injection_type = %s WHERE vac_id = %s",
+                                (new_injection_type, new_vaccine_id))
+                    conn.commit()
+                    update_date()
+
+            # update storage
+            if new_storage != old_storage:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET storage = %s WHERE vac_id = %s", (new_storage, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET storage = %s WHERE vac_id = %s",
+                                (new_storage, new_vaccine_id))
+                    conn.commit()
+                    update_date()
+
             # If there is an update in vaccine intro
             new_intro_array = new_vaccine_intro.split('. ')
             old_intro_array = old_vaccine_intro.split('. ')
@@ -742,7 +884,7 @@ def auto_update_nytimes(event, context):
                         isAlreadyUpdated = False
                         if existing_latest_news is not None:
                             cleaned_html_existing_latest_news = cleanhtml(existing_latest_news)
-                            existing_latest_news_array = cleaned_html_existing_latest_news.replace('<br><br>', ' ')\
+                            existing_latest_news_array = cleaned_html_existing_latest_news.replace('<br><br>', ' ') \
                                 .replace('<br>', ' ').replace('\xa0', ' ').split('. ')
                             formatted_existing_latest_news = format_intro(existing_latest_news_array)
                             for formatted_news in formatted_existing_latest_news:
@@ -783,6 +925,7 @@ def auto_update_nytimes(event, context):
                     update_message += "Updated latest news of VaccineID " + str(new_vaccine_id) + ", new contents: " \
                                       + intro_updates + "|| "
                     update_intro_count += 1
+
                 if now.strftime("%B") in intro_updates and hasNumbers(intro_updates):
                     if existing_latest_news is not None:
                         if intro_updates.lower().replace(',', '') not in existing_latest_news.lower().replace(',', ''):
@@ -823,22 +966,10 @@ def auto_update_nytimes(event, context):
                         new_vaccine_id = alternate_info_id_and_company[index[0]][0]
                     except IndexError:
                         new_vaccine_id = -1
-                        # Find match for vaccines with multiple companies but only one shows in news
-                        # Problem: possible repeats in companies!
-                        for a in range(len(alternate_info_id_and_company)):
-                            each_id_company = info_company_array_possibilities[a].split(', ')
-                            match = difflib.get_close_matches(new_company_name, each_id_company, n=1, cutoff=1.0)
-                            if match:
-                                new_vaccine_id = alternate_info_id_and_company[a][0]
-                                # intro_id_response += "Found match for news #" + str(idx + 1) + \
-                                #                " in try-except-1. Paired with VaccineID " + str(new_vaccine_id) + ".||"
-                                break
-                            else:
-                                new_vaccine_id = -1
-                        split_company_array = new_company_name.split(', ')
                         # Find match for vaccines with multiple companies - rearrange the order in company_string
                         # Iterate through every possible combination of company names to find match
-                        if new_vaccine_id == -1 and ", " in new_company_name:
+                        split_company_array = new_company_name.split(', ')
+                        if ", " in new_company_name:
                             count = 0
                             increment = 0
                             while count < len(split_company_array) and new_vaccine_id == -1:
@@ -869,6 +1000,20 @@ def auto_update_nytimes(event, context):
                                     new_vaccine_id = -1
                                 increment += 1
                                 count += 1
+
+                        # Find match for vaccines with multiple companies but only one shows in news
+                        # Problem: possible repeats in companies!
+                        if new_vaccine_id == -1:
+                            for a in range(len(alternate_info_id_and_company)):
+                                each_id_company = info_company_array_possibilities[a].split(', ')
+                                match = difflib.get_close_matches(new_company_name, each_id_company, n=1, cutoff=1.0)
+                                if match:
+                                    new_vaccine_id = alternate_info_id_and_company[a][0]
+                                    # intro_id_response += "Found match for news #" + str(idx + 1) + \
+                                    #                " in try-except-1. Paired with VaccineID " + str(new_vaccine_id) + ".||"
+                                    break
+                                else:
+                                    new_vaccine_id = -1
 
                         if new_vaccine_id == -1:
                             modified_string = new_company_name + " Biological"
@@ -990,28 +1135,25 @@ def auto_update_nytimes(event, context):
     return_response = {
         'URLStatusCode': result.status_code,
 
-        'Latest News Section': {
-            'statusCode': 200,
-            'VaccineID Algorithm': id_response,
-            'News Update': news_update_response
-        },
-
-        'Intro Section': {
-            'statusCode': 200,
-            'platforms_found': platforms_found,
-            'vaccine_count': {
-                'Pre-Clinical': phase0_count,
-                'Phase I': phase1_count,
-                'Phase II': phase2_count,
-                'Phase III': phase3_count
-            },
-            'updates_count': {
+        'Updates': {
+            'Latest News Update': news_update_response,
+            'Intro Updates': {
                 'date': update_date_count,
                 'stage': update_stage_count,
                 'combined_phases': update_is_combined_count,
                 'early_approval': update_is_early_count,
                 'paused': update_is_paused_count,
                 'intro': update_intro_count
+            },
+        },
+
+        'Execution Details': {
+            'platforms_found': platforms_found,
+            'vaccine_count': {
+                'Pre-Clinical': phase0_count,
+                'Phase I': phase1_count,
+                'Phase II': phase2_count,
+                'Phase III': phase3_count
             },
             'new_vaccines': {
                 'total_new_added': new_companies_added,
@@ -1022,6 +1164,10 @@ def auto_update_nytimes(event, context):
                 'new_assigned_id': new_assigned_message,
                 'new_vaccines': new_vaccines_message
             }
+        },
+
+        'Algorithm': {
+            'VaccineID Algorithm': id_response
         }
 
     }
