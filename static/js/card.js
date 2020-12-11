@@ -139,8 +139,9 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-stage') >= 3)
             bar_wrapper.appendChild(pbar4);
 
-        if (this.getAttribute('data-stage') == 4)
+        if (this.getAttribute('data-stage') == 4) {
             bar_wrapper.appendChild(pbar5);
+        }
         else {
             if (this.getAttribute('data-early') === 'True') {
                 bar_wrapper.appendChild(pbar7);
@@ -150,13 +151,18 @@ class myCard extends HTMLElement {
         if(this.getAttribute('data-abandoned') === 'True')
             bar_wrapper.appendChild(pbar8);
 
-
-
         wrapper.appendChild(bar_wrapper);
+
+        if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-approved-countries') !== 'None' && this.getAttribute('data-approved-countries') !== '') {
+            var approved_countries = document.createElement('p');
+            approved_countries.setAttribute('class', 'approved-countries');
+            approved_countries.innerHTML = "<b>Approved Countries: </b>" + this.getAttribute('data-approved-countries');
+            wrapper.appendChild(approved_countries);
+        }
 
         // vaccine info
         if (this.getAttribute('data-candidate') !== 'None' && this.getAttribute('data-candidate') !== '') {
-            var candidate_name = document.createElement('span');
+            var candidate_name = document.createElement('p');
             candidate_name.setAttribute('class', 'info-tag');
             candidate_name.innerHTML = "<b>Candidate Name: </b>" + this.getAttribute('data-candidate');
             wrapper.appendChild(candidate_name);
