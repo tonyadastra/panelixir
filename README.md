@@ -8,7 +8,9 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
-- v2.5.0 - Add new categories: candidate, efficacy, dose, injection_type, storage to table, add auto_update
+- v2.6.0 - Add a new category abandoned to nytimes and intro, include auto_update, fix existing issues with finding vaccines
+    + Released: December 10, 2020
+- v2.5.0 - Add new categories: candidate, efficacy, dose, injection_type, storage to table, include auto_update
     + Released: December 9, 2020
 - v2.4.8 - Update format to be compatible with new NYTimes format with 'name', 'storage', etc
     + Released: December 9, 2020

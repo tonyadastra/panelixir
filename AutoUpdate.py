@@ -15,6 +15,7 @@ update_stage_count = 0
 update_is_early_count = 0
 update_is_paused_count = 0
 update_is_combined_count = 0
+update_is_abandoned_count = 0
 update_intro_count = 0
 new_companies_added = 0
 new_assigned_id_count = 0
@@ -28,13 +29,17 @@ phase0_count = 0
 phase1_count = 0
 phase2_count = 0
 phase3_count = 0
+approved_count = 0
+paused_count = 0
+abandoned_count = 0
 
 
 def auto_update_nytimes(event, context):
     global update_date_count, update_stage_count, update_is_early_count, update_is_paused_count, \
         update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
         new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
-        news_update_response, phase0_count, phase1_count, phase2_count, phase3_count
+        news_update_response, phase0_count, phase1_count, phase2_count, phase3_count, approved_count, paused_count, \
+        abandoned_count, update_is_abandoned_count
 
     # Reset count
     update_date_count = 0
@@ -42,6 +47,7 @@ def auto_update_nytimes(event, context):
     update_is_early_count = 0
     update_is_paused_count = 0
     update_is_combined_count = 0
+    update_is_abandoned_count = 0
     update_intro_count = 0
     new_companies_added = 0
     new_assigned_id_count = 0
@@ -55,6 +61,9 @@ def auto_update_nytimes(event, context):
     phase1_count = 0
     phase2_count = 0
     phase3_count = 0
+    approved_count = 0
+    paused_count = 0
+    abandoned_count = 0
 
     def similar(phrase_a, phrase_b):
         return difflib.SequenceMatcher(None, phrase_a, phrase_b).ratio()
@@ -334,7 +343,7 @@ def auto_update_nytimes(event, context):
     text = ""
     # local run
     # for child in soup:
-        # # AWS Lambda run
+    # # AWS Lambda run
     for child in nytimes_news[0].parent:
         if isinstance(child, NavigableString):
             text += str(child)
@@ -355,6 +364,15 @@ def auto_update_nytimes(event, context):
 
         if i_platform == 0:
             continue
+        # Find all Approved count
+        phase2_and_3_and_approved_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3 g-filter-approved"})
+        phase3_and_approved_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3 g-filter-approved"})
+        approved_company_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-approved"})
+        all_approved_intro = phase2_and_3_and_approved_company_intro + phase3_and_approved_company_intro + approved_company_intro
+        approved_count += len(all_approved_intro)
 
         # Find all Phase III intro
         phase2_and_3_company_intro = new_soup.find_all('p', attrs={
@@ -381,11 +399,17 @@ def auto_update_nytimes(event, context):
             "class": "g-body g-list-item g-filter-item g-filter-phase1"})
         phase1_count += len(all_phase1_company_intro)
 
-        all_preclinical_intro = new_soup.find_all('p',
-                                                  attrs={"class": "g-body g-list-item g-filter-item g-filter-phase0"})
+        all_preclinical_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-phase0"})
         phase0_count += len(all_preclinical_intro)
 
-        all_vaccines_intro = all_phase3_intro + all_phase2_intro + all_phase1_company_intro + all_preclinical_intro
+        # Abandoned Intro
+        abandoned_intro = new_soup.find_all('p', attrs={
+            "class": "g-body g-list-item g-filter-item g-filter-abandoned"})
+        abandoned_count += len(abandoned_intro)
+
+        all_vaccines_intro = all_approved_intro + all_phase3_intro + all_phase2_intro + all_phase1_company_intro + \
+                             all_preclinical_intro + abandoned_intro
         for intro in all_vaccines_intro:
             vaccine_array = []
             discard = False
@@ -402,7 +426,7 @@ def auto_update_nytimes(event, context):
             storage = ""
 
             if vaccine_info_html:
-                all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1]\
+                all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1] \
                     .split('\n\n', 1)[1].strip()
                 all_intro_text = all_intro_text.replace('\n', ' ')
 
@@ -459,14 +483,22 @@ def auto_update_nytimes(event, context):
             limited = intro.find('span', class_="g-limited")
             combined_phases = intro.find('span', class_="g-combined")
             paused = intro.find('span', class_="g-paused")
-            approved = intro.find('span', class_="g-approved")
+            abandoned = intro.find('span', class_="g-abandoned")
+            approved = intro.find('span', class_="g-approval")
 
             company_string = ""
+            # remove "how ... vaccine works"
             for i in range(len(company_names)):
-                if i == len(company_names) - 1:
-                    company_string += company_names[i].text.strip()
-                else:
-                    company_string += company_names[i].text.strip() + ", "
+                if "how" in company_names[i].text.lower() and "works" in company_names[i].text.lower():
+                    del company_names[i]
+
+            for i in range(len(company_names)):
+                if "how" not in company_names[i].text.lower() and "works" not in company_names[i].text.lower():
+                    if i == len(company_names) - 1:
+                        company_string += company_names[i].text.strip()
+                    else:
+                        company_string += company_names[i].text.strip() + ", "
+
             if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in all_intro_text:
                 company_string += "-2"
 
@@ -541,6 +573,7 @@ def auto_update_nytimes(event, context):
             is_combined_phases = False
             is_early = False
             is_paused = False
+            is_abandoned = False
             # Remove Tags from Intro
             if phase0 is not None and phase0.text in intro.text:
                 all_intro_text = all_intro_text.replace(phase0.text, '')
@@ -566,6 +599,10 @@ def auto_update_nytimes(event, context):
             if paused is not None and paused.text in intro.text:
                 all_intro_text = all_intro_text.replace(paused.text, '')
                 is_paused = True
+                paused_count += 1
+            if abandoned is not None and abandoned.text in intro.text:
+                all_intro_text = all_intro_text.replace(abandoned.text, '')
+                is_abandoned = True
 
             # Discard the "Other" section of Pre-Clinical from NYTimes
             if vaccine_stage == 0 and "Other" in company_string and ":" in all_intro_text:
@@ -611,6 +648,7 @@ def auto_update_nytimes(event, context):
                 vaccine_array.append(str(is_combined_phases))
                 vaccine_array.append(str(is_early))
                 vaccine_array.append(str(is_paused))
+                vaccine_array.append(str(is_abandoned))
                 vaccine_array.append(vaccine_platform)
 
                 vaccine_array.append(candidate_name)
@@ -622,7 +660,9 @@ def auto_update_nytimes(event, context):
                 new_data_array.append(vaccine_array)
 
     # Get last fetched data from database
-    cur.execute("SELECT * from nytimes ORDER BY intro_id;")
+    cur.execute("SELECT vac_id, stage, company_name, vaccine_intro, date, combined_phases, "
+                "early_approval, paused, abandoned, platform, candidate, efficacy, dose, "
+                "injection_type, storage from nytimes ORDER BY intro_id;")
     existing_data_array = cur.fetchall()
     cur.execute("rollback")
     existing_id_array = []
@@ -639,12 +679,13 @@ def auto_update_nytimes(event, context):
         new_is_combined_phases = str(new_data_array[i][5])
         new_is_early = str(new_data_array[i][6])
         new_is_paused = str(new_data_array[i][7])
-        new_vaccine_platform = new_data_array[i][8]
-        new_candidate_name = new_data_array[i][9]
-        new_efficacy = new_data_array[i][10]
-        new_dose = new_data_array[i][11]
-        new_injection_type = new_data_array[i][12]
-        new_storage = new_data_array[i][13]
+        new_is_abandoned = str(new_data_array[i][8])
+        new_vaccine_platform = new_data_array[i][9]
+        new_candidate_name = new_data_array[i][10]
+        new_efficacy = new_data_array[i][11]
+        new_dose = new_data_array[i][12]
+        new_injection_type = new_data_array[i][13]
+        new_storage = new_data_array[i][14]
 
         try:
             old_vaccine_id = existing_data_array[i][0]
@@ -655,12 +696,13 @@ def auto_update_nytimes(event, context):
             old_is_combined_phases = str(existing_data_array[i][5])
             old_is_early = str(existing_data_array[i][6])
             old_is_paused = str(existing_data_array[i][7])
-            old_vaccine_platform = existing_data_array[i][8]
-            old_candidate_name = existing_data_array[i][9]
-            old_efficacy = existing_data_array[i][10]
-            old_dose = existing_data_array[i][11]
-            old_injection_type = existing_data_array[i][12]
-            old_storage = existing_data_array[i][13]
+            old_is_abandoned = str(existing_data_array[i][8])
+            old_vaccine_platform = existing_data_array[i][9]
+            old_candidate_name = existing_data_array[i][10]
+            old_efficacy = existing_data_array[i][11]
+            old_dose = existing_data_array[i][12]
+            old_injection_type = existing_data_array[i][13]
+            old_storage = existing_data_array[i][14]
         except IndexError:
             # New intro might be longer than old - assign default values that would not match
             old_vaccine_id = -1000
@@ -668,9 +710,10 @@ def auto_update_nytimes(event, context):
             old_company_name = ""
             old_vaccine_intro = ""
             old_date = ""
-            old_is_combined_phases = False
-            old_is_early = False
-            old_is_paused = False
+            old_is_combined_phases = "False"
+            old_is_early = "False"
+            old_is_paused = "False"
+            old_is_abandoned = "False"
             old_vaccine_platform = ""
             old_candidate_name = ""
             old_efficacy = ""
@@ -696,12 +739,13 @@ def auto_update_nytimes(event, context):
                         old_is_combined_phases = str(existing_data_array[found_index][5])
                         old_is_early = str(existing_data_array[found_index][6])
                         old_is_paused = str(existing_data_array[found_index][7])
-                        old_vaccine_platform = existing_data_array[found_index][8]
-                        old_candidate_name = existing_data_array[found_index][9]
-                        old_efficacy = existing_data_array[found_index][10]
-                        old_dose = existing_data_array[found_index][11]
-                        old_injection_type = existing_data_array[found_index][12]
-                        old_storage = existing_data_array[found_index][13]
+                        old_is_abandoned = str(existing_data_array[found_index][8])
+                        old_vaccine_platform = existing_data_array[found_index][9]
+                        old_candidate_name = existing_data_array[found_index][10]
+                        old_efficacy = existing_data_array[found_index][11]
+                        old_dose = existing_data_array[found_index][12]
+                        old_injection_type = existing_data_array[found_index][13]
+                        old_storage = existing_data_array[found_index][14]
                         proceed = True
                         break
 
@@ -787,6 +831,19 @@ def auto_update_nytimes(event, context):
                     cur.execute("UPDATE info SET paused = %s WHERE vac_id = %s", (new_is_paused, new_vaccine_id))
                     conn.commit()
                     update_is_paused_count += 1
+                    update_date()
+
+            # update abandoned
+            if new_is_abandoned != old_is_abandoned:
+                # Update nytimes
+                cur.execute("UPDATE nytimes SET abandoned = %s WHERE vac_id = %s", (new_is_abandoned, new_vaccine_id))
+                conn.commit()
+
+                if allow_auto_update:
+                    cur.execute("UPDATE info SET abandoned = %s WHERE vac_id = %s",
+                                (new_is_abandoned, new_vaccine_id))
+                    conn.commit()
+                    update_is_abandoned_count += 1
                     update_date()
 
             # update candidate name
@@ -1034,20 +1091,23 @@ def auto_update_nytimes(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                                        paused, platform, intro_id)
-                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                                                        paused, abandoned, platform, candidate, efficacy, dose, injection_type, storage, intro_id)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_assigned_id, new_stage, new_company_name, new_vaccine_intro,
-                                        new_is_combined_phases,
-                                        new_is_early, new_is_paused, new_vaccine_platform, i))
+                                        new_is_combined_phases, new_is_early, new_is_paused, new_is_abandoned,
+                                        new_vaccine_platform, new_candidate_name,
+                                        new_efficacy, new_dose, new_injection_type, new_storage, i))
                         conn.commit()
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                                        early_approval, paused, platform, intro_id)
-                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s)''',
+                                                        early_approval, paused, abandoned, platform, candidate, efficacy, dose, injection_type, storage, intro_id)
+                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, new_date,
-                                     new_is_combined_phases, new_is_early, new_is_paused, new_vaccine_platform, i))
+                                     new_is_combined_phases, new_is_early, new_is_paused, new_is_abandoned,
+                                     new_vaccine_platform, new_candidate_name,
+                                     new_efficacy, new_dose, new_injection_type, new_storage, i))
                         conn.commit()
 
                     # Identify whether DNA or RNA for Genetic Vaccines
@@ -1060,16 +1120,18 @@ def auto_update_nytimes(event, context):
                     # Add <b> tag for companies in database
                     company_array = new_company_name.split(', ')
                     for company in company_array:
-                        if company in company_array and "<b>" + company + "</b>" not in new_vaccine_intro:
+                        if company in new_vaccine_intro and "<b>" + company + "</b>" not in new_vaccine_intro:
                             intro_split_array = new_vaccine_intro.split(company, 1)
                             new_vaccine_intro = intro_split_array[0] + "<b>" + company + "</b>" + intro_split_array[1]
 
                     # Update INFO table
                     cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type,
-                                                        update_date, combined_phases, early_approval, paused)
-                                                        VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s)''',
+                                update_date, combined_phases, early_approval, paused, abandoned, candidate_name, efficacy, dose, injection_type, storage)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s, %s, %s, %s, %s, %s, %s,)''',
                                 (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '',
-                                 new_vaccine_platform, new_is_combined_phases, new_is_early, new_is_paused))
+                                 new_vaccine_platform, new_is_combined_phases, new_is_early, new_is_paused,
+                                 new_is_abandoned, new_candidate_name,
+                                     new_efficacy, new_dose, new_injection_type, new_storage))
                     # Update COMPANIES table
                     cur.execute("INSERT INTO companies(vac_id, co_name, company_nytimes) VALUES (%s, %s, %s)",
                                 (new_assigned_id, new_company_name, new_company_name))
@@ -1082,20 +1144,23 @@ def auto_update_nytimes(event, context):
                     # Update NYTimes table
                     if new_date == '':
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, combined_phases, early_approval,
-                                    paused, platform, intro_id)
-                                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                                                        paused, abandoned, platform, candidate, efficacy, dose, injection_type, storage, intro_id)
+                                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (
                                         new_vaccine_id, new_stage, new_company_name, new_vaccine_intro,
-                                        new_is_combined_phases,
-                                        new_is_early, new_is_paused, new_vaccine_platform, i))
+                                        new_is_combined_phases, new_is_early, new_is_paused, new_is_abandoned,
+                                        new_vaccine_platform, new_candidate_name,
+                                        new_efficacy, new_dose, new_injection_type, new_storage, i))
                         conn.commit()
 
                     else:
                         cur.execute('''INSERT INTO nytimes(vac_id, stage, company_name, vaccine_intro, date, combined_phases,
-                                    early_approval, paused, platform, intro_id)
-                                    VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s)''',
+                                                        early_approval, paused, abandoned, platform, candidate, efficacy, dose, injection_type, storage, intro_id)
+                                                        VALUES (%s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                     (new_vaccine_id, new_stage, new_company_name, new_vaccine_intro, new_date,
-                                     new_is_combined_phases, new_is_early, new_is_paused, new_vaccine_platform, i))
+                                     new_is_combined_phases, new_is_early, new_is_paused, new_is_abandoned,
+                                     new_vaccine_platform, new_candidate_name,
+                                     new_efficacy, new_dose, new_injection_type, new_storage, i))
                         conn.commit()
                     try:
                         cur.execute("SELECT allow_auto_update "
@@ -1114,8 +1179,12 @@ def auto_update_nytimes(event, context):
                         else:
                             updated_intro = new_vaccine_intro
                         cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE, intro = %s, "
-                                    "combined_phases = %s, early_approval = %s, paused = %s WHERE vac_id = %s",
+                                    "combined_phases = %s, early_approval = %s, paused = %s, abandoned = %s, "
+                                    "candidate_name = %s, efficacy = %s, dose = %s, injection_type = %s, storage = %s "
+                                    "WHERE vac_id = %s",
                                     (new_stage, updated_intro, new_is_combined_phases, new_is_early, new_is_paused,
+                                     new_is_abandoned, new_candidate_name,
+                                     new_efficacy, new_dose, new_injection_type, new_storage,
                                      new_vaccine_id))
                         new_vaccines_message += "Updated INFO.||"
 
@@ -1143,6 +1212,7 @@ def auto_update_nytimes(event, context):
                 'combined_phases': update_is_combined_count,
                 'early_approval': update_is_early_count,
                 'paused': update_is_paused_count,
+                'abandoned': update_is_abandoned_count,
                 'intro': update_intro_count
             },
         },
@@ -1153,7 +1223,10 @@ def auto_update_nytimes(event, context):
                 'Pre-Clinical': phase0_count,
                 'Phase I': phase1_count,
                 'Phase II': phase2_count,
-                'Phase III': phase3_count
+                'Phase III': phase3_count,
+                'Approved': approved_count,
+                'Paused': paused_count,
+                'Abandoned': abandoned_count
             },
             'new_vaccines': {
                 'total_new_added': new_companies_added,
