@@ -112,100 +112,107 @@ def auto_update_nytimes(event, context):
     soup = BeautifulSoup(src, "html.parser")
 
     # Find Latest News Section
-    nytimes_news = soup.find_all('p', attrs={"class": "g-body"})
+    # December 11 Update from NYTimes - we use find instead of find_all because of a format update
+    # Only find the first table!
+    nytimes_news_parent = soup.find('table', class_="g-vaccine-table")
+    nytimes_news = nytimes_news_parent.find_all('tr')
+    print(nytimes_news)
     latest_news = []
     for news in nytimes_news:
-        if '•' in news.text:
+        if 'New additions and recent updates' not in news.text:
             latest_news.append(news)
 
     latest_update_array = []
     for idx, news in enumerate(latest_news):
         news_array = []
-        update_time = news.find('span', class_="g-updated")
+        update_time = news.find('td', class_="g-small g-gray")
         if "June" in update_time.text:
             update_time.text = update_time.text.replace('June', 'Jun.')
         if "July" in update_time.text:
             update_time.text = update_time.text.replace('July', 'Jul.')
         if "Sept." in update_time.text:
             update_time.text = update_time.text.replace('Sept.', 'Sep.')
-        if update_time is not None and update_time.text in news.text:
-            news_company = news.find_all('strong')
-            news_text = news.text
-            news_text = news_text.replace(update_time.text, '')
 
-            company_string = ""
-            for i in range(len(news_company)):
-                if i == len(news_company) - 1:
-                    company_string += news_company[i].a.text.strip()
-                else:
-                    company_string += news_company[i].a.text.strip() + ", "
+        news_text = news.find('td', class_="g-news g-last").text
+        # if update_time is not None and update_time.text in news.text:
+        news_company = news.find_all('a')
+            # news_text = news.text
+            # news_text = news_text.replace(update_time.text, '')
 
-            index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
-            try:
-                vaccine_id = info_id_and_company[index[0]][0]
-            except IndexError:
-                # Find match for vaccines with multiple companies but only one shows in news
-                # Problem: possible repeats in companies!
-                vaccine_id = -1
-                # Find match for vaccines with multiple companies - rearrange the order in company_string
-                # Iterate through every possible combination of company names to find match
-                if len(news_company) > 1:
-                    count = 0
-                    increment = 0
-                    while count < len(news_company) and vaccine_id == -1:
-                        order_start = 1 + increment
-                        order_count = 0
-                        if order_start >= len(news_company):
+        company_string = ""
+        for i in range(len(news_company)):
+            if i == len(news_company) - 1:
+                company_string += news_company[i].text.strip()
+            else:
+                company_string += news_company[i].text.strip() + ", "
+
+        index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
+        try:
+            vaccine_id = info_id_and_company[index[0]][0]
+        except IndexError:
+            # Find match for vaccines with multiple companies but only one shows in news
+            # Problem: possible repeats in companies!
+            vaccine_id = -1
+            # Find match for vaccines with multiple companies - rearrange the order in company_string
+            # Iterate through every possible combination of company names to find match
+            if len(news_company) > 1:
+                count = 0
+                increment = 0
+                while count < len(news_company) and vaccine_id == -1:
+                    order_start = 1 + increment
+                    order_count = 0
+                    if order_start >= len(news_company):
+                        order_start = 0
+                    new_company_string = ""
+                    while order_count < len(news_company):
+                        if order_count == len(news_company) - 1:
+                            new_company_string += news_company[order_start].text.strip()
+                        else:
+                            new_company_string += news_company[order_start].text.strip() + ", "
+                        order_count += 1
+                        if order_start >= len(news_company) - 1:
                             order_start = 0
-                        new_company_string = ""
-                        while order_count < len(news_company):
-                            if order_count == len(news_company) - 1:
-                                new_company_string += news_company[order_start].a.text.strip()
-                            else:
-                                new_company_string += news_company[order_start].a.text.strip() + ", "
-                            order_count += 1
-                            if order_start >= len(news_company) - 1:
-                                order_start = 0
-                            else:
-                                order_start += 1
+                        else:
+                            order_start += 1
 
-                        index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
-                                                          cutoff=0.6)
-                        try:
-                            vaccine_id = info_id_and_company[index[0]][0]
-                            id_response += "Found match for news #" + str(idx + 1) + \
-                                           " in except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
-                        except IndexError:
-                            vaccine_id = -1
-                        increment += 1
-                        count += 1
-
-                if vaccine_id == -1:
-                    for a in range(len(info_id_and_company)):
-                        each_id_company = company_array_possibilities[a].split(', ')
-                        match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
-                        if match:
-                            vaccine_id = info_id_and_company[a][0]
-                            id_response += "Found match for news #" + str(idx + 1) + \
-                                           " in except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
-                            break
-
-                if vaccine_id == -1:
-                    modified_string = company_string + " Biological"
-                    index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
+                    index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
+                                                      cutoff=0.6)
                     try:
                         vaccine_id = info_id_and_company[index[0]][0]
                         id_response += "Found match for news #" + str(idx + 1) + \
-                                       " in except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
+                                       " in except-2. Paired with VaccineID " + str(vaccine_id) + ".||"
                     except IndexError:
                         vaccine_id = -1
+                    increment += 1
+                    count += 1
 
-            news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
-            news_array.append(company_string)
-            news_array.append(update_time.text + " " + str(now.year))
-            news_array.append(vaccine_id)
+            if vaccine_id == -1:
+                for a in range(len(info_id_and_company)):
+                    each_id_company = company_array_possibilities[a].split(', ')
+                    match = difflib.get_close_matches(company_string, each_id_company, n=1, cutoff=1.0)
+                    if match:
+                        vaccine_id = info_id_and_company[a][0]
+                        id_response += "Found match for news #" + str(idx + 1) + \
+                                       " in except-1. Paired with VaccineID " + str(vaccine_id) + ".||"
+                        break
 
-            latest_update_array.append(news_array)
+            if vaccine_id == -1:
+                modified_string = company_string + " Biological"
+                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
+                try:
+                    vaccine_id = info_id_and_company[index[0]][0]
+                    id_response += "Found match for news #" + str(idx + 1) + \
+                                   " in except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
+                except IndexError:
+                    vaccine_id = -1
+
+        news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
+        news_array.append(company_string)
+        news_array.append(update_time.text + " " + str(now.year))
+        news_array.append(vaccine_id)
+
+        latest_update_array.append(news_array)
+    print(latest_update_array)
 
     cur.execute("SELECT news_text, news_company, update_time FROM news_nytimes;")
     existing_news_array = cur.fetchall()
@@ -248,95 +255,96 @@ def auto_update_nytimes(event, context):
                                 (new_news_updated_id, new_news_nytimes_id_company[found_news_nytimes_index][1]))
                     conn.commit()
 
-    if latest_update_array[0][0] == existing_news_array[0][0]:
-        news_update_response += "No Updates"
-        # break
-    else:
-        for i in range(len(latest_update_array)):
-            # if there is an update...
-            if latest_update_array[i][0] == existing_news_array[0][0]:
-                news_update_response += str(i) + " update(s) found.||"
-                for j in range(1, i + 1):
-                    # Change the format of the new update
-                    update = arrange_nytimes_info(latest_update_array[i - j][0])
-                    VaccineID = latest_update_array[i - j][3]
-                    breaking_news_keywords = ["promising", "early approval", "effective", "emergency use"]
-                    top_keywords = ["approved"]
-                    tag = "New"
+    if existing_news_array:
+        if latest_update_array[0][0] == existing_news_array[0][0]:
+            news_update_response += "No Updates"
+            # break
+        else:
+            for i in range(len(latest_update_array)):
+                # if there is an update...
+                if latest_update_array[i][0] == existing_news_array[0][0]:
+                    news_update_response += str(i) + " update(s) found.||"
+                    for j in range(1, i + 1):
+                        # Change the format of the new update
+                        update = arrange_nytimes_info(latest_update_array[i - j][0])
+                        VaccineID = latest_update_array[i - j][3]
+                        breaking_news_keywords = ["promising", "early approval", "effective", "emergency use"]
+                        top_keywords = ["approved"]
+                        tag = "New"
 
-                    for keyword in top_keywords:
-                        if keyword in update:
-                            tag = "Top"
+                        for keyword in top_keywords:
+                            if keyword in update:
+                                tag = "Top"
 
-                    for keyword in breaking_news_keywords:
-                        if keyword in update:
-                            tag = "Breaking News"
+                        for keyword in breaking_news_keywords:
+                            if keyword in update:
+                                tag = "Breaking News"
 
-                    cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date, category, source)
-                        VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s)''',
-                                (VaccineID,
-                                 tag,
-                                 latest_update_array[i - j][1],
-                                 update,
-                                 latest_update_array[i - j][2],
-                                 'S',
-                                 'The New York Times'))
-                    conn.commit()
+                        cur.execute('''INSERT INTO news(key, vac_id, tag, company, news_text, date, category, source)
+                            VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s)''',
+                                    (VaccineID,
+                                     tag,
+                                     latest_update_array[i - j][1],
+                                     update,
+                                     latest_update_array[i - j][2],
+                                     'S',
+                                     'The New York Times'))
+                        conn.commit()
 
-                    if VaccineID != -1:
-                        if "Phase" in update:
-                            # Algorithm to identify new Phase for vaccine
-                            if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
-                                    or "moves into" in update or "move into" in update or "moves from" in update:
-                                new_phase = -1
+                        if VaccineID != -1:
+                            if "Phase" in update:
+                                # Algorithm to identify new Phase for vaccine
+                                if "enters" in update or "enter" in update or "begins" in update or "begin" in update \
+                                        or "moves into" in update or "move into" in update or "moves from" in update:
+                                    new_phase = -1
 
-                                if "Phase I" in update:
-                                    new_phase = 1
-                                if "Phase II" in update:
-                                    new_phase = 2
-                                if "Phase III" in update:
-                                    new_phase = 3
+                                    if "Phase I" in update:
+                                        new_phase = 1
+                                    if "Phase II" in update:
+                                        new_phase = 2
+                                    if "Phase III" in update:
+                                        new_phase = 3
 
-                                if "Phase I/II" in update:
-                                    new_phase = 2
-                                if "Phase II/III" in update:
-                                    new_phase = 3
+                                    if "Phase I/II" in update:
+                                        new_phase = 2
+                                    if "Phase II/III" in update:
+                                        new_phase = 3
 
-                                # Fetch existing stage of this vaccine from INFO database
-                                cur.execute("SELECT stage FROM info WHERE vac_id = %s", (VaccineID,))
-                                existing_info_stage = cur.fetchone()
-                                cur.execute("rollback")
+                                    # Fetch existing stage of this vaccine from INFO database
+                                    cur.execute("SELECT stage FROM info WHERE vac_id = %s", (VaccineID,))
+                                    existing_info_stage = cur.fetchone()
+                                    cur.execute("rollback")
 
-                                # determine whether it is already updated in INFO database
-                                isUpdated = True
-                                if new_phase != existing_info_stage[0]:
-                                    isUpdated = False
-                                else:
-                                    news_update_response += "Detected update keyword, INFO already updated.||"
+                                    # determine whether it is already updated in INFO database
+                                    isUpdated = True
+                                    if new_phase != existing_info_stage[0]:
+                                        isUpdated = False
+                                    else:
+                                        news_update_response += "Detected update keyword, INFO already updated.||"
 
-                                # If not updated and the algorithm can identify the new Phase
-                                if new_phase != -1 and not isUpdated:
-                                    # update stage in info database
-                                    cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE "
-                                                "WHERE vac_id = %s",
-                                                (new_phase, VaccineID))
-                                    conn.commit()
-                                    news_update_response += "Updated INFO database of VaccineID " + str(VaccineID) \
-                                                            + " to Phase " + str(new_phase) + ".||"
-                                    # Update phase3_start_date if new vaccine enters Phase 3
-                                    if new_phase == 3:
-                                        cur.execute("UPDATE info SET phase_3_start_date = CURRENT_DATE "
+                                    # If not updated and the algorithm can identify the new Phase
+                                    if new_phase != -1 and not isUpdated:
+                                        # update stage in info database
+                                        cur.execute("UPDATE info SET stage = %s, update_date = CURRENT_DATE "
                                                     "WHERE vac_id = %s",
-                                                    (VaccineID,))
+                                                    (new_phase, VaccineID))
                                         conn.commit()
-                                        news_update_response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
-                                                                + str(VaccineID) + "'s phase3_start_date to " + \
-                                                                str(now.strftime("%Y-%m-%d")) + ".||"
-                                # Return error if the algorithm cannot identify new Phase (new_phase = -1)
-                                elif new_phase == -1:
-                                    news_update_response += "ERROR: Cannot find the stage number to update INFO database.||"
+                                        news_update_response += "Updated INFO database of VaccineID " + str(VaccineID) \
+                                                                + " to Phase " + str(new_phase) + ".||"
+                                        # Update phase3_start_date if new vaccine enters Phase 3
+                                        if new_phase == 3:
+                                            cur.execute("UPDATE info SET phase_3_start_date = CURRENT_DATE "
+                                                        "WHERE vac_id = %s",
+                                                        (VaccineID,))
+                                            conn.commit()
+                                            news_update_response += "Found new Phase 3 vaccine, updated INFO database of VaccineID " \
+                                                                    + str(VaccineID) + "'s phase3_start_date to " + \
+                                                                    str(now.strftime("%Y-%m-%d")) + ".||"
+                                    # Return error if the algorithm cannot identify new Phase (new_phase = -1)
+                                    elif new_phase == -1:
+                                        news_update_response += "ERROR: Cannot find the stage number to update INFO database.||"
 
-                break
+                    break
 
     # ------------------------------------------------------------------------------------------------------------------
     # Section 2: Update Vaccine Intro
@@ -344,7 +352,7 @@ def auto_update_nytimes(event, context):
     # local run
     # for child in soup:
     # # AWS Lambda run
-    for child in nytimes_news[0].parent:
+    for child in nytimes_news_parent.parent.parent.parent:
         if isinstance(child, NavigableString):
             text += str(child)
         elif isinstance(child, Tag):
@@ -783,7 +791,7 @@ def auto_update_nytimes(event, context):
                         update_date_count += 1
 
             # update stage
-            if new_stage != old_stage:
+            if new_stage != old_stage and new_stage != -1:
                 cur.execute("UPDATE nytimes SET stage = %s WHERE vac_id = %s", (new_stage, new_vaccine_id))
                 conn.commit()
 
