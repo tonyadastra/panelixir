@@ -1040,6 +1040,9 @@ $('.dropdown-item-stages').click(function () {
     else if (active_stage === "4-1") {
         active_stage = "Limited Use"
     }
+    else if (active_stage === "0-1") {
+        active_stage = "Abandoned"
+    }
     var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
     dropdown_title_stage.innerHTML = active_stage;
     document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
@@ -1191,3 +1194,7 @@ $('#dropdown-desktop-country').click(function () {
     });
 
 })
+
+$(function() {
+    $('a[href]').attr('target', '_blank');
+});

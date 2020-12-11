@@ -13,7 +13,8 @@ class myCard extends HTMLElement {
         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
         shadow.appendChild(linkElem2);
 
-        // the outter most div
+
+        // the outer most div
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
 
@@ -102,6 +103,10 @@ class myCard extends HTMLElement {
         var pbar5 = document.createElement('div');
         pbar5.setAttribute('class', 'progress-bar');
         pbar5.setAttribute('id', 'pbar5');
+        // pbar5.setAttribute('type', 'button');
+        // pbar5.setAttribute('data-toggle', 'tooltip');
+        // pbar5.setAttribute('data-placement', 'bottom');
+        // pbar5.setAttribute('title', 'Hi!');
         pbar5.innerHTML = 'APPROVED';
 
         var pbar6 = document.createElement('div');
@@ -115,6 +120,12 @@ class myCard extends HTMLElement {
         pbar7.setAttribute('id', 'early');
         // pbar6.setAttribute('style', 'width: 10%')
         pbar7.innerHTML = 'LIMITED USE';
+
+        var pbar8 = document.createElement('div');
+        pbar8.setAttribute('class', 'progress-bar');
+        pbar8.setAttribute('id', 'abandoned');
+        pbar8.setAttribute('style', 'width: ' + (100 - (parseInt(this.getAttribute('data-stage')) + 1) * 20) + "%");
+        pbar8.innerHTML = 'ABANDONED';
 
         if (this.getAttribute('data-stage') >= 0)
             bar_wrapper.appendChild(pbar1);
@@ -135,6 +146,9 @@ class myCard extends HTMLElement {
                 bar_wrapper.appendChild(pbar7);
             }
         }
+
+        if(this.getAttribute('data-abandoned') === 'True')
+            bar_wrapper.appendChild(pbar8);
 
 
 
@@ -235,7 +249,6 @@ class myCard extends HTMLElement {
         //         content.style.display = "block";
         //     }
         // });
-
 
         shadow.appendChild(wrapper);
         // this.attachShadow({ mode: 'close' });

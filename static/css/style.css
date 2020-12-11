@@ -1480,6 +1480,25 @@ span.highlight {
     background-color: rgba(58, 175, 169, 0.6);
 }
 
+
+.dropdown-item-0-1 {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item-0-1.active, .dropdown-item-0-1:active {
+    color: #fff;
+    background-color: rgb(136, 8, 8);
+}
+
 .dropdown-item-4 {
     display: block;
     width: 100%;
@@ -1607,6 +1626,48 @@ span.highlight {
     /*background-color: #5ab9ea;*/
     color: #ffffff;
     background-color: #33b7b3;
+}
+
+.btn-default.mobile-stage-0-1.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: rgb(136, 8, 8);
+}
+
+.btn-default.mobile-stage-0.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: #c1c8e4;
+}
+
+.btn-default.mobile-stage-1.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: #84ceeb;
+}
+
+.btn-default.mobile-stage-2.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: #5ab9ea;
+}
+
+.btn-default.mobile-stage-3.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: #2b98d2;
+}
+
+.btn-default.mobile-stage-4-1.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: rgb(124, 205, 201);
+}
+
+.btn-default.mobile-stage-4.active {
+    /*background-color: #5ab9ea;*/
+    color: #ffffff;
+    background-color: #3aafa9;
 }
 
 .btn-mobile-country {

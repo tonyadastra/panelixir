@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ December 10 - Add Abandoned to filter and intro, optimize existing styles
 + December 9 - Release Approval and Detailed Vaccine Information
 + November 30 - Restyling and fix existing bugs
 + November 27 - General Vaccine News and Optimize

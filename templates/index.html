@@ -139,7 +139,7 @@
 <div class="news-wrapper">
     <div class="news">
         <h2 class="text-center" id="news-title">Vaccine and Life</h2>
-        <ul class="news-list overflow" style="/*list-style: inside; text-align: center*/">
+        <ul class="news-list overflow" style="overflow-x: hidden;/*list-style: inside; text-align: center*/">
             {% for news in general_news %}
                 <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
                              news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
@@ -296,17 +296,18 @@
                                 <span aria-hidden="true"><i class="fa fa-times"></i></span>
                             </button>
                             <h6>Select Vaccine Stage</h6>
-                            <div class="btn-group btn-group-1" role="group">
+                            <div class="btn-group btn-group-1">
                                 <button type="button" class="active btn btn-default btn-mobile-stage mobile-font stages-all" id="stages" value="" style="padding: 0.3rem 0.75rem!important;margin-bottom: 0.75em;">All Stages</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-0-1 mobile-font" id="stages" value="0-1" style="margin-left: 0.3rem; padding: 0.3rem 0.75rem!important;margin-bottom: 0.75em;">Abandoned</button>
                             </div>
                             <br>
                             <div class="btn-group btn-group-1" role="group">
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="0">Pre-Clinical</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="1">Phase I</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="2">Phase II</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="3">Phase III</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4-1">Limited Use</button>
-                                <button type="button" class="btn btn-default btn-mobile-stage mobile-font" id="stages" value="4">Approval</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-0 mobile-font" id="stages" value="0">Pre-Clinical</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-1 mobile-font" id="stages" value="1">Phase I</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-2 mobile-font" id="stages" value="2">Phase II</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-3 mobile-font" id="stages" value="3">Phase III</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-4-1 mobile-font" id="stages" value="4-1">Limited Use</button>
+                                <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-4 mobile-font" id="stages" value="4">Approval</button>
                             </div>
                             <h6>Select Country/Region</h6>
                             <p class="subtag">Popular countries:</p>
@@ -379,15 +380,13 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-stages">
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-4 all-stages active" id="stages" value="_">All Stages</button>
                     <div class="dropdown-divider"></div>
+                    <button class="desktop-dropdown dropdown-item-stages dropdown-item-0-1" id="stages" value="0-1">Abandoned</button>
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-0" id="stages" value="0">Pre-Clinical</button>
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-1" id="stages" value="1">Phase I</button>
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-2" id="stages" value="2">Phase II</button>
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-3" id="stages" value="3">Phase III</button>
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-4-1" id="stages" value="4-1">Limited Use</button>
-                    <div class="dropdown-divider"></div>
-                    <!--                            Disabled-->
-{#                    <button class="dropdown-item disabled" id="stages" value="4">Approval</button>#}
-                    <!--                            Enabled-->
+{#                    <div class="dropdown-divider"></div>#}
                     <button class="desktop-dropdown dropdown-item-stages dropdown-item-4" id="stages" value="4">Approval</button>
                 </div>
             </div>
