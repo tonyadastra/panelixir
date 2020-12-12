@@ -191,11 +191,11 @@ def auto_update_nytimes(event, context):
                 cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (leading_vaccine_id,))
                 LC_allow_auto_update = cur.fetchall()[0]
                 if LC_allow_auto_update:
-                    if approved_countries:
+                    if approved_countries and "and other countries" not in approved_countries:
                         cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
                                     (approved_countries, leading_vaccine_id))
                         conn.commit()
-                    if limited_countries:
+                    if limited_countries and "and other countries" not in limited_countries:
                         cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
                                     (limited_countries, leading_vaccine_id))
                         conn.commit()
@@ -262,7 +262,7 @@ def auto_update_nytimes(event, context):
                             order_start += 1
 
                     index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
-                                                      cutoff=0.6)
+                                                      cutoff=0.8)
                     try:
                         vaccine_id = info_id_and_company[index[0]][0]
                         id_response += "Found match for news #" + str(idx + 1) + \
@@ -627,7 +627,7 @@ def auto_update_nytimes(event, context):
                                 order_start += 1
 
                         index = get_close_matches_indexes(new_company_string, company_array_possibilities, n=1,
-                                                          cutoff=0.6)
+                                                          cutoff=0.8)
                         try:
                             vaccine_id = info_id_and_company[index[0]][0]
                             # id_response += "Found match for news #" + str(idx + 1) + \
@@ -1040,7 +1040,7 @@ def auto_update_nytimes(event, context):
                             formatted_existing_latest_news = format_intro(existing_latest_news_array)
                             for formatted_news in formatted_existing_latest_news:
                                 similarity_score = similar(formatted_news, new_intro)
-                                if similarity_score >= 0.95:
+                                if similarity_score >= 0.9:
                                     isAlreadyUpdated = True
 
                         if not isAlreadyUpdated:
@@ -1090,7 +1090,10 @@ def auto_update_nytimes(event, context):
                     cur.execute("SELECT intro FROM info WHERE vac_id = %s", (new_vaccine_id,))
                     existing_intro = cur.fetchone()[0]
                     if existing_intro is not None and existing_intro != '':
-                        updated_intro = existing_intro + "<br><br>" + intro_updates
+                        if len(intro_updates) >= 200:
+                            updated_intro = existing_intro + "<br><br>" + intro_updates
+                        else:
+                            updated_intro = existing_intro + " " + intro_updates
                     else:
                         updated_intro = intro_updates
                     cur.execute("UPDATE info SET intro = %s WHERE vac_id = %s",
@@ -1142,7 +1145,7 @@ def auto_update_nytimes(event, context):
 
                                 index = get_close_matches_indexes(new_company_string, info_company_array_possibilities,
                                                                   n=1,
-                                                                  cutoff=0.6)
+                                                                  cutoff=0.8)
                                 try:
                                     new_vaccine_id = alternate_info_id_and_company[index[0]][0]
                                     # id_response += "Found match for news #" + str(idx + 1) + \

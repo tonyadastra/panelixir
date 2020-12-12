@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.7.1 - Update similarity requirement to update news, optimize process to update approved and limited countries
+    + Released: December 12, 2020
 - v2.7.0 - Upgrade algorithm to auto_update limited and approved countries
     + Released: December 11, 2020
 - v2.6.1 - Update algorithm to fit new NYTimes Tracker version
