@@ -2,7 +2,8 @@
 
 {% block styles %}
 <!--External CSS Files-->
-<link rel="stylesheet" href="../static/css/icons.css">
+<link rel="stylesheet" href="../static/css/all.css">
+
 <!--Internal CSS Files-->
 <link rel="stylesheet" href="../static/css/card.css">
 <link rel="stylesheet" href="../static/css/interactive.css">
@@ -34,7 +35,7 @@
     </div>
     <div class="col-xl-6 col-lg col-md-12 col-xs-12 text-center">
         <div class="interactive-buttons" style="margin-bottom: 0.5rem;">
-            <button class="btn btn-outline-primary button-font active" data-value="World" value="World"><i class="fa fa-globe"></i>&nbsp;Worldwide</button>
+            <button class="btn btn-outline-primary button-font active" data-value="World" value="World"><i class="fa fa-globe-americas"></i>&nbsp;Worldwide</button>
             <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
                 America</button>
             <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
@@ -169,7 +170,7 @@
 {# Stages Introductions #}
 <div class="ctr text-center">
     <div class="jumbotron" style="background-color: transparent;">
-        <h3 id="news-title">The Developing Process of a <span style="font-weight: 650;">Coronavirus Vaccine</span></h3>
+        <h3 id="news-title">The Developing Process of a <b>Coronavirus Vaccine</b></h3>
     </div>
 {#    Only Display with Large Screen (≥ 768px) #}
     <div class="row large-screen">
@@ -199,15 +200,18 @@
         </div>
         <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
             <span class="highlight stage4" id="early">Limited Use</span>
-            <p class="black">Some countries <b>approve vaccines for emergency use before their results from Phase III trials</b>. It will not
-                be counted as "Approval", but can be found in the filter menu.</p>
+            <p class="black">Some countries <b>approve vaccines for emergency use before their results from Phase III trials</b>.
+                Under Limited Use, only certain groups of people will have access to the vaccine.</p>
+{#                It will not be counted as "Approval", but can be found in the filter menu.#}
         </div>
         <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-right border-info">
             <span class="highlight stage4">Approval</span>
             <p class="black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
-                    approve the vaccine or not</b>.</p>
+                    approve the vaccine or not</b>. After a vaccine receives approval, it will be distributed across the country.</p>
         </div>
     </div>
+
+
 
     {#    Only Display with Small Screen (< 768px) #}
     <div class="row small-screen">
@@ -246,16 +250,62 @@
         <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
             <p class="display-highlight row">
             <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage3" id="early">Limited Use</span>
-            <span class="col-lg-12 col-md-12 col-sm col black">Some countries <b>approve vaccines for emergency use before their results from Phase III trials</b>. It will not
-                be counted as "Approval", but can be found in the filter menu.</span>
+            <span class="col-lg-12 col-md-12 col-sm col black">Some countries <b>approve vaccines for emergency use before their results from Phase III trials</b>.
+                Under Limited Use, only certain groups of people will have access to the vaccine.</span>
+{#                 It will not be counted as "Approval", but can be found in the filter menu.#}
             </p>
         </div>
         <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
             <p class="display-highlight row">
-
             <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4">Approval</span>
             <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">In this stage, regulators in each country <b>review the results</b> and <b>decide to
-                approve the vaccine or not</b>.</span>
+                approve the vaccine or not</b>. After a vaccine receives approval, it will be distributed across the country.</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="jumbotron" style="background-color: transparent;">
+        <h3 id="news-title">Other Stages During Development</h3>
+    </div>
+
+    <div class="row large-screen">
+        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+            <span class="highlight stage0" id="combined-phases">Combined Phases</span>
+            <p class="black">In order to <b>accelerate the vaccine development process</b>, some companies may decide to <b>combine different
+                stages</b> of their trials. For example, a Phase I/II trial is a combination of Phase I and Phase II trials.</p>
+        </div>
+        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-info">
+            <span class="highlight stage1" id="paused">Paused</span>
+            <p class="black">If investigators found <b>adverse reactions</b> among participants, they may decide to <b>pause
+                the trial</b>. After a detailed investigation, the <b>trials may <span style="color: green">resume</span> or <span style="color: rgb(136, 8, 8)">be abandoned</span></b>.</p>
+        </div>
+        <div class="col-lg col-md-4 col-sm-4 col-12 border-left border-right border-info">
+            <span class="highlight stage4" id="abandoned">Abandoned</span>
+            <p class="black">If <b>troubling symptoms</b> were found due to injection of the vaccine, or if the vaccine
+                <b>failed to yield antibodies</b> among certain groups of people, the vaccine may <b><span style="color: rgb(136, 8, 8)">be abandoned</span> due to safety concerns</b>.</p>
+        </div>
+    </div>
+
+    <div class="row small-screen">
+        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
+            <p class="display-highlight row">
+            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4" id="combined-phases">Combined Phases</span>
+                <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">In order to <b>accelerate the vaccine development process</b>, some companies may decide to <b>combine different
+                stages</b> of their trials. For example, a Phase I/II trial is a combination of Phase I and Phase II trials.</span>
+            </p>
+        </div>
+        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
+            <p class="display-highlight row">
+            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4" id="paused">Paused</span>
+                <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">If investigators found <b>adverse reactions</b> among participants, they may decide to <b>pause
+                    the trial</b>. After a detailed investigation, the <b>trials may resume or be abandoned</b>.</span>
+            </p>
+        </div>
+        <div class="col-lg col-md-6 col-sm-6 col-12 border-left border-right border-info">
+            <p class="display-highlight row">
+            <span class="highlight col-lg-12 col-md-12 col-sm-3 col-3 stage4" id="abandoned">Abandoned</span>
+                <span class="col-lg-12 col-md-12 col-sm-8 col-8 black">If <b>troubling symptoms</b> were found due to injection of the vaccine, or if the vaccine
+                    <b>failed to yield antibodies</b> among certain groups of people, the vaccine may <b><span style="color: rgb(136, 8, 8)">be abandoned</span> due to safety concerns</b>.</span>
             </p>
         </div>
     </div>
@@ -313,7 +363,7 @@
                             <p class="subtag">Popular countries:</p>
                             <div class="btn-group-2">
                                 <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed country-all" value="" style="padding: 0.3rem 0.75rem!important;min-width: 0;">
-                                    <i class="fa fa-globe"></i>&nbsp;Worldwide
+                                    <i class="fa fa-globe-americas"></i>&nbsp;Worldwide
                                 </button>
 {#                            </div>#}
 {#                            <div class="btn-group btn-group-2" role="group">#}
@@ -329,7 +379,7 @@
                                 </button>
                                 <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-country-mobile">
                                     <button class="active mobile-dropdown-item-ctry mobile-dropdown-item country-worldwide" id="country" value="">
-                                        <i style="padding-left: 7px" class="fa fa-globe"></i>&nbsp;<span style="padding-left: 0.5em;">Worldwide</span>
+                                        <i style="padding-left: 7px" class="fa fa-globe-americas"></i>&nbsp;<span style="padding-left: 0.5em;">Worldwide</span>
                                     </button>
                                 </div>
                             </div>
@@ -406,7 +456,7 @@
                         <i style="position:absolute; right:8px;top:12px;" class="fa fa-search"></i>
                     </label>
                     <button class="desktop-dropdown dropdown-item-ctry worldwide-countries active" id="country" value="" onclick="desktopClick()">
-                        <i class="fa fa-globe" style="padding-left: 5px;"></i>&nbsp;&nbsp;&nbsp;Worldwide
+                        <i class="fa fa-globe-americas" style="padding-left: 5px;"></i>&nbsp;&nbsp;&nbsp;Worldwide
                     </button>
                 </div>
             </div>

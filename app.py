@@ -32,7 +32,7 @@ def favicon():
 def index():
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-                "dose, injection_type, storage, abandoned, approved_countries "
+                "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries "
                 "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
                 "LIMIT 10")
@@ -75,7 +75,7 @@ def desktopForm():
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries"
+        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -102,7 +102,7 @@ def card():
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries"
+        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -139,7 +139,7 @@ def mobileForm():
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries"
+        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -165,7 +165,7 @@ def mobileAppendCards():
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries"
+        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -187,7 +187,7 @@ def displayCompany():
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries"
+        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()

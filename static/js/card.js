@@ -13,6 +13,10 @@ class myCard extends HTMLElement {
         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
         shadow.appendChild(linkElem2);
 
+        const linkElem3 = document.createElement('link');
+        linkElem3.setAttribute('rel', 'stylesheet');
+        linkElem3.setAttribute('href', '../static/css/all.css');
+        shadow.appendChild(linkElem3);
 
         // the outer most div
         var wrapper = document.createElement('div');
@@ -103,10 +107,6 @@ class myCard extends HTMLElement {
         var pbar5 = document.createElement('div');
         pbar5.setAttribute('class', 'progress-bar');
         pbar5.setAttribute('id', 'pbar5');
-        // pbar5.setAttribute('type', 'button');
-        // pbar5.setAttribute('data-toggle', 'tooltip');
-        // pbar5.setAttribute('data-placement', 'bottom');
-        // pbar5.setAttribute('title', 'Hi!');
         pbar5.innerHTML = 'APPROVED';
 
         var pbar6 = document.createElement('div');
@@ -126,6 +126,11 @@ class myCard extends HTMLElement {
         pbar8.setAttribute('id', 'abandoned');
         pbar8.setAttribute('style', 'width: ' + (100 - (parseInt(this.getAttribute('data-stage')) + 1) * 20) + "%");
         pbar8.innerHTML = 'ABANDONED';
+
+        var pbar9 = document.createElement('div');
+        pbar9.setAttribute('class', 'progress-bar');
+        pbar9.setAttribute('id', 'paused');
+        pbar9.innerHTML = 'PAUSED';
 
         if (this.getAttribute('data-stage') >= 0)
             bar_wrapper.appendChild(pbar1);
@@ -151,13 +156,23 @@ class myCard extends HTMLElement {
         if(this.getAttribute('data-abandoned') === 'True')
             bar_wrapper.appendChild(pbar8);
 
+        if(this.getAttribute('data-paused') === 'True')
+            bar_wrapper.appendChild(pbar9);
+
         wrapper.appendChild(bar_wrapper);
 
         if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-approved-countries') !== 'None' && this.getAttribute('data-approved-countries') !== '') {
             var approved_countries = document.createElement('p');
             approved_countries.setAttribute('class', 'approved-countries');
-            approved_countries.innerHTML = "<b>Approved Countries: </b>" + this.getAttribute('data-approved-countries');
+            approved_countries.innerHTML = "<span class='highlight-warp-speed' id='pbar5' style='color: white; margin: 0;'><i class=\"fas fa-check-circle\"></i> Approved Countries</span>&nbsp;" + this.getAttribute('data-approved-countries');
             wrapper.appendChild(approved_countries);
+        }
+
+        if (this.getAttribute('data-early') === 'True' && this.getAttribute('data-limited-countries') !== 'None' && this.getAttribute('data-limited-countries') !== '') {
+            var limited_countries = document.createElement('p');
+            limited_countries.setAttribute('class', 'approved-countries');
+            limited_countries.innerHTML = "<span class='highlight-warp-speed' id='early' style='color: white; margin: 0;'><i class=\"far fa-check-circle\"></i> Limited Use Countries</span>&nbsp;" + this.getAttribute('data-limited-countries');
+            wrapper.appendChild(limited_countries);
         }
 
         // vaccine info

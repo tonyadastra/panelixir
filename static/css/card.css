@@ -63,6 +63,14 @@
   background-color: rgb(136, 8, 8);
 }
 
+#paused{
+  background-color: rgb(215, 49, 8);
+}
+
+#combined-phases{
+  background-color: #c3c1c1;
+}
+
 span.highlight-warp-speed {
   font-family: sans-serif;
   /*font-size: 16px;*/
@@ -362,6 +370,10 @@ span.highlight-warp-speed {
   margin: 0;
 }
 
+.highlight-warp-speed > i{
+  margin: 0;
+}
+
 .info-tag {
   color: #0b58de;
 }
@@ -372,6 +384,7 @@ span.highlight-warp-speed {
 
 .approved-countries{
   color: #9d4b13;
+  font-weight: bold;
 }
 
 /*[data-tooltip]:before {*/

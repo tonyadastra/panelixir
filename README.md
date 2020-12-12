@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ December 11 - Add approved and limited use countries to vaccine intro; icons update
 + December 10 - Add Abandoned to filter and intro, optimize existing styles, add approved countries
 + December 9 - Release Approval and Detailed Vaccine Information
 + November 30 - Restyling and fix existing bugs

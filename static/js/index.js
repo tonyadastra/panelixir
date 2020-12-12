@@ -866,7 +866,7 @@ $(window).scroll(function () {
 function mobileCountryClick() {
     var countryTitle = document.querySelector('.active#country').value;
     if (countryTitle === "") {
-        countryTitle = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
+        countryTitle = "<i class=\"fa fa-globe-americas\"> </i>&nbsp;Worldwide";
     }
     // Display Title of Previous Selected Country
     document.getElementById('mobile-button').innerHTML = countryTitle;
@@ -910,7 +910,7 @@ $('.most-viewed').click(function () {
 
     // Value to All to display
     if ($(this).val() === "") {
-        countryTitle = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
+        countryTitle = "<i class=\"fa fa-globe-americas\"> </i>&nbsp;Worldwide";
     }
     // change dropdown title
     document.getElementById('mobile-button').innerHTML = countryTitle;
@@ -921,7 +921,7 @@ $('.most-viewed').click(function () {
 $('.btn-filter').click(function (){
     var activeCountry = document.querySelector('.active.mobile-dropdown-item-ctry#country').value;
     if (activeCountry === ""){
-        activeCountry = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide";
+        activeCountry = "<i class=\"fa fa-globe-americas\"> </i>&nbsp;Worldwide";
     }
     document.getElementById('mobile-button').innerHTML = activeCountry;
 })
@@ -1053,7 +1053,7 @@ $('.dropdown-item-ctry').click(function () {
     $(this).addClass('active');
     // var active_country = document.querySelector('.active.desktop-dropdown#country').value;
     // if (active_country === "") {
-    //     active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+    //     active_country = "<i class=\"fa fa-globe-americas\"> </i>&nbsp;Worldwide"
     // }
     // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     // dropdown_title_country.innerHTML = active_country;
@@ -1161,7 +1161,7 @@ function desktopClick(){
 
     // var active_country = document.querySelector('.active.desktop-dropdown#country').value;
     // if (active_country === "") {
-    //     active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+    //     active_country = "<i class=\"fa fa-globe-ameriocas\"> </i>&nbsp;Worldwide"
     // }
     // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     // dropdown_title_country.innerHTML = active_country;
@@ -1175,7 +1175,7 @@ $(".desktop-dropdown.dropdown-item-ctry").click(function () {
 function setDesktopCountryTitle() {
     var active_country = document.querySelector('.active.desktop-dropdown#country').value;
     if (active_country === "") {
-        active_country = "<i class=\"fa fa-globe\"> </i>&nbsp;Worldwide"
+        active_country = "<i class=\"fa fa-globe-americas\"> </i>&nbsp;Worldwide"
     }
     var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     dropdown_title_country.innerHTML = active_country;
