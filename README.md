@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.7.0 - Upgrade algorithm to auto_update limited and approved countries
+    + Released: December 11, 2020
 - v2.6.1 - Update algorithm to fit new NYTimes Tracker version
     + Released: December 11, 2020
 - v2.6.0 - Add a new category abandoned to nytimes and intro, include auto_update, fix existing issues with finding vaccines

@@ -7,6 +7,7 @@ from models.close_match_indexes import get_close_matches_indexes
 from models.format_nytimes_intro import format_intro
 from models.nytimes_to_panelixir_style import arrange_nytimes_info
 from models.hasNumbers import hasNumbers
+from models.approved_country_format import format_country
 import datetime
 import difflib
 
@@ -111,12 +112,97 @@ def auto_update_nytimes(event, context):
     src = result.content
     soup = BeautifulSoup(src, "html.parser")
 
-    # Find Latest News Section
-    # December 11 Update from NYTimes - we use find instead of find_all because of a format update
-    # Only find the first table!
-    nytimes_news_parent = soup.find('table', class_="g-vaccine-table")
-    nytimes_news = nytimes_news_parent.find_all('tr')
-    print(nytimes_news)
+    # Find Latest News Section - nytimes_news_parent[0]; Leading Candidates - nytimes_news_parent[1]
+    nytimes_news_parent = soup.find_all('table', class_="g-vaccine-table")
+    nytimes_news = nytimes_news_parent[0].find_all('tr')
+
+    # index0 - title; index1 - column title; data starts at 2
+    leading_candidates = nytimes_news_parent[1].find_all('tr')[2:]
+    # print(leading_candidates[2:])
+    cur.execute("SELECT info.vac_id, leading_company_nytimes FROM info "
+                "INNER JOIN companies ON info.vac_id = companies.vac_id "
+                "WHERE (leading_company_nytimes IS NOT NULL AND leading_company_nytimes != '') "
+                "AND (early_approval OR stage >= 3)")
+    top_candidates_id_and_company = cur.fetchall()
+    cur.execute("rollback")
+
+    top_developers = []
+    for i in range(len(top_candidates_id_and_company)):
+        top_developers.append(top_candidates_id_and_company[i][1])
+    # print(top_developers)
+    leading_match_string = ""
+    for candidate in leading_candidates:
+        candidate_developer = candidate.find('td').a.text
+        index = get_close_matches_indexes(candidate_developer, top_developers, n=1, cutoff=0.9)
+        try:
+            leading_vaccine_id = top_candidates_id_and_company[index[0]][0]
+        except IndexError:
+            leading_vaccine_id = -1
+            leading_match_string += "New leading company: " + candidate_developer + ".||"
+
+        approved_and_limited_countries = candidate.find('td', class_="g-small g-last")
+        if approved_and_limited_countries is None and leading_vaccine_id == 29:
+            approved_and_limited_countries = candidate.find_all('td', class_="g-small")[-1]
+        ALText = approved_and_limited_countries.text
+
+        if approved_and_limited_countries is not None and "in" in ALText \
+                and ("Approved".lower() in ALText.lower()
+                     or "Limited".lower() in ALText.lower()
+                     or "Emergency".lower() in ALText.lower()
+                     or "Early".lower() in ALText.lower()):
+            LC_output = [ALText]
+            # print(ALText)
+            approved_countries = ""
+            limited_countries = ""
+
+            if "Early use in " in ALText:
+                ALText = ALText.replace("Early use in ", "Emergency use in ")
+            if "Limited use in " in ALText:
+                ALText = ALText.replace("Limited use in ", "Emergency use in ")
+
+            # if a_index != -1 and e_index != -1:
+            countries_array = ALText.split("Emergency use in ")
+            for i in range(len(countries_array)):
+                if i != 0:
+                    countries_array[i] = "Emergency use in " + countries_array[i]
+
+            for countries in countries_array:
+                if "Approved in " in countries:
+                    countries = countries.replace("Approved in ", "")
+                    country_array = countries.split(', ')
+                    format_country(country_array)
+                    for j in range(len(country_array)):
+                        if j == len(country_array) - 1:
+                            approved_countries += country_array[j]
+                        else:
+                            approved_countries += country_array[j] + ", "
+
+                elif "Emergency use in " in countries:
+                    countries = countries.replace("Emergency use in ", "")
+                    country_array = countries.split(', ')
+                    format_country(country_array)
+                    for j in range(len(country_array)):
+                        limited_countries += country_array[j] + ", "
+
+            if limited_countries.endswith(", "):
+                limited_countries = limited_countries[0: len(limited_countries) - 2]
+
+            if leading_vaccine_id != -1:
+                cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (leading_vaccine_id,))
+                LC_allow_auto_update = cur.fetchall()[0]
+                if LC_allow_auto_update:
+                    if approved_countries:
+                        cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
+                                    (approved_countries, leading_vaccine_id))
+                        conn.commit()
+                    if limited_countries:
+                        cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
+                                    (limited_countries, leading_vaccine_id))
+                        conn.commit()
+                    LC_output.append(approved_countries)
+                    LC_output.append(limited_countries)
+            print(LC_output)
+
     latest_news = []
     for news in nytimes_news:
         if 'New additions and recent updates' not in news.text:
@@ -136,8 +222,8 @@ def auto_update_nytimes(event, context):
         news_text = news.find('td', class_="g-news g-last").text
         # if update_time is not None and update_time.text in news.text:
         news_company = news.find_all('a')
-            # news_text = news.text
-            # news_text = news_text.replace(update_time.text, '')
+        # news_text = news.text
+        # news_text = news_text.replace(update_time.text, '')
 
         company_string = ""
         for i in range(len(news_company)):
@@ -212,7 +298,7 @@ def auto_update_nytimes(event, context):
         news_array.append(vaccine_id)
 
         latest_update_array.append(news_array)
-    print(latest_update_array)
+    # print(latest_update_array)
 
     cur.execute("SELECT news_text, news_company, update_time FROM news_nytimes;")
     existing_news_array = cur.fetchall()
@@ -352,7 +438,7 @@ def auto_update_nytimes(event, context):
     # local run
     # for child in soup:
     # # AWS Lambda run
-    for child in nytimes_news_parent.parent.parent.parent:
+    for child in nytimes_news_parent[0].parent.parent.parent:
         if isinstance(child, NavigableString):
             text += str(child)
         elif isinstance(child, Tag):
@@ -376,7 +462,7 @@ def auto_update_nytimes(event, context):
         phase2_and_3_and_approved_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3 g-filter-approved"})
         phase3_and_approved_company_intro = new_soup.find_all('p', attrs={
-            "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3 g-filter-approved"})
+            "class": "g-body g-list-item g-filter-item g-filter-phase3 g-filter-approved"})
         approved_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-approved"})
         all_approved_intro = phase2_and_3_and_approved_company_intro + phase3_and_approved_company_intro + approved_company_intro
@@ -1139,7 +1225,7 @@ def auto_update_nytimes(event, context):
                                 (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '',
                                  new_vaccine_platform, new_is_combined_phases, new_is_early, new_is_paused,
                                  new_is_abandoned, new_candidate_name,
-                                     new_efficacy, new_dose, new_injection_type, new_storage))
+                                 new_efficacy, new_dose, new_injection_type, new_storage))
                     # Update COMPANIES table
                     cur.execute("INSERT INTO companies(vac_id, co_name, company_nytimes) VALUES (%s, %s, %s)",
                                 (new_assigned_id, new_company_name, new_company_name))
