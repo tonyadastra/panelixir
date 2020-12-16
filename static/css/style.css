@@ -1580,13 +1580,13 @@ span.highlight {
     border-color: #0583fc;
 }
 
-.btn-filter:not(:disabled):not(.disabled):active,
-.btn-filter:not(:disabled):not(.disabled).active,
-.show > .btn-filter.dropdown-toggle {
-    color: #fff;
-    background-color: #359afa;
-    border-color: #0882f6;
-}
+/*.btn-filter:not(:disabled):not(.disabled):active,*/
+/*.btn-filter:not(:disabled):not(.disabled).active,*/
+/*.show > .btn-filter.dropdown-toggle {*/
+/*    color: #fff;*/
+/*    background-color: #359afa;*/
+/*    border-color: #0882f6;*/
+/*}*/
 
 .btn-clear {
     color: #fff;

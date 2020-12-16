@@ -737,7 +737,7 @@ $(document).ready(function () {
         element.scrollIntoView();
     })
 
-    $(".dropdown > .btn-country").click(function () {
+    $(".dropdown > #dropdown-desktop-country").click(function () {
         var input_country = document.getElementsByClassName("form-control search-country")[0];
         input_country.focus()
         input_country.select()
@@ -1195,6 +1195,6 @@ $('#dropdown-desktop-country').click(function () {
 
 })
 
-$(function() {
-    $('a[href]').attr('target', '_blank');
-});
+// $(function() {
+//     $('a[href]').attr('target', '_blank');
+// });
