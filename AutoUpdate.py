@@ -30,6 +30,7 @@ phase0_count = 0
 phase1_count = 0
 phase2_count = 0
 phase3_count = 0
+limited_count = 0
 approved_count = 0
 paused_count = 0
 abandoned_count = 0
@@ -40,7 +41,7 @@ def auto_update_nytimes(event, context):
         update_is_combined_count, update_intro_count, new_companies_added, new_assigned_id_count, \
         new_assigned_message, new_assigned_message, new_vaccines_message, update_message, id_response, \
         news_update_response, phase0_count, phase1_count, phase2_count, phase3_count, approved_count, paused_count, \
-        abandoned_count, update_is_abandoned_count
+        abandoned_count, update_is_abandoned_count, limited_count
 
     # Reset count
     update_date_count = 0
@@ -62,6 +63,7 @@ def auto_update_nytimes(event, context):
     phase1_count = 0
     phase2_count = 0
     phase3_count = 0
+    limited_count = 0
     approved_count = 0
     paused_count = 0
     abandoned_count = 0
@@ -118,6 +120,7 @@ def auto_update_nytimes(event, context):
 
     # index0 - title; index1 - column title; data starts at 2
     leading_candidates = nytimes_news_parent[1].find_all('tr')[2:]
+    # print(leading_candidates)
     # print(leading_candidates[2:])
     cur.execute("SELECT info.vac_id, leading_company_nytimes FROM info "
                 "INNER JOIN companies ON info.vac_id = companies.vac_id "
@@ -132,7 +135,7 @@ def auto_update_nytimes(event, context):
     # print(top_developers)
     leading_match_string = ""
     for candidate in leading_candidates:
-        candidate_developer = candidate.find('td').a.text
+        candidate_developer = candidate.find('a').text
         index = get_close_matches_indexes(candidate_developer, top_developers, n=1, cutoff=0.9)
         try:
             leading_vaccine_id = top_candidates_id_and_company[index[0]][0]
@@ -219,7 +222,7 @@ def auto_update_nytimes(event, context):
         if "Sept." in update_time.text:
             update_time.text = update_time.text.replace('Sept.', 'Sep.')
 
-        news_text = news.find('td', class_="g-news g-last").text
+        news_text = news.find('td', class_="g-news g-last").text.strip()
         # if update_time is not None and update_time.text in news.text:
         news_company = news.find_all('a')
         # news_text = news.text
@@ -284,11 +287,21 @@ def auto_update_nytimes(event, context):
 
             if vaccine_id == -1:
                 modified_string = company_string + " Biological"
-                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.7)
+                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.8)
                 try:
                     vaccine_id = info_id_and_company[index[0]][0]
                     id_response += "Found match for news #" + str(idx + 1) + \
                                    " in except-3. Paired with VaccineID " + str(vaccine_id) + ".||"
+                except IndexError:
+                    vaccine_id = -1
+
+            if vaccine_id == -1:
+                modified_string = company_string + " Biopharmaceutical"
+                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.8)
+                try:
+                    vaccine_id = info_id_and_company[index[0]][0]
+                    id_response += "Found match for news #" + str(idx + 1) + \
+                                   " in except-4. Paired with VaccineID " + str(vaccine_id) + ".||"
                 except IndexError:
                     vaccine_id = -1
 
@@ -324,10 +337,11 @@ def auto_update_nytimes(event, context):
     cur.execute('''SELECT vac_id, news_company FROM news_nytimes''')
     new_news_nytimes_id_company = cur.fetchall()
 
-    cur.execute('''SELECT vac_id, company FROM news ORDER BY date DESC, key DESC LIMIT 10''')
+    cur.execute('''SELECT vac_id, company FROM news WHERE category = 'S' AND vac_id = -1 
+                ORDER BY date DESC, key DESC''')
     news_id_company = cur.fetchall()
 
-    # Check if new id exists when -1 is in news_id_company
+    # Check if new id exists when vac_id = -1 is in news_id_company
     for i in range(len(news_id_company)):
         if news_id_company[i][0] == -1:
             found_news_nytimes_index = -1
@@ -466,7 +480,7 @@ def auto_update_nytimes(event, context):
         approved_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-approved"})
         all_approved_intro = phase2_and_3_and_approved_company_intro + phase3_and_approved_company_intro + approved_company_intro
-        approved_count += len(all_approved_intro)
+        # approved_count += len(all_approved_intro)
 
         # Find all Phase III intro
         phase2_and_3_company_intro = new_soup.find_all('p', attrs={
@@ -529,7 +543,7 @@ def auto_update_nytimes(event, context):
                                         .split('\n\n', 1)[0])
 
                 vaccine_info_text_array = vaccine_info_text.split('\n')
-                print(vaccine_info_text_array)
+                # print(vaccine_info_text_array)
 
                 for vaccine_info in vaccine_info_text_array:
                     if "Vaccine Name" in vaccine_info:
@@ -684,9 +698,11 @@ def auto_update_nytimes(event, context):
             if limited is not None and limited.text in intro.text:
                 all_intro_text = all_intro_text.replace(limited.text, '')
                 is_early = True
+                limited_count += 1
             if approved is not None and approved.text in intro.text:
                 all_intro_text = all_intro_text.replace(approved.text, '')
                 vaccine_stage = 4
+                approved_count += 1
             if combined_phases is not None and combined_phases.text in intro.text:
                 all_intro_text = all_intro_text.replace(combined_phases.text, '')
                 is_combined_phases = True
@@ -1033,6 +1049,8 @@ def auto_update_nytimes(event, context):
                         # Format
                         new_intro = arrange_nytimes_info(new_intro)
                         isAlreadyUpdated = False
+                        if "For more details, see" in new_intro:
+                            isAlreadyUpdated = True
                         if existing_latest_news is not None:
                             cleaned_html_existing_latest_news = cleanhtml(existing_latest_news)
                             existing_latest_news_array = cleaned_html_existing_latest_news.replace('<br><br>', ' ') \
@@ -1224,7 +1242,7 @@ def auto_update_nytimes(event, context):
                     # Update INFO table
                     cur.execute('''INSERT INTO info(vac_id, stage, company, intro, country, vac_type,
                                 update_date, combined_phases, early_approval, paused, abandoned, candidate_name, efficacy, dose, injection_type, storage)
-                                                        VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s, %s, %s, %s, %s, %s, %s,)''',
+                                                        VALUES (%s, %s, %s, %s, %s, %s, CURRENT_DATE, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
                                 (new_assigned_id, new_stage, new_company_name, new_vaccine_intro, '',
                                  new_vaccine_platform, new_is_combined_phases, new_is_early, new_is_paused,
                                  new_is_abandoned, new_candidate_name,
@@ -1321,6 +1339,7 @@ def auto_update_nytimes(event, context):
                 'Phase I': phase1_count,
                 'Phase II': phase2_count,
                 'Phase III': phase3_count,
+                'Limited': limited_count,
                 'Approved': approved_count,
                 'Paused': paused_count,
                 'Abandoned': abandoned_count
