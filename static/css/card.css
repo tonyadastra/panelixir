@@ -84,15 +84,17 @@ span.highlight-warp-speed {
 
 .collapsible {
   background-color: #84ceeb;
-  color: #444;
+  color: black;
   cursor: pointer;
-  padding: 5px;
-  width: 20%;
-  line-height: 35px;
+  padding: 0.7rem 2rem;
+  /*width: 20%;*/
+  /*line-height: 35px;*/
   border: none;
   text-align: center;
   outline: none;
   font-size: 15px;
+  border-radius: 0.2rem;
+  /*color: white;*/
 }
 
 /* Add a background color to the button if it is clicked on */
@@ -158,6 +160,11 @@ span.highlight-warp-speed {
 
   .info-tag {
     font-size: 11px;
+  }
+
+  .collapsible {
+    font-size: 11px;
+    padding: 0.4rem 0.8rem;
   }
 
   .approved-countries {

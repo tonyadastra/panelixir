@@ -161,11 +161,14 @@ class myCard extends HTMLElement {
 
         wrapper.appendChild(bar_wrapper);
 
+        var displayButton = Boolean(false);
+
         if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-approved-countries') !== 'None' && this.getAttribute('data-approved-countries') !== '') {
             var approved_countries = document.createElement('p');
             approved_countries.setAttribute('class', 'approved-countries');
             approved_countries.innerHTML = "<span class='highlight-warp-speed' id='pbar5' style='color: white; margin: 0;'><i class=\"fas fa-check-circle\"></i> Approved Countries</span>&nbsp;" + this.getAttribute('data-approved-countries');
             wrapper.appendChild(approved_countries);
+            // displayButton = true;
         }
 
         if (this.getAttribute('data-early') === 'True' && this.getAttribute('data-limited-countries') !== 'None' && this.getAttribute('data-limited-countries') !== '') {
@@ -173,6 +176,7 @@ class myCard extends HTMLElement {
             limited_countries.setAttribute('class', 'approved-countries');
             limited_countries.innerHTML = "<span class='highlight-warp-speed' id='early' style='color: white; margin: 0;'><i class=\"far fa-check-circle\"></i> Limited Use Countries</span>&nbsp;" + this.getAttribute('data-limited-countries');
             wrapper.appendChild(limited_countries);
+            // displayButton = true;
         }
 
         // vaccine info
@@ -181,6 +185,7 @@ class myCard extends HTMLElement {
             candidate_name.setAttribute('class', 'info-tag');
             candidate_name.innerHTML = "<b>Candidate Name: </b>" + this.getAttribute('data-candidate');
             wrapper.appendChild(candidate_name);
+            displayButton = true;
         }
 
         if (this.getAttribute('data-efficacy') !== 'None' && this.getAttribute('data-efficacy') !== 'Unknown' && this.getAttribute('data-efficacy') !== '') {
@@ -188,6 +193,7 @@ class myCard extends HTMLElement {
             efficacy.setAttribute('class', 'info-tag');
             efficacy.innerHTML = "<b>Efficacy: </b>" + this.getAttribute('data-efficacy');
             wrapper.appendChild(efficacy);
+            displayButton = true;
         }
 
         if (this.getAttribute('data-dose') !== 'None' && this.getAttribute('data-dose') !== '') {
@@ -195,6 +201,7 @@ class myCard extends HTMLElement {
             dose.setAttribute('class', 'info-tag');
             dose.innerHTML = "<b>Dose: </b>" + this.getAttribute('data-dose');
             wrapper.appendChild(dose);
+            displayButton = true;
         }
 
         if (this.getAttribute('data-injection-type') !== 'None' && this.getAttribute('data-injection-type') !== '') {
@@ -202,6 +209,15 @@ class myCard extends HTMLElement {
             injection_type.setAttribute('class', 'info-tag');
             injection_type.innerHTML = "<b>Injection Type: </b>" + this.getAttribute('data-injection-type');
             wrapper.appendChild(injection_type);
+            displayButton = true;
+        }
+
+        if (this.getAttribute('data-trial-size') !== 'None' && this.getAttribute('data-trial-size') !== '') {
+            var trial_size = document.createElement('p');
+            trial_size.setAttribute('class', 'info-tag');
+            trial_size.innerHTML = "<b>Trial Size: </b>" + this.getAttribute('data-trial-size');
+            wrapper.appendChild(trial_size);
+            // displayButton = true;
         }
 
         if (this.getAttribute('data-storage') !== 'None' && this.getAttribute('data-storage') !== '') {
@@ -209,12 +225,25 @@ class myCard extends HTMLElement {
             storage.setAttribute('class', 'info-tag');
             storage.innerHTML = "<b>Storage Requirements: </b>" + this.getAttribute('data-storage');
             wrapper.appendChild(storage);
+            displayButton = true;
+        }
+
+        if (this.getAttribute('data-side-effects') !== 'None' && this.getAttribute('data-side-effects') !== '') {
+            var side_effects = document.createElement('p');
+            side_effects.setAttribute('class', 'info-tag');
+            side_effects.style.color = "crimson";
+            side_effects.innerHTML = "<b>Side Effects: </b>" + this.getAttribute('data-side-effects');
+            wrapper.appendChild(side_effects);
+            // displayButton = true;
         }
 
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro intro-mobile-font');
         text.innerHTML = this.getAttribute('data-intro');
+        if (displayButton){
+            text.style.display = "none";
+        }
         wrapper.appendChild(text);
 
         var latest_news_title = document.createElement('b');
@@ -222,7 +251,6 @@ class myCard extends HTMLElement {
         latest_news_title.setAttribute('style', 'color:purple;');
         latest_news_title.innerHTML = "Latest News:";
 
-        // var line_break = document.createElement('br');
 
         // latest news section
         var latest_news = document.createElement('p');
@@ -233,43 +261,68 @@ class myCard extends HTMLElement {
         // wrapper.appendChild(text);
         if (this.getAttribute('data-news') !== 'None' && this.getAttribute('data-news') !== '') {
             // wrapper.appendChild(line_break);
+            if (displayButton) {
+                latest_news_title.style.display = "none";
+                latest_news.style.display = "none";
+            }
             wrapper.appendChild(latest_news_title);
             wrapper.appendChild(latest_news);
         }
 
+        // button to learn more
+        if (displayButton) {
+            var btn = document.createElement('button');
+            btn.setAttribute('class', 'collapsible');
+            btn.setAttribute('type', 'button');
+            btn.innerHTML = 'Learn More';
+            wrapper.appendChild(btn);
+
+            btn.addEventListener("click", function () {
+                // this.classList.toggle("active");
+                if (text.style.display === "block") {
+                    text.style.display = "none";
+                    latest_news_title.style.display = "none";
+                    latest_news.style.display = "none";
+                    btn.innerHTML = "Learn More"
+                    // document.get
+                } else {
+                    text.style.display = "block";
+                    latest_news_title.style.display = "block";
+                    latest_news.style.display = "block";
+                    btn.innerHTML = "Show Less";
+                }
+            });
+        }
+
+
         if (this.getAttribute('data-date') !== 'None') {
             var update_time = document.createElement('span');
             update_time.setAttribute('class', 'date intro-mobile-font');
-            update_time.innerHTML = " Updated " + this.getAttribute('data-date');
+            // var update_time_text = " Updated " + this.getAttribute('data-date');
+            var update_time_text;
+            if (displayButton)
+                update_time_text = "<br>&nbsp;&nbsp;Updated " + this.getAttribute('data-date');
+            else
+                update_time_text = " Updated " + this.getAttribute('data-date');
+
+            update_time.innerHTML = update_time_text;
             wrapper.appendChild(update_time);
         }
 
-        // button to learn more
-        // var btn = document.createElement('button');
-        // btn.setAttribute('class', 'collapsible');
-        // btn.setAttribute('type', 'button');
-        // btn.innerHTML = 'Learn More';
+
         //
         // var content = document.createElement('a');
-        //
+        // //
         // var url = this.getAttribute('data-expand');
         // content.setAttribute("href", url);
         // content.innerHTML = url;
         // // content.innerHTML ='Some collapsible content. Click the button to toggle between showing and hiding the collapsible content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
         // content.setAttribute('class', 'content');
-        // // wrapper.appendChild(btn);
-        // // wrapper.appendChild(content);
+
+        // wrapper.appendChild(content);
         //
         // //toggle
-        // btn.addEventListener("click", function () {
-        //     this.classList.toggle("active");
-        //     if (content.style.display === "block") {
-        //         content.style.display = "none";
-        //         // document.get
-        //     } else {
-        //         content.style.display = "block";
-        //     }
-        // });
+
 
         shadow.appendChild(wrapper);
         // this.attachShadow({ mode: 'close' });
