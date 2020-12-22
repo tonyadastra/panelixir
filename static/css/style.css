@@ -1,6 +1,6 @@
-html, body {
+body {
     max-width: 100%;
-    /*overflow-x: hidden;*/
+    overflow-x: hidden;
 }
 
 /* Header */
@@ -66,7 +66,7 @@ html, body {
 /* Mobile Size ≤ 425px */
 
 @media screen and (max-width: 425px) {
-    html, body {
+    body {
         overflow-x: hidden;
     }
 
@@ -2022,4 +2022,17 @@ tspan {
 .dropdown-item-border{
     border-top: 1px solid lightblue;
     border-bottom: 1px solid lightblue;
+}
+
+.compare-dropdown {
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.compare-header {
+    z-index: 2;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: white;
 }

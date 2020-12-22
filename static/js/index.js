@@ -373,40 +373,65 @@ $(document).ready(function () {
                 type: "get",
                 async: true,
                 success: function (countries) {
-                    if (window.screen.width > 768) {
-                        var country_dropdown = document.getElementById("all-dropdown-items-country");
-                        var top_countries = document.createElement("BUTTON");
-                        top_countries.innerHTML = "Top Countries";
-                        top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                        top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
-                        country_dropdown.appendChild(top_countries);
+                    // var option1_value = $('#compare-dropdown-1').val();
+                    var option1_value = 2;
+                    // var selected_option_1 = option1.options[option1.selectedIndex].value;
+                    // console.log(option1_value)
+                    // var option2_value = $('#compare-dropdown-2').val();
+                    var option2_value = 1;
+                    $.ajax({
+                        url: '/get-compare-vaccine-info',
+                        type: 'GET',
+                        data: {
+                            'vaccine1': option1_value, 'vaccine2': option2_value
+                        },
+                        // beforeSend: function () {
+                        //     // show spinner when loading
+                        //     $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+                        // },
+                        // complete: function () {
+                        //     // hide the spinner
+                        //     $('#spinner').html("");
+                        // },
+                        success: function (response) {
+                            document.getElementById('compare-table').innerHTML = response;
+                            if (window.screen.width > 768) {
+                                var country_dropdown = document.getElementById("all-dropdown-items-country");
+                                var top_countries = document.createElement("BUTTON");
+                                top_countries.innerHTML = "Top Countries";
+                                top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                                top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
+                                country_dropdown.appendChild(top_countries);
 
-                        createDesktopDropdownCountry(JSON.parse(countries).top_countries)
+                                createDesktopDropdownCountry(JSON.parse(countries).top_countries)
 
-                        var other_countries = document.createElement("BUTTON");
-                        other_countries.innerHTML = "Other Countries";
-                        other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                        other_countries.setAttribute('style', 'font-weight: bold;');
-                        country_dropdown.appendChild(other_countries);
+                                var other_countries = document.createElement("BUTTON");
+                                other_countries.innerHTML = "Other Countries";
+                                other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                                other_countries.setAttribute('style', 'font-weight: bold;');
+                                country_dropdown.appendChild(other_countries);
 
-                        createDesktopDropdownCountry(JSON.parse(countries).world_countries)
-                    } else {
-                        // var country_dropdown_mobile = document.getElementById("all-dropdown-items-country-mobile");
-                        createDesktopDropdownCountry(JSON.parse(countries).all_countries)
-                    }
-
-                    $(function () {
-                        resize();
-
-                        var btn_group = document.getElementsByTagName('button');
-                        for (var i = 0, length = btn_group.length; i < length; i++) {
-                            var btn = btn_group[i];
-                            if (btn.value === 'World') {
-                                btn.click();
-                                break;
+                                createDesktopDropdownCountry(JSON.parse(countries).world_countries)
+                            } else {
+                                // var country_dropdown_mobile = document.getElementById("all-dropdown-items-country-mobile");
+                                createDesktopDropdownCountry(JSON.parse(countries).all_countries)
                             }
+
+                            $(function () {
+                                resize();
+
+                                var btn_group = document.getElementsByTagName('button');
+                                for (var i = 0, length = btn_group.length; i < length; i++) {
+                                    var btn = btn_group[i];
+                                    if (btn.value === 'World') {
+                                        btn.click();
+                                        break;
+                                    }
+                                }
+                            });
                         }
                     });
+
                 }
             })
 
@@ -1193,6 +1218,32 @@ $('#dropdown-desktop-country').click(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf('') > -1)
     });
 
+})
+
+$('.compare-dropdown').on("change", function () {
+    // console.log('clicked')
+    var option1_value = $('#compare-dropdown-1').val();
+    // var selected_option_1 = option1.options[option1.selectedIndex].value;
+    console.log(option1_value)
+    var option2_value = $('#compare-dropdown-2').val();
+    $.ajax({
+        url: '/get-compare-vaccine-info',
+        type: 'GET',
+        data: {
+            'vaccine1': option1_value, 'vaccine2': option2_value
+        },
+        // beforeSend: function () {
+        //     // show spinner when loading
+        //     $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+        // },
+        // complete: function () {
+        //     // hide the spinner
+        //     $('#spinner').html("");
+        // },
+        success: function (response) {
+            document.getElementById('compare-table').innerHTML = response;
+        }
+    });
 })
 
 // $(function() {

@@ -1,6 +1,13 @@
-/* Interactive Button */
-
 @media screen and (max-width: 767px) {
+	.vaccine-summary {
+        display: none;
+    }
+	select{
+		border: none;
+		border-bottom: 1px solid gray;
+	}
+
+	/* Interactive Button */
 	.btn-outline-primary{
 		border-width: thin;
 	}

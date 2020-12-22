@@ -329,6 +329,74 @@ def get_vaccine_countries():
                        'all_countries': all_countries_array})
 
 
+@app.route('/get-compare-vaccine-info', methods=['GET'])
+def get_compare_info():
+    vaccine1 = str(request.args.get('vaccine1'))
+    vaccine2 = str(request.args.get('vaccine2'))
+    # vaccine1 = "2"
+    # vaccine2 = "1"
+
+    cur.execute("SELECT json_agg(json_build_object("
+                "'type', vac_type, "
+                "'efficacy', efficacy, "
+                "'trial_size', trial_size, "
+                "'dose', dose, "
+                "'injection_type', injection_type, "
+                "'storage', storage, "
+                "'side_effects', side_effects, "
+                "'approved', approved_countries, "
+                "'limited', limited_countries, "
+                "'candidate_name', candidate_name)) "
+                "FROM info WHERE vac_id = %s", (vaccine1,))
+    summary1 = cur.fetchall()[0][0][0]
+    status1 = ""
+    if summary1['approved'] is not None:
+        approved1_array = summary1['approved'].replace(', ', ',').split(',')
+        if len(approved1_array) <= 3:
+            status1 += "Approved in " + summary1['approved'] + ". "
+        else:
+            status1 += "Approved in " + str(len(approved1_array)) + " countries. "
+    if summary1['limited'] is not None:
+        limited1_array = summary1['limited'].replace(', ', ',').split(',')
+        if len(limited1_array) <= 3:
+            status1 += "Limited Use in " + summary1['limited'] + "."
+        else:
+            status1 += "Limited Use in " + str(len(limited1_array)) + " countries."
+    summary1['status'] = status1
+    print(summary1)
+
+    cur.execute("SELECT json_agg(json_build_object("
+                "'type', vac_type, "
+                "'efficacy', efficacy, "
+                "'trial_size', trial_size, "
+                "'dose', dose, "
+                "'injection_type', injection_type, "
+                "'storage', storage, "
+                "'side_effects', side_effects, "
+                "'approved', approved_countries, "
+                "'limited', limited_countries, "
+                "'candidate_name', candidate_name)) "
+                "FROM info WHERE vac_id = %s", (vaccine2,))
+    summary2 = cur.fetchall()[0][0][0]
+    status2 = ""
+    if summary2['approved'] is not None:
+        approved2_array = summary2['approved'].replace(', ', ',').split(',')
+        if len(approved2_array) <= 3:
+            status2 += "Approved in " + summary2['approved'] + ". "
+        else:
+            status2 += "Approved in " + str(len(approved2_array)) + " countries. "
+    if summary2['limited'] is not None:
+        limited2_array = summary2['limited'].replace(', ', ',').split(',')
+        if len(limited2_array) <= 3:
+            status2 += "Limited Use in " + summary2['limited'] + "."
+        else:
+            status2 += "Limited Use in " + str(len(limited2_array)) + " countries."
+    summary2['status'] = status2
+    print(summary2)
+
+    return render_template("compare.html", summary1=summary1, summary2=summary2)
+
+
 @app.route('/data/map.json', methods=['GET'])
 def load_string():
     with open('data/map.json') as json_file:

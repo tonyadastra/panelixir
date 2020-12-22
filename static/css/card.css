@@ -97,6 +97,11 @@ span.highlight-warp-speed {
   /*color: white;*/
 }
 
+
+.side-effect-source{
+  color: darkblue;
+}
+
 /* Add a background color to the button if it is clicked on */
 
 .active, .collapsible:hover {
@@ -377,9 +382,14 @@ span.highlight-warp-speed {
   margin: 0;
 }
 
+.info-tag > span > a {
+  margin: 0;
+}
+
 .highlight-warp-speed > i{
   margin: 0;
 }
+
 
 .info-tag {
   color: #0b58de;
