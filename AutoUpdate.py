@@ -26,6 +26,10 @@ if result.status_code == 200:
     news_g_new = cur.fetchall()
     cur.execute("rollback")
 
+    # Remove News that are too old
+    cur.execute("DELETE FROM news WHERE (CURRENT_DATE - date) > 20")
+    conn.commit()
+
     for i in range(len(news_g_new)):
         if news_g_new[i][1] >= 1:
             cur.execute("UPDATE news SET tag = %s WHERE key = %s AND category = %s", ('', news_g_new[i][0], 'G'))
