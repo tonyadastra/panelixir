@@ -235,6 +235,9 @@ def auto_update_nytimes(event, context):
             else:
                 company_string += news_company[i].text.strip() + ", "
 
+        if company_string == "GeneOne":
+            company_string = "GeneOne Life Science"
+
         index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
         try:
             vaccine_id = info_id_and_company[index[0]][0]
@@ -305,6 +308,19 @@ def auto_update_nytimes(event, context):
                 except IndexError:
                     vaccine_id = -1
 
+            if vaccine_id == -1:
+                modified_string = company_string + " Life Science"
+                index = get_close_matches_indexes(modified_string, company_array_possibilities, n=1, cutoff=0.8)
+                try:
+                    vaccine_id = info_id_and_company[index[0]][0]
+                    id_response += "Found match for news #" + str(idx + 1) + \
+                                   " in except-5. Paired with VaccineID " + str(vaccine_id) + ".||"
+                except IndexError:
+                    vaccine_id = -1
+
+        if company_string == "GeneOne Life Science" and "GenOone Life Science" not in news_text:
+            company_string = "GeneOne"
+
         news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
         news_array.append(company_string)
         news_array.append(update_time.text + " " + str(now.year))
@@ -313,7 +329,7 @@ def auto_update_nytimes(event, context):
         latest_update_array.append(news_array)
     # print(latest_update_array)
 
-    cur.execute("SELECT news_text, news_company, update_time FROM news_nytimes;")
+    cur.execute("SELECT news_text, news_company, update_time FROM news_nytimes ORDER BY update_time DESC NULLS LAST;")
     existing_news_array = cur.fetchall()
     cur.execute("rollback")
 
@@ -330,7 +346,7 @@ def auto_update_nytimes(event, context):
             VALUES (%s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'))''',
                     (latest_update_array[j][3],
                      latest_update_array[j][0],
-                     latest_update_array[j][1],
+                     latest_update_array[j][1].strip(),
                      latest_update_array[j][2]))
         conn.commit()
 
@@ -384,7 +400,7 @@ def auto_update_nytimes(event, context):
                             VALUES (DEFAULT, %s, %s, %s, %s, TO_DATE(%s, 'Mon FMDD YYYY'), %s, %s)''',
                                     (VaccineID,
                                      tag,
-                                     latest_update_array[i - j][1],
+                                     latest_update_array[i - j][1].strip(),
                                      update,
                                      latest_update_array[i - j][2],
                                      'S',
@@ -607,7 +623,7 @@ def auto_update_nytimes(event, context):
                     else:
                         company_string += company_names[i].text.strip() + ", "
 
-            if "Finlay Vaccine Institute" in company_string and "Sovereign 2" in all_intro_text:
+            if "Finlay Vaccine Institute" in company_string and "Soberana 2" in all_intro_text:
                 company_string += "-2"
 
             if "Center for Genetic Engineering and Biotechnology of Cuba" in company_string and "Abadala" in all_intro_text:
@@ -1083,11 +1099,11 @@ def auto_update_nytimes(event, context):
             if allow_auto_update and intro_updates is not None and intro_updates != '':
                 intro_updates = intro_updates.strip()
 
-                def update_info():
+                def update_info(updated_latest_news_info):
                     global update_message, update_intro_count
                     # Update INFO
                     cur.execute("UPDATE info SET latest_news = %s WHERE vac_id = %s",
-                                (updated_latest_news, new_vaccine_id))
+                                (updated_latest_news_info, new_vaccine_id))
                     conn.commit()
                     # Update date
                     update_date()
@@ -1099,10 +1115,10 @@ def auto_update_nytimes(event, context):
                     if existing_latest_news is not None:
                         if intro_updates.lower().replace(',', '') not in existing_latest_news.lower().replace(',', ''):
                             updated_latest_news = intro_updates + "<br><br>" + existing_latest_news
-                            update_info()
+                            update_info(updated_latest_news)
                     else:
                         updated_latest_news = intro_updates
-                        update_info()
+                        update_info(updated_latest_news)
                 else:
                     # Update intro section if current month not in intro_updates
                     cur.execute("SELECT intro FROM info WHERE vac_id = %s", (new_vaccine_id,))
