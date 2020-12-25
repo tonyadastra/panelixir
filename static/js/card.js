@@ -231,7 +231,7 @@ class myCard extends HTMLElement {
         if (this.getAttribute('data-side-effects') !== 'None' && this.getAttribute('data-side-effects') !== '') {
             var side_effects = document.createElement('p');
             side_effects.setAttribute('class', 'info-tag');
-            side_effects.style.color = "crimson";
+            // side_effects.style.color = "crimson";
             side_effects.innerHTML = "<b>Side Effects: </b>" + this.getAttribute('data-side-effects');
             wrapper.appendChild(side_effects);
             // displayButton = true;

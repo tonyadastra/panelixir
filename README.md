@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ December 25 - Complete Card Designs and two categories: Vaccine Development, Vaccine Availability
 + December 22 - Add compare table Pfizer vs. Moderna
 + December 21 - Add trial size and side effects, hide intros for vaccines near approval/approved/under EUA
 + December 11 - Add approved and limited use countries to vaccine intro; icons update

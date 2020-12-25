@@ -1,6 +1,7 @@
 body {
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: hidden!important;
+    position: relative;
 }
 
 /* Header */
@@ -369,7 +370,7 @@ body {
         /* Modified */
     }
 
-    .card {
+    .about-us-card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         margin: 0.3rem;
         /* Modified */
@@ -553,7 +554,7 @@ body {
         display: none;
     }
 
-    html, body {
+    body {
         overflow-x: hidden;
     }
 
@@ -642,7 +643,7 @@ body {
         /* Modified */
     }
 
-    .card {
+    .about-us-card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         margin: 0.3rem;
         /* Modified */
@@ -809,7 +810,7 @@ body {
         font-size: 0.8rem;
     }
 
-    .card {
+    .about-us-card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         margin: 0.6rem;
         padding: 1.6rem;
@@ -976,7 +977,7 @@ body {
         padding: 0 8px;
     }
 
-    .card {
+    .about-us-card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         margin: 0.8rem;
         padding: 2rem;
@@ -1187,6 +1188,7 @@ body {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 30px;
 }
 
 @media (min-width: 768px) {
@@ -2035,4 +2037,19 @@ tspan {
     position: sticky;
     top: 0;
     background-color: white;
+}
+
+/*.card-img-top {*/
+/*    height: 150px;*/
+/*    width: 200px;*/
+/*}*/
+
+.card-text {
+    opacity: 0.8;
+}
+
+.center-fit {
+    max-width: 100%;
+    max-height: 100vh;
+    margin: auto;
 }

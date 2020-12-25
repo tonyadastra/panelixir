@@ -62,7 +62,6 @@ var colors = {
     p2: '#5ab9ea', p3: '#2b98d2', p4: '#3aafa9'
 };
 
-
 // Set up the svg work space
 var map = d3.select('#vis1')
     .append('svg')
@@ -99,7 +98,6 @@ function resize() {
                 window.map_response = JSON.parse(response).map_data.vaccines;
                 var vac_country = window.map_response.map(d => d.country);
                 var vac_stage = window.map_response.map(d => d.stage);
-
                 /** Interactive Map Response **/
                 // filter unique countries with highest stage
                 for (let i = 0; i < vac_country.length; i++) {

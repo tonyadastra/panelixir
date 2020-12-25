@@ -1,0 +1,7 @@
+{
+  "name": "covid19return-master-7:8",
+  "version": "1.0.0",
+  "dependencies": {
+    "d3-tip": "^0.9.1"
+  }
+}
