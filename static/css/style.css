@@ -83,6 +83,13 @@ body {
         font-size: 1rem;
         line-height: 1rem;
     }
+
+    .card {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        /*width: 250px;*/
+    }
     .modal-header .close{
         padding: 0.9rem 0.9rem;
     }
@@ -1253,6 +1260,10 @@ span.highlight {
     background-color: #3aafa9;
 }
 
+.add-card-margin {
+    margin-bottom: 1.5rem;
+}
+
 /* filter menu */
 .filter {
     /* background-color: rgba(255, 194, 129, 0.25); */
@@ -2040,8 +2051,8 @@ tspan {
 }
 
 /*.card-img-top {*/
-/*    height: 150px;*/
-/*    width: 200px;*/
+/*    height: 160px;*/
+/*    !*width: 250px;*!*/
 /*}*/
 
 .card-text {
@@ -2053,3 +2064,40 @@ tspan {
     max-height: 100vh;
     margin: auto;
 }
+
+/*.imgWrapper {*/
+/*    background-image: url('../../static/img/virus-mutation-1.jpg');*/
+/*    background-size: cover;*/
+/*    height: 150px;*/
+/*}*/
+
+/*.imgText {*/
+/*    color: white;*/
+/*}*/
+
+.thumbnail {
+    /*width: inherit;*/
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    top: 60%;
+    width: 100%;
+    color: white;
+}
+
+p.imgText {
+    font-weight: bold;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-size: 0.8rem;
+}
+
+@media screen and (max-width: 767px) {
+    table#compare-title > thead > tr > th {
+        font-size: 11px;
+        padding: 9px;
+    }
+}
+

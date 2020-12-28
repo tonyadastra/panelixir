@@ -171,7 +171,7 @@
     <h3 id="news-title">Vaccine Frontline</h3>
     <div class="card-deck">
         <div class="card">
-            <img class="card-img-top" src="../static/img/vaccine-development.png" alt="Card image cap">
+            <img class="card-img-top" src="../static/img/vaccine-developing-process.png" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">The Vaccine Developing Process</h5>
                 <p class="card-text">Learn about the different stages in the developing process of a COVID-19 vaccine: Pre-Clinical, Phase I, Phase II, Phase III, Limited Use, Approval, and more.</p>
@@ -182,10 +182,16 @@
 {#            </div>#}
         </div>
         <div class="card">
-            <img class="card-img-top" src="../static/img/vaccine-distribution.jpg" alt="Card image cap">
+            <img class="card-img-top" src="../static/img/vaccine-distribution-map.png" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Distribution and Availability</h5>
-                <p class="card-text">Learn about vaccine availability and how the vaccine is distributed across the United States. More categories will be available soon.</p>
+                <p class="card-text">Learn about vaccine availability in the United States, who gets a vaccine first, and more.
+{#                    <ul style="text-align: left">#}
+{#                        <li>Vaccine Availability in the United States</li>#}
+{#                        <li>Vaccine Distribution Order</li>#}
+{#                        <li>Vaccine Distribution Process</li>#}
+{#                    </ul>#}
+                More categories will be available soon.</p>
                 <a href="/vaccine-distribution" class="stretched-link"></a>
             </div>
 {#            <div class="card-footer">#}
@@ -214,12 +220,33 @@
 {#                <small class="text-muted">Last updated 3 mins ago</small>#}
 {#            </div>#}
 {#        </div>#}
+        <div class="card">
+{#            <div class="imgWrapper"><h5 class="imgText">Text</h5></div>#}
+
+{#            <div class="row" id="box-search">#}
+                <div class="thumbnail text-center">
+                    <img class="card-img-top" src="../static/img/virus-mutation-1.jpg" alt="Virus Mutation">
+                    <div class="caption">
+                        <p class="imgText">Will the vaccine protect me against the new UK variant of COVID-19 that spreads 70% faster?</p>
+                    </div>
+                </div>
+{#            </div>#}
+{#            <img class="card-img-top" src="../static/img/virus-mutation.jpg" alt="Virus Mutation">#}
+            <div class="card-body">
+                <h5 class="card-title">Frequently Asked Questions</h5>
+                <p class="card-text">Have a question about having a COVID-19 vaccine? We have answers from CDC and medical experts for you.</p>
+                <a href="/vaccine-faq" class="stretched-link"></a>
+            </div>
+{#            <div class="card-footer">#}
+{#                <small class="text-muted">Last updated 3 mins ago</small>#}
+{#            </div>#}
+        </div>
 {#        <div class="card">#}
 {#            <img class="card-img-top" src="../static/img/entertainment.jpg" alt="Card image cap">#}
 {#            <div class="card-body">#}
-{#                <h5 class="card-title">Entertainment</h5>#}
+{#                <h5 class="card-title">Entertainment Corner</h5>#}
 {#                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
-{#                <a href="#" class="stretched-link"></a>#}
+{#                <a href="/vaccine-entertainment" class="stretched-link"></a>#}
 {#            </div>#}
 {#            <div class="card-footer">#}
 {#                <small class="text-muted">Last updated 3 mins ago</small>#}
@@ -230,25 +257,36 @@
 
 
 <div class="ctr text-center">
-    <h3 id="news-title">Pfizer vs. Moderna, Which is Better?</h3>
+    <h3 id="news-title">BioNTech-Pfizer vs. Moderna, Which is Better?</h3>
 {#    <table>#}
-    <div class="row compare-header">
-        <div class="col-2"><b class="vaccine-summary">Vaccine Summary</b></div>
-        <div class="col">
-            <b>Pfizer</b>
+{#    <div class="row compare-header">#}
+{#        <div class="col-2"><b class="vaccine-summary">Vaccine Summary</b></div>#}
+{#        <div class="col">#}
+{#            <b>BioNTech-Pfizer</b>#}
 {#            <select class="compare-dropdown" id="compare-dropdown-1">#}
 {#                <option class="vaccine-option-1" value="2">Pfizer</option>#}
 {#                <option class="vaccine-option-1" value="1">Moderna</option>#}
 {##}
 {#            </select>#}
-        </div>
-        <div class="col">
-            <b>Moderna</b>
+{#        </div>#}
+{#        <div class="col">#}
+{#            <b>Moderna</b>#}
 {#            <select class="compare-dropdown" id="compare-dropdown-2">#}
 {#                <option class="vaccine-option-2" value="1">Moderna</option>#}
 {#                <option class="vaccine-option-2" value="2">Pfizer</option>#}
 {#            </select>#}
-        </div>
+{#        </div>#}
+{#    </div>#}
+    <div class="compare-header">
+        <table class="table-bordered" id="compare-title">
+            <thead>
+            <tr>
+                <th style="width: 16.7%;">Category</th>
+                <th style="width: 41.6%;">BioNTech-Pfizer</th>
+                <th style="width: 41.6%;">Moderna</th>
+            </tr>
+            </thead>
+        </table>
     </div>
     <div id="compare-table"></div>
 </div>

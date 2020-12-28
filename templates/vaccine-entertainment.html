@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+<style>
+    @media screen and (max-width: 767px) {
+        .video-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%;
+            position: relative;
+            height: 0;
+        }
+
+        .video-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .card {
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+    }
+
+    .card-header {
+        background-color: orangered;
+        opacity: 0.7;
+    }
+
+    .badge{
+        margin-right: 0.2rem;
+    }
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+{#<script src="../static/js/library/twitter-widget.js" charset="utf-8"></script>#}
+<script src="../static/js/library/jquery.js"></script>
+<script src="../static/js/entertainment.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="ctr text-center" id="entertainment_container">
+    <h3 id="news-title">Vaccine is Fun!</h3>
+{#    <div class="card text-center add-card-margin">#}
+{#        <div class="card-header">#}
+{#            Featured#}
+{#        </div>#}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title"><span class="badge badge-info">New</span>What's the most prominent side effect of a COVID-19 vaccine? :)</h5>#}
+{#            <blockquote class="twitter-tweet tw-align-center">#}
+{#                <p lang="en" dir="ltr">My boyfriend got his covid vaccine yesterday and I can tell you the most prominent side effect is the inability to shut up about getting the covid vaccine</p>&mdash; Emaperidol (@Emaperidol) <a href="https://twitter.com/Emaperidol/status/1339224471731843073?ref_src=twsrc%5Etfw">December 16, 2020</a>#}
+{#            </blockquote>#}
+{#            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>#}
+{#            <a href="#" class="btn btn-primary">Go somewhere</a>#}
+{#        </div>#}
+{#        <div class="card-footer text-muted">#}
+{#            2 days ago#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="card text-center add-card-margin">#}
+{#        <div class="card-header">#}
+{#            Featured#}
+{#        </div>#}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title"><span class="badge badge-info">New</span>Tennessee Nurse Passes Out After Receiving Pfizer COVID-19 Vaccine</h5>#}
+{#            <div class="video-responsive">#}
+{#                <iframe width="560" height="315" src="https://www.youtube.com/embed/G3rWQrl5Uh0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>#}
+{#            </div>#}
+{#            <p class="card-text">After recovering, she explained to reporters afterward that she has a condition that sometimes causes her to faint when she feels pain. The U.S. Center for Disease Control and Prevention says fainting can be triggered various types of medical procedures, including vaccination, and scientists believe it is due to pain or anxiety associated with the vaccination process.</p>#}
+{#        </div>#}
+{#        <div class="card-footer text-muted">#}
+{#            2 days ago#}
+{#        </div>#}
+{#    </div>#}
+</div>
+{% endblock %}

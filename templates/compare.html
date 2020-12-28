@@ -62,7 +62,7 @@
 
 {#<h2>Pfizer vs. Moderna, Which is Better?</h2>#}
 
-<table>
+<table class="table table-bordered">
 {#  <tr>#}
 {#      <th style="width: 16.7%;">&nbsp;</th>#}
 {#      <th style="width: 41.6%;">&nbsp;</th>#}
@@ -112,31 +112,31 @@
         <td>{{summary1['trial_size']}}</td>
         <td>{{summary2['trial_size']}}</td>
     </tr>
-  <tr>
-    <td><i class="fas fa-hashtag"></i>Dose</td>
-    <td>{{summary1['dose']}}</td>
-      <td>{{summary2['dose']}}</td>
-  </tr>
-  <tr>
-    <td><i class="fas fa-syringe"></i>Injection Type</td>
-    <td>{{summary1['injection_type']}}</td>
-      <td>{{summary2['injection_type']}}</td>
-  </tr>
-  <tr>
-    <td><i class="fas fa-thermometer-quarter"></i>Storage</td>
+    <tr>
+        <td><i class="fas fa-hashtag"></i>Dose</td>
+        <td>{{summary1['dose']}}</td>
+        <td>{{summary2['dose']}}</td>
+    </tr>
+    <tr>
+        <td><i class="fas fa-syringe"></i>Injection Type</td>
+        <td>{{summary1['injection_type']}}</td>
+        <td>{{summary2['injection_type']}}</td>
+    </tr>
+    <tr>
+      <td><i class="fas fa-thermometer-quarter"></i>Storage</td>
       <td>{{summary1['storage']}}</td>
       <td>{{summary2['storage']}}</td>
 {#    <td><i class="fa fa-check"></i></td>#}
 {#    <td><i class="fa fa-check"></i></td>#}
-  </tr>
+    </tr>
 
-<tr>
-    <td><i class="fas fa-exclamation-triangle"></i>Side Effects</td>
-      <td>{{summary1['side_effects'] | safe}}</td>
-      <td>{{summary2['side_effects'] | safe}}</td>
+    <tr>
+        <td><i class="fas fa-exclamation-triangle"></i>Side Effects</td>
+        <td>{{summary1['side_effects'] | safe}}</td>
+        <td>{{summary2['side_effects'] | safe}}</td>
 {#    <td><i class="fa fa-check"></i></td>#}
 {#    <td><i class="fa fa-check"></i></td>#}
-  </tr>
+    </tr>
 </table>
 {#{% endblock %}#}
 {##}

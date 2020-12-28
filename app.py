@@ -219,6 +219,25 @@ def vaccineDistributionUSA():
     return render_template("vaccine-distribution.html")
 
 
+@app.route("/vaccine-entertainment")
+def vaccineEntertainment():
+    return render_template("vaccine-entertainment.html")
+
+
+@app.route("/vaccine-faq")
+def vaccineFAQ():
+    return render_template("vaccine-faq.html")
+
+
+@app.route("/get-entertainment")
+def getEntertainment():
+    cur.execute("SELECT tag, title, body, body_text, likes FROM entertainment ORDER BY date DESC")
+    data = cur.fetchall()
+    cur.execute("rollback")
+    print(data)
+    return json.dumps(data)
+
+
 @app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
