@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.7.4 - Fix 'other countries' replacing original
+    + Released: December 30, 2020
 - v2.7.3 - Fix matching errors
     + Released: December 25, 2020
 - v2.7.2 - Update algorithm for NYTimes Update
