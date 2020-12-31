@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ December 31 - All-in-one page, NavBar, Move 'Distribution' to Top; Temporarily Hide Map
 + December 28 - Complete Vaccine Availability: Optimize USMap, add a table; Start FAQs and link; Update card images; add text on image
 + December 25 - Complete Card Designs and two categories: Vaccine Development, Vaccine Availability
 + December 22 - Add compare table Pfizer vs. Moderna

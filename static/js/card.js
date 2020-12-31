@@ -272,7 +272,7 @@ class myCard extends HTMLElement {
         // button to learn more
         if (displayButton) {
             var btn = document.createElement('button');
-            btn.setAttribute('class', 'collapsible');
+            btn.setAttribute('class', 'card-collapsible');
             btn.setAttribute('type', 'button');
             btn.innerHTML = 'Learn More';
             wrapper.appendChild(btn);

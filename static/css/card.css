@@ -82,7 +82,7 @@ span.highlight-warp-speed {
 }
 
 
-.collapsible {
+.card-collapsible {
   background-color: #84ceeb;
   color: black;
   cursor: pointer;
@@ -104,7 +104,7 @@ span.highlight-warp-speed {
 
 /* Add a background color to the button if it is clicked on */
 
-.active, .collapsible:hover {
+.active.card-collapsible:hover {
   background-color: #5ab9ea;
 }
 
@@ -167,7 +167,7 @@ span.highlight-warp-speed {
     font-size: 11px;
   }
 
-  .collapsible {
+  .card-collapsible {
     font-size: 11px;
     padding: 0.4rem 0.8rem;
   }

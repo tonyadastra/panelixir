@@ -7,46 +7,36 @@
 {#<style>#}
 {#{% block styles %}#}
 <style>
-    .fas{
-        margin-right: 0.2rem;
-    }
-    table {
-      border-collapse: collapse;
-      border-spacing: 0;
-      width: 100%;
-      border: 1px solid #ddd;
+   .fas {
+       margin-right: 0.2rem;
+   }
+
+table.compare-vaccines {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.compare-vaccines th, .compare-vaccines td {
+    text-align: center;
+    padding: 16px;
+    color: #0b58de;
+}
+
+.compare-vaccines th:first-child, .compare-vaccines td:first-child {
+    text-align: left;
+}
+@media screen and (max-width: 767px) {
+    .compare-vaccines td, .compare-vaccines th {
+        font-size: 11px;
+        padding: 7px;
     }
 
-    th, td {
-      text-align: center;
-      padding: 16px;
-        color: #0b58de;
+    .fas {
+        margin-right: 0.1rem;
     }
-    @media screen and (max-width: 767px) {
-        td{
-            font-size: 11px;
-            padding: 7px;
-        }
-        .fas {
-            margin-right: 0.1rem;
-        }
-    }
-
-    th:first-child, td:first-child {
-      text-align: left;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f2f2f2
-    }
-
-    {#.fa-check {#}
-    {#  color: green;#}
-    {#}#}
-    {##}
-    {#.fa-remove {#}
-    {#  color: red;#}
-    {#}#}
+}
 </style>
 {#{% endblock %}#}
 {##}
@@ -62,7 +52,7 @@
 
 {#<h2>Pfizer vs. Moderna, Which is Better?</h2>#}
 
-<table class="table table-bordered">
+<table class="table table-bordered compare-vaccines">
 {#  <tr>#}
 {#      <th style="width: 16.7%;">&nbsp;</th>#}
 {#      <th style="width: 41.6%;">&nbsp;</th>#}
@@ -88,9 +78,9 @@
 {#    </th>#}
 {#  </tr>#}
     <tr>
-        <td style="width: 16.7%;"><i class="fas fa-font"></i>Name</td>
-        <td style="width: 41.6%;">{{summary1['candidate_name']}}</td>
-        <td style="width: 41.6%;">{{summary2['candidate_name']}}</td>
+        <td style="width: 20%;"><i class="fas fa-font"></i>Name</td>
+        <td style="width: 40%;">{{summary1['candidate_name']}}</td>
+        <td style="width: 40%;">{{summary2['candidate_name']}}</td>
     </tr>
     <tr>
         <td><i class="fas fa-info-circle"></i>Status</td>

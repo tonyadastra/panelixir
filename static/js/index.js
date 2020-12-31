@@ -810,6 +810,13 @@ var desktop_country = ''
 var desktop_type = ''
 var prev_mobile_count = 0
 var prev_count = 0
+var prev_i = 0; // determine the new section
+var j_tester = -1; // placeholder for previous section scrolled through
+
+
+let box = document.querySelector('div#scroll-menu');
+let box_width = box.clientWidth;
+
 $(window).scroll(function () {
     if (window.screen.width <= 768) {
         if ($(window).scrollTop() + $(window).height() >=
@@ -878,11 +885,117 @@ $(window).scroll(function () {
 
         }
     }
-    if (world_continents.continent === 'World'){
-        // When Map Outside of Window, stop map spinning
-        processing = $(window).scrollTop() > $(window).height();
+    // if (world_continents.continent === 'World'){
+    //     // When Map Outside of Window, stop map spinning
+    //     processing = $(window).scrollTop() > $(window).height();
+    // }
+    
+    if ($(window).scrollTop() >= 50) {
+        // $('nav').addClass('fixed');
+        $('section').each(function(i) {
+            // console.log($(window).scrollTop() - $(this).position().top)
+            if ($(this).position().top <= $(window).scrollTop() + 100) {
+                if (prev_i >= i) {
+                    if (j_tester !== prev_i) {
+                        // console.log(prev_i)
+                        if (screen.width < 768) {
+                            if (j_tester < prev_i) {
+                                // scrolling down
+                                $('.scroll-menu').animate({
+                                    scrollLeft: box_width * 0.2 * (prev_i)
+                                }, 500);
+                            } else if (j_tester > prev_i) {
+                                // scrolling up
+                                $('.scroll-menu').animate({
+                                    scrollLeft: box_width * 0.2 * (prev_i)
+                                }, 500);
+                            }
+                        }
+
+                        $('nav a.active').removeClass('active');
+                        $('nav a').eq(prev_i).addClass('active');
+
+                        j_tester = prev_i;
+                    }
+                }
+                prev_i = i;
+            }
+        });
+
+    } else {
+        // $('nav').removeClass('fixed');
+        $('nav a.active').removeClass('active');
+        $('nav a:first').addClass('active');
     }
+
+
+    // if ($('section#vaccine-distribution').offset().top - $(window).scrollTop() > 20) {
+    //     $('.scroll-menu').animate({
+    //         scrollLeft: 0
+    //     }, 500);
+    // }
+    // console.log($('section#news-section').offset().top - $(window).scrollTop() === 20)
+    // if ($('section#news-section').offset().top - $(window).scrollTop() === 20) {
+    //     $('.scroll-menu').animate({
+    //         scrollLeft: box_width * 0.6
+    //     }, 500);
+    // }
 });
+
+
+$('nav a').on('click', function() {
+
+    var scrollAnchor = $(this).attr('data-scroll'),
+        scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 50;
+
+    // var scrollLeftPoint = $('a.style-a.active').offset().left;
+    // console.log(scrollLeftPoint)
+
+    $('body,html').animate({
+        scrollTop: scrollPoint
+    }, 500);
+
+    // $('.scroll-menu').animate({
+    //     scrollLeft: scrollLeftPoint
+    // }, 500);
+
+    return false;
+})
+
+// let box = document.querySelector('div#scroll-menu');
+// // let box_width = box.clientWidth;
+// if (screen.width < 768) {
+//     $('#a-distribution').on('click', function () {
+//         $('.scroll-menu').animate({
+//             scrollLeft: 0
+//         }, 500);
+//     })
+//
+//     $('#a-development').on('click', function () {
+//         $('.scroll-menu').animate({
+//             scrollLeft: box_width * 0.2
+//         }, 500);
+//     })
+//
+//     $('#a-science').on('click', function () {
+//         $('.scroll-menu').animate({
+//             scrollLeft: box_width * 0.4
+//         }, 500);
+//     })
+//
+//     $('#a-news').on('click', function () {
+//         $('.scroll-menu').animate({
+//             scrollLeft: box_width * 0.6
+//         }, 500);
+//     })
+//
+//     $('#a-developers').on('click', function () {
+//         $('.scroll-menu').animate({
+//             scrollLeft: box_width * 0.7
+//         }, 500);
+//     })
+// }
+// console.log($('section#vaccine-distribution').offset().top - $(window).scrollTop())
 
 // Mobile Modal
 // When Dropdown Item is Clicked

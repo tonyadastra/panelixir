@@ -1,8 +1,9 @@
-{% extends "layout.html" %}
+{#{% extends "layout.html" %}#}
 
-{% block styles %}
+{#{% block styles %}#}
+{#<link rel="stylesheet" href="../static/css/us-map.css">#}
 <style>
-    .source{
+    section#vaccine-distribution .source{
         opacity: 0.5;
     }
     .date {
@@ -16,12 +17,12 @@
         color: #0a87ac;
     }
     path {
-    {#fill: #fff;#}
+    /*{#fill: #fff;#}*/
         stroke: #888888;
     }
     path:hover{
         fill: red;
-        {#opacity: 0.7;#}
+        /*{#opacity: 0.7;#}*/
     }
     .d3tooltip {
         color: #222;
@@ -35,10 +36,10 @@
     }
 
     @media screen and (max-width: 767px) {
-        table {
+        table.us-vaccine-distribution {
             font-size: 9px;
         }
-        th, td {
+        .us-vaccine-distribution th, .us-vaccine-distribution td {
             padding: 0.3rem 0.5rem!important;
         }
     }
@@ -50,14 +51,15 @@
         }
 
     }
-thead > tr > th {
+.us-vaccine-distribution th {
     background-color: #dbdbdb;
-    {#color: white;#}
-    {#border: 1px solid black;#}
-    {#opacity: 0.7;#}
+    /*padding: 0.5rem 2rem;*/
+    /*{#color: white;#}*/
+    /*{#border: 1px solid black;#}*/
+    /*{#opacity: 0.7;#}*/
 }
 
-th, td {
+.us-vaccine-distribution th, .us-vaccine-distribution td {
     padding: 0.5rem 2rem;
 }
 
@@ -67,8 +69,8 @@ tr:nth-child(even) {
 }
 
 
-table {
-{#color: #FFFFFF;#}
+table.us-vaccine-distribution {
+/*{#color: #FFFFFF;#}*/
     margin-left: auto;
     margin-right: auto;
 
@@ -77,30 +79,22 @@ table {
 #spinner-wrapper {
   line-height: 35rem;
   height: 35rem;
-  {#border: 3px solid green;#}
+  /*{#border: 3px solid green;#}*/
   text-align: center;
 }
 
+.percentage-cell {
+    color: rgb(7, 158, 138);
+    font-weight: bold;
+}
+
 </style>
-{% endblock %}
+{#{% endblock %}#}
 
-{% block scripts %}
-<script src="../static/js/library/jquery.js"></script>
-<script src="../static/js/library/popper.js"></script>
-<script src="../static/js/library/bootstrap.js"></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="../static/js/library/topojson.client.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
 
-<script src="../static/js/us-map.js"></script>
-<script>
-$(document).ready(function() {
-    $("body").tooltip({selector: '[data-toggle=tooltip]'});
-});
-</script>
-{% endblock %}
 
-{% block content %}
+{#{% block content %}#}
+<section id="vaccine-distribution" data-anchor="distribution">
 
 <div class="us-map text-center">
     <h3 id="news-title">Vaccine Availability in the United States</h3>
@@ -186,9 +180,9 @@ $(document).ready(function() {
             Source: <a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/recommendations.html" target="_blank">CDC</a>
         </p>
     </div>
-    <div class="text-center" style="margin-bottom: 1.5rem;">
-        For frequently asked questions about vaccine distribution, click <a href="/vaccine-faq#distribution">here</a>
-    </div>
+{#    <div class="text-center" style="margin-bottom: 1.5rem;">#}
+{#        For frequently asked questions about vaccine distribution, click <a href="/vaccine-faq#distribution">here</a>#}
+{#    </div>#}
 
 
 
@@ -246,11 +240,12 @@ $(document).ready(function() {
     <div class="img-box">
         <img class="center-fit" src="../static/img/ows-vaccine-distribution-process.png" alt="Vaccine Distribution Process">
     </div>
-    <div class="text-center" style="margin-bottom: 1.5rem;">
-        Learn more about Operation Warp Speed <a href="/vaccine-faq#operation-warp-speed">here</a>
-    </div>
-    <a href="/" class="btn btn-primary">Back to Home</a>
+{#    <div class="text-center" style="margin-bottom: 1.5rem;">#}
+{#        Learn more about Operation Warp Speed <a href="/vaccine-faq#operation-warp-speed">here</a>#}
+{#    </div>#}
+{#    <a href="/" class="btn btn-primary">Back to Home</a>#}
 </div>
+</section>
 
 
-{% endblock %}
+{#{% endblock %}#}

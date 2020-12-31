@@ -234,7 +234,7 @@ def getEntertainment():
     cur.execute("SELECT tag, title, body, body_text, likes FROM entertainment ORDER BY date DESC")
     data = cur.fetchall()
     cur.execute("rollback")
-    print(data)
+    # print(data)
     return json.dumps(data)
 
 
@@ -365,6 +365,8 @@ def get_compare_info():
     vaccine2 = str(request.args.get('vaccine2'))
     # vaccine1 = "2"
     # vaccine2 = "1"
+    categories = ['type', 'efficacy', 'trial_size', 'dose', 'injection_type', 'storage', 'side_effects',
+                  'candidate_name']
 
     cur.execute("SELECT json_agg(json_build_object("
                 "'type', vac_type, "
@@ -392,6 +394,7 @@ def get_compare_info():
             status1 += "Limited Use in " + summary1['limited'] + "."
         else:
             status1 += "Limited Use in " + str(len(limited1_array)) + " countries."
+
     summary1['status'] = status1
     # print(summary1)
 
@@ -422,6 +425,12 @@ def get_compare_info():
         else:
             status2 += "Limited Use in " + str(len(limited2_array)) + " countries."
     summary2['status'] = status2
+
+    for category in categories:
+        if summary1[category] is None or not summary1[category]:
+            summary1[category] = "Currently unavailable"
+        if summary2[category] is None or not summary2[category]:
+            summary2[category] = "Currently unavailable"
     # print(summary2)
 
     return render_template("compare.html", summary1=summary1, summary2=summary2)

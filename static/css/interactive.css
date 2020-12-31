@@ -8,7 +8,7 @@
 	}
 
 	/* Interactive Button */
-	.btn-outline-primary{
+	.btn-outline-worldwide{
 		border-width: thin;
 	}
 	.btn-outline-continent{
@@ -132,14 +132,14 @@
 		padding: 0.3rem 0.5rem !important; /* Modified */;
 	}
 
-	.btn-outline-primary:focus,
-	.btn-outline-primary.focus {
+	.btn-outline-worldwide:focus,
+	.btn-outline-worldwide.focus {
 		box-shadow: 0 0 0 0.09rem rgb(173, 245, 217) !important; /* Modified */;
 	}
 
-	.btn-outline-primary:not(:disabled):not(.disabled):active:focus,
-	.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
-	.show > .btn-outline-primary.dropdown-toggle:focus {
+	.btn-outline-worldwide:not(:disabled):not(.disabled):active:focus,
+	.btn-outline-worldwide:not(:disabled):not(.disabled).active:focus,
+	.show > .btn-outline-worldwide.dropdown-toggle:focus {
 		box-shadow: 0 0 0 0.09rem rgb(145, 246, 217) !important; /* Modified */;
 	}
 
@@ -433,28 +433,28 @@
 }
 
 /* Customize Bootstrap Buttons */
-.btn-outline-primary {
+.btn-outline-worldwide {
 	color: #42c7a8;
 	background-color: transparent;
 	background-image: none;
 	border-color: #42c7a8;
 }
-.btn-outline-primary:hover {
+.btn-outline-worldwide:hover {
 	color: #fff;
 	background-color: #42c7a8;
 	border-color: #42c7a8;
 }
-.btn-outline-primary:focus,
-.btn-outline-primary.focus {
+.btn-outline-worldwide:focus,
+.btn-outline-worldwide.focus {
 	color: #fff;
 	background-color: #42c7a8;
 	border-color: #42c7a8;
 	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
 
-.btn-outline-primary:not(:disabled):not(.disabled):active,
-.btn-outline-primary:not(:disabled):not(.disabled).active,
-.show > .btn-outline-primary.dropdown-toggle {
+.btn-outline-worldwide:not(:disabled):not(.disabled):active,
+.btn-outline-worldwide:not(:disabled):not(.disabled).active,
+.show > .btn-outline-worldwide.dropdown-toggle {
   color: #fff;
   background-color: #42c7a8;
   border-color: #42c7a8;
@@ -487,13 +487,13 @@
   border-color: #6cb323;
 }
 
-.btn-outline-primary:focus,
+.btn-outline-worldwide:focus,
 .btn-primary.focus {
   box-shadow: 0 0 0 0.2rem rgb(173, 245, 217);
 }
-.btn-outline-primary:not(:disabled):not(.disabled):active:focus,
-.btn-outline-primary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-outline-primary.dropdown-toggle:focus {
+.btn-outline-worldwide:not(:disabled):not(.disabled):active:focus,
+.btn-outline-worldwide:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-worldwide.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgb(145, 246, 217);
 }
 .btn-outline-continent:focus,

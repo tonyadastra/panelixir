@@ -309,7 +309,10 @@
 
     // You could also have made the new array with a map function!
     //using colors and fonts from the UNICEF Style Guide
-    var table = d3.select("#table").append("table");
+    var table = d3.select("#table")
+        .append("table")
+        .attr('class', 'us-vaccine-distribution');
+
     // var header = table.append("thead").append("tr");
     table.append("thead")
         .append("tr")
@@ -319,6 +322,10 @@
         .append("th")
         .text(function (d) {
             return d;
+        })
+        .attr("style", function (d) {
+            if (d === "Percentage Covered(%)")
+                return "background-color: rgb(100, 208, 138)"
         });
     var table_body = table.append("tbody");
     var rows = table_body
@@ -337,6 +344,11 @@
         .append("td")
         .text(function (d) {
             return d;
+        })
+        .attr("class", function (d, i) {
+            if (i % 3 === 0 && i !== 0) {
+                return 'percentage-cell';
+            }
         });
 
     // return table;
@@ -384,7 +396,11 @@
             .append("td")
             .text(function (d) {
                 return d;
-
+            })
+            .attr("class", function (d, i) {
+                if (i % 3 === 0 && i !== 0) {
+                    return 'percentage-cell';
+                }
             });
         // d3.select('tbody')
         //     .append(rows)
@@ -414,4 +430,9 @@
 
 function hideSpinner() {
     document.getElementById('spinner-wrapper').style.display = 'none';
+}
+
+function hasNumbers(t) {
+    var regex = /\d/g;
+    return regex.test(t);
 }
