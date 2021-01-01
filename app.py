@@ -217,11 +217,11 @@ def aboutUs():
     return render_template("about-us.html")
 
 
-# @app.route("/vaccine-developing-process")
-# def vaccineDevelopingProcess():
-#     return render_template("card-vaccine-developing-process.html")
-#
-#
+@app.route("/vaccine-developing-process")
+def vaccineDevelopingProcess():
+    return render_template("card-vaccine-developing-process.html")
+
+
 # @app.route("/vaccine-distribution")
 # def vaccineDistributionUSA():
 #     return render_template("vaccine-distribution.html")
@@ -229,7 +229,7 @@ def aboutUs():
 
 @app.route("/vaccine-entertainment")
 def vaccineEntertainment():
-    return render_template("vaccine-entertainment.html")
+    return render_template("dump/vaccine-entertainment.html")
 
 
 @app.route("/vaccine-faq")
