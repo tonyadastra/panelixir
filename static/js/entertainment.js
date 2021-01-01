@@ -23,8 +23,8 @@ $(document).ready(function () {
                 var card_title = document.createElement('h5')
                 card_title.setAttribute('class', 'card-title')
 
-                if (data[0] === "New"){
-                    var tag = "<span class='badge badge-info'>New</span>"
+                if (data[0] === "Fun"){
+                    var tag = "<span class='badge badge-info'>Fun</span>"
                     card_title.innerHTML = tag + data[1]
                 }
                 else {
@@ -47,11 +47,7 @@ $(document).ready(function () {
 
                 card.appendChild(card_body)
 
-
                 target_container.appendChild(card)
-
-
-                console.log(card)
 
             })
 

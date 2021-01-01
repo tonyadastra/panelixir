@@ -55,7 +55,15 @@ def index():
                 "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
     general_news = cur.fetchall()
     cur.execute("rollback")
-    return render_template("index.html", data=data, news_data=news_data, general_news=general_news)
+
+    cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "
+                "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
+                "CASE WHEN tag='New' THEN tag END, "
+                "date DESC")
+    stories = cur.fetchall()
+    cur.execute("rollback")
+
+    return render_template("index.html", data=data, news_data=news_data, general_news=general_news, stories=stories)
 
 
 @app.route("/desktop-form", methods=['GET'])
@@ -209,14 +217,14 @@ def aboutUs():
     return render_template("about-us.html")
 
 
-@app.route("/vaccine-developing-process")
-def vaccineDevelopingProcess():
-    return render_template("vaccine-developing-process.html")
-
-
-@app.route("/vaccine-distribution")
-def vaccineDistributionUSA():
-    return render_template("vaccine-distribution.html")
+# @app.route("/vaccine-developing-process")
+# def vaccineDevelopingProcess():
+#     return render_template("card-vaccine-developing-process.html")
+#
+#
+# @app.route("/vaccine-distribution")
+# def vaccineDistributionUSA():
+#     return render_template("vaccine-distribution.html")
 
 
 @app.route("/vaccine-entertainment")

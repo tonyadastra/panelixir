@@ -25,6 +25,8 @@
 <script src="../static/js/index.js"></script>
 <script src="../static/js/us-map.js"></script>
 
+{#<script src="../static/js/library/twitter-widget.js"></script>#}
+
 {% endblock %}
 
 {% block content %}
@@ -35,7 +37,7 @@
             <a class="style-a" href="#" id="a-development" data-scroll="development">Development</a>
             <a class="style-a" href="#" id="a-science" data-scroll="science">Science</a>
             <a class="style-a" href="#" id="a-news" data-scroll="news">News</a>
-{#            <a class="style-a" href="#about">People and Stories</a>#}
+            <a class="style-a" href="#" data-scroll="stories">People and Stories</a>
             <a class="style-a" href="#" id="a-developers" data-scroll="developers">Vaccines in Focus</a>
             <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
             <a class="style-a" href="/vaccine-faq">FAQs</a>
@@ -154,25 +156,6 @@
 
 <div class="ctr text-center">
     <h3 id="news-title">Compare Different Vaccines</h3>
-{#    <table>#}
-{#    <div class="row compare-header">#}
-{#        <div class="col-2"><b class="vaccine-summary">Vaccine Summary</b></div>#}
-{#        <div class="col">#}
-{#            <b>BioNTech-Pfizer</b>#}
-{#            <select class="compare-dropdown" id="compare-dropdown-1">#}
-{#                <option class="vaccine-option-1" value="2">Pfizer</option>#}
-{#                <option class="vaccine-option-1" value="1">Moderna</option>#}
-{##}
-{#            </select>#}
-{#        </div>#}
-{#        <div class="col">#}
-{#            <b>Moderna</b>#}
-{#            <select class="compare-dropdown" id="compare-dropdown-2">#}
-{#                <option class="vaccine-option-2" value="1">Moderna</option>#}
-{#                <option class="vaccine-option-2" value="2">Pfizer</option>#}
-{#            </select>#}
-{#        </div>#}
-{#    </div>#}
     <div class="compare-header">
         <table class="table-bordered compare-vaccines" id="compare-title">
             <thead>
@@ -201,8 +184,49 @@
     <div id="compare-table"></div>
 </div>
 
+<section data-anchor="science">
+{#{% include 'vaccine-developing-process.html' %}#}
+    <div class="ctr text-center">
+        <h3 id="news-title">Science Behind Vaccines</h3>
+    {#    <h3 id="news-title">Vaccine Frontline</h3>#}
+        <div class="card-deck">
+            <div class="card">
+                <img class="card-img-top" src="../static/img/vaccine-developing-process.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">The Vaccine Developing Process</h5>
+                    <p class="card-text">Learn about the different stages in the developing process of a COVID-19 vaccine: Pre-Clinical, Phase I, Phase II, Phase III, Limited Use, Approval, and more.</p>
+                    <a href="/vaccine-developing-process" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+            <div class="card">
+                <img class="card-img-top" src="../static/img/mRNA.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Understanding mRNA COVID-19 Vaccines</h5>
+                    <p class="card-text">What are mRNA vaccines? CDC: It is a new approach, but not unknown.</p>
+                    <a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/different-vaccines/mrna.html" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+            <div class="card">
+                <img class="card-img-top" src="../static/img/vaccine2.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">How does the Pfizer-BioNTech vaccine work?</h5>
+                    <p class="card-text">A detailed infographic from The New York Times showing how an mRNA vaccine works.</p>
+                    <a href="https://www.nytimes.com/interactive/2020/health/pfizer-biontech-covid-19-vaccine.html" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+        </div>
+    </div>
+</section>
 
-{% include 'vaccine-developing-process.html' %}
 
 {# News Section #}
 <section id="news-section" data-anchor="news">
@@ -231,6 +255,56 @@
     </div>
 </section>
 
+<section data-anchor="stories">
+    <div class="ctr text-center">
+        <h3 id="news-title">People and Stories</h3>
+        {% for story in stories %}
+            <people-and-stories story-tag="{{story[0]}}" story-title="{{story[1]}}" story-img="{{story[2]}}" story-body="{{story[3]}}"
+                         story-body-text="{{story[4]}}" story-link="{{story[5]}}" story-source="{{story[6]}}" story-category="{{story[7]}}"></people-and-stories>
+        {% endfor %}
+        <div id="stories-container"></div>
+{#    <blockquote class="twitter-tweet"><p lang="en" dir="ltr">My boyfriend got his covid vaccine yesterday and I can tell you the most prominent side effect is the inability to shut up about getting the covid vaccine</p>&mdash; Emaperidol (@Emaperidol) <a href="https://twitter.com/Emaperidol/status/1339224471731843073?ref_src=twsrc%5Etfw">December 16, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>#}
+{#        <div class="card horizontal-card mb-3 mx-auto">#}
+{#            <div class="row no-gutters">#}
+{#                <div class="col-md-4">#}
+{#                    <img src="../static/img/moderna-hq.jpg" class="card-img" alt="BioTech Company">#}
+{#                </div>#}
+{#                <div class="col-md-8">#}
+{#                  <div class="card-body">#}
+{#                      <h5 class="card-title">#}
+{#                          <span class="badge badge-featured">Featured</span>#}
+{#                          The story of mRNA: How a once-dismissed idea became a leading technology in the Covid vaccine race#}
+{#                      </h5>#}
+{#                      <p class="card-text">An idea that once flew under the radar led to the birth of Moderna, BioNTech, and a remedy that could potentially save the world. </p>#}
+{#                      <p class="source">Stat News</p>#}
+{#                      <a href="https://www.statnews.com/2020/11/10/the-story-of-mrna-how-a-once-dismissed-idea-became-a-leading-technology-in-the-covid-vaccine-race" class="stretched-link"></a>#}
+{#                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
+{#                  </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="card horizontal-card mb-3 mx-auto">#}
+{#            <div class="row no-gutters">#}
+{#                <div class="col-md-4">#}
+{#                    <img src="../static/img/moderna-hq.jpg" class="card-img" alt="BioTech Company">#}
+{#                </div>#}
+{#                <div class="col-md-8">#}
+{#                  <div class="card-body">#}
+{#                      <h5 class="card-title">#}
+{#                          <span class="badge badge-info">Fun</span>#}
+{#                          The story of mRNA: How a once-dismissed idea became a leading technology in the Covid vaccine race</h5>#}
+{#                      <p class="card-text">An idea that once flew under the radar led to the birth of Moderna, BioNTech, and a remedy that could potentially save the world. </p>#}
+{#                      <p class="source">Stat News</p>#}
+{#                      <a href="https://www.statnews.com/2020/11/10/the-story-of-mrna-how-a-once-dismissed-idea-became-a-leading-technology-in-the-covid-vaccine-race" class="stretched-link"></a>#}
+{#                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>#}
+{#                  </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    </div>
+</section>
+
 {# Modal Displaying Companies, hidden by default#}
 {#<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>#}
 
@@ -249,93 +323,6 @@
     </div>
 </div>
 
-{#<div class="ctr text-center">#}
-{#    <h3 id="news-title">Vaccine Frontline</h3>#}
-{#    <div class="card-deck">#}
-{#        <div class="card">#}
-{#            <img class="card-img-top" src="../static/img/vaccine-developing-process.png" alt="Card image cap">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">The Vaccine Developing Process</h5>#}
-{#                <p class="card-text">Learn about the different stages in the developing process of a COVID-19 vaccine: Pre-Clinical, Phase I, Phase II, Phase III, Limited Use, Approval, and more.</p>#}
-{#                <a href="/vaccine-developing-process" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="card">#}
-{#            <img class="card-img-top" src="../static/img/vaccine-distribution-map.png" alt="Card image cap">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">Distribution and Availability</h5>#}
-{#                <p class="card-text">Learn about vaccine availability in the United States, who gets a vaccine first, and more.#}
-{#                    <ul style="text-align: left">#}
-{#                        <li>Vaccine Availability in the United States</li>#}
-{#                        <li>Vaccine Distribution Order</li>#}
-{#                        <li>Vaccine Distribution Process</li>#}
-{#                    </ul>#}
-{#                More categories will be available soon.</p>#}
-{#                <a href="/vaccine-distribution" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="card">#}
-{#            <img class="card-img-top" src="../static/img/vaccine2.jpg" alt="Card image cap">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">Science Behind Vaccines</h5>#}
-{#                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
-{#                <a href="#" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="card">#}
-{#            <img class="card-img-top" src="../static/img/moderna.jpg" alt="Card image cap">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">People and Stories</h5>#}
-{#                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
-{#                <a href="#" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="card">#}
-{#            <div class="imgWrapper"><h5 class="imgText">Text</h5></div>#}
-{##}
-{#            <div class="row" id="box-search">#}
-{#                <div class="thumbnail text-center">#}
-{#                    <img class="card-img-top" src="../static/img/virus-mutation-1.jpg" alt="Virus Mutation">#}
-{#                    <div class="caption">#}
-{#                        <p class="imgText">Will the vaccine protect me against the new UK variant of COVID-19 that spreads 70% faster?</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <img class="card-img-top" src="../static/img/virus-mutation.jpg" alt="Virus Mutation">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">Frequently Asked Questions</h5>#}
-{#                <p class="card-text">Have a question about having a COVID-19 vaccine? We have answers from CDC and medical experts for you.</p>#}
-{#                <a href="/vaccine-faq" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="card">#}
-{#            <img class="card-img-top" src="../static/img/entertainment.jpg" alt="Card image cap">#}
-{#            <div class="card-body">#}
-{#                <h5 class="card-title">Entertainment Corner</h5>#}
-{#                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>#}
-{#                <a href="/vaccine-entertainment" class="stretched-link"></a>#}
-{#            </div>#}
-{#            <div class="card-footer">#}
-{#                <small class="text-muted">Last updated 3 mins ago</small>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
 
 
 {#<div class="text-center">#}
@@ -344,10 +331,6 @@
 {#                 target="_blank"> Draft landscape of COVID-19 candidate vaccines</a>#}
 {#    </p>#}
 {#</div>#}
-<!--Heading - Question-->
-<!--<div class="heading">-->
-<!--    <h1 id="bold">Who will be the first to develop a vaccine?</h1>-->
-<!--</div>-->
 
 <!--Filter Data-->
 <section data-anchor="developers">
@@ -539,7 +522,7 @@
         </div>
         <div id="card_container"></div>
         <div id="mobile_container"></div>
-        <div class="text-center" id="spinner"></div>
+        <div class="text-center" id="spinner-2"></div>
     </div>
 </section>
 

@@ -371,12 +371,30 @@ $(document).ready(function () {
                 type: "get",
                 async: true,
                 success: function (countries) {
-                    // var option1_value = $('#compare-dropdown-1').val();
-                    var option1_value = 2;
-                    // var selected_option_1 = option1.options[option1.selectedIndex].value;
-                    // console.log(option1_value)
-                    // var option2_value = $('#compare-dropdown-2').val();
-                    var option2_value = 1;
+                    if (window.screen.width > 768) {
+                        var country_dropdown = document.getElementById("all-dropdown-items-country");
+                        var top_countries = document.createElement("BUTTON");
+                        top_countries.innerHTML = "Top Countries";
+                        top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                        top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
+                        country_dropdown.appendChild(top_countries);
+
+                        createDesktopDropdownCountry(JSON.parse(countries).top_countries)
+
+                        var other_countries = document.createElement("BUTTON");
+                        other_countries.innerHTML = "Other Countries";
+                        other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
+                        other_countries.setAttribute('style', 'font-weight: bold;');
+                        country_dropdown.appendChild(other_countries);
+
+                        createDesktopDropdownCountry(JSON.parse(countries).world_countries)
+                    } else {
+                        // var country_dropdown_mobile = document.getElementById("all-dropdown-items-country-mobile");
+                        createDesktopDropdownCountry(JSON.parse(countries).all_countries)
+                    }
+
+                    var option1_value = 2; // BioNTech-Pfizer: default1
+                    var option2_value = 1; // Moderna: default2
                     $.ajax({
                         url: '/get-compare-vaccine-info',
                         type: 'GET',
@@ -393,27 +411,6 @@ $(document).ready(function () {
                         // },
                         success: function (response) {
                             document.getElementById('compare-table').innerHTML = response;
-                            if (window.screen.width > 768) {
-                                var country_dropdown = document.getElementById("all-dropdown-items-country");
-                                var top_countries = document.createElement("BUTTON");
-                                top_countries.innerHTML = "Top Countries";
-                                top_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                                top_countries.setAttribute('style', 'color: darkcyan; font-weight: bold;');
-                                country_dropdown.appendChild(top_countries);
-
-                                createDesktopDropdownCountry(JSON.parse(countries).top_countries)
-
-                                var other_countries = document.createElement("BUTTON");
-                                other_countries.innerHTML = "Other Countries";
-                                other_countries.setAttribute('class', 'dropdown-item disabled dropdown-item-border');
-                                other_countries.setAttribute('style', 'font-weight: bold;');
-                                country_dropdown.appendChild(other_countries);
-
-                                createDesktopDropdownCountry(JSON.parse(countries).world_countries)
-                            } else {
-                                // var country_dropdown_mobile = document.getElementById("all-dropdown-items-country-mobile");
-                                createDesktopDropdownCountry(JSON.parse(countries).all_countries)
-                            }
 
                             $(function () {
                                 resize();
@@ -831,11 +828,11 @@ $(window).scroll(function () {
                     },
                     beforeSend: function () {
                         // show spinner when loading
-                        $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+                        $('#spinner-2').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
                     },
                     complete: function () {
                         // hide the spinner
-                        $('#spinner').html("");
+                        $('#spinner-2').html("");
                     },
                     success: function (response) {
                         if (response !== prev_response_mobile) {
@@ -864,11 +861,11 @@ $(window).scroll(function () {
                     },
                     beforeSend: function () {
                         // show spinner when loading
-                        $('#spinner').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+                        $('#spinner-2').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
                     },
                     complete: function () {
                         // hide the spinner
-                        $('#spinner').html("");
+                        $('#spinner-2').html("");
                     },
                     success: function (response) {
                         if (response !== prev_response) {
@@ -1356,6 +1353,8 @@ $('.compare-dropdown').on("change", function () {
         }
     });
 })
+
+$('video').attr('controlsList', 'nodownload');
 
 // $(function() {
 //     $('a[href]').attr('target', '_blank');

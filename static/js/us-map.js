@@ -121,7 +121,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 0px;');
+                .attr('style', 'left: 0px; top: 100px;');
 
             var mouse = d3.mouse(this);
             var print_percentage = 0;
@@ -139,7 +139,7 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "60px");
+                    .style('top', "100px");
             } else {
                 tooltip.style('left', (mouse[0] + 270) + 'px')
                     .style('top', (mouse[1] + 170) + "px");
@@ -224,7 +224,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 0px;');
+                .attr('style', 'left: 0px; top: 100px;');
 
 
             var hover_state_code = d3.select(this).text();
@@ -247,7 +247,8 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "60px");
+                    .style('top', "100px!important;")
+                    // .style('font-size', '11px;');
             } else {
                 tooltip.style('left', (mouse[0] + 270) + 'px')
                     .style('top', (mouse[1] + 170) + "px");
@@ -359,7 +360,7 @@
             d3.select('#btn2')
                 .attr('style', 'display: none;')
             d3.select('#btn1')
-                .attr('style', 'display: inline-block')
+                .attr('style', 'display: inline-block;')
 
         }
         var newData = table_distribution.slice(index, index + 20);

@@ -1291,11 +1291,18 @@ span.highlight {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
-.filter {
+.filter, .mobile-filter {
     z-index: 2;
     position: -webkit-sticky;
     position: sticky;
     top: 50px;
+}
+
+.mobile-filter {
+    background-color: white;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
 }
 
 /*.title-bar {*/
@@ -1609,10 +1616,6 @@ nav.nav-top {
     position: absolute;
 }
 
-.mobile-filter {
-    /*background-color: #faf4e5;*/
-    padding-top: 1rem;
-}
 
 .btn-filter {
     color: #fff;
@@ -2195,4 +2198,66 @@ nav.nav-top {
 
 select.compare-dropdown {
     background-color: white;
+}
+
+.horizontal-card {
+    width: 80%;
+}
+
+.badge-featured {
+    background-color: #f6691d;
+    color: white;
+}
+
+
+.badge-fun {
+    background-color: #07d5fc;
+    color: white;
+}
+
+.badge-new {
+    background-color: #ff8c00;
+    color: white;
+}
+
+.badge-breaking-news {
+    background-color: #800080;
+    color: white;
+}
+
+@media screen and (max-width: 767px){
+    .card .card-title {
+        font-size: 1rem;
+    }
+
+    .card .card-text {
+        font-size: 11px;
+    }
+
+    .card .card-body {
+        padding: 0.8rem;
+    }
+
+    .card .source {
+        margin-bottom: 0;
+    }
+
+    .btn-outline-primary {
+        font-size: 11px;
+    }
+
+}
+@media screen and (min-width: 768px) {
+    .card .card-img {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
 }

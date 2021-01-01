@@ -487,3 +487,149 @@ class news extends HTMLElement {
 
 }
 customElements.define('latest-news', news);
+
+
+
+class stories extends HTMLElement {
+    connectedCallback() {
+        const shadow = this.attachShadow({ mode: 'open' });
+
+        // link css
+        const linkElem1 = document.createElement('link');
+        linkElem1.setAttribute('rel', 'stylesheet');
+        linkElem1.setAttribute('href', '../static/css/style.css');
+        shadow.appendChild(linkElem1);
+
+        const linkElem2 = document.createElement('link');
+        linkElem2.setAttribute('rel', 'stylesheet');
+        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        shadow.appendChild(linkElem2);
+
+        const linkElem3 = document.createElement('link');
+        linkElem3.setAttribute('rel', 'stylesheet');
+        linkElem3.setAttribute('href', '../static/css/card.css');
+        shadow.appendChild(linkElem3);
+
+
+        var twitter_script = document.createElement('script');
+        twitter_script.src = '../static/js/library/twitter-widget.js';
+        shadow.appendChild(twitter_script);
+
+        var story_tag = this.getAttribute('story-tag');
+
+        var card = document.createElement('div');
+
+        var tag = "";
+        if (story_tag !== 'None' && story_tag !== '') {
+            tag = "<span class=\"badge badge-" + story_tag.toLowerCase() + "\">" + story_tag + "</span>"
+        }
+
+        var card_title = "<h5 class=\"card-title\">" + tag + "\n" + this.getAttribute('story-title') + "</h5>"
+
+        var cardBody = document.createElement('div')
+        cardBody.className = "card-body";
+
+
+        if (this.getAttribute('story-category') === 'S') {
+            card.setAttribute('class', 'card horizontal-card mb-3 mx-auto')
+
+            var row_ng = document.createElement('div')
+            row_ng.setAttribute('class', 'row no-gutters')
+
+            var imgCol = document.createElement('div')
+            imgCol.setAttribute('class', 'col-md-4')
+
+            var image = document.createElement('img')
+            image.src = this.getAttribute('story-img')
+            image.className = "card-img";
+
+            imgCol.appendChild(image)
+
+            var textCol = document.createElement('div')
+            textCol.setAttribute('class', 'col-md-8')
+
+            // var cardBody = document.createElement('div')
+            // cardBody.className = "card-body";
+
+            // var cardTitle = document.createElement('h5')
+            // cardTitle.className = "card-title"
+            //
+            // cardTitle.innerHTML = tag + this.getAttribute('story-title')
+
+            var body_text = "<p class=\"card-text\">" + this.getAttribute('story-body-text')+ "</p>"
+
+            var card_source = ""
+            if (this.getAttribute('story-source') !== 'None' && this.getAttribute('story-source') !== '') {
+                card_source = "<p class=\"source\">" + this.getAttribute('story-source') + "</p>"
+            }
+
+            var stretched_link = "<a href=\"" + this.getAttribute('story-link') + "\" class=\"stretched-link\"></a>"
+
+            cardBody.innerHTML = card_title + body_text + card_source + stretched_link
+
+            textCol.appendChild(cardBody)
+
+            row_ng.appendChild(imgCol)
+            row_ng.appendChild(textCol)
+
+            card.appendChild(row_ng)
+
+        }
+        else if (this.getAttribute('story-category') === 'V') {
+            card.className = "card horizontal-card text-center mx-auto add-card-margin"
+
+            var video = '<video width="100%" height="auto" controls controlsList="nodownload">\n' +
+                '<source src="' + this.getAttribute('story-link') + '" type="video/mp4">\n' +
+                'Your browser does not support the video tag.\n' +
+                '</video>'
+
+            cardBody.innerHTML = card_title + video
+
+            card.appendChild(cardBody)
+
+        }
+        // else if (this.getAttribute('story-category') === 'T') {
+        //
+        //     card.setAttribute('class', 'card horizontal-card mx-auto text-center add-card-margin')
+        //
+        //     var target_container = document.getElementById("stories-container")
+        //
+        //     var t_card_body = document.createElement('div')
+        //     t_card_body.setAttribute('class', 'card-body')
+        //
+        //     var t_card_title = document.createElement('h5')
+        //     t_card_title.setAttribute('class', 'card-title')
+        //
+        //     if (this.getAttribute('story-tag') === "Fun") {
+        //         var t_tag = "<span class='badge badge-info'>Fun</span>"
+        //         t_card_title.innerHTML = t_tag + "\n" + this.getAttribute('story-title')
+        //     } else {
+        //         t_card_title.innerHTML = this.getAttribute('story-title')
+        //     }
+        //
+        //     var t_body_content = this.getAttribute('story-body')
+        //
+        //     t_card_body.appendChild(t_card_title)
+        //     t_card_body.innerHTML += t_body_content
+        //
+        //     if (this.getAttribute('story-body-text') !== 'None' && this.getAttribute('story-body-text') !== '') {
+        //         var t_body_text = document.createElement('p')
+        //         t_body_text.setAttribute('class', 'card-text')
+        //         t_body_text.innerHTML = this.getAttribute('story-body-text')
+        //         t_card_body.appendChild(t_body_text)
+        //     }
+        //
+        //     card.appendChild(t_card_body)
+        //     console.log(card)
+        //     console.log(target_container)
+        //     target_container.appendChild(card)
+        //     target_container.appendChild(twitter_script)
+        // }
+
+
+        shadow.appendChild(card);
+        // this.attachShadow({ mode: 'close' });
+    }
+
+}
+customElements.define('people-and-stories', stories);
