@@ -1,23 +1,4 @@
 (async () => {
-    function abbreviateNumber(value) {
-        var newValue = value;
-        if (value >= 1000) {
-            var suffixes = ["", "K", "M", "B", "T"];
-            var suffixNum = Math.floor(("" + value).length / 3);
-            var shortValue = '';
-            for (var precision = 2; precision >= 1; precision--) {
-                shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000, suffixNum)) : value).toPrecision(precision));
-                var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
-                if (dotLessShortValue.length <= 2) {
-                    break;
-                }
-            }
-            if (shortValue % 1 != 0) shortValue = shortValue.toFixed(1);
-            newValue = shortValue + suffixes[suffixNum];
-        }
-        return newValue;
-    }
-
     const us = await d3.json('../../data/us-map.json');
     const data = topojson.feature(us, us.objects.states).features;
 
@@ -58,10 +39,8 @@
             })
         })
     })
-    // Step 2. Load the US map data.
 
-    // Step 3. Draw the SVG.
-    // First let's create an empty SVG with 960px width and 600px height.
+
     const width = 960;
     const height = 600;
     const svg = d3.select('#vis4')
@@ -79,21 +58,22 @@
     var p_min = min_and_max_percentage[0];
     var p_max = min_and_max_percentage[1];
     var p_interval = p_max - p_min;
-    var p_i = p_interval / 5;
+    var p_i = p_interval / 4;
+
 
     var textColorException = ["New Jersey", "Rhode Island", "Delaware", "Hawaii"];
 
-    var p_domain = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_min + p_i * 4, p_max];
+    var p_domain = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_max];
     // Create colorScale
     var colorScale = d3.scaleLinear()
         // .domain([0.1, 0.2, 0.4, 0.6, 0.8, 0.99])
         // .domain([0, 20, 40, 60, 80, 100])
         .domain(p_domain)
-        .range(d3.schemeBuGn[6]);
+        .range(d3.schemeBuGn[5]);
 
-    var textColorScale = d3.scaleLinear()
+    var textColorScale = d3.scaleThreshold()
         .domain(p_domain)
-        .range(['black', 'black', 'black', 'black', 'black', 'white'])
+        .range(['#000', '#000', '#000', '#000', '#fff', '#fff'])
 
     // var tooltip = d3.select('body').append('div')
     //     .attr('class', 'hidden d3tooltip');
@@ -308,6 +288,16 @@
         return b[3] - a[3];
     });
 
+    // add US Totals
+    var total_doses = d3.sum(data, d => d.distribution.doses)
+    var total_population = d3.sum(data, d => d.distribution.population)
+    var total_percentage_covered = (total_doses / total_population) * 100
+
+    var us_total_data = ["U.S. Total", abbreviateNumber(total_doses), abbreviateNumber(total_population), total_percentage_covered.toFixed(2)]
+    table_distribution.splice(0, 0, us_total_data)
+
+    console.log(table_distribution[10])
+
     // You could also have made the new array with a map function!
     //using colors and fonts from the UNICEF Style Guide
     var table = d3.select("#table")
@@ -333,7 +323,12 @@
         .selectAll("tr")
         .data(table_distribution.slice(0, 10))
         .enter()
-        .append("tr");
+        .append("tr")
+        .attr("style", function (d){
+            if (d[0] === "U.S. Total") {
+                return "color: #0b58de;"
+            }
+        });
     // We built the rows using the nested array - now each row has its own array.
     var cells = rows.selectAll("td")
         // each row has data associated; we get it and enter it for the cells.
@@ -352,8 +347,8 @@
             }
         });
 
-    // return table;
-    var index = 20;
+    // indexValue for initial # of columns
+    var index = 10;
 
     d3.select("#btn2").on("click", () => {
         if (index + 20 > table_distribution.length) {
@@ -374,7 +369,7 @@
             .attr('style', 'display: none;')
         d3.select('#btn2')
             .attr('style', 'display: inline-block')
-        index = 20;
+        index = 10;
         var newData = table_distribution.slice(0, 10);
         d3.selectAll('tbody').remove();
         update(newData);
@@ -386,7 +381,12 @@
             .selectAll("tr")
             .data(newData)
             .enter()
-            .append("tr");
+            .append("tr")
+            .attr("style", function (d) {
+                if (d[0] === "U.S. Total") {
+                    return "color: #0b58de;"
+                }
+            });
         // We built the rows using the nested array - now each row has its own array.
         var cells = new_rows.selectAll("td")
             // each row has data associated; we get it and enter it for the cells.
@@ -403,37 +403,29 @@
                     return 'percentage-cell';
                 }
             });
-        // d3.select('tbody')
-        //     .append(rows)
-
-
-        // var par = d3.selectAll("t")
-        //     .data(newData);
-
-        // par.exit().remove();
-        //
-        // par.enter()
-        //     .append("p")
-        //     .attr("class", "par")
-        //     .merge(par)
-        //     .html(d => d.id + " -- " + d.value)
     }
 
-    // legend.append('text')
-    //     // .attr("x", width -348)
-    //     // .attr("y", 5)
-    //     .attr("dy", ".35em")
-    //     .text("Hi!")
-    //     .attr('transform', `translate(0,0)`);
 
 
 })();
 
+
+// Imported Functions
 function hideSpinner() {
     document.getElementById('spinner-wrapper').style.display = 'none';
 }
 
-function hasNumbers(t) {
-    var regex = /\d/g;
-    return regex.test(t);
+function abbreviateNumber(value) {
+    let newValue = value;
+    const suffixes = ["", "K", "M", "B", "T"];
+    let suffixNum = 0;
+    while (newValue >= 1000) {
+        newValue /= 1000;
+        suffixNum++;
+    }
+
+    newValue = newValue.toPrecision(3);
+
+    newValue += suffixes[suffixNum];
+    return newValue;
 }

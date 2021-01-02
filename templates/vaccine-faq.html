@@ -2,6 +2,19 @@
 
 {% block styles %}
 <style>
+@media screen and (max-width: 767px){
+    h5 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 11px;
+    }
+
+    #news-title {
+        font-size: 1.75rem!important;
+    }
+}
 .badge {
     margin-right: 0.2rem;
 }
@@ -25,11 +38,12 @@ span.highlight-warp-speed {
   font-weight: 550;
 }
 
+
 .note{
     opacity: 0.7;
 }
 
-h3 {
+h4 {
     margin-top: 0.5rem;
 }
 
@@ -68,7 +82,7 @@ h3 {
 </div>
 <div class="ctr">
     <div class="quick-access">
-        <h3 id="quick-access">Quick Access</h3>
+        <h4 id="quick-access">Quick Access</h4>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#development">Vaccine Development</a></li>
@@ -77,12 +91,12 @@ h3 {
             </ol>
         </nav>
     </div>
-    <h3 id="vaccination">Vaccination and Efficacy</h3>
+    <h4 id="vaccination">Vaccination and Efficacy</h4>
     <div class="question">
         <h5><span class="badge badge-featured">Featured</span>Will the vaccine protect me against the new UK variant of COVID-19 that spreads 70% faster?</h5>
         <p>
             The developers of the two currently available vaccines, BioNTech-Pfizer and Moderna,
-            expressed confidence that their vaccine will be effective at inducing antibodies against the new UK variant.
+            <b>expressed confidence</b> that their vaccine will be effective at inducing antibodies against the new UK variant.
             <br>
             Moderna <a href="https://investors.modernatx.com/news-releases/news-release-details/statement-variants-sars-cov-2-virus" target="_blank">released a statement</a>
             on December 23 that they have tested their vaccine against a number of previous variants
@@ -185,7 +199,7 @@ There are currently no available vaccines that will prevent COVID-19. However, m
     </div>
 
 
-    <h3 id="distribution">Vaccine Distribution</h3>
+    <h4 id="distribution">Vaccine Distribution</h4>
     <div class="question" id="operation-warp-speed">
         <h5>What is <span class="highlight-warp-speed">Operation Warp Speed</span> and what is its role in vaccine distribution?</h5>
         <p>
@@ -215,7 +229,7 @@ When FDA first authorizes or approves the use of one or more COVID-19 vaccines i
         </p>
     </div>
 
-    <h3 id="development">Vaccine Development and Safety</h3>
+    <h4 id="development">Vaccine Development and Safety</h4>
 
     <div class="question">
         <h5>What does it mean if a vaccine trial is paused?</h5>
