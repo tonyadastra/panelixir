@@ -73,7 +73,7 @@ class myCard extends HTMLElement {
 
             })
         } else {
-            img_wrapper.setAttribute('style', 'height: 70px');
+            img_wrapper.setAttribute('style', 'height: 70px;');
         }
         wrapper.appendChild(img_wrapper)
 

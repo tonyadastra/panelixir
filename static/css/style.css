@@ -250,7 +250,7 @@ body {
     /*}*/
 
     .source {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         /* Modified */
     }
 
@@ -434,9 +434,9 @@ body {
         width: 80% !important;
     }
 
-    .source {
-        margin-top: 0.6rem;
-    }
+    /*.source {*/
+    /*    margin-top: 0.6rem;*/
+    /*}*/
 
     #submit-data {
         right: 20% !important;
@@ -1320,7 +1320,8 @@ nav.nav-top {
     top: 0;
     background-color: white;
     height: 50px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
 }
 
 .filter-text {
@@ -1833,6 +1834,15 @@ h1.title {
     text-decoration: underline;
 }
 
+.top-news-title {
+    font-weight: bold;
+    color: #053ad7;
+}
+
+.darkblue {
+    color: #053ad7;
+}
+
 
 .update-time {
     color: #435bf6;
@@ -2131,12 +2141,7 @@ p.imgText {
     font-size: 0.8rem;
 }
 
-/*@media screen and (max-width: 767px) {*/
-/*    table#compare-title th {*/
-/*        font-size: 11px;*/
-/*        padding: 7px;*/
-/*    }*/
-/*}*/
+
 #interactive-developing-process, .vis-bars, .interactive-progress {
     margin-left: auto;
     margin-right: auto;
@@ -2191,10 +2196,6 @@ nav div.scroll-menu a {
     text-decoration: none;
 }
 
-nav.nav-top {
-    box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
-}
-
 
 select.compare-dropdown {
     background-color: white;
@@ -2225,7 +2226,30 @@ select.compare-dropdown {
     color: white;
 }
 
-@media screen and (max-width: 767px){
+.badge-none {
+    display: none;
+}
+
+#top-news {
+    height: 30px;
+    overflow: hidden;
+}
+
+.top-news-close {
+    position: relative;
+    top: -40px;
+    right: 2%;
+    font-size: 20px;
+}
+
+#top-news {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@media screen and (max-width: 767px) {
     .card .card-title {
         font-size: 1rem;
     }
@@ -2246,7 +2270,34 @@ select.compare-dropdown {
         font-size: 11px;
     }
 
+    nav.nav-top {
+        margin-bottom: 0.5rem;
+    }
+
+    #top-news {
+        height: 48px;
+    }
+
+    .top-news-title {
+        font-size: 0.8rem;
+    }
+
+    .top-news-badge {
+        font-size: 0.6rem;
+    }
+
+    .top-news-close {
+        /*position: relative;*/
+        top: -40px;
+        right: 2%;
+        font-size: 15px;
+    }
+
+    #top-news {
+        width: 90%;
+    }
 }
+
 @media screen and (min-width: 768px) {
     .card .card-img {
         max-height: 100%;
@@ -2261,3 +2312,5 @@ select.compare-dropdown {
         margin: auto;
     }
 }
+
+

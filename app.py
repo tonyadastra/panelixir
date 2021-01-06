@@ -54,6 +54,12 @@ def index():
                 "WHERE category = 'G' AND (CURRENT_DATE - date <= 3 OR tag='Top') "
                 "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
     general_news = cur.fetchall()
+    for i in range(len(general_news)):
+        news = list(general_news[i])
+        for j in range(len(general_news[i])):
+            if news[j] is None:
+                news[j] = "None"
+        general_news[i] = news
     cur.execute("rollback")
 
     cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "

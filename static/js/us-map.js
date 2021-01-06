@@ -101,7 +101,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 100px;');
+                .attr('style', 'left: 0px; top: 150px;');
 
             var mouse = d3.mouse(this);
             var print_percentage = 0;
@@ -119,7 +119,7 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "100px");
+                    .style('top', "150px");
             } else {
                 tooltip.style('left', (mouse[0] + 270) + 'px')
                     .style('top', (mouse[1] + 170) + "px");
@@ -204,7 +204,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 100px;');
+                .attr('style', 'left: 0px; top: 150px;');
 
 
             var hover_state_code = d3.select(this).text();
@@ -227,7 +227,7 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "100px!important;")
+                    .style('top', "150px!important;")
                     // .style('font-size', '11px;');
             } else {
                 tooltip.style('left', (mouse[0] + 270) + 'px')
@@ -266,13 +266,12 @@
         return sum / 2;
     }
 
-
     var legend = svg.append("g")
         .attr("class", "legendLinear")
         .attr('transform', `translate(600,20)`);
 
     var legendLinear = d3.legendColor()
-        .title("Percentage Covered(%)")
+        .title("Percentage Covered")
         .shapeWidth(50)
         .orient('horizontal')
         .scale(colorScale);
@@ -296,7 +295,6 @@
     var us_total_data = ["U.S. Total", abbreviateNumber(total_doses), abbreviateNumber(total_population), total_percentage_covered.toFixed(2)]
     table_distribution.splice(0, 0, us_total_data)
 
-    console.log(table_distribution[10])
 
     // You could also have made the new array with a map function!
     //using colors and fonts from the UNICEF Style Guide
@@ -308,37 +306,40 @@
     table.append("thead")
         .append("tr")
         .selectAll("th")
-        .data(["State", "Doses", "Population", "Percentage Covered(%)"])
+        .data(["State", "Doses", "Population", "Percentage Covered"])
         .enter()
         .append("th")
         .text(function (d) {
             return d;
         })
         .attr("style", function (d) {
-            if (d === "Percentage Covered(%)")
+            if (d === "Percentage Covered")
                 return "background-color: rgb(100, 208, 138)"
         });
+
     var table_body = table.append("tbody");
     var rows = table_body
         .selectAll("tr")
-        .data(table_distribution.slice(0, 10))
+        .data(table_distribution.slice(0, 12))
         .enter()
         .append("tr")
-        .attr("style", function (d){
+        .attr("class", function (d){
             if (d[0] === "U.S. Total") {
-                return "color: #0b58de;"
+                return "us_total_row"
             }
         });
     // We built the rows using the nested array - now each row has its own array.
     var cells = rows.selectAll("td")
         // each row has data associated; we get it and enter it for the cells.
         .data(function (d) {
-            // console.log(d);
             return d;
         })
         .enter()
         .append("td")
-        .text(function (d) {
+        .text(function (d, i) {
+            if (i % 3 === 0 && i !== 0) {
+                return d + "%";
+            }
             return d;
         })
         .attr("class", function (d, i) {
@@ -348,10 +349,10 @@
         });
 
     // indexValue for initial # of columns
-    var index = 10;
+    var index = 12;
 
     d3.select("#btn2").on("click", () => {
-        if (index + 20 > table_distribution.length) {
+        if (index + 20 >= table_distribution.length) {
             d3.select('#btn2')
                 .attr('style', 'display: none;')
             d3.select('#btn1')
@@ -370,7 +371,7 @@
         d3.select('#btn2')
             .attr('style', 'display: inline-block')
         index = 10;
-        var newData = table_distribution.slice(0, 10);
+        var newData = table_distribution.slice(0, 12);
         d3.selectAll('tbody').remove();
         update(newData);
     })
@@ -382,9 +383,9 @@
             .data(newData)
             .enter()
             .append("tr")
-            .attr("style", function (d) {
+            .attr("class", function (d) {
                 if (d[0] === "U.S. Total") {
-                    return "color: #0b58de;"
+                    return "us_total_row"
                 }
             });
         // We built the rows using the nested array - now each row has its own array.
@@ -395,7 +396,10 @@
             })
             .enter()
             .append("td")
-            .text(function (d) {
+            .text(function (d, i) {
+                if (i % 3 === 0 && i !== 0) {
+                    return d + "%";
+                }
                 return d;
             })
             .attr("class", function (d, i) {

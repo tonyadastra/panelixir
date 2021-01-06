@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container"><span id="changeText">blah</span></div>
+<script src="../static/js/library/jquery.js"></script>
+<script>
+
+var textArray = ["foo","bar","blah1","blah2"];
+var index = 0;
+setInterval(function() {
+    $("#changeText").animate({
+        opacity: 0
+    }, function () {
+        if (textArray.length > index) {
+            $(this).text(textArray[index]).animate({opacity: 1})
+            index++;
+        } else {
+            index = 0;
+            $(this).text(textArray[index]).animate({opacity: 1})
+            index++;
+        }
+    });
+}, 2000);
+
+
+</script>
+</body>
+</html>
