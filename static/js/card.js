@@ -196,6 +196,14 @@ class myCard extends HTMLElement {
             displayButton = true;
         }
 
+        if (this.getAttribute('data-age-group') !== 'None' && this.getAttribute('data-age-group') !== '') {
+            var age_group = document.createElement('p');
+            age_group.setAttribute('class', 'info-tag');
+            age_group.innerHTML = "<b>Age Group: </b>" + this.getAttribute('data-age-group');
+            wrapper.appendChild(age_group);
+            displayButton = true;
+        }
+
         if (this.getAttribute('data-dose') !== 'None' && this.getAttribute('data-dose') !== '') {
             var dose = document.createElement('p');
             dose.setAttribute('class', 'info-tag');

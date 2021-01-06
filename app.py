@@ -34,7 +34,7 @@ def index():
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
                 "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-                "side_effects, trial_size "
+                "side_effects, trial_size, age_group "
                 "FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
                 "LIMIT 10")
@@ -52,7 +52,7 @@ def index():
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
                 "WHERE category = 'G' AND (CURRENT_DATE - date <= 3 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
+                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 45")
     general_news = cur.fetchall()
     for i in range(len(general_news)):
         news = list(general_news[i])
@@ -92,7 +92,7 @@ def desktopForm():
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size"
+        "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -120,7 +120,7 @@ def card():
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size"
+        "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
         " AND country LIKE '%" + desktop_country + "%' "
@@ -158,7 +158,7 @@ def mobileForm():
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size"
+        "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -185,7 +185,7 @@ def mobileAppendCards():
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size"
+        "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
         " AND country LIKE '%" + mobile_country + "%' "
@@ -208,7 +208,7 @@ def displayCompany():
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size"
+        "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
         " WHERE info.vac_id = " + companyID + "")
     data = cur.fetchall()
@@ -380,7 +380,7 @@ def get_compare_info():
     # vaccine1 = "2"
     # vaccine2 = "1"
     categories = ['type', 'efficacy', 'trial_size', 'dose', 'injection_type', 'storage', 'side_effects',
-                  'candidate_name']
+                  'candidate_name', 'age_group']
 
     cur.execute("SELECT json_agg(json_build_object("
                 "'type', vac_type, "
@@ -389,6 +389,7 @@ def get_compare_info():
                 "'dose', dose, "
                 "'injection_type', injection_type, "
                 "'storage', storage, "
+                "'age_group', age_group, "
                 "'side_effects', side_effects, "
                 "'approved', approved_countries, "
                 "'limited', limited_countries, "
@@ -396,13 +397,13 @@ def get_compare_info():
                 "FROM info WHERE vac_id = %s", (vaccine1,))
     summary1 = cur.fetchall()[0][0][0]
     status1 = ""
-    if summary1['approved'] is not None:
+    if summary1['approved'] is not None and summary1['approved'] != "":
         approved1_array = summary1['approved'].replace(', ', ',').split(',')
         if len(approved1_array) <= 3:
             status1 += "Approved in " + summary1['approved'] + ". "
         else:
             status1 += "Approved in " + str(len(approved1_array)) + " countries. "
-    if summary1['limited'] is not None:
+    if summary1['limited'] is not None and summary1['approved'] != "":
         limited1_array = summary1['limited'].replace(', ', ',').split(',')
         if len(limited1_array) <= 3:
             status1 += "Limited Use in " + summary1['limited'] + "."
@@ -419,6 +420,7 @@ def get_compare_info():
                 "'dose', dose, "
                 "'injection_type', injection_type, "
                 "'storage', storage, "
+                "'age_group', age_group, "
                 "'side_effects', side_effects, "
                 "'approved', approved_countries, "
                 "'limited', limited_countries, "
@@ -426,13 +428,13 @@ def get_compare_info():
                 "FROM info WHERE vac_id = %s", (vaccine2,))
     summary2 = cur.fetchall()[0][0][0]
     status2 = ""
-    if summary2['approved'] is not None:
+    if summary2['approved'] is not None and summary2['approved'] != "":
         approved2_array = summary2['approved'].replace(', ', ',').split(',')
         if len(approved2_array) <= 3:
             status2 += "Approved in " + summary2['approved'] + ". "
         else:
             status2 += "Approved in " + str(len(approved2_array)) + " countries. "
-    if summary2['limited'] is not None:
+    if summary2['limited'] is not None and summary2['approved'] != "":
         limited2_array = summary2['limited'].replace(', ', ',').split(',')
         if len(limited2_array) <= 3:
             status2 += "Limited Use in " + summary2['limited'] + "."

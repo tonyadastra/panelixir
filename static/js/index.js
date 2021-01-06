@@ -270,18 +270,18 @@ function resize() {
                         .attr("class", "boundary")
                         .attr("d", path);
 
-                    // Initial Rotation
-                    d3.timer(function () {
-                        var feature = map.selectAll("path");
-                        var dt = Date.now() - time;
-                        if (processing) {
-                            time = Date.now()
-                        }
-                        if (!processing) {
-                            projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
-                            feature.attr("d", path);
-                        }
-                    });
+                    // Map Rotation
+                    // d3.timer(function () {
+                    //     var feature = map.selectAll("path");
+                    //     var dt = Date.now() - time;
+                    //     if (processing) {
+                    //         time = Date.now()
+                    //     }
+                    //     if (!processing) {
+                    //         projection.rotate([ContinentArray[window.continent][0] + velocity * dt, rotate[1]]);
+                    //         feature.attr("d", path);
+                    //     }
+                    // });
                 });
             }
         })
@@ -622,7 +622,7 @@ $(document).ready(function () {
                             $(".bars-text").removeClass("clicked");
                             $(this).addClass("clicked");
                             let company_id = document.querySelector('.clicked.bars-text').id;
-                            console.log(company_id)
+                            // console.log(company_id)
                             $.ajax({
                                 url: "/display-company",
                                 data: {'company_id': company_id},
@@ -1332,7 +1332,7 @@ $('.compare-dropdown').on("change", function () {
     // console.log('clicked')
     var option1_value = $('#compare-dropdown-1').val();
     // var selected_option_1 = option1.options[option1.selectedIndex].value;
-    console.log(option1_value)
+    // console.log(option1_value)
     var option2_value = $('#compare-dropdown-2').val();
     $.ajax({
         url: '/get-compare-vaccine-info',
@@ -1358,6 +1358,7 @@ $('video').attr('controlsList', 'nodownload');
 
 $('.top-news-close').click(function () {
     d3.select('.top-news-wrapper').remove();
+    d3.select('.vaccine-and-life').attr('style', 'display: block;')
 })
 
 $(function () {

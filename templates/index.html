@@ -26,14 +26,12 @@
 <script src="../static/js/us-map.js"></script>
 
 <script>
-    var google_news = []
+    var google_news = [];
     {% for g_news in general_news %}
         google_news.push({{g_news|tojson|safe}})
     {% endfor %}
-    console.log(google_news)
-    {#google_news = google_news.slice(0, 3)#}
 
-{#var textArray = ["foo","bar","blah1","blah2"];#}
+
 var index = 0;
 $("#top-news").html("<div><span class='badge badge-" + google_news[index][1].toLowerCase() + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
 index++;
@@ -281,17 +279,17 @@ setInterval(function() {
         </div>
     </div>
 
-{#    <div class="news-wrapper">#}
-{#        <div class="news">#}
-{#            <h2 class="text-center" id="news-title">Vaccine and Life</h2>#}
-{#            <ul class="news-list overflow" style="overflow-x: hidden;/*list-style: inside; text-align: center*/">#}
-{#                {% for news in general_news %}#}
-{#                    <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"#}
-{#                                 news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        </div>#}
-{#    </div>#}
+    <div class="news-wrapper vaccine-and-life" style="display: none;">
+        <div class="news">
+            <h2 class="text-center" id="news-title">Vaccine and Life</h2>
+            <ul class="news-list overflow" style="overflow-x: hidden;/*list-style: inside; text-align: center*/">
+                {% for news in general_news %}
+                    <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
+                                 news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </section>
 
 <section data-anchor="stories">
