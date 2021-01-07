@@ -6,6 +6,8 @@ def format_country(country_array):
             country_array[idx] = country.replace("U.S.", "United States")
         if "U.K." in country:
             country_array[idx] = country.replace("U.K.", "United Kingdom")
+        if "E.U." in country:
+            country_array[idx] = country.replace("E.U.", "European Union")
         if idx == len(country_array) - 1:
             if country_array[idx].endswith('.'):
                 country_array[idx] = country[0: len(country) - 1]

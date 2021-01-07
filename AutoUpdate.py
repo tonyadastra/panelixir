@@ -212,6 +212,7 @@ def auto_update_nytimes(event, context):
             latest_news.append(news)
 
     latest_update_array = []
+    newYear = False
     for idx, news in enumerate(latest_news):
         news_array = []
         update_time = news.find('td', class_="g-small g-gray")
@@ -221,6 +222,8 @@ def auto_update_nytimes(event, context):
             update_time.text = update_time.text.replace('July', 'Jul.')
         if "Sept." in update_time.text:
             update_time.text = update_time.text.replace('Sept.', 'Sep.')
+        if "Jan." in update_time.text:
+            newYear = True
 
         news_text = news.find('td', class_="g-news g-last").text.strip()
         # if update_time is not None and update_time.text in news.text:
@@ -318,12 +321,22 @@ def auto_update_nytimes(event, context):
                 except IndexError:
                     vaccine_id = -1
 
-        if company_string == "GeneOne Life Science" and "GenOone Life Science" not in news_text:
+        if company_string == "Oxford-AstraZeneca":
+            vaccine_id = 11
+        if company_string == "Sinovac":
+            vaccine_id = 29
+
+        if company_string == "GeneOne Life Science" and "GeneOne Life Science" not in news_text:
             company_string = "GeneOne"
+
+        year = now.year
+        if newYear and "Dec." in update_time.text:
+            year -= 1
 
         news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
         news_array.append(company_string)
-        news_array.append(update_time.text + " " + str(now.year))
+        news_array.append(update_time.text + " " + str(year))
+        # Issue: When entering a new year, dates of previous years would be changed to new, making them at the top
         news_array.append(vaccine_id)
 
         latest_update_array.append(news_array)
