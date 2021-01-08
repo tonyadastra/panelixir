@@ -20,10 +20,16 @@
     /*{#fill: #fff;#}*/
         stroke: #888888;
     }
-    path:hover{
+    .us-map-region:hover{
         fill: red;
+        {#cursor: crosshair;#}
         /*{#opacity: 0.7;#}*/
     }
+
+    .us-map-text:hover{
+        cursor: default;
+    }
+
     .d3tooltip {
         color: #222;
         background-color: #fff;
@@ -41,6 +47,9 @@
         }
         .us-vaccine-distribution th, .us-vaccine-distribution td {
             padding: 0.3rem 0.5rem!important;
+        }
+        .date {
+            font-size: 11px;
         }
     }
 

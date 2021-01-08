@@ -8,17 +8,19 @@ import psycopg2
 import numpy as np
 import json
 import csv
-import requests
 
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
+conn2 = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
+                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
+cur2 = conn2.cursor()
 
 filter_limit = ""
 
@@ -411,7 +413,6 @@ def get_compare_info():
             status1 += "Limited Use in " + str(len(limited1_array)) + " countries."
 
     summary1['status'] = status1
-    # print(summary1)
 
     cur.execute("SELECT json_agg(json_build_object("
                 "'type', vac_type, "
@@ -447,7 +448,6 @@ def get_compare_info():
             summary1[category] = "Currently unavailable"
         if summary2[category] is None or not summary2[category]:
             summary2[category] = "Currently unavailable"
-    # print(summary2)
 
     return render_template("compare.html", summary1=summary1, summary2=summary2)
 
@@ -487,61 +487,14 @@ def load_us_states():
     return jsonify(data)
 
 
-@app.route('/get-moderna-distribution-data', methods=['GET'])
-def getModernaDistributionData():
-    result = requests.get('https://data.cdc.gov/resource/b7pe-5nws.json')
-    usa_data = []
-    nyc_doses = "-1"
-    for data in result.json():
-        state_data = {}
-        try:
-            if data['jurisdiction']:
-                state_data['state'] = data['jurisdiction'].replace('***', '').replace('**', '').replace('*', '').strip()
-                if data['jurisdiction'] == "New York City":
-                    nyc_doses = data['total_moderna_allocation_first_dose_shipments']
-                if data['total_moderna_allocation_first_dose_shipments'] \
-                        and data['total_moderna_allocation_first_dose_shipments'] != "N/A":
-                    state_data['doses'] = int(data['total_moderna_allocation_first_dose_shipments'].replace(',', ''))
-            if state_data and data['total_moderna_allocation_first_dose_shipments'] != "N/A":
-                usa_data.append(state_data)
-        except KeyError:
-            continue
-
-    for s_data in usa_data:
-        if s_data['state'] == "New York" and nyc_doses != "-1":
-            total_doses = int(s_data['doses']) + int(nyc_doses.replace(',', ''))
-            s_data.update({"doses": total_doses})
-
-    # print(len(usa_data))
-    return jsonify(usa_data)
-
-
-@app.route('/get-pfizer-distribution-data', methods=['GET'])
-def getPfizerDistributionData():
-    result = requests.get('https://data.cdc.gov/resource/saz5-9hgg.json')
-    usa_data = []
-    nyc_doses = "-1"
-    for data in result.json():
-        state_data = {}
-        try:
-            if data['jurisdiction']:
-                state_data['state'] = data['jurisdiction'].replace('***', '').replace('**', '').replace('*', '').strip()
-                if data['jurisdiction'] == "New York City":
-                    nyc_doses = data['total_pfizer_allocation_first_dose_shipments']
-                if data['total_pfizer_allocation_first_dose_shipments'] \
-                        and data['total_pfizer_allocation_first_dose_shipments'] != "N/A":
-                    state_data['doses'] = int(data['total_pfizer_allocation_first_dose_shipments'].replace(',', ''))
-            if state_data and data['total_pfizer_allocation_first_dose_shipments'] != "N/A":
-                usa_data.append(state_data)
-        except KeyError:
-            continue
-    for s_data in usa_data:
-        if s_data['state'] == "New York" and nyc_doses != "-1":
-            total_doses = int(s_data['doses']) + int(nyc_doses.replace(',', ''))
-            s_data.update({"doses": total_doses})
-
-    # print(len(usa_data))
-    return jsonify(usa_data)
+@app.route('/get-usa-distribution-data', methods=['GET'])
+def getUSADistributionData():
+    cur2.execute('''SELECT json_agg(json_build_object(
+                'jurisdiction', jurisdiction, 
+                'doses', doses_available)) FROM "VaccineDistributionUSA"''')
+    usa_distribution_data = cur2.fetchall()[0][0]
+    cur2.execute("rollback")
+    return jsonify(usa_distribution_data)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## **Recent Updates**
++ January 7 - New: Map - Fetch US distribution data from database(AWS Lambda AutoUpdate Database every hour), DC individual block, Tooltip position
 + January 5 - (Update 2) New: Age Group; Optimize Meta description, remove console logs
 + January 5 - New: Top News; Fix Tooltip, Add Percentage Sign
 + January 1 - Fix omitted 10 states & add US Total to map table; Styling Optimizations in FAQ

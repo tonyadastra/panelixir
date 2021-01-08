@@ -2,20 +2,22 @@
     const us = await d3.json('../../data/us-map.json');
     const data = topojson.feature(us, us.objects.states).features;
 
-    var Moderna, Pfizer, US_States;
-    // let us_state_distribution = [];
+    var special_jurisdictions = ["District of Columbia", "Puerto Rico", "U.S. Virgin Islands", "Mariana Islands", "American Samoa", "Guam"];
+
+    var US_Distribution_Data, US_States;
     let table_distribution = [];
-    var files = ["/data/us-states.csv", "/get-moderna-distribution-data", "/get-pfizer-distribution-data"];
+    var files = ["/data/us-states.csv", "/get-usa-distribution-data"];
     await Promise.all(files.map(url => d3.json(url))).then(function (values) {
-        US_States = values[0]
-        Moderna = values[1]
-        Pfizer = values[2]
+        US_States = values[0];
+        US_Distribution_Data = values[1];
+        // Moderna = values[1]
+        // Pfizer = values[2]
         US_States.forEach(function (state) {
-            Moderna.forEach(function (state_moderna) {
-                Pfizer.forEach(function (state_pfizer) {
-                    if (state.state === state_moderna.state && state_moderna.state === state_pfizer.state) {
+            US_Distribution_Data.forEach(function (dbStateData) {
+                // Pfizer.forEach(function (state_pfizer) {
+                    if (state.state === dbStateData.jurisdiction) {
                         state.population = parseInt(state.population)
-                        var total_doses = state_moderna.doses + state_pfizer.doses;
+                        var total_doses = dbStateData.doses;
                         var percentage_covered = total_doses / state.population;
                         var state_data = {
                             "state": state.state,
@@ -25,20 +27,25 @@
                             "percentage_covered": percentage_covered * 100
                         };
                         // Add distribution data to each state
-                        data['distribution'] = state_data
                         data.forEach(function (d_state) {
                             if (d_state.properties.name === state.state) {
                                 d_state['distribution'] = state_data
                             }
                         })
+                        // if (special_jurisdictions.includes(dbStateData.jurisdiction)) {
+                        //     data.push({"type": "Feature", "properties": {"name": state.state, "type": "Territory"}, "distribution": state_data})
+                        // }
                         // percentage_array.push(percentage_covered * 100)
                         // us_state_distribution.push(state_data)
-                        table_distribution.push([state_data.state, abbreviateNumber(state_data.doses), abbreviateNumber(state_data.population), state_data.percentage_covered.toFixed(2)])
+                        if (!special_jurisdictions.includes(state.state) || state.state === "District of Columbia") {
+                            table_distribution.push([state_data.state, abbreviateNumber(state_data.doses), abbreviateNumber(state_data.population), state_data.percentage_covered.toFixed(2)])
+                        }
                     }
-                })
+                // })
             })
         })
     })
+    // console.log(data)
 
 
     const width = 960;
@@ -85,9 +92,12 @@
         .data(data)
         .enter()
         .append('path')
+        .attr('class', 'us-map-region')
         .attr('d', path)
         .attr('id', function (d) {
-            return d.distribution.code;
+            if (d['distribution'] && d.properties.name !== "District of Columbia") {
+                return d.distribution.code;
+            }
         })
         .attr('fill', function (d) {
             if (d['distribution']) {
@@ -96,42 +106,6 @@
                 return "#fff";
             }
         })
-        .on('mousemove', function (d) {
-            d3.select(".d3tooltip").remove();
-            // Tooltip
-            var tooltip = d3.select('body').append('div')
-                .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 150px;');
-
-            var mouse = d3.mouse(this);
-            var print_percentage = 0;
-            var available_doses = 0;
-
-            if (d['distribution']) {
-                print_percentage = d.distribution.percentage_covered.toFixed(2);
-                available_doses = d.distribution.doses;
-            }
-
-            tooltip.classed('hidden', false)
-                // .attr("dy", "0em")
-                .html(d.properties.name + ": " + (print_percentage) + "% covered" + "<br/>" +
-                    "Doses available: " + abbreviateNumber(available_doses))
-            // console.log(svg.node().getBBox())
-            if (screen.width < 768) {
-                tooltip.style('left', '0px')
-                    .style('top', "150px");
-            } else {
-                tooltip.style('left', (mouse[0] + 270) + 'px')
-                    .style('top', (mouse[1] + 170) + "px");
-            }
-
-            // var matrix = this.getScreenCTM()
-            //     .translate(+this.getAttribute("cx"), +this.getAttribute("cy"));
-        })
-        .on('mouseout', function () {
-            d3.select(".d3tooltip").remove();
-            // tooltip.classed('hidden', true);
-        })
 
     svg.append("g")
         .attr("class", "states-names")
@@ -139,6 +113,7 @@
         .data(data)
         .enter()
         .append("svg:text")
+        .attr("class", "us-map-text")
         .text(function (d) {
             if (d['distribution'] && d.distribution.code !== 'DC') {
                 return d.distribution.code;
@@ -193,12 +168,83 @@
             } else {
                 return "transparent";
             }
-            // if (d.properties.name === 'District of Columbia') {
-            //     // ToDo: Area: polygonArea(d.geometry.coordinates[0][0]) (if <10, create small icon)
-            //     return 'transparent'
-            // }
-            // return 'black'
         })
+
+
+    var special_jurisdictions_data = [];
+    data.forEach(function (d){
+        if (special_jurisdictions.includes(d.properties.name)) {
+            special_jurisdictions_data.push(d)
+        }
+    })
+
+
+    svg.append("g")
+        .selectAll("rect")
+        .data(special_jurisdictions_data)
+        .enter()
+        .append("rect")
+        .attr('class', 'us-map-region')
+        .attr('id', function (d) {
+            return d.distribution.code;
+        })
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("transform", `translate(830, 400)`)
+        .attr("fill", function (d) {
+            return colorScale(d.distribution.percentage_covered)
+        })
+
+    svg.append("g")
+        .selectAll("text")
+        .data(special_jurisdictions_data)
+        .enter()
+        .append("text")
+        .attr("class", "us-map-text")
+        .attr("transform", `translate(850, 412.5)`)
+        .text(function (d) {
+            return d.distribution.code;
+        })
+
+    d3.selectAll('.us-map-region')
+        .on('mousemove', function (d) {
+            d3.select(".d3tooltip").remove();
+            // Tooltip
+            var tooltip = d3.select('body').append('div')
+                .attr('class', 'hidden d3tooltip')
+                .attr('style', 'left: 0px; top: 150px;');
+
+            // var mouse = d3.mouse(this);
+            var print_percentage = 0;
+            var available_doses = 0;
+
+            if (d['distribution']) {
+                print_percentage = d.distribution.percentage_covered.toFixed(2);
+                available_doses = d.distribution.doses;
+            }
+
+            tooltip.classed('hidden', false)
+                // .attr("dy", "0em")
+                .html(d.properties.name + ": " + (print_percentage) + "% covered" + "<br/>" +
+                    "Doses available: " + abbreviateNumber(available_doses))
+            // console.log(svg.node().getBBox())
+            if (screen.width < 768) {
+                tooltip.style('left', '0px')
+                    .style('top', "150px");
+            } else {
+                var pageX = d3.event.pageX;
+                var pageY = d3.event.pageY;
+                tooltip.style('left', (pageX + 20) + 'px')
+                    .style('top', (pageY) + "px");
+            }
+
+        })
+        .on('mouseout', function () {
+            d3.select(".d3tooltip").remove();
+            // tooltip.classed('hidden', true);
+        })
+
+    d3.selectAll('text.us-map-text')
         .on('mousemove', function (d) {
             d3.select(".d3tooltip").remove();
             // Tooltip
@@ -211,7 +257,10 @@
             d3.select("#" + hover_state_code)
                 .attr('fill', 'red')
 
-            var mouse = d3.mouse(this);
+            var pageX = d3.event.pageX;
+            var pageY = d3.event.pageY;
+
+            // var mouse = d3.mouse(this);
             var print_percentage = 0;
             var available_doses = 0;
 
@@ -228,10 +277,10 @@
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
                     .style('top', "150px!important;")
-                    // .style('font-size', '11px;');
+                // .style('font-size', '11px;');
             } else {
-                tooltip.style('left', (mouse[0] + 270) + 'px')
-                    .style('top', (mouse[1] + 170) + "px");
+                tooltip.style('left', (pageX + 20) + 'px')
+                    .style('top', (pageY) + "px");
             }
 
 
@@ -251,30 +300,18 @@
             // tooltip.classed('hidden', true);
         });
 
-    // shoelace algorithm
-    function polygonArea(points) {
-        var sum = 0.0;
-        var length = points.length;
-        if (length < 3) {
-            return sum;
-        }
-        points.forEach(function (d1, i1) {
-            var i2 = (i1 + 1) % length;
-            var d2 = points[i2];
-            sum += (d2[1] * d1[0]) - (d1[1] * d2[0]);
-        });
-        return sum / 2;
-    }
+
 
     var legend = svg.append("g")
         .attr("class", "legendLinear")
         .attr('transform', `translate(600,20)`);
 
     var legendLinear = d3.legendColor()
-        .title("Percentage Covered")
+        .title("Percentage Covered(%)")
         .shapeWidth(50)
         .orient('horizontal')
         .scale(colorScale);
+
     svg.select(".legendLinear")
         .call(legendLinear);
 
@@ -370,7 +407,7 @@
             .attr('style', 'display: none;')
         d3.select('#btn2')
             .attr('style', 'display: inline-block')
-        index = 10;
+        index = 12;
         var newData = table_distribution.slice(0, 12);
         d3.selectAll('tbody').remove();
         update(newData);
