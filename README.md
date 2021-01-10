@@ -1,20 +1,22 @@
-# PanElixir - Auto-Update USA Distribution Division
-> This package uses AWS Lambda Function to collect data from CDC's Vaccine Allocation Data and append to database "VaccineDistributionUSA"
+# PanElixir - Auto-Update World Vaccinations Division
+> This package uses AWS Lambda Function to collect data from Our World in Data's World Vaccinations Data and append to database "WorldVaccinations"
 
-> Data source: [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
+> Data source: [Our World in Data JSON API](https://covid.ourworldindata.org/data/owid-covid-data.json)
 
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
 + ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
++ ### [Auto-Update USA Distribution Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
 
 ## Version History
 - v1.0 - Initial release 
-    + Released: January 8, 2021
+    + Released: January 10, 2021
 
 ## The Lambda Function
-- This program is a lambda function that access the CDC Distribution data for Moderna and Pfizer and updates database VaccineDistributionUSA
-    - records the data in columns `jurisdiction` and `doses_available`, also has `date` showing the latest update date
+- This program is a lambda function that accesses Our World in Data's world vaccination data and updates database WorldVaccinations
+    - records the data in columns `location`(country), `iso`, `total_vaccinations`, `new_vaccinations`, `total_vaccinations_per_hundred`,
+      also has `date` showing the latest update date
 
 ## Run Frequency
 - This program runs every hour under AWS EventBridge (CloudWatch Events)
@@ -32,7 +34,7 @@
 │   ├── psycopg2
 │   └── bs4
 │       ├── BeautifulSoup
-├── getVaccineDistributionUSA.py
+├── getWorldVaccinations.py
 ├── function.zip
 ├── return.json
 ├── .gitignore
@@ -60,13 +62,13 @@
 
 
 ## Invoke the Lambda Function in Terminal
-+ `aws lambda invoke --function-name getVaccineDistributionUSA return.json --log-type Tail --query 'LogResult' --output text |  base64 -d`
++ `aws lambda invoke --function-name getWorldVaccinations return.json --log-type Tail --query 'LogResult' --output text |  base64 -d`
 + Execution results will be saved to a file called return.json
 
 
 ## Related Resources
-1. [Moderna Distribution Data CDC by Jurisdictions](https://data.cdc.gov/Vaccinations/COVID-19-Vaccine-Distribution-Allocations-by-Juris/b7pe-5nws)
-2. [Pfizer Distribution Data CDC by Jurisdictions](https://data.cdc.gov/Vaccinations/COVID-19-Vaccine-Distribution-Allocations-by-Juris/saz5-9hgg)
+1. [Our World in Data - Source](https://ourworldindata.org/covid-vaccinations)
+2. [Bloomberg Vaccine Tracker](https://www.bloomberg.com/graphics/covid-vaccine-tracker-global-distribution/)
 3. [AWS Lambda Deployment Package](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html)
 4. [Psycopg2 Package for AWS Lambda](https://github.com/jkehler/awslambda-psycopg2) (Note: Directly downloading this package using `pip` would cause an error in deployment)
 5. [Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html)
