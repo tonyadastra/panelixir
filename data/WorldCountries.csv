@@ -21,7 +21,7 @@ id,name,continent_name
 056,Belgium,Europe
 060,Bermuda,North America
 064,Bhutan,Asia
-068,"Bolivia, Plurinational State of",South America
+068,Bolivia,South America
 070,Bosnia and Herzegovina,Europe
 072,Botswana,Africa
 074,Bouvet Island,Antarctica
@@ -52,14 +52,14 @@ id,name,continent_name
 174,Comoros,Africa
 175,Mayotte,Africa
 178,Congo,Africa
-180,"Congo, the Democratic Republic of the",Africa
+180,Democratic Republic of Congo,Africa
 184,Cook Islands,Oceania
 188,Costa Rica,North America
 191,Croatia,Europe
 192,Cuba,North America
 196,Cyprus,Europe
 196,Cyprus,Asia
-203,Czech Republic,Europe
+203,Czechia,Europe
 204,Benin,Africa
 208,Denmark,Europe
 212,Dominica,North America
@@ -100,13 +100,13 @@ id,name,continent_name
 328,Guyana,South America
 332,Haiti,North America
 334,Heard Island and McDonald Islands,Antarctica
-336,Holy See (Vatican City State),Europe
+336,Vatican City,Europe
 340,Honduras,North America
 348,Hungary,Europe
 352,Iceland,Europe
 356,India,Asia
 360,Indonesia,Asia
-364,"Iran, Islamic Republic of",Asia
+364,Iran,Asia
 368,Iraq,Asia
 372,Ireland,Europe
 376,Israel,Asia
@@ -122,7 +122,7 @@ id,name,continent_name
 410,South Korea,Asia
 414,Kuwait,Asia
 417,Kyrgyzstan,Asia
-418,Lao People's Democratic Republic,Asia
+418,Laos,Asia
 422,Lebanon,Asia
 426,Lesotho,Africa
 428,Latvia,Europe
@@ -144,7 +144,7 @@ id,name,continent_name
 484,Mexico,North America
 492,Monaco,Europe
 496,Mongolia,Asia
-498,"Moldova, Republic of",Europe
+498,Moldova,Europe
 499,Montenegro,Europe
 500,Montserrat,North America
 504,Morocco,Africa
@@ -221,7 +221,7 @@ id,name,continent_name
 748,Swaziland,Africa
 752,Sweden,Europe
 756,Switzerland,Europe
-760,Syrian Arab Republic,Asia
+760,Syria,Asia
 762,Tajikistan,Asia
 764,Thailand,Asia
 768,Togo,Africa
@@ -236,13 +236,13 @@ id,name,continent_name
 798,Tuvalu,Oceania
 800,Uganda,Africa
 804,Ukraine,Europe
-807,"Macedonia, the former Yugoslav Republic of",Europe
+807,North Macedonia,Europe
 818,Egypt,Africa
 826,United Kingdom,Europe
 831,Guernsey,Europe
 832,Jersey,Europe
 833,Isle of Man,Europe
-834,"Tanzania, United Republic of",Africa
+834,Tanzania,Africa
 840,United States,North America
 850,"Virgin Islands, U.S.",North America
 854,Burkina Faso,Africa
@@ -254,3 +254,4 @@ id,name,continent_name
 887,Yemen,Asia
 894,Zambia,Africa
 895,Kosovo,Europe
+896,Northern Cyprus,Asia

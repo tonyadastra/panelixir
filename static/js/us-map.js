@@ -86,7 +86,6 @@
     //     .attr('class', 'hidden d3tooltip');
 
     // Use the path to plot the US map based on the geometry data.
-    hideSpinner();
     svg.append('g')
         .selectAll('path')
         .data(data)
@@ -113,7 +112,18 @@
         .data(data)
         .enter()
         .append("svg:text")
-        .attr("class", "us-map-text")
+        .attr("class", function (d) {
+            if (textColorException.includes(d.properties.name)) {
+                return "us-map-text text-color-exception"
+            } else {
+                return "us-map-text"
+            }
+        })
+        .attr('pointer-events', function (d) {
+            if (!textColorException.includes(d.properties.name)) {
+                return "none";
+            }
+        })
         .text(function (d) {
             if (d['distribution'] && d.distribution.code !== 'DC') {
                 return d.distribution.code;
@@ -200,7 +210,7 @@
         .data(special_jurisdictions_data)
         .enter()
         .append("text")
-        .attr("class", "us-map-text")
+        .attr("class", "us-map-text text-color-exception")
         .attr("transform", `translate(850, 412.5)`)
         .text(function (d) {
             return d.distribution.code;
@@ -212,7 +222,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 150px;');
+                .attr('style', 'left: 0px; top: 505px;');
 
             // var mouse = d3.mouse(this);
             var print_percentage = 0;
@@ -222,6 +232,8 @@
                 print_percentage = d.distribution.percentage_covered.toFixed(2);
                 available_doses = d.distribution.doses;
             }
+            var pageX = d3.event.pageX;
+            var pageY = d3.event.pageY;
 
             tooltip.classed('hidden', false)
                 // .attr("dy", "0em")
@@ -230,10 +242,8 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "150px");
+                    .style('top', "505px");
             } else {
-                var pageX = d3.event.pageX;
-                var pageY = d3.event.pageY;
                 tooltip.style('left', (pageX + 20) + 'px')
                     .style('top', (pageY) + "px");
             }
@@ -244,13 +254,13 @@
             // tooltip.classed('hidden', true);
         })
 
-    d3.selectAll('text.us-map-text')
+    d3.selectAll('text.us-map-text.text-color-exception')
         .on('mousemove', function (d) {
             d3.select(".d3tooltip").remove();
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 150px;');
+                .attr('style', 'left: 0px; top: 505px;');
 
 
             var hover_state_code = d3.select(this).text();
@@ -276,16 +286,13 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "150px!important;")
+                    .style('top', "505px!important;")
                 // .style('font-size', '11px;');
             } else {
                 tooltip.style('left', (pageX + 20) + 'px')
                     .style('top', (pageY) + "px");
             }
 
-
-            // var matrix = this.getScreenCTM()
-            //     .translate(+this.getAttribute("cx"), +this.getAttribute("cy"));
         })
         .on('mouseout', function (d) {
             var mouseout_state_code = d3.select(this).text();
@@ -449,24 +456,3 @@
 
 
 })();
-
-
-// Imported Functions
-function hideSpinner() {
-    document.getElementById('spinner-wrapper').style.display = 'none';
-}
-
-function abbreviateNumber(value) {
-    let newValue = value;
-    const suffixes = ["", "K", "M", "B", "T"];
-    let suffixNum = 0;
-    while (newValue >= 1000) {
-        newValue /= 1000;
-        suffixNum++;
-    }
-
-    newValue = newValue.toPrecision(3);
-
-    newValue += suffixes[suffixNum];
-    return newValue;
-}

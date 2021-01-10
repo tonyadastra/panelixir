@@ -16,7 +16,7 @@
         font-weight: bold;
         color: #0a87ac;
     }
-    path {
+    .us-map path {
     /*{#fill: #fff;#}*/
         stroke: #888888;
     }
@@ -30,7 +30,7 @@
         cursor: default;
     }
 
-    .d3tooltip {
+    .d3tooltip, .d3tooltip-world {
         color: #222;
         background-color: #fff;
         padding: .5em;
@@ -38,7 +38,31 @@
         border-radius: 2px;
         opacity: 0.9;
         position: absolute;
-        border: 1px solid #1b1e21;
+        {#border: 1px solid #1b1e21;#}
+        box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .d3tooltip-world.hidden {
+        display: none;
+    }
+
+    .country.no-data {
+        opacity: 0.5;
+    }
+    .vaccinations-title {
+    margin-top: 0.2rem;
+    }
+
+    p.vaccinations-subtitle{
+        margin-top: 0.2rem;
+        font-size: 90%;
+    }
+
+    span.highlight-vaccinations {
+        font-weight: bold;
+        background-color: #a7ffde;
+        border-radius: 0.2rem;
+        padding: 0.2rem 0.35rem;
     }
 
     @media screen and (max-width: 767px) {
@@ -51,6 +75,27 @@
         .date {
             font-size: 11px;
         }
+
+        .vaccinations-title {
+            font-size: 80%;
+        }
+
+        .vaccinations-subtitle {
+            font-size: 60% !important;
+        }
+
+        .highlight-vaccinations {
+            padding: 0.15rem 0.25rem;
+        }
+
+        .d3tooltip-world {
+            font-size: 60%;
+        }
+
+        .tooltip-no-data {
+            opacity: 0.8;
+            font-size: 95%;
+        }
     }
 
     @media screen and (min-width: 768px) {
@@ -58,49 +103,72 @@
             margin-left: 15%;
             margin-right: 15%;
         }
+        .world-map {
+            margin-left: 15%;
+            margin-right: 15%;
+        }
 
     }
-.us-vaccine-distribution th {
-    background-color: #dbdbdb;
-    /*padding: 0.5rem 2rem;*/
-    /*{#color: white;#}*/
-    /*{#border: 1px solid black;#}*/
-    /*{#opacity: 0.7;#}*/
-}
+    .us-vaccine-distribution th {
+        background-color: #dbdbdb;
+        /*padding: 0.5rem 2rem;*/
+        /*{#color: white;#}*/
+        /*{#border: 1px solid black;#}*/
+        /*{#opacity: 0.7;#}*/
+    }
 
-.us-vaccine-distribution th, .us-vaccine-distribution td {
-    padding: 0.5rem 2rem;
-}
-
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
+    .us-vaccine-distribution th, .us-vaccine-distribution td {
+        padding: 0.5rem 2rem;
+    }
 
 
-table.us-vaccine-distribution {
-/*{#color: #FFFFFF;#}*/
-    margin-left: auto;
-    margin-right: auto;
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-}
 
-#spinner-wrapper {
-  line-height: 35rem;
-  height: 35rem;
-  /*{#border: 3px solid green;#}*/
-  text-align: center;
-}
+    table.us-vaccine-distribution {
+    /*{#color: #FFFFFF;#}*/
+        margin-left: auto;
+        margin-right: auto;
 
-.percentage-cell {
-    color: rgb(7, 158, 138);
-    font-weight: bold;
-}
+    }
 
-.us_total_row {
-    color: #0b58de;
-    font-weight: bold;
-}
+    #spinner-wrapper {
+      line-height: 35rem;
+      height: 35rem;
+      /*{#border: 3px solid green;#}*/
+      text-align: center;
+    }
+
+    .percentage-cell {
+        color: rgb(7, 158, 138);
+        font-weight: bold;
+    }
+
+    .us_total_row {
+        color: #0b58de;
+        font-weight: bold;
+    }
+
+    .tooltip-number {
+        font-weight: bold;
+        font-size: 150%;
+    }
+
+    {#.country.has-data:hover {#}
+    {#    stroke: #ff0000!important;#}
+    {#    stroke-width: 1.5;#}
+    {#}#}
+
+    .boundary {
+      fill: none;
+      stroke: #fff;
+      stroke-width: .5px;
+    }
+
+
+
 
 </style>
 {#{% endblock %}#}
@@ -109,14 +177,21 @@ table.us-vaccine-distribution {
 
 {#{% block content %}#}
 <section id="vaccine-distribution" data-anchor="distribution">
-
-<div class="us-map text-center">
-    <h3 id="news-title">Vaccine Availability in the United States</h3>
+<div class="world-map text-center">
+    <h3 id="news-title">World Vaccinations: The Race to End the Pandemic</h3>
+    <h5 class="vaccinations-title">Number of Doses Administered Per 100 People</h5>
     <div id="spinner-wrapper">
         <div class='spinner-grow text-success elixir' id='spinner' role='status'>
             <span class='sr-only'>Loading</span>
         </div>
     </div>
+    <p class="vaccinations-subtitle"></p>
+{#    <h4>Number of Doses Administered per 100 people</h4>#}
+    <div id="vis5" style="margin-bottom: 1.5rem"></div>
+</div>
+
+<div class="us-map text-center">
+    <h3 id="news-title">Vaccine Availability in the United States</h3>
     <div id="vis4" style="margin-bottom: 1.5rem">
     </div>
     <div id="table" style="margin-bottom: 0.3rem"></div>

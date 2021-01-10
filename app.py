@@ -8,6 +8,7 @@ import psycopg2
 import numpy as np
 import json
 import csv
+import requests
 
 application = app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
@@ -16,11 +17,14 @@ conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.c
                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
 conn2 = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
                          " dbname=vaccinedb user=internetuser password=welcometopanelixir")
+conn3 = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
+                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
 cur2 = conn2.cursor()
+cur3 = conn3.cursor()
 
 filter_limit = ""
 
@@ -254,6 +258,28 @@ def getEntertainment():
     return json.dumps(data)
 
 
+@app.route("/get-world-vaccinations")
+def getWorldVaccination():
+    world_vaccination_api = requests.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
+    world_vaccination_data = []
+    for key, country_data in world_vaccination_api.json().items():
+        country = country_data['location']
+        iso = key
+        total_vaccinations = 0
+        new_vaccinations = 0
+        vaccinations_per_hundred = 0.0
+        try:
+            total_vaccinations = int(country_data['data'][-1]['total_vaccinations'])
+            new_vaccinations = int(country_data['data'][-1]['new_vaccinations'])
+            vaccinations_per_hundred = country_data['data'][-1]['total_vaccinations_per_hundred']
+        except KeyError:
+            pass
+        country_data = {"country": country, "iso": iso, "total_vaccinations": total_vaccinations,
+                        "new_vaccinations": new_vaccinations, "vaccinations_per_hundred": vaccinations_per_hundred}
+        world_vaccination_data.append(country_data)
+    return jsonify(world_vaccination_data)
+
+
 @app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
     cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
@@ -466,6 +492,13 @@ def load_us_map():
     return jsonify(data)
 
 
+@app.route('/data/countries-50m.json', methods=['GET'])
+def load_world_map():
+    with open('data/countries-50m.json') as json_file:
+        data = json.load(json_file)
+    return jsonify(data)
+
+
 @app.route('/data/world-countries.csv', methods=['GET'])
 def load_country():
     data = {}
@@ -495,6 +528,23 @@ def getUSADistributionData():
     usa_distribution_data = cur2.fetchall()[0][0]
     cur2.execute("rollback")
     return jsonify(usa_distribution_data)
+
+
+@app.route('/get-world-vaccination-data', methods=['GET'])
+def getWorldVaccinationData():
+    cur3.execute('''SELECT json_agg(json_build_object(
+                'country', country, 
+                'vaccinations', vaccinations, 
+                'new_vaccinations', new_vaccinations, 
+                'vaccinations_per_hundred', vaccinations_per_hundred)) 
+                FROM "WorldVaccinations"''')
+    world_vaccination_data = cur3.fetchall()[0][0]
+    cur3.execute("rollback")
+
+    for vaccination_data in world_vaccination_data:
+        if vaccination_data['country'] == "Vatican":
+            vaccination_data['country'] = "Vatican City"
+    return jsonify(world_vaccination_data)
 
 
 if __name__ == '__main__':
