@@ -1,12 +1,13 @@
 # PanElixir - Auto-Update USA Distribution Division
 > This package uses AWS Lambda Function to collect data from CDC's Vaccine Allocation Data and append to database "VaccineDistributionUSA"
 
-> Data source: [The New York Times Vaccine Tracker](https://www.nytimes.com/interactive/2020/science/coronavirus-vaccine-tracker.html)
+> Data source: [CDC - Moderna Distribution](https://data.cdc.gov/resource/b7pe-5nws.json); [CDC - Pfizer Distribution](https://data.cdc.gov/resource/saz5-9hgg.json)
 
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
-+ ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
-+ ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
+    + ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
+    + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
+    + ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 ## Version History
 - v1.0 - Initial release 
