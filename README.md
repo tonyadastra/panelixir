@@ -3,6 +3,9 @@
 ## **Divisions and Internal Links**
 + ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
++ ### [Auto-Update USA Distribution Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
++ ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
+
 
 ## **Recent Updates**
 + January 10 - New: WorldMap, new tooltip; USMap - PointerEvents, adjust tooltip; other styling optimizations
