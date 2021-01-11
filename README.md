@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 10 - (Update 2) New: Bar Graph for WorldMap
 + January 10 - New: WorldMap, new tooltip; USMap - PointerEvents, adjust tooltip; other styling optimizations
 + January 7 - New: Map - Fetch US distribution data from database(AWS Lambda AutoUpdate Database every hour), DC individual block, Tooltip position
 + January 5 - (Update 2) New: Age Group; Optimize Meta description, remove console logs

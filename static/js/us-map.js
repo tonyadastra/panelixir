@@ -222,7 +222,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 505px;');
+                .attr('style', 'left: 0px; top: 670px;');
 
             // var mouse = d3.mouse(this);
             var print_percentage = 0;
@@ -242,7 +242,7 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "505px");
+                    .style('top', "670px");
             } else {
                 tooltip.style('left', (pageX + 20) + 'px')
                     .style('top', (pageY) + "px");
@@ -260,7 +260,7 @@
             // Tooltip
             var tooltip = d3.select('body').append('div')
                 .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 505px;');
+                .attr('style', 'left: 0px; top: 670px;');
 
 
             var hover_state_code = d3.select(this).text();
@@ -286,7 +286,7 @@
             // console.log(svg.node().getBBox())
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "505px!important;")
+                    .style('top', "670px!important;")
                 // .style('font-size', '11px;');
             } else {
                 tooltip.style('left', (pageX + 20) + 'px')
@@ -322,7 +322,7 @@
     svg.select(".legendLinear")
         .call(legendLinear);
 
-    d3.select('.legendTitle')
+    svg.select('.legendTitle')
         // text-center: x: (legend width - legendTitle width) / 2
         .attr('transform', `translate(${(legend.node().getBBox().width - d3.select('.legendTitle').node().getBBox().width) / 2},0)`);
 
@@ -416,7 +416,7 @@
             .attr('style', 'display: inline-block')
         index = 12;
         var newData = table_distribution.slice(0, 12);
-        d3.selectAll('tbody').remove();
+        table.selectAll('tbody').remove();
         update(newData);
     })
 

@@ -65,19 +65,26 @@
         padding: 0.2rem 0.35rem;
     }
 
+    .vaccinations-title {
+        font-size: 110%;
+    }
+
+
     @media screen and (max-width: 767px) {
-        table.us-vaccine-distribution {
+        table.us-vaccine-distribution, table.world-vaccination-table {
             font-size: 9px;
         }
-        .us-vaccine-distribution th, .us-vaccine-distribution td {
+
+        .us-vaccine-distribution th, .us-vaccine-distribution td, .world-vaccination-table th, .world-vaccination-table td {
             padding: 0.3rem 0.5rem!important;
         }
+
         .date {
             font-size: 11px;
         }
 
         .vaccinations-title {
-            font-size: 80%;
+            font-size: 90% !important;
         }
 
         .vaccinations-subtitle {
@@ -85,7 +92,7 @@
         }
 
         .highlight-vaccinations {
-            padding: 0.15rem 0.25rem;
+            padding: 0.15rem 0.25rem!important;
         }
 
         .d3tooltip-world {
@@ -109,7 +116,7 @@
         }
 
     }
-    .us-vaccine-distribution th {
+    .us-vaccine-distribution th, .world-vaccination-table th {
         background-color: #dbdbdb;
         /*padding: 0.5rem 2rem;*/
         /*{#color: white;#}*/
@@ -117,7 +124,7 @@
         /*{#opacity: 0.7;#}*/
     }
 
-    .us-vaccine-distribution th, .us-vaccine-distribution td {
+    .us-vaccine-distribution th, .world-vaccination-table th, .us-vaccine-distribution td, .world-vaccination-table td {
         padding: 0.5rem 2rem;
     }
 
@@ -127,7 +134,7 @@
     }
 
 
-    table.us-vaccine-distribution {
+    table.us-vaccine-distribution, table.world-vaccination-table {
     /*{#color: #FFFFFF;#}*/
         margin-left: auto;
         margin-right: auto;
@@ -167,6 +174,26 @@
       stroke-width: .5px;
     }
 
+    #world-map {
+        margin-bottom: -5%;
+    }
+    {#.bar {#}
+    {#    fill: #5f89ad;#}
+    {#}#}
+
+    .axis {
+        font-size: 13px;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        display: none;
+    }
+
+    .label {
+        font-size: 13px;
+    }
 
 
 
@@ -179,15 +206,15 @@
 <section id="vaccine-distribution" data-anchor="distribution">
 <div class="world-map text-center">
     <h3 id="news-title">World Vaccinations: The Race to End the Pandemic</h3>
-    <h5 class="vaccinations-title">Number of Doses Administered Per 100 People</h5>
+    <p class="vaccinations-title"></p>
+{#    <h5 class="vaccinations-title">Number of Doses Administered Per 100 People</h5>#}
     <div id="spinner-wrapper">
         <div class='spinner-grow text-success elixir' id='spinner' role='status'>
             <span class='sr-only'>Loading</span>
         </div>
     </div>
-    <p class="vaccinations-subtitle"></p>
 {#    <h4>Number of Doses Administered per 100 people</h4>#}
-    <div id="vis5" style="margin-bottom: 1.5rem"></div>
+    <div id="vis5"></div>
 </div>
 
 <div class="us-map text-center">
