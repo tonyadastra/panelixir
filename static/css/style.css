@@ -140,7 +140,7 @@ body {
     }
 
     #news-title {
-        font-family: Kefa, sans-serif;
+        font-family: "KefaFont", sans-serif;
         font-variant: small-caps;
         font-size: 1.5rem !important;
     }
@@ -1817,7 +1817,7 @@ h6 {
 h1.title {
     /*font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;*/
     /*font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;*/
-    font-family: Kefa, sans-serif;
+    font-family: "KefaFont", sans-serif;
     font-size: 30px;
     margin-bottom: 0!important;
 }
@@ -1846,7 +1846,7 @@ h1.title {
 .update-time {
     color: #435bf6;
     font-weight: lighter;
-    font-family: Kefa, sans-serif;
+    font-family: "KefaFont", sans-serif;
 }
 
 .news-wrapper {
@@ -1888,9 +1888,13 @@ h1.title {
 /*  color: darkslateblue;*/
 /*}*/
 #news-title {
-    font-family: Kefa, sans-serif;
+    font-family: "KefaFont", sans-serif;
     font-variant: small-caps;
     font-size: 2.5rem;
+    font-weight: bold;
+    max-width: 98%;
+    margin-left: auto;
+    margin-right: auto;
     /*text-decoration: underline solid white;*/
 }
 
@@ -1930,7 +1934,7 @@ tspan {
 }
 
 .date {
-    font-family: Kefa, sans-serif;
+    font-family: "KefaFont", sans-serif;
     margin-left: 0.5rem;
     font-weight: 200;
     color: #7a7a7a;
@@ -2314,5 +2318,15 @@ select.compare-dropdown {
 
 #world-map {
     margin-bottom: -5%;
+}
+
+
+@font-face {
+  font-family: 'KefaFont';
+  src: url('../Kefa-Regular.eot'); /* IE9 Compat Modes */
+  src: url('../Kefa-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../Kefa-Regular.woff') format('woff'), /* Modern Browsers */
+       url('../Kefa-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('../Kefa-Regular.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
 

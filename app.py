@@ -533,6 +533,7 @@ def getUSADistributionData():
 @app.route('/get-world-vaccination-data', methods=['GET'])
 def getWorldVaccinationData():
     cur3.execute('''SELECT json_agg(json_build_object(
+                'date', TO_CHAR(date, 'Month FMDD, YYYY'),
                 'country', country, 
                 'vaccinations', vaccinations, 
                 'new_vaccinations', new_vaccinations, 

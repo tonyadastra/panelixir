@@ -891,7 +891,7 @@ $(window).scroll(function () {
         // $('nav').addClass('fixed');
         $('section').each(function(i) {
             // console.log($(window).scrollTop() - $(this).position().top)
-            if ($(this).position().top <= $(window).scrollTop() + 150) {
+            if ($(this).position().top <= $(window).scrollTop() + 200) {
                 if (prev_i >= i) {
                     if (j_tester !== prev_i) {
                         // console.log(prev_i)

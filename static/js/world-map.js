@@ -28,10 +28,12 @@
             countries.forEach(function (d) {
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
-                    table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred]);
+                    table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations),vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations]);
                     graph_top_vaccinations.push({
                         "country": d.name,
-                        "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred
+                        "vaccinations": vaccination_data.vaccinations,
+                        "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
+                        "date": vaccination_data.date
                     })
                 }
                 if (d.name === "United States" && (vaccination_data.country === "Northern Mariana Islands" || vaccination_data.country === "Virgin Islands, U.S." || vaccination_data.country === "Guam" || vaccination_data.country === "Guam" || vaccination_data.country === "Puerto Rico")) {
@@ -39,7 +41,6 @@
                 }
             })
         })
-
     })
 
     var currentTime = new Date();
@@ -60,7 +61,7 @@
     const width = 1050, height = 550;
 
     var legendSVG = d3.select("#vis5").append("svg")
-        .attr('viewBox', `0 0 ${width} 80`);
+        .attr('viewBox', `0 0 ${width} 85`);
 
     var min_and_max_percentage = d3.extent(countries, function (d) {
         if (d.hasOwnProperty('vaccinations'))
@@ -86,8 +87,8 @@
 
     var legendLinear = d3.legendColor()
         // .title("Number of Doses Administered per 100 People")
-        .shapeWidth(50)
-        .cells(8)
+        .shapeWidth(70)
+        .cells(9)
         .orient('horizontal')
         .scale(colorScale);
 
@@ -100,9 +101,10 @@
     legendSVG.select(".legendLinear")
         .call(legendLinear);
 
-    g_legend.attr("transform", `translate(${(width - d3.select('.legendLinear').node().getBBox().width) / 2},30)`);
+    g_legend.attr("transform", `translate(${(width - d3.select('.legendLinear').node().getBBox().width) / 2},35)`);
+
     legendSVG.select('.legend-title')
-        .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},20)`)
+        .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`)
 
 
     var svg = d3.select("#vis5").append("svg")
@@ -205,11 +207,12 @@
             var pageX = d3.event.pageX;
             var pageY = d3.event.pageY;
             tooltip.classed('hidden', false)
-                .style('left', (pageX + 20) + 'px')
+                .style('left', (pageX + 20) + "px")
                 .style('top', (pageY) + "px")
             if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
                 tooltip.html(d.name + ":<br/> <span class='tooltip-number'>" + (d.vaccinations.vaccinations_per_hundred) + "</span> doses given per 100 people" +
-                    "<br/> <span class='tooltip-number'>" + abbreviateNumber(d.vaccinations.vaccinations) + "</span> doses administered");
+                    "<br/> <span class='tooltip-number'>" + abbreviateNumber(d.vaccinations.vaccinations) + "</span> doses administered <br/>" +
+                    "<span class='tooltip-date'>As of " + (d.vaccinations.date) + "</span>");
             } else {
                 tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
             }
@@ -237,9 +240,6 @@
 
 
     var borders = topojson.feature(world, world.objects.countries, function (a, b) {
-        // console.log(a)
-        // console.log(b)
-        // console.log(a !== b)
         return a !== b;
     });
 
@@ -248,18 +248,88 @@
         return b[2] - a[2];
     });
 
-    var graphMargin = {top: 20, right: 40, bottom: 50, left: 150}
+
+    var buttonGroupGraph = d3.select("#vis5")
+        .append("div")
+        .attr("class", "btn-group world-map-button-group")
+        .attr("role", "group")
+
+    buttonGroupGraph.selectAll("button")
+        .data(["Table", "Bar Graph"])
+        .enter()
+        .append("button")
+        .attr("class", function (d) {
+            if (d === "Table")
+                return "active btn btn-outline-primary world-map-graph-button"
+            else
+                return "btn btn-outline-primary world-map-graph-button"
+        })
+        .html(function (d) {
+            return d;
+        })
+        .on("click", function (d) {
+            d3.selectAll("button.world-map-graph-button")
+                .attr("class", "btn btn-outline-primary world-map-graph-button")
+            d3.select(this)
+                .attr("class", "active btn btn-outline-primary world-map-graph-button")
+
+            if (d === "Table"){
+                d3.select(".world-map-bars-svg")
+                    .style("display", "none")
+                d3.select(".world-vaccination-table")
+                    .style("display", "table")
+                // d3.select(".legend-title-2")
+                //     .style("display", "none")
+            }
+            else if (d === "Bar Graph") {
+                d3.select(".world-vaccination-table")
+                    .style("display", "none")
+                d3.select(".world-map-bars-svg")
+                    .style("display", "block")
+                // d3.select(".legend-title-2")
+                //     .style("display", "block")
+            }
+
+        })
+
+    // var legendGraphSVG = d3.select("#vis5").append("svg")
+    //     .attr("class", "legend-title-2")
+    //     .style("display", "none")
+    //     .attr('viewBox', `0 0 ${width} 35`);
+
+
+
+
+    var graphMargin = {top: 50, right: 40, bottom: 70, left: 180}
     var graphWidth = width - graphMargin.left - graphMargin.right,
-        graphHeight = 500 - graphMargin.top - graphMargin.bottom;
+        graphHeight;
+    if (screen.width < 768)
+        graphHeight = 700 - graphMargin.top - graphMargin.bottom;
+    else
+        graphHeight = 600 - graphMargin.top - graphMargin.bottom;
 
     var graphSVG = d3.select("#vis5").append("svg")
         .attr('viewBox', `0 0 ${graphWidth} ${graphHeight}`)
-        .append("g")
+        .attr("class", "world-map-bars-svg")
+        // .style("display", "none")
+
+    graphSVG.append("text")
+        // .attr("font-weight", "bold")
+        .attr("class", "legend-title legend-title-2")
+        .text("Number of Doses Administered Per 100 People")
+
+
+    graphSVG.select('.legend-title.legend-title-2')
+        .attr("transform", `translate(${(graphWidth - d3.select('.legend-title.legend-title-2').node().getBBox().width) / 2},35)`)
+
+    var graphG = graphSVG.append("g")
         .attr("transform", "translate(" + graphMargin.left + "," + graphMargin.top + ")");
+
+    graphSVG.style("display", "none");
 
     var y = d3.scaleBand()
         .range([0, graphHeight - graphMargin.bottom])
-        .padding(0.1);
+        .padding(0.25);
 
     var x = d3.scaleLinear()
         .range([0, graphWidth - graphMargin.left - graphMargin.right - 20]);
@@ -289,6 +359,7 @@
     y.domain(graph_top_vaccinations.slice(0, 20).map(function (d) {
         return d.country;
     }));
+
 
     // var bars = svg.selectAll(".bar")
     //     .data(countries)
@@ -325,13 +396,13 @@
     //             return d.vaccinations.vaccinations_per_hundred;
     //     });
 
-    var bars = graphSVG.selectAll(".bar")
+    var bars = graphG.selectAll(".bar")
         .data(graph_top_vaccinations.slice(0, 20))
         .enter()
         .append('g')
 
     bars.append("rect")
-        .attr("class", "bar")
+        .attr("class", "bar world-map-graph-bars")
         //.attr("x", function(d) { return x(d.sales); })
         .attr("width", function (d) {
             return x(d.vaccinations_per_hundred);
@@ -342,25 +413,44 @@
         .attr("height", y.bandwidth())
         .attr("fill", function (d) {
             return graphColorScale(d.country)
+        })
+        .on('mousemove', function (d) {
+            var pageX = d3.event.pageX;
+            var pageY = d3.event.pageY;
+            tooltip.classed('hidden', false)
+                .style('left', (pageX + 20) + "px")
+                .style('top', (pageY) + "px")
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations_per_hundred !== 0) {
+                tooltip.html(d.country + ":<br/> <span class='tooltip-number'>" + (d.vaccinations_per_hundred) + "</span> doses given per 100 people" +
+                    "<br/> <span class='tooltip-number'>" + abbreviateNumber(d.vaccinations) + "</span> doses administered <br/>" +
+                    "<span class='tooltip-date'>As of " + (d.date) + "</span>");
+            } else {
+                tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
+            }
+        })
+        .on('mouseout', function (d) {
+            tooltip.classed('hidden', true);
+            d3.select(this)
+                .attr('stroke-width', '0.5')
         });
 
     // add the x Axis
-    graphSVG.append("g")
+    graphG.append("g")
         .attr("transform", "translate(0," + graphHeight + ")")
         .call(d3.axisBottom(x));
 
     // add the y Axis
-    graphSVG.append("g")
+    graphG.append("g")
         .attr("class", "yAxis")
         .call(d3.axisLeft(y));
 
-    graphSVG.selectAll(".yAxis>.tick>text")
+    graphG.selectAll(".yAxis>.tick>text")
         .each(function (d, i) {
-            d3.select(this).style("font-size", "14px");
+            d3.select(this).attr("class", "world-map-graph-country-label");
         });
 
     bars.append("text")
-        .attr("class", "label")
+        .attr("class", "label world-map-graph-label")
         //y position of the label is halfway down the bar
         .attr("y", function (d) {
             return y(d.country) + y.bandwidth() / 2 + 4;
@@ -369,60 +459,93 @@
         .attr("x", function (d) {
             return x(d.vaccinations_per_hundred) + 3;
         })
+        .style("font-size", "14px")
         .text(function (d) {
-            return d.vaccinations_per_hundred;
+            return d.vaccinations_per_hundred.toFixed(2);
         });
 
 
-    // var table = d3.select("#vis5")
-    //     .append("table")
-    //     .attr('class', 'world-vaccination-table');
-    //
-    // // var header = table.append("thead").append("tr");
-    // table.append("thead")
-    //     .append("tr")
-    //     .selectAll("th")
-    //     .data(["Country", "Vaccinations", "Doses Given Per Hundred"])
-    //     .enter()
-    //     .append("th")
-    //     .text(function (d) {
-    //         return d;
-    //     })
-    //     .attr("style", function (d) {
-    //         if (d === "Percentage Covered")
-    //             return "background-color: rgb(100, 208, 138)"
-    //     });
-    //
-    // var table_body = table.append("tbody");
-    // var rows = table_body
-    //     .selectAll("tr")
-    //     .data(table_distribution.slice(0, 12))
-    //     .enter()
-    //     .append("tr")
-    //     .attr("class", function (d) {
-    //         if (d[0] === "U.S. Total") {
-    //             return "us_total_row"
-    //         }
-    //     });
-    // // We built the rows using the nested array - now each row has its own array.
-    // var cells = rows.selectAll("td")
-    //     // each row has data associated; we get it and enter it for the cells.
-    //     .data(function (d) {
-    //         return d;
-    //     })
-    //     .enter()
-    //     .append("td")
-    //     .text(function (d, i) {
-    //         if (i % 3 === 0 && i !== 0) {
-    //             return d + "%";
-    //         }
-    //         return d;
-    //     })
-    //     .attr("class", function (d, i) {
-    //         if (i % 3 === 0 && i !== 0) {
-    //             return 'percentage-cell';
-    //         }
-    //     });
+    var table = d3.select("#vis5")
+        .append("table")
+        .attr('class', 'world-vaccination-table');
+
+    // var header = table.append("thead").append("tr");
+    table.append("thead")
+        .append("tr")
+        .selectAll("th")
+        .data(["Country", "Vaccinations", "Doses Given Per 100 People"])
+        .enter()
+        .append("th")
+        .text(function (d) {
+            return d;
+        })
+        .style("background-color", function (d) {
+            if (d === "Vaccinations")
+                return "rgb(100, 208, 138)"
+            if (d === "Doses Given Per 100 People")
+                return "rgb(147,201,248)"
+        });
+
+    var table_body = table.append("tbody");
+    var rows = table_body
+        .selectAll("tr")
+        .data(table_distribution.slice(0, 12))
+        .enter()
+        .append("tr")
+        .attr("class", function (d) {
+            if (d[0] === "World") {
+                return "world_total_row"
+            }
+        });
+    // We built the rows using the nested array - now each row has its own array.
+    var cells = rows.selectAll("td")
+        // each row has data associated; we get it and enter it for the cells.
+        .data(function (d) {
+            return d.slice(0, 3);
+        })
+        .enter()
+        .append("td")
+        .text(function (d, i) {
+            if (i !== 1)
+                return d;
+        })
+        .attr("class", function (d, i) {
+            if (i === 1) {
+                return 'vaccination-cell';
+            }
+            else if (i === 2) {
+                return 'per-hundred-cell';
+            }
+        });
+
+    // var vaccination_cell = rows.selectAll(".vaccination-cell")
+
+    var vaccination_cell = d3.selectAll("td.vaccination-cell")
+
+    vaccination_cell.append("span")
+        .attr("class", "cell-new-vaccinations-portion")
+        .text(function (d, i){
+            if (table_distribution[i][3] !== 0){
+                return "+" + abbreviateNumber(table_distribution[i][3])
+            }
+        })
+
+    // vaccination_cell.append(function (d, i) {
+    //     if (table_distribution[i][3] !== 0) {
+    //         return "br"
+    //     }
+    // });
+
+    vaccination_cell.append("p")
+        .attr("class", "cell-total-vaccinations-portion")
+        .text(function (d, i){
+            if (table_distribution[i][3] !== 0) {
+                return d;
+            }
+            else {
+                return d;
+            }
+        });
 
 
 })();

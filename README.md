@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 11 - New: Table showing new vaccinations; add date to world map tooltip, adjust us map tooltip position mobile, other styling optimizations
 + January 10 - (Update 2) New: Bar Graph for WorldMap
 + January 10 - New: WorldMap, new tooltip; USMap - PointerEvents, adjust tooltip; other styling optimizations
 + January 7 - New: Map - Fetch US distribution data from database(AWS Lambda AutoUpdate Database every hour), DC individual block, Tooltip position

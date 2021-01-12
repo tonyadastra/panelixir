@@ -216,13 +216,22 @@
             return d.distribution.code;
         })
 
+
     d3.selectAll('.us-map-region')
         .on('mousemove', function (d) {
             d3.select(".d3tooltip").remove();
             // Tooltip
-            var tooltip = d3.select('body').append('div')
-                .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 670px;');
+            var tooltip;
+            if (screen.width < 768) {
+                tooltip = d3.select('div.us-map').append('div')
+                    .attr('class', 'hidden d3tooltip')
+                    .attr('style', 'left: 0px; top: 0px;')
+            }
+            else {
+                tooltip = d3.select('body').append('div')
+                    .attr('class', 'hidden d3tooltip')
+                    .attr('style', 'left: 0px; top: 670px;');
+            }
 
             // var mouse = d3.mouse(this);
             var print_percentage = 0;
@@ -239,10 +248,10 @@
                 // .attr("dy", "0em")
                 .html(d.properties.name + ": " + (print_percentage) + "% covered" + "<br/>" +
                     "Doses available: " + abbreviateNumber(available_doses))
-            // console.log(svg.node().getBBox())
+
             if (screen.width < 768) {
                 tooltip.style('left', '0px')
-                    .style('top', "670px");
+                    .style('top', "0px");
             } else {
                 tooltip.style('left', (pageX + 20) + 'px')
                     .style('top', (pageY) + "px");
@@ -258,9 +267,18 @@
         .on('mousemove', function (d) {
             d3.select(".d3tooltip").remove();
             // Tooltip
-            var tooltip = d3.select('body').append('div')
-                .attr('class', 'hidden d3tooltip')
-                .attr('style', 'left: 0px; top: 670px;');
+
+            var tooltip;
+            if (screen.width < 768) {
+                tooltip = d3.select('div.us-map').append('div')
+                    .attr('class', 'hidden d3tooltip')
+                    .attr('style', 'left: 0px; top: 0px;')
+            }
+            else {
+                tooltip = d3.select('body').append('div')
+                    .attr('class', 'hidden d3tooltip')
+                    .attr('style', 'left: 0px; top: 670px;');
+            }
 
 
             var hover_state_code = d3.select(this).text();
@@ -411,9 +429,9 @@
 
     d3.select("#btn1").on("click", () => {
         d3.select('#btn1')
-            .attr('style', 'display: none;')
+            .attr('style', 'display: none;');
         d3.select('#btn2')
-            .attr('style', 'display: inline-block')
+            .attr('style', 'display: inline-block');
         index = 12;
         var newData = table_distribution.slice(0, 12);
         table.selectAll('tbody').remove();
