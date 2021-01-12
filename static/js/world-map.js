@@ -304,9 +304,10 @@
     var graphWidth = width - graphMargin.left - graphMargin.right,
         graphHeight;
     if (screen.width < 768)
-        graphHeight = 700 - graphMargin.top - graphMargin.bottom;
+        graphHeight = 900 - graphMargin.top - graphMargin.bottom;
     else
         graphHeight = 600 - graphMargin.top - graphMargin.bottom;
+
 
     var graphSVG = d3.select("#vis5").append("svg")
         .attr('viewBox', `0 0 ${graphWidth} ${graphHeight}`)

@@ -943,7 +943,7 @@ $(window).scroll(function () {
 $('nav a').on('click', function() {
 
     var scrollAnchor = $(this).attr('data-scroll'),
-        scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 50;
+        scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 55;
 
     // var scrollLeftPoint = $('a.style-a.active').offset().left;
     // console.log(scrollLeftPoint)

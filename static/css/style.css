@@ -386,8 +386,7 @@ body {
     }
 
     .cursive {
-        font-family: Coronetscript, cursive;
-    !important;
+        /*font-family: Coronetscript, cursive;!important;*/
         color: #111b2b;
         font-size: 1.5rem;
         font-weight: bold;
@@ -659,8 +658,7 @@ body {
     }
 
     .cursive {
-        font-family: Coronetscript, cursive;
-    !important;
+        /*font-family: Coronetscript, cursive;!important;*/
         color: #111b2b;
         font-size: 1.8rem;
         font-weight: bold;
@@ -830,7 +828,6 @@ body {
     }
 
     .cursive {
-        font-family: Brush Script MT, Brush Script Std, cursive;
         color: #111b2b;
         font-size: 2.2rem;
     }
@@ -1003,7 +1000,7 @@ body {
     }
 
     .cursive {
-        font-family: Brush Script MT, Brush Script Std, cursive;
+        /*font-family: Brush Script MT, Brush Script Std, cursive;*/
         color: #111b2b;
         font-size: 3rem;
     }
@@ -1895,6 +1892,7 @@ h1.title {
     max-width: 98%;
     margin-left: auto;
     margin-right: auto;
+    letter-spacing: 0.4px;
     /*text-decoration: underline solid white;*/
 }
 
@@ -2320,13 +2318,25 @@ select.compare-dropdown {
     margin-bottom: -5%;
 }
 
+.cursive {
+    font-family: "BrushCursive", cursive;
+}
 
 @font-face {
   font-family: 'KefaFont';
-  src: url('../Kefa-Regular.eot'); /* IE9 Compat Modes */
-  src: url('../Kefa-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../Kefa-Regular.woff') format('woff'), /* Modern Browsers */
-       url('../Kefa-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
-       url('../Kefa-Regular.svg#svgFontName') format('svg'); /* Legacy iOS */
+  src: url('../fonts/Kefa-Regular.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/Kefa-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/Kefa-Regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/Kefa-Regular.TTF')  format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/Kefa-Regular.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'BrushCursive';
+  src: url('../fonts/brush-cursive.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/brush-cursive.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/brush-cursive.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/brush-cursive.TTF')  format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/brush-cursive.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
 
