@@ -2,9 +2,10 @@
 
 {% block styles %}
 <!--External CSS Files-->
-<link rel="stylesheet" href="../static/css/all.css">
+<link rel="stylesheet" href="../static/css/all.css"> <!--FontAwesome-->
 
 <!--Internal CSS Files-->
+<link rel="stylesheet" href="../static/css/map.css">
 <link rel="stylesheet" href="../static/css/card.css">
 <link rel="stylesheet" href="../static/css/interactive.css">
 
@@ -85,6 +86,8 @@ setInterval(function() {
         <i class="fa fa-times"></i>
     </button>
 </div>
+
+{% include 'world-vaccination.html' %}
 
 {% include 'vaccine-distribution.html' %}
 

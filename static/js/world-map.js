@@ -4,6 +4,7 @@
     // neighbors = topojson.neighbors(world.objects.countries.geometries);
 
     var names, World_Vaccination_Data;
+    var vaccinated_countries_count = 0;
     var world_data = [], table_distribution = [], graph_top_vaccinations = [];
     var files = ["/data/world-countries.csv", "/get-world-vaccination-data"];
     await Promise.all(files.map(url => d3.json(url))).then(function (values) {
@@ -28,13 +29,16 @@
             countries.forEach(function (d) {
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
-                    table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations),vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations]);
-                    graph_top_vaccinations.push({
-                        "country": d.name,
-                        "vaccinations": vaccination_data.vaccinations,
-                        "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
-                        "date": vaccination_data.date
-                    })
+                    if (vaccination_data.vaccinations !== 0) {
+                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations]);
+                        graph_top_vaccinations.push({
+                            "country": d.name,
+                            "vaccinations": vaccination_data.vaccinations,
+                            "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
+                            "date": vaccination_data.date
+                        })
+                        vaccinated_countries_count++;
+                    }
                 }
                 if (d.name === "United States" && (vaccination_data.country === "Northern Mariana Islands" || vaccination_data.country === "Virgin Islands, U.S." || vaccination_data.country === "Guam" || vaccination_data.country === "Guam" || vaccination_data.country === "Puerto Rico")) {
                     d['vaccinations'] = vaccination_data;
@@ -42,6 +46,8 @@
             })
         })
     })
+
+    var index = 16;
 
     var currentTime = new Date();
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -53,7 +59,7 @@
 
     if (world_data.length === 1) {
         d3.select('p.vaccinations-title')
-            .html("As of " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in the world")
+            .html("As of " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
     }
     hideSpinner();
 
@@ -278,14 +284,30 @@
                     .style("display", "none")
                 d3.select(".world-vaccination-table")
                     .style("display", "table")
-                // d3.select(".legend-title-2")
-                //     .style("display", "none")
+
+                if (index + 20 >= table_distribution.length) {
+                    d3.select('#btn4')
+                        .attr('style', 'display: none;')
+                    d3.select('#btn3')
+                        .attr('style', 'display: inline-block;')
+                } else {
+                    d3.select("#btn4")
+                        .style("display", "inline-block")
+                    d3.select("#btn3")
+                        .style("display", "none")
+
+                }
             }
             else if (d === "Bar Graph") {
                 d3.select(".world-vaccination-table")
                     .style("display", "none")
                 d3.select(".world-map-bars-svg")
                     .style("display", "block")
+
+                d3.select("#btn4")
+                    .style("display", "none")
+                d3.select("#btn3")
+                    .style("display", "none")
                 // d3.select(".legend-title-2")
                 //     .style("display", "block")
             }
@@ -490,7 +512,7 @@
     var table_body = table.append("tbody");
     var rows = table_body
         .selectAll("tr")
-        .data(table_distribution.slice(0, 12))
+        .data(table_distribution.slice(0, 16))
         .enter()
         .append("tr")
         .attr("class", function (d) {
@@ -506,13 +528,13 @@
         })
         .enter()
         .append("td")
-        .text(function (d, i) {
+        .html(function (d, i) {
             if (i !== 1)
                 return d;
         })
         .attr("class", function (d, i) {
             if (i === 1) {
-                return 'vaccination-cell';
+                return 'vaccination-cell vaccination-double-cell';
             }
             else if (i === 2) {
                 return 'per-hundred-cell';
@@ -521,7 +543,7 @@
 
     // var vaccination_cell = rows.selectAll(".vaccination-cell")
 
-    var vaccination_cell = d3.selectAll("td.vaccination-cell")
+    var vaccination_cell = d3.selectAll("td.vaccination-double-cell")
 
     vaccination_cell.append("span")
         .attr("class", "cell-new-vaccinations-portion")
@@ -530,12 +552,6 @@
                 return "+" + abbreviateNumber(table_distribution[i][3])
             }
         })
-
-    // vaccination_cell.append(function (d, i) {
-    //     if (table_distribution[i][3] !== 0) {
-    //         return "br"
-    //     }
-    // });
 
     vaccination_cell.append("p")
         .attr("class", "cell-total-vaccinations-portion")
@@ -547,6 +563,92 @@
                 return d;
             }
         });
+    d3.selectAll("td.vaccination-double-cell")
+        .attr("class", "vaccination-cell")
+
+
+    d3.select("#btn4").on("click", () => {
+        if (index + 20 >= table_distribution.length) {
+            d3.select('#btn4')
+                .attr('style', 'display: none;')
+            d3.select('#btn3')
+                .attr('style', 'display: inline-block;')
+
+        }
+        var newData = table_distribution.slice(index, index + 20);
+        updateWorldTable(newData, index);
+        index += 20;
+
+    })
+
+    d3.select("#btn3").on("click", () => {
+        d3.select('#btn3')
+            .attr('style', 'display: none;');
+        d3.select('#btn4')
+            .attr('style', 'display: inline-block');
+        var newData = table_distribution.slice(0, 16);
+        table.selectAll('tbody').remove();
+        updateWorldTable(newData, 0);
+        index = 16;
+    })
+
+    function updateWorldTable(newData, index) {
+        var table_body = table.append("tbody");
+        var rows = table_body
+            .selectAll("tr")
+            .data(newData)
+            .enter()
+            .append("tr")
+            .attr("class", function (d) {
+                if (d[0] === "World") {
+                    return "world_total_row"
+                }
+            });
+        // We built the rows using the nested array - now each row has its own array.
+        var cells = rows.selectAll("td")
+            // each row has data associated; we get it and enter it for the cells.
+            .data(function (d) {
+                return d.slice(0, 3);
+            })
+            .enter()
+            .append("td")
+            .text(function (d, i) {
+                if (i !== 1)
+                    return d;
+            })
+            .attr("class", function (d, i) {
+                if (i === 1) {
+                    return 'vaccination-cell vaccination-double-cell';
+                } else if (i === 2) {
+                    return 'per-hundred-cell';
+                }
+            });
+
+        var vaccination_cell = d3.selectAll("td.vaccination-double-cell")
+
+        vaccination_cell.append("span")
+            .attr("class", "cell-new-vaccinations-portion")
+            .text(function (d, i) {
+                i = i + index;
+                if (table_distribution[i][3] !== 0) {
+                    return "+" + abbreviateNumber(table_distribution[i][3])
+                }
+            })
+
+        vaccination_cell.append("p")
+            .attr("class", "cell-total-vaccinations-portion")
+            .text(function (d, i) {
+                i = i + index;
+                if (table_distribution[i][3] !== 0) {
+                    return d;
+                } else {
+                    return d;
+                }
+            });
+
+        d3.selectAll("td.vaccination-double-cell")
+            .attr("class", "vaccination-cell")
+    }
 
 
 })();

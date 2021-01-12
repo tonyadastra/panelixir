@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 11 - (Update 3) Extend world-map table to all countries with vaccination data
 + January 11 - (Update 2) Add font files to local; other map styling optimizations
 + January 11 - New: Table showing new vaccinations; add date to world map tooltip, adjust us map tooltip position mobile, other styling optimizations
 + January 10 - (Update 2) New: Bar Graph for WorldMap

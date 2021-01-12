@@ -143,6 +143,7 @@ body {
         font-family: "KefaFont", sans-serif;
         font-variant: small-caps;
         font-size: 1.5rem !important;
+        letter-spacing: 0!important;
     }
 
     .update-time {
@@ -1889,7 +1890,7 @@ h1.title {
     font-variant: small-caps;
     font-size: 2.5rem;
     font-weight: bold;
-    max-width: 98%;
+    max-width: 95%;
     margin-left: auto;
     margin-right: auto;
     letter-spacing: 0.4px;
