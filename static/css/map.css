@@ -180,7 +180,7 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 
 }
 
-#spinner-wrapper {
+#spinner-wrapper, #spinner-wrapper-world {
     line-height: 35rem;
     height: 35rem;
     /*border: 3px solid green;*/
@@ -252,12 +252,12 @@ table.world-vaccination-table {
     margin-bottom: 1.5rem;
 }
 
-span.cell-new-vaccinations-portion {
+span.cell-new-vaccinations-portion, span.cell-new-vaccinations-per-hundred-portion {
     font-weight: lighter;
     font-size: 90%;
 }
 
-p.cell-total-vaccinations-portion {
+p.cell-total-vaccinations-portion, p.cell-total-new-vaccinations-portion {
     margin-bottom: 0 !important;
 }
 

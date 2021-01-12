@@ -537,7 +537,8 @@ def getWorldVaccinationData():
                 'country', country, 
                 'vaccinations', vaccinations, 
                 'new_vaccinations', new_vaccinations, 
-                'vaccinations_per_hundred', vaccinations_per_hundred)) 
+                'vaccinations_per_hundred', vaccinations_per_hundred,
+                'population', population)) 
                 FROM "WorldVaccinations"''')
     world_vaccination_data = cur3.fetchall()[0][0]
     cur3.execute("rollback")

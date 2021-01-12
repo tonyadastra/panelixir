@@ -2323,6 +2323,10 @@ select.compare-dropdown {
     font-family: "BrushCursive", cursive;
 }
 
+.hidden {
+    display: none;
+}
+
 @font-face {
   font-family: 'KefaFont';
   src: url('../fonts/Kefa-Regular.eot'); /* IE9 Compat Modes */

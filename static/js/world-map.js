@@ -30,7 +30,8 @@
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
                     if (vaccination_data.vaccinations !== 0) {
-                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations]);
+                        var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
+                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations, new_vaccinations_per_hundred]);
                         graph_top_vaccinations.push({
                             "country": d.name,
                             "vaccinations": vaccination_data.vaccinations,
@@ -61,7 +62,7 @@
         d3.select('p.vaccinations-title')
             .html("As of " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
     }
-    hideSpinner();
+    hideSpinnerWorld();
 
 
     const width = 1050, height = 550;
@@ -529,7 +530,7 @@
         .enter()
         .append("td")
         .html(function (d, i) {
-            if (i !== 1)
+            if (i === 0)
                 return d;
         })
         .attr("class", function (d, i) {
@@ -537,7 +538,7 @@
                 return 'vaccination-cell vaccination-double-cell';
             }
             else if (i === 2) {
-                return 'per-hundred-cell';
+                return 'per-hundred-cell per-hundred-double-cell';
             }
         });
 
@@ -565,6 +566,25 @@
         });
     d3.selectAll("td.vaccination-double-cell")
         .attr("class", "vaccination-cell")
+
+
+    var per_hundred_cell = d3.selectAll("td.per-hundred-double-cell")
+
+    per_hundred_cell.append("span")
+        .attr("class", "cell-new-vaccinations-per-hundred-portion")
+        .text(function (d, i){
+            if (parseFloat(table_distribution[i][4].toFixed(2)) !== 0){
+                return "+" + table_distribution[i][4].toFixed(2)
+            }
+        })
+
+    per_hundred_cell.append("p")
+        .attr("class", "cell-total-new-vaccinations-portion")
+        .text(function (d, i){
+            return d;
+        });
+    d3.selectAll("td.per-hundred-double-cell")
+        .attr("class", "per-hundred-cell")
 
 
     d3.select("#btn4").on("click", () => {
@@ -613,14 +633,14 @@
             .enter()
             .append("td")
             .text(function (d, i) {
-                if (i !== 1)
+                if (i === 0)
                     return d;
             })
             .attr("class", function (d, i) {
                 if (i === 1) {
                     return 'vaccination-cell vaccination-double-cell';
                 } else if (i === 2) {
-                    return 'per-hundred-cell';
+                    return 'per-hundred-cell per-hundred-double-cell';
                 }
             });
 
@@ -646,8 +666,28 @@
                 }
             });
 
+
         d3.selectAll("td.vaccination-double-cell")
             .attr("class", "vaccination-cell")
+
+        var per_hundred_cell = d3.selectAll("td.per-hundred-double-cell")
+
+        per_hundred_cell.append("span")
+            .attr("class", "cell-new-vaccinations-per-hundred-portion")
+            .text(function (d, i) {
+                i = i + index;
+                if (parseFloat(table_distribution[i][4].toFixed(2)) !== 0) {
+                    return "+" + table_distribution[i][4].toFixed(2)
+                }
+            })
+
+        per_hundred_cell.append("p")
+            .attr("class", "cell-total-new-vaccinations-portion")
+            .text(function (d, i) {
+                return d;
+            });
+        d3.selectAll("td.per-hundred-double-cell")
+            .attr("class", "per-hundred-cell")
     }
 
 
@@ -669,6 +709,6 @@ function abbreviateNumber(value) {
     return newValue;
 }
 
-function hideSpinner() {
-    document.getElementById('spinner-wrapper').style.display = 'none';
+function hideSpinnerWorld() {
+    document.getElementById('spinner-wrapper-world').style.display = 'none';
 }

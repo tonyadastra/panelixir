@@ -46,6 +46,7 @@
         })
     })
     // console.log(data)
+    hideSpinner();
 
 
     const width = 960;
@@ -474,3 +475,7 @@
 
 
 })();
+
+function hideSpinner() {
+    document.getElementById('spinner-wrapper').style.display = 'none';
+}
