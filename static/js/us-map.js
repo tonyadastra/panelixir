@@ -169,7 +169,13 @@
 
         var p_domain = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_max];
         // Create colorScale
-        var colorScale = d3.scaleLinear()
+        var colorScale = d3.scaleThreshold()
+            // .domain([0.1, 0.2, 0.4, 0.6, 0.8, 0.99])
+            // .domain([0, 20, 40, 60, 80, 100])
+            .domain(p_domain)
+            .range(d3.schemeBuGn[5]);
+
+        var colorScaleLegend = d3.scaleLinear()
             // .domain([0.1, 0.2, 0.4, 0.6, 0.8, 0.99])
             // .domain([0, 20, 40, 60, 80, 100])
             .domain(p_domain)
@@ -177,7 +183,7 @@
 
         var textColorScale = d3.scaleThreshold()
             .domain(p_domain)
-            .range(['#000', '#000', '#000', '#000', '#fff', '#fff'])
+            .range(['#000', '#000', '#000', '#fff', '#fff', '#fff'])
 
         // var tooltip = d3.select('body').append('div')
         //     .attr('class', 'hidden d3tooltip');
@@ -449,7 +455,7 @@
             .title(table_title[2])
             .shapeWidth(50)
             .orient('horizontal')
-            .scale(colorScale);
+            .scale(colorScaleLegend);
 
         svg.select(".legendLinear")
             .call(legendLinear);
