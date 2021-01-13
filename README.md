@@ -10,6 +10,8 @@
     + ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 ## Version History
+- v2.0 - Include vaccination data
+    + Released: January 12, 2021
 - v1.0 - Initial release 
     + Released: January 8, 2021
 
