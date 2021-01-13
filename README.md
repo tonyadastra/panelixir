@@ -1,7 +1,7 @@
 # PanElixir - Auto-Update USA Distribution Division
 > This package uses AWS Lambda Function to collect data from CDC's Vaccine Allocation Data and append to database "VaccineDistributionUSA"
 
-> Data source: [CDC - Moderna Distribution](https://data.cdc.gov/resource/b7pe-5nws.json); [CDC - Pfizer Distribution](https://data.cdc.gov/resource/saz5-9hgg.json)
+> Data source: [CDC - Moderna Distribution](https://data.cdc.gov/resource/b7pe-5nws.json); [CDC - Pfizer Distribution](https://data.cdc.gov/resource/saz5-9hgg.json); [CDC - US Vaccination Data](https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=vaccination_data)
 
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
@@ -18,6 +18,9 @@
 ## The Lambda Function
 - This program is a lambda function that access the CDC Distribution data for Moderna and Pfizer and updates database VaccineDistributionUSA
     - records the data in columns `jurisdiction` and `doses_available`, also has `date` showing the latest update date
+    
+- This program also obtains US Vaccination Data from CDC and updates database VaccineDistributionUSA
+    - records the data in column `doses_administered`
 
 ## Run Frequency
 - This program runs every hour under AWS EventBridge (CloudWatch Events)
