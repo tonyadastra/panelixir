@@ -167,19 +167,21 @@
         var p_i = p_interval / 4;
 
 
-        var p_domain = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_max];
+        var p_domain = [p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_min + p_i * 4, p_max + p_i];
         // Create colorScale
         var colorScale = d3.scaleThreshold()
             // .domain([0.1, 0.2, 0.4, 0.6, 0.8, 0.99])
             // .domain([0, 20, 40, 60, 80, 100])
             .domain(p_domain)
-            .range(d3.schemeBuGn[5]);
+            .range(d3.schemeBuGn[6].slice(1, 6));
+
+        var p_domain_legend = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_max];
 
         var colorScaleLegend = d3.scaleLinear()
             // .domain([0.1, 0.2, 0.4, 0.6, 0.8, 0.99])
             // .domain([0, 20, 40, 60, 80, 100])
-            .domain(p_domain)
-            .range(d3.schemeBuGn[5]);
+            .domain(p_domain_legend)
+            .range(d3.schemeBuGn[6].slice(1, 6));
 
         var textColorScale = d3.scaleThreshold()
             .domain(p_domain)

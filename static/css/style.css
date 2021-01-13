@@ -1850,7 +1850,7 @@ h1.title {
 .news-wrapper {
     background-color: rgba(243, 243, 243, 0.6);
     /*border: 2px solid orangered;*/
-    width: 70%;
+    /*width: 70%;*/
     margin: 2rem auto;
     border-radius: 0.3rem;
 }
