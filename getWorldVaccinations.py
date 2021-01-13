@@ -69,10 +69,35 @@ def update_world_vaccinations(event, context):
                     conn.commit()
                     updates += 1
 
+    cur.execute(
+        '''SELECT SUM(vaccinations) FROM "WorldVaccinations" WHERE iso != \'OWID_WRL\' and iso != \'USA\'''')
+    updated_world_vaccinations = cur.fetchall()[0][0]
+    cur.execute("rollback")
+
+    cur.execute(
+        '''SELECT doses_administered FROM "VaccineDistributionUSA" 
+        WHERE jurisdiction = \'U.S. Total\'''')
+    updated_usa_vaccinations = cur.fetchall()[0][0]
+    cur.execute("rollback")
+
+    total_world_vaccinations = int(updated_world_vaccinations) + int(updated_usa_vaccinations)
+    cur.execute(
+        '''SELECT vaccinations FROM "WorldVaccinations" WHERE iso = \'OWID_WRL\'''')
+    existing_world_vaccinations = cur.fetchall()[0][0]
+    cur.execute("rollback")
+
+    if total_world_vaccinations > existing_world_vaccinations:
+        cur.execute('''UPDATE "WorldVaccinations" SET vaccinations = %s WHERE iso = \'OWID_WRL\'''',
+                    (total_world_vaccinations,))
+        conn.commit()
+
     return_response = {
         "statusCode": world_vaccination_api.status_code,
-        "databaseUpdates": updates
+        "databaseUpdates": updates,
+        "totalWorldVaccinations": total_world_vaccinations
     }
     print(return_response)
 
     return return_response
+
+# update_world_vaccinations(1, 2)
