@@ -2228,6 +2228,11 @@ select.compare-dropdown {
     color: white;
 }
 
+.badge-real-time {
+    background-color: #f52e14;
+    color: white;
+}
+
 .badge-none {
     display: none;
 }

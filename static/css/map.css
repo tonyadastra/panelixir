@@ -81,7 +81,7 @@ span.highlight-vaccinations {
     background-color: #98aaf1;
 }
 
-.world-map-button-group {
+.world-map-button-group, .us-map-button-group {
     width: 30%;
 }
 
@@ -91,7 +91,7 @@ span.highlight-vaccinations {
         font-size: 9px;
     }
 
-    .world-map-button-group {
+    .world-map-button-group, .us-map-button-group {
         width: 60% !important;
     }
 
@@ -201,10 +201,14 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 .us_total_row {
     color: #0b58de;
     font-weight: bold;
+    background-color: #f6f6f6;
 }
 
 .tooltip-number {
     font-weight: bold;
+}
+
+.d3tooltip-world .tooltip-number {
     font-size: 150%;
 }
 

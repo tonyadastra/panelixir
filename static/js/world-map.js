@@ -454,8 +454,6 @@
         })
         .on('mouseout', function (d) {
             tooltip.classed('hidden', true);
-            d3.select(this)
-                .attr('stroke-width', '0.5')
         });
 
     // add the x Axis
@@ -510,81 +508,8 @@
                 return "rgb(147,201,248)"
         });
 
-    var table_body = table.append("tbody");
-    var rows = table_body
-        .selectAll("tr")
-        .data(table_distribution.slice(0, 16))
-        .enter()
-        .append("tr")
-        .attr("class", function (d) {
-            if (d[0] === "World") {
-                return "world_total_row"
-            }
-        });
-    // We built the rows using the nested array - now each row has its own array.
-    var cells = rows.selectAll("td")
-        // each row has data associated; we get it and enter it for the cells.
-        .data(function (d) {
-            return d.slice(0, 3);
-        })
-        .enter()
-        .append("td")
-        .html(function (d, i) {
-            if (i === 0)
-                return d;
-        })
-        .attr("class", function (d, i) {
-            if (i === 1) {
-                return 'vaccination-cell vaccination-double-cell';
-            }
-            else if (i === 2) {
-                return 'per-hundred-cell per-hundred-double-cell';
-            }
-        });
 
-    // var vaccination_cell = rows.selectAll(".vaccination-cell")
-
-    var vaccination_cell = d3.selectAll("td.vaccination-double-cell")
-
-    vaccination_cell.append("span")
-        .attr("class", "cell-new-vaccinations-portion")
-        .text(function (d, i){
-            if (table_distribution[i][3] !== 0){
-                return "+" + abbreviateNumber(table_distribution[i][3])
-            }
-        })
-
-    vaccination_cell.append("p")
-        .attr("class", "cell-total-vaccinations-portion")
-        .text(function (d, i){
-            if (table_distribution[i][3] !== 0) {
-                return d;
-            }
-            else {
-                return d;
-            }
-        });
-    d3.selectAll("td.vaccination-double-cell")
-        .attr("class", "vaccination-cell")
-
-
-    var per_hundred_cell = d3.selectAll("td.per-hundred-double-cell")
-
-    per_hundred_cell.append("span")
-        .attr("class", "cell-new-vaccinations-per-hundred-portion")
-        .text(function (d, i){
-            if (parseFloat(table_distribution[i][4].toFixed(2)) !== 0){
-                return "+" + table_distribution[i][4].toFixed(2)
-            }
-        })
-
-    per_hundred_cell.append("p")
-        .attr("class", "cell-total-new-vaccinations-portion")
-        .text(function (d, i){
-            return d;
-        });
-    d3.selectAll("td.per-hundred-double-cell")
-        .attr("class", "per-hundred-cell")
+    updateWorldTable(table_distribution.slice(0, 16), 0)
 
 
     d3.select("#btn4").on("click", () => {

@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 13 - Add US State Vaccination Data
 + January 11 - (Update 4) Add increase new vaccinations per hundred; Fix mobile filter modal; other optimizations
 + January 11 - (Update 3) Extend world-map table to all countries with vaccination data
 + January 11 - (Update 2) Add font files to local; other map styling optimizations
