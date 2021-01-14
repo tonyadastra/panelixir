@@ -43,6 +43,7 @@ section#vaccine-distribution .source {
     /*border: 1px solid #1b1e21;*/
     box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.1);
     z-index: 100;
+    pointer-events: none;
 }
 
 .d3tooltip-world.hidden {
@@ -50,7 +51,7 @@ section#vaccine-distribution .source {
 }
 
 .country.no-data {
-    opacity: 0.5;
+    stroke-opacity: 0.5;
 }
 
 .vaccinations-title {
@@ -199,9 +200,10 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 }
 
 .us_total_row {
-    color: #0b58de;
+    /*color: #1935ef;*/
     font-weight: bold;
-    background-color: #f6f6f6;
+    /*background-color: #f6f6f6;*/
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .tooltip-number {
@@ -265,6 +267,15 @@ p.cell-total-vaccinations-portion, p.cell-total-new-vaccinations-portion {
     margin-bottom: 0 !important;
 }
 
-td.vaccination-cell {
-    padding: 0.2rem 2rem;
+table.world-vaccination-table td.vaccination-cell {
+    padding: 0.15rem 2rem!important;
+}
+
+table.world-vaccination-table td.per-hundred-cell {
+    padding: 0.15rem 2rem!important;
+}
+
+
+td.country-cell {
+    font-weight: bold;
 }

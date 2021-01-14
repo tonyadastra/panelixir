@@ -57,10 +57,12 @@
     const day = String(currentTime.getDate());
     const year = currentTime.getFullYear();
 
+    const hour = currentTime.getHours();
+    const daytime = currentTime.toLocaleString('en-US', { hour: 'numeric', hour12: true }).replace(" ", "")
 
     if (world_data.length === 1) {
         d3.select('p.vaccinations-title')
-            .html("As of " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
+            .html("As of " + daytime + " on " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
     }
     hideSpinnerWorld();
 
@@ -95,9 +97,10 @@
     var legendLinear = d3.legendColor()
         // .title("Number of Doses Administered per 100 People")
         .shapeWidth(70)
-        .cells(9)
+        .cells(8)
         .orient('horizontal')
         .scale(colorScale);
+
 
     // var legendWrapper = svg.append("g")
     //     .attr("height", "30px;")
@@ -108,10 +111,30 @@
     legendSVG.select(".legendLinear")
         .call(legendLinear);
 
+    var noDataG = legendSVG.select('g.legendLinear')
+        .insert('g', 'g.legendCells')
+        .attr("transform", "translate(0, 0)")
+
+    noDataG.append('rect')
+        .attr("width", legendSVG.select(".swatch").node().getBBox().width)
+        .attr("height", legendSVG.select(".swatch").node().getBBox().height)
+        .style("fill", "#f5f5f5")
+
+    noDataG.append('text')
+        .attr("class", "label")
+        .text("No Data")
+        .style("text-anchor", "middle")
+        .attr("transform", legendSVG.select('g.legendCells>g.cell>text.label').attr("transform"))
+
+    legendSVG.select(".legendCells")
+        .attr("transform", `translate(${legendSVG.select(".swatch").node().getBBox().width + 20}, 0)`)
+
+
     g_legend.attr("transform", `translate(${(width - d3.select('.legendLinear').node().getBBox().width) / 2},35)`);
 
     legendSVG.select('.legend-title')
         .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`)
+
 
 
     var svg = d3.select("#vis5").append("svg")
@@ -190,7 +213,7 @@
             if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
                 return colorScale(d.vaccinations.vaccinations_per_hundred)
             } else {
-                return "#f0f0f0"
+                return "#f5f5f5"
             }
         })
         .attr("stroke", function (d) {
@@ -537,6 +560,13 @@
         index = 16;
     })
 
+    // legendSVG.selectAll('.swatch')
+    //     .on("mouseover", function (d) {
+    //         var color = d3.select(this).style("fill");
+    //         svg.selectAll(`[fill="${color}"]`)
+    //             .attr("stroke-width", "2");
+    //     })
+
     function updateWorldTable(newData, index) {
         var table_body = table.append("tbody");
         var rows = table_body
@@ -562,7 +592,10 @@
                     return d;
             })
             .attr("class", function (d, i) {
-                if (i === 1) {
+                if (i === 0) {
+                    return 'country-cell';
+                }
+                else if (i === 1) {
                     return 'vaccination-cell vaccination-double-cell';
                 } else if (i === 2) {
                     return 'per-hundred-cell per-hundred-double-cell';

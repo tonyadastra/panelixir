@@ -6,6 +6,7 @@
     var special_jurisdictions = ["District of Columbia", "Puerto Rico", "U.S. Virgin Islands", "Mariana Islands", "American Samoa", "Guam"];
 
     var US_Distribution_Data, US_States;
+    var us_total_data_distributed = [], us_total_data_administered = [];
     let table_distribution = [], table_distribution_administered = [];
     var files = ["/data/us-states.csv", "/get-usa-distribution-data"];
     await Promise.all(files.map(url => d3.json(url))).then(function (values) {
@@ -63,6 +64,19 @@
                 // })
             })
         })
+
+        var total_population = d3.sum(data, d => d.distribution.population)
+        US_Distribution_Data.forEach(function (d) {
+            if (d.jurisdiction === "U.S. Total") {
+        //         // add US Totals
+        // var total_doses = d3.sum(data, d => d.distribution.doses)
+                var total_percentage_covered = (d.doses / total_population) * 100;
+                var total_administered_per_100 = (d.doses_administered / total_population) * 100;
+        // var total_percentage_covered = (total_doses / total_population) * 100;
+                us_total_data_distributed = ["U.S. Total", abbreviateNumber(d.doses), total_percentage_covered.toFixed(2)]
+                us_total_data_administered = ["U.S. Total", abbreviateNumber(d.doses_administered), total_administered_per_100.toFixed(2)]
+            }
+        })
     })
 
 
@@ -116,7 +130,7 @@
                 // d3.select(".world-vaccination-table")
                 //     .style("display", "table")
                 table_title = ["State", "Doses Administered", "Doses Given Per 100 People"];
-                updateUSMap(data_administered, table_distribution_administered, table_title);
+                updateUSMap(data_administered, table_distribution_administered, table_title, us_total_data_administered);
 
 
                 // if (index + 20 >= table_distribution.length) {
@@ -133,8 +147,8 @@
                 // }
             }
             else if (d === "Distributed") {
-                table_title = ["State", "Doses Distributed", "Percentage Covered"];
-                updateUSMap(data, table_distribution, table_title);
+                table_title = ["State", "Doses Distributed", "Doses Available Per 100 People"];
+                updateUSMap(data, table_distribution, table_title, us_total_data_distributed);
                 // d3.select(".world-vaccination-table")
                 //     .style("display", "none")
                 // d3.select(".world-map-bars-svg")
@@ -151,9 +165,9 @@
         })
     hideSpinner();
 
-    updateUSMap(data_administered, table_distribution_administered, table_title);
+    updateUSMap(data_administered, table_distribution_administered, table_title, us_total_data_administered);
 
-    function updateUSMap(data, table_distribution, table_title) {
+    function updateUSMap(data, table_distribution, table_title, us_total_data) {
         svg.selectAll('g').remove()
         table.selectAll('thead').remove()
         table.selectAll('tbody').remove()
@@ -357,7 +371,7 @@
                 else if (table_title[1] === "Doses Distributed") {
                     tooltip.classed('hidden', false)
                         // .attr("dy", "0em")
-                        .html(d.properties.name + ": <span class='tooltip-number'>" + (print_percentage) + "%</span> covered" + "<br/>" +
+                        .html(d.properties.name + ": <span class='tooltip-number'>" + (d.distribution.percentage_covered.toFixed(2)) + "</span> doses available per 100 people" + "<br/>" +
                             "Doses available: <span class='tooltip-number'>" + abbreviateNumber(available_doses) + "</span>")
                 }
 
@@ -419,7 +433,7 @@
                 else if (table_title[1] === "Doses Distributed") {
                     tooltip.classed('hidden', false)
                         // .attr("dy", "0em")
-                        .html(d.properties.name + ": <span class='tooltip-number'>" + (print_percentage) + "%</span> covered" + "<br/>" +
+                        .html(d.properties.name + ": <span class='tooltip-number'>" + (d.distribution.percentage_covered.toFixed(2)) + "</span> doses available per 100 people" + "<br/>" +
                             "Doses available: <span class='tooltip-number'>" + abbreviateNumber(available_doses) + "</span>")
                 }
 
@@ -466,18 +480,13 @@
             // text-center: x: (legend width - legendTitle width) / 2
             .attr('transform', `translate(${(legend.node().getBBox().width - d3.select('.legendTitle').node().getBBox().width) / 2},0)`);
 
+
+
         // sort entire dataset
         table_distribution.sort(function (a, b) {
             return b[2] - a[2];
         });
 
-        // add US Totals
-        var total_doses = d3.sum(data, d => d.distribution.doses)
-        var total_population = d3.sum(data, d => d.distribution.population)
-        var total_percentage_covered = (total_doses / total_population) * 100;
-
-        var us_total_data = ["U.S. Total", abbreviateNumber(total_doses), total_percentage_covered.toFixed(2)]
-        // table_distribution.splice(0, 0, us_total_data)
 
         var us_total_table_body = table.append("tbody");
         var us_total_row = us_total_table_body
@@ -498,6 +507,14 @@
                     return d + "%";
                 }
                 return d;
+            })
+            .attr("class", function (d, i) {
+                if (i === 1) {
+                    return 'percentage-cell';
+                }
+                else if (i === 2) {
+                    return 'per-hundred-cell';
+                }
             });
             // .attr("class", function (d, i) {
             //     if (i === 2 && table_title[2] === "Percentage Covered") {
@@ -519,9 +536,11 @@
             .text(function (d) {
                 return d;
             })
-            .attr("style", function (d, i) {
-                if (i === 2)
-                    return "background-color: rgb(100, 208, 138)"
+            .style("background-color", function (d, i) {
+                if (i === 1)
+                    return "rgb(100, 208, 138)"
+                else if (i === 2)
+                    return "rgb(147,201,248)"
             });
 
         var table_body = table.append("tbody");
@@ -595,8 +614,11 @@
                 return d;
             })
             .attr("class", function (d, i) {
-                if (i === 2) {
+                if (i === 1) {
                     return 'percentage-cell';
+                }
+                else if (i === 2) {
+                    return 'per-hundred-cell';
                 }
             });
     }
