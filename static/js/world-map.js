@@ -383,7 +383,7 @@
 
     var countryMap = graph_top_vaccinations.map(d => d.country)
 
-    var graphColorScale = d3.scaleOrdinal(d3.schemeCategory10)
+    var graphColorScale = d3.scaleOrdinal(d3.schemeSpectral[10].slice(7, 10).concat(d3.schemeSpectral[10].slice(2, 7)))
 
     graph_top_vaccinations.sort(function (a, b) {
         return b.vaccinations_per_hundred - a.vaccinations_per_hundred;
