@@ -150,9 +150,13 @@ span.highlight-vaccinations {
         right: 2px;
 
         display: block;
-        height: 18px!important;
+        height: 23px!important;
         box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
         -webkit-box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .us_total_row {
+        height: 30px;
     }
 
 
@@ -167,6 +171,10 @@ span.highlight-vaccinations {
     .world-map {
         margin-left: 15%;
         margin-right: 15%;
+    }
+
+    .us_total_row {
+        height: 58px;
     }
 
 }
@@ -202,7 +210,7 @@ table.us-vaccine-distribution, table.world-vaccination-table {
     right: 2px;
 
     display: block;
-    height: 32px;
+    height: 38px;
     box-shadow: 0 4px 3px 1px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 4px 3px 1px rgba(0, 0, 0, 0.1);
 }
@@ -313,11 +321,7 @@ p.cell-total-vaccinations-portion, p.cell-total-new-vaccinations-portion {
     margin-bottom: 0 !important;
 }
 
-table.world-vaccination-table td.vaccination-cell {
-    padding: 0.15rem 2rem!important;
-}
-
-table.world-vaccination-table td.per-hundred-cell {
+td.percentage-cell, td.vaccination-cell, td.per-hundred-cell {
     padding: 0.15rem 2rem!important;
 }
 

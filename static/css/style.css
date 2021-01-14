@@ -2332,6 +2332,11 @@ select.compare-dropdown {
     display: none;
 }
 
+span.vaccinations-title-daytime {
+    color: rgb(14, 112, 196);
+    font-weight: bold;
+}
+
 @font-face {
   font-family: 'KefaFont';
   src: url('../fonts/Kefa-Regular.eot'); /* IE9 Compat Modes */

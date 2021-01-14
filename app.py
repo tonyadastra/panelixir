@@ -525,7 +525,10 @@ def getUSADistributionData():
     cur2.execute('''SELECT json_agg(json_build_object(
                 'jurisdiction', jurisdiction, 
                 'doses', doses_available, 
-                'doses_administered', doses_administered)) FROM "VaccineDistributionUSA"''')
+                'doses_administered', doses_administered, 
+                'new_administered', (doses_administered - prev_administered), 
+                'new_distributed', (doses_available - prev_distributed))) 
+                FROM "VaccineDistributionUSA"''')
     usa_distribution_data = cur2.fetchall()[0][0]
     cur2.execute("rollback")
     return jsonify(usa_distribution_data)

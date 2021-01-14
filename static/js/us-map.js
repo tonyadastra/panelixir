@@ -29,7 +29,11 @@
                             "doses_administered": dbStateData.doses_administered,
                             "population": state.population,
                             "percentage_covered": percentage_covered * 100,
-                            "administered_per_100": administered_per_100
+                            "administered_per_100": administered_per_100,
+                            "new_administered": dbStateData.new_administered,
+                            "new_distributed": dbStateData.new_distributed,
+                            "new_administered_per_100": dbStateData.new_administered / state.population,
+                            "new_distributed_per_100": dbStateData.new_distributed / state.population,
                         };
 
                         var state_data_administered = {
@@ -57,8 +61,8 @@
                         // percentage_array.push(percentage_covered * 100)
                         // us_state_distribution.push(state_data)
                         if (!special_jurisdictions.includes(state.state) || state.state === "District of Columbia") {
-                            table_distribution.push([state_data.state, abbreviateNumber(state_data.doses), state_data.percentage_covered.toFixed(2)])
-                            table_distribution_administered.push([state_data.state, abbreviateNumber(state_data.doses_administered), state_data.administered_per_100.toFixed(2)])
+                            table_distribution.push([state_data.state, abbreviateNumber(state_data.doses), state_data.percentage_covered.toFixed(2), state_data.new_distributed, state_data.new_distributed_per_100])
+                            table_distribution_administered.push([state_data.state, abbreviateNumber(state_data.doses_administered), state_data.administered_per_100.toFixed(2), state_data.new_administered, state_data.new_administered_per_100])
                         }
                     }
                 // })
@@ -72,9 +76,12 @@
         // var total_doses = d3.sum(data, d => d.distribution.doses)
                 var total_percentage_covered = (d.doses / total_population) * 100;
                 var total_administered_per_100 = (d.doses_administered / total_population) * 100;
+
+                var total_new_distributed_per_100 = (d.new_distributed / total_population) * 100;
+                var total_new_administered_per_100 = (d.new_administered / total_population) * 100;
         // var total_percentage_covered = (total_doses / total_population) * 100;
-                us_total_data_distributed = ["U.S. Total", abbreviateNumber(d.doses), total_percentage_covered.toFixed(2)]
-                us_total_data_administered = ["U.S. Total", abbreviateNumber(d.doses_administered), total_administered_per_100.toFixed(2)]
+                us_total_data_distributed = ["U.S. Total", abbreviateNumber(d.doses), total_percentage_covered.toFixed(2), d.new_distributed, total_new_distributed_per_100]
+                us_total_data_administered = ["U.S. Total", abbreviateNumber(d.doses_administered), total_administered_per_100.toFixed(2), d.new_administered, total_new_administered_per_100]
             }
         })
     })
@@ -515,26 +522,60 @@
         var us_total_cells = us_total_row.selectAll("td")
             // each row has data associated; we get it and enter it for the cells.
             .data(function (d) {
-                return d;
+                return d.slice(0, 3);
             })
             .enter()
             .append("td")
             .text(function (d, i) {
-                if (i === 2 && table_title[2] === "Percentage Covered") {
-                    return d + "%";
-                }
-                return d;
+                // if (i === 2 && table_title[2] === "Percentage Covered") {
+                //     return d + "%";
+                // }
+                if (i === 0)
+                    return d;
             })
             .attr("class", function (d, i) {
                 if (i === 1) {
-                    return 'percentage-cell';
+                    return 'percentage-cell us-vaccination-double-cell';
                 }
                 else if (i === 2) {
-                    return 'per-hundred-cell';
+                    return 'per-hundred-cell us-per-hundred-double-cell';
                 }
             });
+
+        var vaccination_cell = d3.selectAll("td.us-vaccination-double-cell")
+
+        vaccination_cell.append("span")
+            .attr("class", "cell-new-vaccinations-portion")
+            .text(function () {
+                if (us_total_data[3] !== 0)
+                    return "+" + abbreviateNumber(us_total_data[3])
+            })
+
+        vaccination_cell.append("p")
+            .attr("class", "cell-total-vaccinations-portion")
+            .text(us_total_data[1]);
+
+        d3.selectAll("td.us-vaccination-double-cell")
+            .attr("class", "percentage-cell")
+
+
+        var per_hundred_cell = d3.selectAll("td.us-per-hundred-double-cell")
+
+        per_hundred_cell.append("span")
+            .attr("class", "cell-new-vaccinations-per-hundred-portion")
+            .text(function () {
+                if (parseFloat(us_total_data[4]) !== 0)
+                    return "+" + abbreviateNumber(us_total_data[4])
+            })
+
+        per_hundred_cell.append("p")
+            .attr("class", "cell-total-new-vaccinations-portion")
+            .text(us_total_data[2]);
+        d3.selectAll("td.us-per-hundred-double-cell")
+            .attr("class", "per-hundred-cell")
+
         // We built the rows using the nested array - now each row has its own array.
-        update(table_distribution.slice(0, 12), table_title[2])
+        update(table_distribution.slice(0, 12), table_title[2], 0)
 
         var index = 12;
 
@@ -547,9 +588,8 @@
 
             }
             var newData = table_distribution.slice(index, index + 20);
+            update(newData, table_title[2], index);
             index += 20;
-            update(newData, table_title[2]);
-
         })
 
         d3.select("#btn1").on("click", () => {
@@ -560,13 +600,13 @@
             index = 12;
             var newData = table_distribution.slice(0, 12);
             table.selectAll('tbody').remove();
-            update(newData, table_title[2]);
+            update(newData, table_title[2], 0);
         })
     }
 
     // indexValue for initial # of columns
 
-    function update(newData, title_2) {
+    function update(newData, title_2, index) {
         var new_table_body = table.append("tbody");
         var new_rows = new_table_body
             .selectAll("tr")
@@ -582,24 +622,64 @@
         var cells = new_rows.selectAll("td")
             // each row has data associated; we get it and enter it for the cells.
             .data(function (d) {
-                return d;
+                return d.slice(0, 3);
             })
             .enter()
             .append("td")
             .text(function (d, i) {
-                if (i === 2 && title_2 === "Percentage Covered") {
-                    return d + "%";
-                }
-                return d;
+                // if (i === 2 && title_2 === "Percentage Covered") {
+                //     return d + "%";
+                // }
+                if (i === 0)
+                    return d;
             })
             .attr("class", function (d, i) {
                 if (i === 1) {
-                    return 'percentage-cell';
-                }
-                else if (i === 2) {
-                    return 'per-hundred-cell';
+                    return 'percentage-cell us-vaccination-double-cell';
+                } else if (i === 2) {
+                    return 'per-hundred-cell us-per-hundred-double-cell';
                 }
             });
+
+        var vaccination_cell = d3.selectAll("td.us-vaccination-double-cell")
+
+        vaccination_cell.append("span")
+            .attr("class", "cell-new-vaccinations-portion")
+            .text(function (d, i) {
+                i = i + index;
+                if (table_distribution[i][3] !== 0) {
+                    return "+" + abbreviateNumber(table_distribution[i][3])
+                }
+            })
+
+        vaccination_cell.append("p")
+            .attr("class", "cell-total-vaccinations-portion")
+            .text(function (d, i) {
+                return d;
+            });
+
+        d3.selectAll("td.us-vaccination-double-cell")
+            .attr("class", "percentage-cell")
+
+
+        var per_hundred_cell = d3.selectAll("td.us-per-hundred-double-cell")
+
+        per_hundred_cell.append("span")
+            .attr("class", "cell-new-vaccinations-per-hundred-portion")
+            .text(function (d, i) {
+                i = i + index;
+                if (parseFloat(table_distribution[i][4].toFixed(2)) !== 0) {
+                    return "+" + table_distribution[i][4].toFixed(2)
+                }
+            })
+
+        per_hundred_cell.append("p")
+            .attr("class", "cell-total-new-vaccinations-portion")
+            .text(function (d, i) {
+                return d;
+            });
+        d3.selectAll("td.us-per-hundred-double-cell")
+            .attr("class", "per-hundred-cell")
     }
 
 

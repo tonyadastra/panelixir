@@ -62,7 +62,7 @@
 
     if (world_data.length === 1) {
         d3.select('p.vaccinations-title')
-            .html("As of " + daytime + " on " + month + " " + day + ", " + year + ", more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
+            .html("As of <span class='vaccinations-title-daytime'>" + daytime + " on " + month + " " + day + ", " + year + "</span>, more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
     }
     hideSpinnerWorld();
 
@@ -597,7 +597,8 @@
                 }
                 else if (i === 1) {
                     return 'vaccination-cell vaccination-double-cell';
-                } else if (i === 2) {
+                }
+                else if (i === 2) {
                     return 'per-hundred-cell per-hundred-double-cell';
                 }
             });
