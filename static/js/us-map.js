@@ -488,6 +488,23 @@
         });
 
 
+        table.append("thead")
+            .append("tr")
+            .selectAll("th")
+            .data(table_title)
+            .enter()
+            .append("th")
+            .text(function (d) {
+                return d;
+            })
+            .style("background-color", function (d, i) {
+                if (i === 1)
+                    return "rgb(100, 208, 138)"
+                else if (i === 2)
+                    return "rgb(147,201,248)"
+            });
+
+
         var us_total_table_body = table.append("tbody");
         var us_total_row = us_total_table_body
             .selectAll("tr")
@@ -514,44 +531,6 @@
                 }
                 else if (i === 2) {
                     return 'per-hundred-cell';
-                }
-            });
-            // .attr("class", function (d, i) {
-            //     if (i === 2 && table_title[2] === "Percentage Covered") {
-            //         return 'percentage-cell';
-            //     }
-            // });
-
-
-        // You could also have made the new array with a map function!
-        //using colors and fonts from the UNICEF Style Guide
-
-        // var header = table.append("thead").append("tr");
-        table.append("thead")
-            .append("tr")
-            .selectAll("th")
-            .data(table_title)
-            .enter()
-            .append("th")
-            .text(function (d) {
-                return d;
-            })
-            .style("background-color", function (d, i) {
-                if (i === 1)
-                    return "rgb(100, 208, 138)"
-                else if (i === 2)
-                    return "rgb(147,201,248)"
-            });
-
-        var table_body = table.append("tbody");
-        var rows = table_body
-            .selectAll("tr")
-            .data(table_distribution.slice(0, 12))
-            .enter()
-            .append("tr")
-            .attr("class", function (d) {
-                if (d[0] === "U.S. Total") {
-                    return "us_total_row"
                 }
             });
         // We built the rows using the nested array - now each row has its own array.
