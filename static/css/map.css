@@ -203,8 +203,9 @@ table.us-vaccine-distribution, table.world-vaccination-table {
     /*color: #1935ef;*/
     font-weight: bold;
     /*background-color: #f6f6f6;*/
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.1)!important;
+    box-shadow: 0 4px 4px 1px rgba(0, 0, 0, 0.1)!important;
     z-index: 2;
+    overflow: visible;
 }
 
 .tooltip-number {
