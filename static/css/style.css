@@ -2342,10 +2342,9 @@ select.compare-dropdown {
     display: flex;
     justify-content: flex-end
 }
-/*.share-text {*/
-/*    margin-left: auto;*/
-/*    margin-right: 0!important;*/
-/*}*/
+.share-text {
+    margin-right: 0.5rem;
+}
 
 /*#st-1 {*/
 /*    float: right;*/
