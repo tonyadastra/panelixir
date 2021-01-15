@@ -23,11 +23,15 @@
     </style>
     {% block styles %}
     {% endblock %}
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=600128edf4055d0012d6087d&product=inline-share-buttons" async="async"></script>
 </head>
+
 <body>
+
 <!-- Heading Bar of Webpage-->
 <div class="title-bar">
 {#    <div class="row">#}
+
         <h1 class="title text-center">
             <a class="style-a elixir" href="/">Global COVID-19 Vaccine Frontline</a>
         </h1>
@@ -42,6 +46,10 @@
 {#            <a class="style-a" href="/about-us">About Us</a>#}
 {#        </h5>#}
 {#    </div>#}
+</div>
+
+<div class="social-media-share">
+    <span class="share-text">Help us spread positivity❤: </span><div class="sharethis-inline-share-buttons"></div>
 </div>
 
 <!-- Content -->
@@ -124,6 +132,17 @@ function scrollToTop() {
     document.documentElement.scrollTop = 0;
 }
 </script>
+
+{#<script>(function(d, s, id) {#}
+{#    var js, fjs = d.getElementsByTagName(s)[0];#}
+{#    if (d.getElementById(id)) return;#}
+{#    js = d.createElement(s);#}
+{#    js.id = id;#}
+{#    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";#}
+{#    fjs.parentNode.insertBefore(js, fjs);#}
+{#}(document, 'script', 'facebook-jssdk'));#}
+{#</script>#}
+{#<script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>#}
 
 </body>
 

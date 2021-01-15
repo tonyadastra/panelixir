@@ -2332,6 +2332,26 @@ select.compare-dropdown {
     display: none;
 }
 
+/*.share-social-media {*/
+/*    background-color: #726161;*/
+/*    height: 10px;*/
+/*}*/
+
+.social-media-share {
+    /*text-align: right;*/
+    display: flex;
+    justify-content: flex-end
+}
+/*.share-text {*/
+/*    margin-left: auto;*/
+/*    margin-right: 0!important;*/
+/*}*/
+
+/*#st-1 {*/
+/*    float: right;*/
+/*    right: 2%;*/
+/*}*/
+
 span.vaccinations-title-daytime {
     color: rgb(14, 112, 196);
     font-weight: bold;

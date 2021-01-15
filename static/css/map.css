@@ -56,6 +56,9 @@ section#vaccine-distribution .source {
 
 .vaccinations-title {
     margin-top: 0.2rem;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 p.vaccinations-subtitle {
@@ -328,4 +331,15 @@ td.percentage-cell, td.vaccination-cell, td.per-hundred-cell {
 
 td.country-cell {
     font-weight: bold;
+}
+
+
+p.cell-country-portion {
+    margin-bottom: 0!important;
+}
+
+span.cell-update-date-portion {
+    font-size: 70%;
+    font-weight: normal;
+    opacity: 0.7;
 }

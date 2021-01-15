@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 14 - (Update 2) Update World Map update date; add sharing button
 + January 14 - Update US Map Daily New Vaccinations and Per 100; Other minor styling updates
 + January 13 - (Update 2) Optimize US Vaccination Data, Update US and World Total, WorldMap NoData Legend
 + January 13 - Add US State Vaccination Data

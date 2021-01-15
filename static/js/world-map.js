@@ -31,7 +31,7 @@
                     d['vaccinations'] = vaccination_data;
                     if (vaccination_data.vaccinations !== 0) {
                         var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
-                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations, new_vaccinations_per_hundred]);
+                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations, new_vaccinations_per_hundred, vaccination_data.date]);
                         graph_top_vaccinations.push({
                             "country": d.name,
                             "vaccinations": vaccination_data.vaccinations,
@@ -587,13 +587,13 @@
             })
             .enter()
             .append("td")
-            .text(function (d, i) {
-                if (i === 0)
-                    return d;
-            })
+            // .text(function (d, i) {
+            //     if (i === 0)
+            //         return d;
+            // })
             .attr("class", function (d, i) {
                 if (i === 0) {
-                    return 'country-cell';
+                    return 'country-cell country-double-cell';
                 }
                 else if (i === 1) {
                     return 'vaccination-cell vaccination-double-cell';
@@ -602,6 +602,28 @@
                     return 'per-hundred-cell per-hundred-double-cell';
                 }
             });
+
+        var country_cell = d3.selectAll("td.country-double-cell")
+
+        country_cell.append("p")
+            .attr("class", "cell-country-portion")
+            .text(function (d, i) {
+                // i = i + index;
+                return d;
+            })
+
+        country_cell.append("span")
+            .attr("class", "cell-update-date-portion")
+            .text(function (d, i) {
+                i = i + index;
+                // if (table_distribution[i][3] !== 0) {
+                    return "(Updated " + table_distribution[i][5] + ")"
+                // }
+            });
+
+        d3.selectAll("td.country-double-cell")
+            .attr("class", "country-cell")
+
 
         var vaccination_cell = d3.selectAll("td.vaccination-double-cell")
 
