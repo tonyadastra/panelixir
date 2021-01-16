@@ -29,24 +29,26 @@ def update_world_vaccinations(event, context):
         try:
             date = str(country_data['data'][-1]['date'])
             total_vaccinations = int(country_data['data'][-1]['total_vaccinations'])
-            new_vaccinations = int(country_data['data'][-1]['new_vaccinations'])
+            if "new_vaccinations" in country_data['data'][-1]:
+                new_vaccinations = int(country_data['data'][-1]['new_vaccinations'])
+            else:
+                new_vaccinations = 0
             vaccinations_per_hundred = country_data['data'][-1]['total_vaccinations_per_hundred']
             hasUpdate = True
         except KeyError:
             hasUpdate = False
-            # country_data['data'].reverse()
-            # for data in country_data['data']:
-            #     if "total_vaccinations_per_hundred" in data:
-            #         print(data)
-            #         date = str(data['date'])
-            #         total_vaccinations = int(data['total_vaccinations'])
-            #         if "new_vaccinations" in data:
-            #             new_vaccinations = int(data['new_vaccinations'])
-            #         else:
-            #             new_vaccinations = 0
-            #         vaccinations_per_hundred = data['total_vaccinations_per_hundred']
-            #         break
-            pass
+            country_data['data'].reverse()
+            for data in country_data['data']:
+                if "total_vaccinations_per_hundred" in data:
+                    date = str(data['date'])
+                    total_vaccinations = int(data['total_vaccinations'])
+                    if "new_vaccinations" in data:
+                        new_vaccinations = int(data['new_vaccinations'])
+                    else:
+                        new_vaccinations = 0
+                    vaccinations_per_hundred = data['total_vaccinations_per_hundred']
+                    hasUpdate = True
+                    break
         country_data = {"country": country, "iso": iso, "total_vaccinations": total_vaccinations,
                         "new_vaccinations": new_vaccinations, "vaccinations_per_hundred": vaccinations_per_hundred,
                         "date": date, "hasUpdate": hasUpdate}
@@ -55,9 +57,8 @@ def update_world_vaccinations(event, context):
     for data in world_vaccination_data:
         for existing_data in existing_vaccinations_data:
             if data['iso'] == existing_data[1]:
-                previous_date = str(existing_data[5])
-                if (int(data['total_vaccinations']) > existing_data[2] and data['hasUpdate']
-                        and not (existing_data[2] > 0 and int(data['total_vaccinations']) == 0)):
+                # previous_date = str(existing_data[5])
+                if int(data['total_vaccinations']) > existing_data[2] and data['hasUpdate']:
                     cur.execute('''UPDATE "WorldVaccinations" 
                     SET vaccinations = %s, 
                     new_vaccinations = %s, 

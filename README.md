@@ -10,6 +10,8 @@
     + ### [Auto-Update USA Distribution Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
 
 ## Version History
+- v1.2 - Add an algorithm to check for previous vaccinations; update database
+  + Released: January 16, 2021
 - v1.1 - Update total world vaccinations - combine total of USA table and World table
     + Released: January 13, 2021
 - v1.0 - Initial release 
