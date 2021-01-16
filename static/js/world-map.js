@@ -246,8 +246,8 @@
             } else {
                 tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
             }
-            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= pageX) {
-                tooltip.style('left', (pageX - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
+            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= d3.select('body').node().getBoundingClientRect().width) {
+                tooltip.style('left', (d3.select('body').node().getBoundingClientRect().width - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
             }
 
         })
@@ -477,8 +477,8 @@
             } else {
                 tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
             }
-            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= pageX) {
-                tooltip.style('left', (pageX - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
+            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= d3.select('body').node().getBoundingClientRect().width) {
+                tooltip.style('left', (d3.select('body').node().getBoundingClientRect().width - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
             }
 
         })
