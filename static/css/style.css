@@ -2273,10 +2273,6 @@ select.compare-dropdown {
         margin-bottom: 0;
     }
 
-    .btn-outline-primary {
-        font-size: 11px;
-    }
-
     nav.nav-top {
         margin-bottom: 0.5rem;
     }
@@ -2340,9 +2336,13 @@ select.compare-dropdown {
 .social-media-share {
     /*text-align: right;*/
     display: flex;
-    justify-content: flex-end
+    justify-content: flex-end;
 }
 .share-text {
+    /*min-height: 100px;*/
+    display: inline-flex;
+    align-items: center;
+    /*border: 1px solid aqua;*/
     margin-right: 0.5rem;
 }
 

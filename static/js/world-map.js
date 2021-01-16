@@ -246,6 +246,9 @@
             } else {
                 tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
             }
+            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= pageX) {
+                tooltip.style('left', (pageX - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
+            }
 
         })
         .on('mouseout', function (d) {
@@ -290,18 +293,18 @@
         .append("button")
         .attr("class", function (d) {
             if (d === "Table")
-                return "active btn btn-outline-primary world-map-graph-button"
+                return "active btn btn-outline-info world-map-graph-button"
             else
-                return "btn btn-outline-primary world-map-graph-button"
+                return "btn btn-outline-info world-map-graph-button"
         })
         .html(function (d) {
             return d;
         })
         .on("click", function (d) {
             d3.selectAll("button.world-map-graph-button")
-                .attr("class", "btn btn-outline-primary world-map-graph-button")
+                .attr("class", "btn btn-outline-info world-map-graph-button")
             d3.select(this)
-                .attr("class", "active btn btn-outline-primary world-map-graph-button")
+                .attr("class", "active btn btn-outline-info world-map-graph-button")
 
             if (d === "Table"){
                 d3.select(".world-map-bars-svg")
@@ -474,6 +477,10 @@
             } else {
                 tooltip.html(d.name + ":<br/><span class='tooltip-no-data'>No reported data as of " + month + " " + day + ", " + year + "</span>");
             }
+            if (pageX + 20 + d3.select('.d3tooltip-world').node().getBoundingClientRect().width >= pageX) {
+                tooltip.style('left', (pageX - d3.select('.d3tooltip-world').node().getBoundingClientRect().width) + "px");
+            }
+
         })
         .on('mouseout', function (d) {
             tooltip.classed('hidden', true);
@@ -685,6 +692,14 @@ function abbreviateNumber(value) {
     }
 
     newValue = newValue.toPrecision(3);
+
+    // Rounding errors for values such as 999600 --> returns 1.00e+3K
+    // now it will return 1.00M
+    if (newValue == 1.00e+3) {
+        // newValue is of type 'string'
+        newValue = "1.00";
+        suffixNum++;
+    }
 
     newValue += suffixes[suffixNum];
     return newValue;

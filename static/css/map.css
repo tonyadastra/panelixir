@@ -162,6 +162,15 @@ span.highlight-vaccinations {
         height: 30px;
     }
 
+    table.us-vaccine-distribution thead tr th:first-child {
+        min-width: 105px;
+    }
+
+    .btn-outline-primary, .btn-outline-info {
+        font-size: 11px;
+    }
+
+
 
 }
 
@@ -179,6 +188,15 @@ span.highlight-vaccinations {
     .us_total_row {
         height: 58px;
     }
+
+    table.us-vaccine-distribution thead tr th:first-child {
+        min-width: 210px;
+    }
+
+    table.us-vaccine-distribution thead tr th:last-child {
+        min-width: 310px;
+    }
+
 
 }
 
@@ -246,7 +264,7 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 
 #spinner-wrapper, #spinner-wrapper-world {
     line-height: 35rem;
-    height: 35rem;
+    height: 40rem;
     /*border: 3px solid green;*/
     text-align: center;
 }
