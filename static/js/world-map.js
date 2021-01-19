@@ -348,6 +348,9 @@
     legendSVG.selectAll('.swatch, .no-data-swatch')
         .on("mouseover", function (d) {
             var color = d3.select(this).style("fill");
+            d3.select(this)
+                .attr("stroke", "#111")
+                .attr("stroke-width", "2");
 
             svg.selectAll('.country')
                 .attr("fill-opacity", "0.05");
@@ -359,6 +362,9 @@
 
         })
         .on("mouseout", function (d) {
+            d3.select(this)
+                .attr("stroke-width", "0");
+
             var color = d3.select(this).style("fill");
             svg.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
                 .attr("stroke-width", "0.5");
