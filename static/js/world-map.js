@@ -1,7 +1,17 @@
 (async () => {
     const world = await d3.json('../../data/map.json');
-    var countries = topojson.feature(world, world.objects.countries).features;
+    let countries = topojson.feature(world, world.objects.countries).features;
     // neighbors = topojson.neighbors(world.objects.countries.geometries);
+
+    const currentTime = new Date();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    const month = monthNames[currentTime.getMonth()];
+    const day = String(currentTime.getDate());
+    const year = currentTime.getFullYear();
+
+    const hour = currentTime.getHours();
+    const daytime = currentTime.toLocaleString('en-US', {hour: 'numeric', hour12: true}).replace(" ", "");
 
     var names, World_Vaccination_Data;
     var vaccinated_countries_count = 0;
@@ -20,25 +30,43 @@
             }
         })
 
+        for (let i = 0; i < World_Vaccination_Data.length; i++) {
+            if (World_Vaccination_Data[i].vaccinations > 0) {
+                if (World_Vaccination_Data[i].country === "World") {
+                    world_data.push(World_Vaccination_Data[i]);
+                }
+                else {
+                    vaccinated_countries_count++;
+                }
+            }
+        }
+
+        if (world_data.length === 1) {
+            d3.select('p.vaccinations-title')
+                .html("As of <span class='vaccinations-title-daytime'>" + daytime + " on " + month + " " + day + ", " + year + "</span>, more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in <b>" + vaccinated_countries_count + " countries</b> around the world")
+        }
 
         // add world vaccination data to json
         World_Vaccination_Data.forEach(function (vaccination_data) {
-            if (vaccination_data.country === "World") {
-                world_data.push(vaccination_data);
-            }
+            // if (vaccination_data.country === "World") {
+            //     world_data.push(vaccination_data);
+            // }
             countries.forEach(function (d) {
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
                     if (vaccination_data.vaccinations !== 0) {
                         var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
-                        table_distribution.push([d.name, abbreviateNumber(vaccination_data.vaccinations), vaccination_data.vaccinations_per_hundred.toFixed(2), vaccination_data.new_vaccinations, new_vaccinations_per_hundred, vaccination_data.date]);
+                        table_distribution.push([
+                            [d.name, vaccination_data.date],
+                            [vaccination_data.new_vaccinations, abbreviateNumber(vaccination_data.vaccinations)],
+                            [new_vaccinations_per_hundred, vaccination_data.vaccinations_per_hundred.toFixed(2)]
+                        ]);
                         graph_top_vaccinations.push({
                             "country": d.name,
                             "vaccinations": vaccination_data.vaccinations,
                             "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
                             "date": vaccination_data.date
                         })
-                        vaccinated_countries_count++;
                     }
                 }
                 if (d.name === "United States" && (vaccination_data.country === "Northern Mariana Islands" || vaccination_data.country === "Virgin Islands, U.S." || vaccination_data.country === "Guam" || vaccination_data.country === "Guam" || vaccination_data.country === "Puerto Rico")) {
@@ -50,22 +78,7 @@
 
     var index = 16;
 
-    var currentTime = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
-    const month = monthNames[currentTime.getMonth()];
-    const day = String(currentTime.getDate());
-    const year = currentTime.getFullYear();
-
-    const hour = currentTime.getHours();
-    const daytime = currentTime.toLocaleString('en-US', { hour: 'numeric', hour12: true }).replace(" ", "")
-
-    if (world_data.length === 1) {
-        d3.select('p.vaccinations-title')
-            .html("As of <span class='vaccinations-title-daytime'>" + daytime + " on " + month + " " + day + ", " + year + "</span>, more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in " + vaccinated_countries_count + " countries around the world")
-    }
     hideSpinnerWorld();
-
 
     const width = 1050, height = 550;
 
@@ -80,13 +93,62 @@
     })
     var p_min = min_and_max_percentage[0];
     var p_max = min_and_max_percentage[1];
-    // var p_interval = p_max - p_min;
-    // var p_i = p_interval / 4;
-    // var p_domain = [p_min, p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_max];
 
-    var colorScale = d3.scaleLinear()
-        .domain([p_min, p_max])
-        .range(["#e5f9f8", "#02995c"]);
+    var unit_vaccinations_map = [];
+    for (let i = 0; i < countries.length; i++) {
+        let d = countries[i];
+        if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0){
+            unit_vaccinations_map.push(d.vaccinations.vaccinations_per_hundred);
+        }
+    }
+    unit_vaccinations_map.sort(function(a, b) {
+        return a - b;
+    });
+
+
+    var unit_vaccinations_20thPercentile = d3.quantile(unit_vaccinations_map, 0.20);
+    var unit_vaccinations_45thPercentile = d3.quantile(unit_vaccinations_map, 0.45);
+    var unit_vaccinations_70thPercentile = d3.quantile(unit_vaccinations_map, 0.70);
+    var unit_vaccinations_90thPercentile = d3.quantile(unit_vaccinations_map, 0.90);
+
+
+
+    var p_interval = p_max - p_min;
+    var p_i = p_interval / 4;
+    // var p_domain = [p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_min + p_i * 4, p_max + p_i];
+    var p_domain_legend = [p_min, unit_vaccinations_20thPercentile, unit_vaccinations_45thPercentile, unit_vaccinations_70thPercentile, unit_vaccinations_90thPercentile, p_max];
+    var p_domain;
+
+    // if (p_max - unit_vaccinations_90thPercentile < 10) {
+    p_domain = [p_min, unit_vaccinations_20thPercentile, unit_vaccinations_45thPercentile, unit_vaccinations_70thPercentile, unit_vaccinations_90thPercentile, p_max];
+    // p_domain = []
+    // }
+
+
+    // var colorScale = d3.scaleLinear()
+    //     .domain([p_min, p_max])
+    //     .range(["#e5f9f8", "#02995c"]);
+
+    // var colorScale = d3.scaleThreshold()
+    //     .domain(p_domain)
+    //     .range(["#f5f5f5",
+    //         "#e8f8f7", "#d2f1e5", "#96d6bc",
+    //         "#5eb96c", "#46ab5e", "#02995c"]);
+    //
+    // var colorScaleLegend = d3.scaleQuantile()
+    //     .domain(unit_vaccinations_map)
+    //     .range([
+    //         "#e8f8f7", "#d2f1e5", "#96d6bc",
+    //         "#5eb96c", "#46ab5e", "#02995c"]);
+
+    var colorScale = d3.scaleQuantile()
+        .domain(p_domain)
+        .range([
+        "rgb(232,248,247)", "rgb(210,241,229)", "rgb(150,214,188)",
+            "rgb(102,194,164)", "rgb(51,176,117)",
+            "rgb(8,148,117)", "rgb(1,110,66)"
+            ]);
+
 
     var legendTitle = legendSVG.append('text')
         .attr("font-weight", "bold")
@@ -96,14 +158,11 @@
 
     var legendLinear = d3.legendColor()
         // .title("Number of Doses Administered per 100 People")
-        .shapeWidth(70)
-        .cells(8)
+        .shapeWidth(90)
+        // .cells(8)
         .orient('horizontal')
         .scale(colorScale);
 
-
-    // var legendWrapper = svg.append("g")
-    //     .attr("height", "30px;")
 
     var g_legend = legendSVG.append("g")
         .attr("class", "legendLinear");
@@ -116,6 +175,7 @@
         .attr("transform", "translate(0, 0)")
 
     noDataG.append('rect')
+        .attr("class", "no-data-swatch")
         .attr("width", legendSVG.select(".swatch").node().getBBox().width)
         .attr("height", legendSVG.select(".swatch").node().getBBox().height)
         .style("fill", "#f5f5f5")
@@ -176,9 +236,9 @@
     // get countries with data, append to the end (their border color will not be overridden)
     var hasData = [];
     for (var i = 0; i < countries.length; i++) {
-        if (countries[i].hasOwnProperty('vaccinations') && countries[i]['vaccinations']['vaccinations_per_hundred'] !== 0) {
-            hasData.push(countries[i])
-            countries.splice(i, 1)
+        if (countries[i].hasOwnProperty('vaccinations') && countries[i]['vaccinations']['vaccinations'] > 0) {
+            hasData.push(countries[i]);
+            countries.splice(i, 1);
             i--;
         }
         if (countries[i].name === "Antarctica") {
@@ -202,7 +262,7 @@
         .enter()
         .insert("path", ".graticule")
         .attr("class", function (d) {
-            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
                 return "country has-data"
             } else {
                 return "country no-data"
@@ -210,14 +270,14 @@
         })
         .attr("d", path)
         .attr("fill", function (d, i) {
-            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
                 return colorScale(d.vaccinations.vaccinations_per_hundred)
             } else {
-                return "#f5f5f5"
+                return "rgb(245,245,245)"
             }
         })
         .attr("stroke", function (d) {
-            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
                 return "#111"
             } else {
                 return "#aeaeae"
@@ -225,13 +285,23 @@
         })
         .attr("stroke-width", "0.5")
         .on('mouseover', function (d) {
-            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
                 d3.select(this)
                     .attr('stroke-width', '2')
             } else {
                 d3.select(this)
                     .attr('stroke-width', '1.5')
             }
+
+            var color = d3.select(this).attr("fill");
+
+            // legendSVG.selectAll('.swatch, .swatch-no-data')
+            //     .attr("fill-opacity", "0.05");
+
+            legendSVG.selectAll(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
+                .attr("stroke", "#111")
+                .attr("stroke-width", "2")
+                .attr("fill-opacity", "1");
         })
         .on('mousemove', function (d) {
             var pageX = d3.event.pageX;
@@ -239,8 +309,8 @@
             tooltip.classed('hidden', false)
                 .style('left', (pageX + 20) + "px")
                 .style('top', (pageY) + "px")
-            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations_per_hundred !== 0) {
-                tooltip.html(d.name + ":<br/> <span class='tooltip-number'>" + (d.vaccinations.vaccinations_per_hundred) + "</span> doses given per 100 people" +
+            if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
+                tooltip.html(d.name + ":<br/> <span class='tooltip-number'>" + (d.vaccinations.vaccinations_per_hundred.toFixed(2)) + "</span> doses given per 100 people" +
                     "<br/> <span class='tooltip-number'>" + abbreviateNumber(d.vaccinations.vaccinations) + "</span> doses administered <br/>" +
                     "<span class='tooltip-date'>As of " + (d.vaccinations.date) + "</span>");
             } else {
@@ -254,7 +324,11 @@
         .on('mouseout', function (d) {
             tooltip.classed('hidden', true);
             d3.select(this)
-                .attr('stroke-width', '0.5')
+                .attr('stroke-width', '0.5');
+
+            var color = d3.select(this).attr("fill");
+            legendSVG.selectAll(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
+                .attr("stroke-width", "0");
         })
     // .on('mouseout', tip.hide)
 
@@ -271,6 +345,52 @@
     //         .attr('stroke-width', '0.5')
     // })
 
+    legendSVG.selectAll('.swatch, .no-data-swatch')
+        .on("mouseover", function (d) {
+            var color = d3.select(this).style("fill");
+
+            svg.selectAll('.country')
+                .attr("fill-opacity", "0.05");
+
+            svg.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
+                .attr("stroke-width", "2")
+                .attr("stroke", "#111")
+                .attr("fill-opacity", "1");
+
+        })
+        .on("mouseout", function (d) {
+            var color = d3.select(this).style("fill");
+            svg.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
+                .attr("stroke-width", "0.5");
+            svg.selectAll('.country')
+                .attr("fill-opacity", "1");
+            svg.selectAll('.country.no-data')
+                .attr("stroke", "#aeaeae");
+        })
+
+    // svg.selectAll('.country')
+    //     .on("mouseover", function (d) {
+    //         var color = d3.select(this).style("fill");
+    //
+    //         // legendSVG.selectAll('.swatch, .swatch-no-data')
+    //         //     .attr("fill-opacity", "0.05");
+    //
+    //         legendSVG.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
+    //             .attr("stroke-width", "2")
+    //             .attr("stroke", "#111")
+    //             .attr("fill-opacity", "1");
+    //
+    //     })
+    //     .on("mouseout", function (d) {
+    //         var color = d3.select(this).style("fill");
+    //         legendSVG.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
+    //             .attr("stroke-width", "0");
+    //         // svg.selectAll('.country')
+    //         //     .attr("fill-opacity", "1");
+    //         // svg.selectAll('.country.no-data')
+    //         //     .attr("stroke", "#aeaeae");
+    //     })
+
 
     var borders = topojson.feature(world, world.objects.countries, function (a, b) {
         return a !== b;
@@ -278,7 +398,7 @@
 
 
     table_distribution.sort(function (a, b) {
-        return b[2] - a[2];
+        return b[2][1] - a[2][1];
     });
 
 
@@ -306,7 +426,7 @@
             d3.select(this)
                 .attr("class", "active btn btn-outline-info world-map-graph-button")
 
-            if (d === "Table"){
+            if (d === "Table") {
                 d3.select(".world-map-bars-svg")
                     .style("display", "none")
                 d3.select(".world-vaccination-table")
@@ -324,8 +444,7 @@
                         .style("display", "none")
 
                 }
-            }
-            else if (d === "Bar Graph") {
+            } else if (d === "Bar Graph") {
                 d3.select(".world-vaccination-table")
                     .style("display", "none")
                 d3.select(".world-map-bars-svg")
@@ -347,8 +466,6 @@
     //     .attr('viewBox', `0 0 ${width} 35`);
 
 
-
-
     var graphMargin = {top: 50, right: 40, bottom: 70, left: 180}
     var graphWidth = width - graphMargin.left - graphMargin.right,
         graphHeight;
@@ -361,7 +478,7 @@
     var graphSVG = d3.select("#vis5").append("svg")
         .attr('viewBox', `0 0 ${graphWidth} ${graphHeight}`)
         .attr("class", "world-map-bars-svg")
-        // .style("display", "none")
+    // .style("display", "none")
 
     graphSVG.append("text")
         // .attr("font-weight", "bold")
@@ -392,16 +509,6 @@
         return b.vaccinations_per_hundred - a.vaccinations_per_hundred;
     });
 
-    //make y axis to show bar names
-    // var yAxis = d3.axisLeft(y)
-    //     .scale(y)
-    //     //no tick marks
-    //     .tickSize(0)
-    // // .orient("left");
-    //
-    // var gy = svg.append("g")
-    //     .attr("class", "y axis")
-    //     .call(yAxis)
 
     x.domain([0, d3.max(graph_top_vaccinations, function (d) {
         return d.vaccinations_per_hundred;
@@ -409,42 +516,6 @@
     y.domain(graph_top_vaccinations.slice(0, 20).map(function (d) {
         return d.country;
     }));
-
-
-    // var bars = svg.selectAll(".bar")
-    //     .data(countries)
-    //     .enter()
-    //     .append("g")
-    //
-    // //append rects
-    // bars.append("rect")
-    //     .attr("class", "bar")
-    //     .attr("y", function (d) {
-    //         return y(d.name);
-    //     })
-    //     .attr("height", y.bandwidth())
-    //     .attr("x", 0)
-    //     .attr("width", function (d) {
-    //         if (d.hasOwnProperty('vaccinations'))
-    //             return x(d.vaccinations.vaccinations_per_hundred);
-    //     });
-    //
-    // //add a value label to the right of each bar
-    // bars.append("text")
-    //     .attr("class", "label")
-    //     //y position of the label is halfway down the bar
-    //     .attr("y", function (d) {
-    //         return y(d.name) + y.bandwidth() / 2 + 4;
-    //     })
-    //     //x position is 3 pixels to the right of the bar
-    //     .attr("x", function (d) {
-    //         if (d.hasOwnProperty('vaccinations'))
-    //             return x(d.vaccinations.vaccinations_per_hundred) + 3;
-    //     })
-    //     .text(function (d) {
-    //         if (d.hasOwnProperty('vaccinations'))
-    //             return d.vaccinations.vaccinations_per_hundred;
-    //     });
 
     var bars = graphG.selectAll(".bar")
         .data(graph_top_vaccinations.slice(0, 20))
@@ -471,7 +542,7 @@
                 .style('left', (pageX + 20) + "px")
                 .style('top', (pageY) + "px")
             if (d.hasOwnProperty('vaccinations') && d.vaccinations_per_hundred !== 0) {
-                tooltip.html(d.country + ":<br/> <span class='tooltip-number'>" + (d.vaccinations_per_hundred) + "</span> doses given per 100 people" +
+                tooltip.html(d.country + ":<br/> <span class='tooltip-number'>" + (d.vaccinations_per_hundred.toFixed(2)) + "</span> doses given per 100 people" +
                     "<br/> <span class='tooltip-number'>" + abbreviateNumber(d.vaccinations) + "</span> doses administered <br/>" +
                     "<span class='tooltip-date'>As of " + (d.date) + "</span>");
             } else {
@@ -503,11 +574,11 @@
 
     bars.append("text")
         .attr("class", "label world-map-graph-label")
-        //y position of the label is halfway down the bar
+        // y position of the label is halfway down the bar
         .attr("y", function (d) {
             return y(d.country) + y.bandwidth() / 2 + 4;
         })
-        //x position is 3 pixels to the right of the bar
+        // x position is 3 pixels to the right of the bar
         .attr("x", function (d) {
             return x(d.vaccinations_per_hundred) + 3;
         })
@@ -567,12 +638,7 @@
         index = 16;
     })
 
-    // legendSVG.selectAll('.swatch')
-    //     .on("mouseover", function (d) {
-    //         var color = d3.select(this).style("fill");
-    //         svg.selectAll(`[fill="${color}"]`)
-    //             .attr("stroke-width", "2");
-    //     })
+
 
     function updateWorldTable(newData, index) {
         var table_body = table.append("tbody");
@@ -594,88 +660,65 @@
             })
             .enter()
             .append("td")
-            // .text(function (d, i) {
-            //     if (i === 0)
-            //         return d;
-            // })
             .attr("class", function (d, i) {
                 if (i === 0) {
-                    return 'country-cell country-double-cell';
-                }
-                else if (i === 1) {
-                    return 'vaccination-cell vaccination-double-cell';
-                }
-                else if (i === 2) {
-                    return 'per-hundred-cell per-hundred-double-cell';
+                    return 'country-cell';
+                } else if (i === 1) {
+                    return 'vaccination-cell';
+                } else if (i === 2) {
+                    return 'per-hundred-cell';
                 }
             });
 
-        var country_cell = d3.selectAll("td.country-double-cell")
-
+        let country_cell = cells.filter(function (d, i) {
+            return i === 0;
+        })
         country_cell.append("p")
             .attr("class", "cell-country-portion")
-            .text(function (d, i) {
-                // i = i + index;
-                return d;
+            .text(function (d) {
+                return d[0];
             })
-
         country_cell.append("span")
             .attr("class", "cell-update-date-portion")
-            .text(function (d, i) {
-                i = i + index;
-                // if (table_distribution[i][3] !== 0) {
-                    return "(Updated " + table_distribution[i][5] + ")"
-                // }
+            .text(function (d) {
+                return "(Updated " + d[1] + ")"
             });
 
-        d3.selectAll("td.country-double-cell")
-            .attr("class", "country-cell")
 
-
-        var vaccination_cell = d3.selectAll("td.vaccination-double-cell")
-
+        let vaccination_cell = cells.filter(function (d, i) {
+            return i === 1;
+        })
         vaccination_cell.append("span")
             .attr("class", "cell-new-vaccinations-portion")
-            .text(function (d, i) {
-                i = i + index;
-                if (table_distribution[i][3] !== 0) {
-                    return "+" + abbreviateNumber(table_distribution[i][3])
+            .text(function (d) {
+                // i = i + index;
+                if (d[0] !== 0) {
+                    return "+" + abbreviateNumber(d[0])
                 }
             })
-
         vaccination_cell.append("p")
             .attr("class", "cell-total-vaccinations-portion")
-            .text(function (d, i) {
-                i = i + index;
-                if (table_distribution[i][3] !== 0) {
-                    return d;
-                } else {
-                    return d;
-                }
+            .text(function (d) {
+                return d[1];
             });
 
 
-        d3.selectAll("td.vaccination-double-cell")
-            .attr("class", "vaccination-cell")
-
-        var per_hundred_cell = d3.selectAll("td.per-hundred-double-cell")
-
+        let per_hundred_cell = cells.filter(function (d, i) {
+            return i === 2;
+        })
         per_hundred_cell.append("span")
             .attr("class", "cell-new-vaccinations-per-hundred-portion")
-            .text(function (d, i) {
-                i = i + index;
-                if (parseFloat(table_distribution[i][4].toFixed(2)) !== 0) {
-                    return "+" + table_distribution[i][4].toFixed(2)
+            .text(function (d) {
+                d[0] = parseFloat(d[0].toFixed(2));
+                if (d[0] > 0) {
+                    return "+" + d[0];
                 }
             })
-
         per_hundred_cell.append("p")
             .attr("class", "cell-total-new-vaccinations-portion")
-            .text(function (d, i) {
-                return d;
+            .text(function (d) {
+                return d[1];
             });
-        d3.selectAll("td.per-hundred-double-cell")
-            .attr("class", "per-hundred-cell")
     }
 
 

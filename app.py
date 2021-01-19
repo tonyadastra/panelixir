@@ -339,6 +339,17 @@ def getBarsData():
                 ("%" + continent + "%", ))
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
+
+    # cur.execute("SELECT COUNT(early_approval) as count "
+    #             " FROM info "
+    #             " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
+    #             " AND early_approval",
+    #             # " GROUP BY early_approval",
+    #             ("%" + continent + "%",))
+    # limited_count = cur.fetchall()[0][0]
+    # print(limited_count)
+    # cur.execute("rollback")
+
     data_arr = []
     for i in range(5):
         found = False
@@ -348,6 +359,8 @@ def getBarsData():
                 found = True
         if not found:
             data_arr.append(0)
+    # data_arr.insert(4, limited_count)
+
     bars_data_json = {'bars_data': []}
     for i in range(len(bars_data)):
         bars_data_json['bars_data'].append(bars_data[i][0][0])
@@ -431,7 +444,7 @@ def get_compare_info():
             status1 += "Approved in " + summary1['approved'] + ". "
         else:
             status1 += "Approved in " + str(len(approved1_array)) + " countries. "
-    if summary1['limited'] is not None and summary1['approved'] != "":
+    if summary1['limited'] is not None and summary1['limited'] != "":
         limited1_array = summary1['limited'].replace(', ', ',').split(',')
         if len(limited1_array) <= 3:
             status1 += "Limited Use in " + summary1['limited'] + "."
@@ -461,7 +474,7 @@ def get_compare_info():
             status2 += "Approved in " + summary2['approved'] + ". "
         else:
             status2 += "Approved in " + str(len(approved2_array)) + " countries. "
-    if summary2['limited'] is not None and summary2['approved'] != "":
+    if summary2['limited'] is not None and summary2['limited'] != "":
         limited2_array = summary2['limited'].replace(', ', ',').split(',')
         if len(limited2_array) <= 3:
             status2 += "Limited Use in " + summary2['limited'] + "."
@@ -551,6 +564,11 @@ def getWorldVaccinationData():
         if vaccination_data['country'] == "Vatican":
             vaccination_data['country'] = "Vatican City"
     return jsonify(world_vaccination_data)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 if __name__ == '__main__':

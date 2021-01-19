@@ -170,6 +170,9 @@ span.highlight-vaccinations {
         font-size: 11px;
     }
 
+    .d3tooltip-world {
+        min-width: 150px;
+    }
 
 
 }
@@ -360,4 +363,12 @@ span.cell-update-date-portion {
     font-size: 70%;
     font-weight: normal;
     opacity: 0.7;
+}
+
+.world-map rect.no-data-swatch:hover, .world-map rect.swatch:hover {
+    cursor: pointer;
+}
+
+.world-map .country:hover {
+    cursor: pointer;
 }

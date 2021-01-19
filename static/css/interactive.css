@@ -88,6 +88,15 @@
 		border-bottom: 24px solid transparent !important; /* Modified */
 	}
 
+	.arrow-right-stageEarly {
+		/*width: 0;*/
+		/*height: 0;*/
+		border-top: 24px solid transparent !important; /* Modified */
+		border-left: 12px solid #7ccdc9 !important; /* Modified */
+		border-bottom: 24px solid transparent !important; /* Modified */
+		/*margin-left: 4.8px;*/
+
+	}
 
 	.arrow-right-stage4 {
 		/*width: 0;*/
@@ -106,26 +115,10 @@
 		padding-left: 0.3rem !important; /* Modified */
 	}
 
-	#progress1 {
+
+	#progress1, #progress2, #progress3, #progress4 {
 		/*background-color: #84ceeb;*/
 		line-height: 3rem !important; /* Modified */;
-	}
-
-	#progress2 {
-		/*background-color: #5ab9ea;*/
-		line-height: 3rem !important; /* Modified */;
-	}
-
-	#progress3 {
-		/*background-color: #2b98d2;*/
-		line-height: 3rem !important; /* Modified */;
-	}
-
-	#progress4 {
-		/*background-color: #3aafa9;*/
-		line-height: 3rem !important; /* Modified */;
-		/*width: 110%;*/
-		/*position: relative!important;*/
 	}
 
 	.btn {
@@ -240,6 +233,14 @@
 
 
 	.arrow-right-stage3 {
+		/*width: 0;*/
+		/*height: 0;*/
+		border-top: 40px solid transparent !important;/* Modified */;
+		/*border-left: 18px solid #2b98d2;*/
+		border-bottom: 40px solid transparent !important;/* Modified */;
+	}
+
+	.arrow-right-stageEarly {
 		/*width: 0;*/
 		/*height: 0;*/
 		border-top: 40px solid transparent !important;/* Modified */;
@@ -399,6 +400,19 @@
 	border-bottom: 48px solid transparent;
 }
 
+.text-stageEarly {
+	color: #7ccdc9;
+}
+
+.arrow-right-stageEarly {
+	width: 0;
+	height: 0;
+	border-top: 48px solid transparent;
+	border-left: 18px solid #7ccdc9;
+	border-bottom: 48px solid transparent;
+}
+
+
 .text-stage4 {
 	color: #3aafa9;
 	margin-left: -0.5rem;
@@ -426,6 +440,10 @@
 
 #progress3 {
   background-color: #2b98d2;
+}
+
+#progressEarly {
+  background-color: #7ccdc9;
 }
 
 #progress4 {

@@ -17,80 +17,98 @@
         US_States.forEach(function (state) {
             US_Distribution_Data.forEach(function (dbStateData) {
                 // Pfizer.forEach(function (state_pfizer) {
-                    if (state.state === dbStateData.jurisdiction) {
-                        state.population = parseInt(state.population)
-                        var total_doses = dbStateData.doses;
-                        var percentage_covered = total_doses / state.population;
-                        var administered_per_100 = (dbStateData.doses_administered / state.population) * 100;
-                        var state_data = {
-                            "state": state.state,
-                            "code": state.code,
-                            "doses": total_doses,
-                            "doses_administered": dbStateData.doses_administered,
-                            "population": state.population,
-                            "percentage_covered": percentage_covered * 100,
-                            "administered_per_100": administered_per_100,
-                            "new_administered": dbStateData.new_administered,
-                            "new_distributed": dbStateData.new_distributed,
-                            "new_administered_per_100": (dbStateData.new_administered / state.population) * 100,
-                            "new_distributed_per_100": (dbStateData.new_distributed / state.population) * 100,
-                        };
+                if (state.state === dbStateData.jurisdiction) {
+                    state.population = parseInt(state.population)
+                    var total_doses = dbStateData.doses;
+                    var percentage_covered = total_doses / state.population;
+                    var administered_per_100 = (dbStateData.doses_administered / state.population) * 100;
+                    var state_data = {
+                        "state": state.state,
+                        "code": state.code,
+                        "doses": total_doses,
+                        "doses_administered": dbStateData.doses_administered,
+                        "population": state.population,
+                        "percentage_covered": percentage_covered * 100,
+                        "administered_per_100": administered_per_100,
+                        "new_administered": dbStateData.new_administered,
+                        "new_distributed": dbStateData.new_distributed,
+                        "new_administered_per_100": (dbStateData.new_administered / state.population) * 100,
+                        "new_distributed_per_100": (dbStateData.new_distributed / state.population) * 100,
+                    };
 
-                        var state_data_administered = {
-                            "state": state.state,
-                            "code": state.code,
-                            "doses": dbStateData.doses_administered,
-                            "population": state.population,
-                            "percentage_covered": administered_per_100
-                        };
-                        // Add distribution data to each state
-                        data.forEach(function (d_state) {
-                            if (d_state.properties.name === state.state) {
-                                d_state['distribution'] = state_data
-                            }
-                        })
-
-                        data_administered.forEach(function (d_state) {
-                            if (d_state.properties.name === state_data_administered.state) {
-                                d_state['distribution'] = state_data_administered
-                            }
-                        })
-                        // if (special_jurisdictions.includes(dbStateData.jurisdiction)) {
-                        //     data.push({"type": "Feature", "properties": {"name": state.state, "type": "Territory"}, "distribution": state_data})
-                        // }
-                        // percentage_array.push(percentage_covered * 100)
-                        // us_state_distribution.push(state_data)
-                        if (!special_jurisdictions.includes(state.state) || state.state === "District of Columbia") {
-                            // if (state.state === "West Virginia")
-                            //     console.log(state_data.new_administered)
-                            table_distribution.push([state_data.state, abbreviateNumber(state_data.doses), state_data.percentage_covered.toFixed(2), state_data.new_distributed, state_data.new_distributed_per_100])
-                            table_distribution_administered.push([state_data.state, abbreviateNumber(state_data.doses_administered), state_data.administered_per_100.toFixed(2), state_data.new_administered, state_data.new_administered_per_100])
+                    var state_data_administered = {
+                        "state": state.state,
+                        "code": state.code,
+                        "doses": dbStateData.doses_administered,
+                        "population": state.population,
+                        "percentage_covered": administered_per_100
+                    };
+                    // Add distribution data to each state
+                    data.forEach(function (d_state) {
+                        if (d_state.properties.name === state.state) {
+                            d_state['distribution'] = state_data
                         }
+                    })
+
+                    data_administered.forEach(function (d_state) {
+                        if (d_state.properties.name === state_data_administered.state) {
+                            d_state['distribution'] = state_data_administered
+                        }
+                    })
+                    // if (special_jurisdictions.includes(dbStateData.jurisdiction)) {
+                    //     data.push({"type": "Feature", "properties": {"name": state.state, "type": "Territory"}, "distribution": state_data})
+                    // }
+                    // percentage_array.push(percentage_covered * 100)
+                    // us_state_distribution.push(state_data)
+                    if (!special_jurisdictions.includes(state.state) || state.state === "District of Columbia") {
+                        // if (state.state === "West Virginia")
+                        //     console.log(state_data.new_administered)
+                        table_distribution.push([
+                            state_data.state,
+                            [state_data.new_distributed, abbreviateNumber(state_data.doses)],
+                            [state_data.new_distributed_per_100, state_data.percentage_covered.toFixed(2)]
+                        ])
+                        table_distribution_administered.push([
+                            state_data.state,
+                            [state_data.new_administered, abbreviateNumber(state_data.doses_administered)],
+                            [state_data.new_administered_per_100, state_data.administered_per_100.toFixed(2)]
+                        ])
                     }
+                }
                 // })
             })
         })
 
         var total_population = d3.sum(data, d => d.distribution.population)
-        US_Distribution_Data.forEach(function (d) {
-            if (d.jurisdiction === "U.S. Total") {
-        //         // add US Totals
-        // var total_doses = d3.sum(data, d => d.distribution.doses)
+        for (let i = 0; i < US_Distribution_Data.length; i++) {
+            if (US_Distribution_Data[i].jurisdiction === "U.S. Total") {
+                const d = US_Distribution_Data[i];
                 var total_percentage_covered = (d.doses / total_population) * 100;
                 var total_administered_per_100 = (d.doses_administered / total_population) * 100;
 
                 var total_new_distributed_per_100 = (d.new_distributed / total_population) * 100;
                 var total_new_administered_per_100 = (d.new_administered / total_population) * 100;
-        // var total_percentage_covered = (total_doses / total_population) * 100;
-                us_total_data_distributed = ["U.S. Total", abbreviateNumber(d.doses), total_percentage_covered.toFixed(2), d.new_distributed, total_new_distributed_per_100]
-                us_total_data_administered = ["U.S. Total", abbreviateNumber(d.doses_administered), total_administered_per_100.toFixed(2), d.new_administered, total_new_administered_per_100]
+
+                us_total_data_distributed = [
+                    "U.S. Total",
+                    [d.new_distributed, abbreviateNumber(d.doses)],
+                    [total_new_distributed_per_100, total_percentage_covered.toFixed(2)]
+                ];
+                us_total_data_administered = [
+                    "U.S. Total",
+                    [d.new_administered, abbreviateNumber(d.doses_administered)],
+                    [total_new_administered_per_100, total_administered_per_100.toFixed(2)]
+                ];
+
+                break;
             }
-        })
+        }
+
     })
 
 
     const width = 960;
-    const height = 600;
+    const height = 605;
     const svg = d3.select('#vis4')
         .append('svg')
         // .attr('width', width)
@@ -101,10 +119,10 @@
     const path = d3.geoPath();
 
     var table = d3.select("#table")
-            .append("table")
-            .attr('class', 'us-vaccine-distribution');
+        .append("table")
+        .attr('class', 'us-vaccine-distribution');
 
-    var textColorException = ["New Jersey", "Rhode Island", "Delaware", "Hawaii"];
+    const textColorException = ["New Jersey", "Rhode Island", "Delaware", "Hawaii"];
 
     var table_title = ["State", "Doses Administered", "Doses Given Per 100 People"];
     // console.log(data)
@@ -263,7 +281,7 @@
                     case 'Hawaii':
                         return path.centroid(d)[0] - 10;
                     case 'California':
-                        return path.centroid(d)[0] - 5;
+                        return path.centroid(d)[0] - 10;
                     case 'New Jersey':
                         return path.centroid(d)[0] + 25;
                     case 'Delaware':
@@ -515,60 +533,55 @@
             .append("tr")
             .attr("class", "us_total_row");
         var us_total_cells = us_total_row.selectAll("td")
-            // each row has data associated; we get it and enter it for the cells.
             .data(function (d) {
                 return d.slice(0, 3);
             })
             .enter()
             .append("td")
             .text(function (d, i) {
-                // if (i === 2 && table_title[2] === "Percentage Covered") {
-                //     return d + "%";
-                // }
                 if (i === 0)
                     return d;
             })
             .attr("class", function (d, i) {
                 if (i === 1) {
-                    return 'percentage-cell us-vaccination-double-cell';
+                    return 'percentage-cell';
                 } else if (i === 2) {
-                    return 'per-hundred-cell us-per-hundred-double-cell';
+                    return 'per-hundred-cell';
                 }
             });
 
-        var vaccination_cell = d3.selectAll("td.us-vaccination-double-cell")
-
-        vaccination_cell.append("span")
+        let us_total_vaccination_cell = us_total_cells.filter(function (d, i) {
+            return i === 1
+        })
+        us_total_vaccination_cell.append('span')
             .attr("class", "cell-new-vaccinations-portion")
-            .text(function () {
-                if (us_total_data[3] !== 0)
-                    return "+" + abbreviateNumber(us_total_data[3])
+            .text(function (d) {
+                if (d[0] !== 0)
+                    return "+" + abbreviateNumber(d[0])
             })
-
-        vaccination_cell.append("p")
+        us_total_vaccination_cell.append("p")
             .attr("class", "cell-total-vaccinations-portion")
-            .text(us_total_data[1]);
+            .text(function (d) {
+                return d[1];
+            });
 
-        d3.selectAll("td.us-vaccination-double-cell")
-            .attr("class", "percentage-cell")
-
-
-        var per_hundred_cell = d3.selectAll("td.us-per-hundred-double-cell")
-
-        per_hundred_cell.append("span")
+        let us_total_per_hundred_cell = us_total_cells.filter(function (d, i) {
+            return i === 2
+        })
+        us_total_per_hundred_cell.append('span')
             .attr("class", "cell-new-vaccinations-per-hundred-portion")
-            .text(function () {
-                if (parseFloat(us_total_data[4]) !== 0)
-                    return "+" + abbreviateNumber(us_total_data[4])
+            .text(function (d) {
+                d[0] = parseFloat(d[0]);
+                if (d[0] !== 0)
+                    return "+" + d[0].toFixed(2);
             })
-
-        per_hundred_cell.append("p")
+        us_total_per_hundred_cell.append("p")
             .attr("class", "cell-total-new-vaccinations-portion")
-            .text(us_total_data[2]);
-        d3.selectAll("td.us-per-hundred-double-cell")
-            .attr("class", "per-hundred-cell")
+            .text(function (d) {
+                return d[1];
+            });
 
-        // We built the rows using the nested array - now each row has its own array.
+
         update(table_distribution.slice(0, 12))
 
         d3.select("#us-table-show-more").on("click", () => {
@@ -601,15 +614,9 @@
                 .selectAll("tr")
                 .data(newData)
                 .enter()
-                .append("tr")
-                .attr("class", function (d) {
-                    // if (d[0] === "U.S. Total") {
-                    //     return "us_total_row"
-                    // }
-                });
-            // We built the rows using the nested array - now each row has its own array.
+                .append("tr");
+
             var cells = new_rows.selectAll("td")
-                // each row has data associated; we get it and enter it for the cells.
                 .data(function (d) {
                     return d.slice(0, 3);
                 })
@@ -623,57 +630,45 @@
                     if (i === 0)
                         return 'us-state-cell'
                     else if (i === 1) {
-                        return 'percentage-cell us-vaccination-double-cell';
+                        return 'percentage-cell';
                     } else if (i === 2) {
-                        return 'per-hundred-cell us-per-hundred-double-cell';
+                        return 'per-hundred-cell';
                     }
                 });
 
-            var vaccination_cell = d3.selectAll("td.us-vaccination-double-cell")
-
-            vaccination_cell.append("span")
+            let vaccination_cell = cells.filter(function (d, i) {
+                return i === 1;
+            })
+            vaccination_cell.append('span')
                 .attr("class", "cell-new-vaccinations-portion")
-                .text(function (d, i) {
-                    // i = i + index;
-                    if (newData[i][3] > 0) {
-                        return "+" + abbreviateNumber(newData[i][3])
-                    }
+                .text(function (d) {
+                    if (d[0] !== 0)
+                        return "+" + abbreviateNumber(d[0])
                 })
-            // .attr()
-
             vaccination_cell.append("p")
                 .attr("class", "cell-total-vaccinations-portion")
-                .text(function (d, i) {
-                    return d;
+                .text(function (d) {
+                    return d[1];
                 });
 
-            d3.selectAll("td.us-vaccination-double-cell")
-                .attr("class", "percentage-cell")
-
-
-            var per_hundred_cell = d3.selectAll("td.us-per-hundred-double-cell")
-
-            per_hundred_cell.append("span")
+            let per_hundred_cell = cells.filter(function (d, i) {
+                return i === 2;
+            })
+            per_hundred_cell.append('span')
                 .attr("class", "cell-new-vaccinations-per-hundred-portion")
-                .text(function (d, i) {
-                    // i = i + index;
-                    if (parseFloat(newData[i][4].toFixed(2)) !== 0) {
-                        return "+" + newData[i][4].toFixed(2)
-                    }
+                .text(function (d) {
+                    d[0] = parseFloat(d[0].toFixed(2));
+                    if (d[0] > 0)
+                        return "+" + d[0];
                 })
-
             per_hundred_cell.append("p")
                 .attr("class", "cell-total-new-vaccinations-portion")
-                .text(function (d, i) {
-                    return d;
+                .text(function (d) {
+                    return d[1];
                 });
-            d3.selectAll("td.us-per-hundred-double-cell")
-                .attr("class", "per-hundred-cell")
+
         }
     }
-
-    // indexValue for initial # of columns
-
 
 
 })();
