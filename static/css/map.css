@@ -175,7 +175,7 @@ span.highlight-vaccinations {
     }
 
     #WorldMapZoomBtnGroup {
-        font-size: 3%;
+        font-size: 50%;
         /*position: absolute;*/
         top: -100px !important;
         left: 2px !important;
