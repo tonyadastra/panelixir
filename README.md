@@ -12,6 +12,8 @@
     + ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 ## Version History
+- v2.3 - Update Prev_Distribution and Prev_Administered when new update
+    + Released: January 20, 2021
 - v2.2 - Add new data administered_1 and administered_2
     + Released: January 19, 2021
 - v2.1.1 - Fix KeyError for LongTermCare - no 'Doses_Distributed'
