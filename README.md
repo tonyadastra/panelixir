@@ -1,7 +1,9 @@
 # PanElixir - Auto-Update USA Distribution Division
 > This package uses AWS Lambda Function to collect data from CDC's Vaccine Allocation Data and append to database "VaccineDistributionUSA"
 
-> Data source: [CDC - Moderna Distribution](https://data.cdc.gov/resource/b7pe-5nws.json); [CDC - Pfizer Distribution](https://data.cdc.gov/resource/saz5-9hgg.json); [CDC - US Vaccination Data](https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=vaccination_data)
+> Data source: [CDC - US Vaccination Data](https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=vaccination_data)
+
+[comment]: <> (> [CDC - Moderna Distribution]&#40;https://data.cdc.gov/resource/b7pe-5nws.json&#41;; [CDC - Pfizer Distribution]&#40;https://data.cdc.gov/resource/saz5-9hgg.json&#41;; )
 
 ## **Divisions and Internal Links**
 + ### [Main Project - Master Branch](https://github.com/tonyliunyc/panelixir/tree/master)
@@ -10,6 +12,12 @@
     + ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 ## Version History
+- v2.2 - Add new data administered_1 and administered_2
+    + Released: January 19, 2021
+- v2.1.1 - Fix KeyError for LongTermCare - no 'Doses_Distributed'
+    + Released: January 15, 2021
+- v2.1 - Merge Sources; Add US Total
+    + Released: January 13, 2021
 - v2.0 - Include vaccination data
     + Released: January 12, 2021
 - v1.0 - Initial release 
