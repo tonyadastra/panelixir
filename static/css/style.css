@@ -1315,7 +1315,7 @@ span.highlight {
 /*}*/
 
 nav.nav-top {
-    z-index: 3;
+    z-index: 5;
     position: -webkit-sticky;
     position: sticky;
     top: 0;

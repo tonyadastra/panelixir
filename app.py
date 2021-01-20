@@ -556,13 +556,27 @@ def getWorldVaccinationData():
                 'new_vaccinations', new_vaccinations, 
                 'vaccinations_per_hundred', vaccinations_per_hundred,
                 'population', population)) 
-                FROM "WorldVaccinations"''')
+                FROM "WorldVaccinations" WHERE country != \'United States\'''')
     world_vaccination_data = cur3.fetchall()[0][0]
+    cur3.execute("rollback")
+
+    cur3.execute('''SELECT json_agg(json_build_object(
+                'date', TO_CHAR(date, 'Month FMDD, YYYY'),
+                'country', 'United States', 
+                'vaccinations', doses_administered, 
+                'new_vaccinations', (doses_administered - prev_administered), 
+                'vaccinations_per_hundred', ROUND(doses_administered  * 100.0 / 329484123.0, 2),
+                'population', 329484123)) 
+                FROM "VaccineDistributionUSA" WHERE jurisdiction = \'U.S. Total\'''')
+    us_vaccination_data = cur3.fetchall()[0][0][0]
     cur3.execute("rollback")
 
     for vaccination_data in world_vaccination_data:
         if vaccination_data['country'] == "Vatican":
             vaccination_data['country'] = "Vatican City"
+
+    world_vaccination_data.append(us_vaccination_data)
+
     return jsonify(world_vaccination_data)
 
 

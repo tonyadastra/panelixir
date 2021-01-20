@@ -80,6 +80,7 @@
         })
 
         var total_population = d3.sum(data, d => d.distribution.population)
+
         for (let i = 0; i < US_Distribution_Data.length; i++) {
             if (US_Distribution_Data[i].jurisdiction === "U.S. Total") {
                 const d = US_Distribution_Data[i];

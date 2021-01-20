@@ -81,9 +81,13 @@
     hideSpinnerWorld();
 
     const width = 1050, height = 550;
+    const legendDIVHeight = 85;
 
+    // var legendDIV = d3.select("#vis5").append("div")
+    //     .style("height", `${legendDIVHeight}px`);
     var legendSVG = d3.select("#vis5").append("svg")
-        .attr('viewBox', `0 0 ${width} 85`);
+        .attr('viewBox', `0 0 ${width} ${legendDIVHeight}`)
+        .attr("class", "world-map-legend");
 
     var min_and_max_percentage = d3.extent(countries, function (d) {
         if (d.hasOwnProperty('vaccinations'))
@@ -112,7 +116,6 @@
     var unit_vaccinations_90thPercentile = d3.quantile(unit_vaccinations_map, 0.90);
 
 
-
     var p_interval = p_max - p_min;
     var p_i = p_interval / 4;
     // var p_domain = [p_min + p_i, p_min + p_i * 2, p_min + p_i * 3, p_min + p_i * 4, p_max + p_i];
@@ -123,6 +126,17 @@
     p_domain = [p_min, unit_vaccinations_20thPercentile, unit_vaccinations_45thPercentile, unit_vaccinations_70thPercentile, unit_vaccinations_90thPercentile, p_max];
     // p_domain = []
     // }
+    const zoomCoordinates = {
+        "World": {"x": 0, "y": 0, "k": 1},
+        "North America": {"x": 122.44143621909018, "y": -19.26215789306815, "k": 2.042024251414407},
+        "Europe": {"x": -1238.021693317245, "y": -11.213068146101023, "k": 3.149959619323031},
+        "Middle East": {"x": -2634.420882440748, "y": -586.2051698308421, "k": 4.669781093872179},
+        "Oceania": {"x": -1926.6424288541339, "y": -693.4183918668293, "k": 2.6390158215458235},
+        "Asia": {"x": -1331.068444560838, "y": -189.15522544720352, "k": 2.1916235328954143},
+        "South America": {"x": -150.8000339752533, "y": -465.27446886367454, "k": 2.0448570612198758},
+        "Africa": {"x": -516.5232680367267, "y": -248.22992125495517, "k": 1.8327372893507303}
+        //, "Asia": {"x": -1302.7331916850462, "y": -159.89007233762175, "k": 2.099433367246173}
+        }
 
 
     // var colorScale = d3.scaleLinear()
@@ -193,15 +207,18 @@
     g_legend.attr("transform", `translate(${(width - d3.select('.legendLinear').node().getBBox().width) / 2},35)`);
 
     legendSVG.select('.legend-title')
-        .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`)
+        .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`);
 
 
 
-    var svg = d3.select("#vis5").append("svg")
+
+    var svgWrapper = d3.select("#vis5").append("svg")
         .attr("id", "world-map")
         // .attr("width", width)
         // .attr("height", height)
         .attr('viewBox', `0 0 ${width} ${height}`);
+
+    var svg = svgWrapper.append("g");
 
     var projection = d3.geoNaturalEarth1()
         .scale(200)
@@ -210,7 +227,7 @@
 
     var path = d3.geoPath().projection(projection);
 
-    var graticule = d3.geoGraticule();
+    // var graticule = d3.geoGraticule();
 
     // svg.append("defs")
     //     .append("path")
@@ -223,7 +240,6 @@
     //     .attr("xlink:href", "#sphere");
     //
     // svg.append("use")
-    //     .attr("fill", "fill")
     //     .attr("fill", "#fff")
     //     .attr("xlink:href", "#sphere");
     //
@@ -246,7 +262,7 @@
             i--;
         }
     }
-    countries = countries.concat(hasData)
+    countries = countries.concat(hasData);
     // countries.forEach(function (d, i) {
     //     console.log(d)
     //     if (d['vaccinations']['vaccinations_per_hundred'])
@@ -285,23 +301,26 @@
         })
         .attr("stroke-width", "0.5")
         .on('mouseover', function (d) {
+            var color = d3.select(this).attr("fill");
+
             if (d.hasOwnProperty('vaccinations') && d.vaccinations.vaccinations > 0) {
                 d3.select(this)
-                    .attr('stroke-width', '2')
+                    .attr('stroke-width', '2');
+
+                legendSVG.select(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
+                .attr("stroke", "#111")
+                .attr("stroke-width", "2")
+                .attr("fill-opacity", "1");
             } else {
                 d3.select(this)
                     .attr('stroke-width', '1.5')
             }
 
-            var color = d3.select(this).attr("fill");
+
 
             // legendSVG.selectAll('.swatch, .swatch-no-data')
             //     .attr("fill-opacity", "0.05");
 
-            legendSVG.selectAll(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
-                .attr("stroke", "#111")
-                .attr("stroke-width", "2")
-                .attr("fill-opacity", "1");
         })
         .on('mousemove', function (d) {
             var pageX = d3.event.pageX;
@@ -327,9 +346,69 @@
                 .attr('stroke-width', '0.5');
 
             var color = d3.select(this).attr("fill");
-            legendSVG.selectAll(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
+            legendSVG.select(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
                 .attr("stroke-width", "0");
         })
+    d3.select("#vis5")
+        .append("div")
+        .attr("class", "world-map-projection-dropdown")
+
+        // .style("pointer-events", "none")
+        .html(
+            "<div class=\"btn-group-vertical\" id='WorldMapZoomBtnGroup'>" +
+            // "  <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"WorldMapZoomDropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+            // "    World\n" +
+            // "  </button>\n" +
+            // "  <div class=\"dropdown-menu\" id='world-map-dropdown-items' aria-labelledby=\"WorldMapZoomDropdown\">\n" +
+            "    <button class=\"active dropdown-item zoom-dropdown\" type=\"button\">World</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Europe</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Middle East</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">North America</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Asia</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">South America</button>" +
+            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Oceania</button>" +
+            // "  </div>\n" +
+            "</div>"
+        )
+
+
+
+    d3.selectAll(".zoom-dropdown")
+        .on("click", function () {
+            d3.selectAll(".zoom-dropdown")
+                .attr("class", "dropdown-item zoom-dropdown");
+            d3.select(this)
+                .attr("class", "active dropdown-item zoom-dropdown");
+
+            var continent_selected = d3.select(this).text();
+            let continent_coordinates = zoomCoordinates[continent_selected];
+            d3.select("#WorldMapZoomDropdown")
+                .text(continent_selected);
+            if (screen.width < 768) {
+                svg.transition()
+                .duration(2000)
+                .ease(d3.easeCubicOut)
+                .attr('transform', `translate(${continent_coordinates.x}, ${continent_coordinates.y}) scale(${continent_coordinates.k})`)
+            }
+            else {
+                svg.attr('transform', `translate(${continent_coordinates.x}, ${continent_coordinates.y}) scale(${continent_coordinates.k})`)
+            }
+
+
+            // let zoom = d3.zoom()
+            //     .scaleExtent([1, 5])
+            //     .translateExtent([[-500, -300], [1500, 1000]])
+                    // {k: 3.149959619323031, x: -1258.021693317245, y: -11.213068146101023}
+                    // console.log(d3.transform({k: 4.022041854709582, x: -95.92845451874939, y: 679.0427027114971}))
+                    //"translate(-95.92845451874939, 679.0427027114971) scale(4.022041854709582)"
+
+
+            // svgWrapper.call(zoom);
+
+        })
+
+
+
     // .on('mouseout', tip.hide)
 
     // d3.selectAll('.country.has-data')
@@ -374,6 +453,19 @@
                 .attr("stroke", "#aeaeae");
         })
 
+
+
+        // let zoom = d3.zoom()
+        //    .scaleExtent([1, 7])
+        //    // .translateExtent([[-500, -300], [1500, 1000]])
+        //    .on('zoom', () => {
+        //        console.log(d3.event.transform)
+        //        svg.attr('transform', d3.event.transform)
+        //    });
+        //
+        // svgWrapper.call(zoom);
+
+
     // svg.selectAll('.country')
     //     .on("mouseover", function (d) {
     //         var color = d3.select(this).style("fill");
@@ -408,8 +500,10 @@
     });
 
 
-    var buttonGroupGraph = d3.select("#vis5")
+    var buttonGroupGraphWrapper = d3.select("#vis5")
         .append("div")
+        .attr("class", "btn-group-wrapper")
+    var buttonGroupGraph = buttonGroupGraphWrapper.append("div")
         .attr("class", "btn-group world-map-button-group")
         .attr("role", "group")
 

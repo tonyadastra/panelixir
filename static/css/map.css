@@ -153,7 +153,7 @@ span.highlight-vaccinations {
         right: 2px;
 
         display: block;
-        height: 23px!important;
+        height: 23px !important;
         box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
         -webkit-box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.1);
     }
@@ -172,6 +172,25 @@ span.highlight-vaccinations {
 
     .d3tooltip-world {
         min-width: 150px;
+    }
+
+    #WorldMapZoomBtnGroup {
+        font-size: 3%;
+        /*position: absolute;*/
+        top: -100px !important;
+        left: 2px !important;
+        margin-bottom: -80%;
+        /*background-color: white;*/
+        box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    #WorldMapZoomBtnGroup .zoom-dropdown {
+        padding: 0.15rem 0.25rem;
+    }
+
+    .zoom-dropdown:focus {
+        outline: none;
+        box-shadow: none;
     }
 
 
@@ -334,7 +353,7 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 
 table.world-vaccination-table {
     margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 span.cell-new-vaccinations-portion, span.cell-new-vaccinations-per-hundred-portion {
@@ -372,4 +391,72 @@ span.cell-update-date-portion {
 
 .world-map .country:hover {
     cursor: pointer;
+}
+
+
+#vis5 div.btn-group-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: white!important;
+    z-index: 2;
+    height: 58px;
+}
+
+#vis5 .btn-group {
+    top: 40%;
+}
+
+.world-map-projection-dropdown {
+    position: relative;
+    overflow: visible;
+    /*top: -60px;*/
+    /*left: 430px;*/
+}
+
+button#WorldMapZoomDropdown {
+    min-width: 90px;
+    pointer-events: visible;
+
+}
+
+.zoom-dropdown {
+    position: relative;
+    pointer-events: visible;
+}
+
+.dropdown-foreign-object {
+    overflow: visible;
+    pointer-events: all;
+}
+
+svg.world-map-legend {
+    overflow: visible;
+    z-index: 100;
+}
+
+#world-map-dropdown-items {
+    position: absolute;
+    z-index: 100;
+    pointer-events: all;
+}
+
+.world-map {
+    pointer-events: visible;
+}
+
+#WorldMapZoomBtnGroup {
+    position: absolute;
+    top: -230px;
+    left: 5px;
+    margin-bottom: -80%;
+    background-color: white;
+    box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+}
+
+p.note {
+    padding-top: 0.5rem;
+    opacity: 0.7;
+    font-size: 80%;
+    line-height: 90%;
 }

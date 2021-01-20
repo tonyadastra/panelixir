@@ -891,7 +891,7 @@ $(window).scroll(function () {
         // $('nav').addClass('fixed');
         $('section').each(function(i) {
             // console.log($(window).scrollTop() - $(this).position().top)
-            if ($(this).position().top <= $(window).scrollTop() + 110) {
+            if ($(this).position().top <= $(window).scrollTop() + 130) {
                 if (prev_i >= i) {
                     if (j_tester !== prev_i) {
                         // console.log(prev_i)
@@ -899,12 +899,12 @@ $(window).scroll(function () {
                             if (j_tester < prev_i) {
                                 // scrolling down
                                 $('.scroll-menu').animate({
-                                    scrollLeft: box_width * 0.2 * (prev_i)
+                                    scrollLeft: box_width * 0.23 * (prev_i)
                                 }, 500);
                             } else if (j_tester > prev_i) {
                                 // scrolling up
                                 $('.scroll-menu').animate({
-                                    scrollLeft: box_width * 0.2 * (prev_i)
+                                    scrollLeft: box_width * 0.23 * (prev_i)
                                 }, 500);
                             }
                         }
