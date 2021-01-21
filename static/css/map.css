@@ -193,6 +193,13 @@ span.highlight-vaccinations {
         box-shadow: none;
     }
 
+    p.note {
+        /*padding-top: 0.5rem;*/
+        /*opacity: 0.7;*/
+        font-size: 0.5rem !important;
+        line-height: 97% !important;
+    }
+
 
 }
 
@@ -218,6 +225,7 @@ span.highlight-vaccinations {
     table.us-vaccine-distribution thead tr th:last-child {
         min-width: 310px;
     }
+
 
 
 }
@@ -348,7 +356,7 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 }
 
 .world-map-graph-bars:hover {
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 table.world-vaccination-table {
@@ -457,6 +465,6 @@ svg.world-map-legend {
 p.note {
     padding-top: 0.5rem;
     opacity: 0.7;
-    font-size: 80%;
-    line-height: 90%;
+    font-size: 75%;
+    line-height: 95%;
 }

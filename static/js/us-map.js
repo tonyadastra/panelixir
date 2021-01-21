@@ -3,110 +3,94 @@
     const data = topojson.feature(us, us.objects.states).features;
     const data_administered = topojson.feature(us, us.objects.states).features;
 
-    var special_jurisdictions = ["District of Columbia", "Puerto Rico", "U.S. Virgin Islands", "Mariana Islands", "American Samoa", "Guam"];
+    var special_jurisdictions = ["District of Columbia", "Puerto Rico", "U.S. Virgin Islands", "Mariana Islands", "American Samoa", "Guam", "Micronesia", "Federal Entities", "Palau", "Marshall Islands"];
 
-    var US_Distribution_Data, US_States;
-    var us_total_data_distributed = [], us_total_data_administered = [];
+    var us_total_data_distributed = [], us_total_data_administered = [], us_total_summary = [];
     let table_distribution = [], table_distribution_administered = [];
-    const files = ["/data/us-states.csv", "/get-usa-distribution-data"];
-    await Promise.all(files.map(url => d3.json(url))).then(function (values) {
-        US_States = values[0];
-        US_Distribution_Data = values[1];
-        // Moderna = values[1]
-        // Pfizer = values[2]
-        US_States.forEach(function (state) {
-            US_Distribution_Data.forEach(function (dbStateData) {
-                // Pfizer.forEach(function (state_pfizer) {
-                if (state.state === dbStateData.jurisdiction) {
-                    state.population = parseInt(state.population)
-                    var total_doses = dbStateData.doses;
-                    var percentage_covered = total_doses / state.population;
-                    var administered_per_100 = (dbStateData.doses_administered / state.population) * 100;
-                    var state_data = {
-                        "state": state.state,
-                        "code": state.code,
-                        "doses": total_doses,
-                        "doses_administered": dbStateData.doses_administered,
-                        "population": state.population,
-                        "percentage_covered": percentage_covered * 100,
-                        "administered_per_100": administered_per_100,
-                        "new_administered": dbStateData.new_administered,
-                        "new_distributed": dbStateData.new_distributed,
-                        "new_administered_per_100": (dbStateData.new_administered / state.population) * 100,
-                        "new_distributed_per_100": (dbStateData.new_distributed / state.population) * 100,
-                    };
+    var total_population;
+    var USDistributionData;
+    
+    USDistributionData = await d3.json("/get-usa-distribution-data")
+    USDistributionData.forEach(function (state) {
+        state.population = parseInt(state.population)
+        if (state.code === "USA") {
+            total_population = state.population;
+            const d = state;
+            var total_percentage_covered = (d.doses / total_population) * 100;
+            var total_administered_per_100 = (d.doses_administered / total_population) * 100;
 
-                    var state_data_administered = {
-                        "state": state.state,
-                        "code": state.code,
-                        "doses": dbStateData.doses_administered,
-                        "population": state.population,
-                        "percentage_covered": administered_per_100
-                    };
-                    // Add distribution data to each state
-                    data.forEach(function (d_state) {
-                        if (d_state.properties.name === state.state) {
-                            d_state['distribution'] = state_data
-                        }
-                    })
+            var total_new_distributed_per_100 = (d.new_distributed / total_population) * 100;
+            var total_new_administered_per_100 = (d.new_administered / total_population) * 100;
 
-                    data_administered.forEach(function (d_state) {
-                        if (d_state.properties.name === state_data_administered.state) {
-                            d_state['distribution'] = state_data_administered
-                        }
-                    })
-                    // if (special_jurisdictions.includes(dbStateData.jurisdiction)) {
-                    //     data.push({"type": "Feature", "properties": {"name": state.state, "type": "Territory"}, "distribution": state_data})
-                    // }
-                    // percentage_array.push(percentage_covered * 100)
-                    // us_state_distribution.push(state_data)
-                    if (!special_jurisdictions.includes(state.state) || state.state === "District of Columbia") {
-                        // if (state.state === "West Virginia")
-                        //     console.log(state_data.new_administered)
-                        table_distribution.push([
-                            state_data.state,
-                            [state_data.new_distributed, abbreviateNumber(state_data.doses)],
-                            [state_data.new_distributed_per_100, state_data.percentage_covered.toFixed(2)]
-                        ])
-                        table_distribution_administered.push([
-                            state_data.state,
-                            [state_data.new_administered, abbreviateNumber(state_data.doses_administered)],
-                            [state_data.new_administered_per_100, state_data.administered_per_100.toFixed(2)]
-                        ])
-                    }
+            us_total_data_distributed = [
+                "U.S. Total",
+                [d.new_distributed, abbreviateNumber(d.doses)],
+                [total_new_distributed_per_100, total_percentage_covered.toFixed(2)]
+            ];
+            us_total_data_administered = [
+                "U.S. Total",
+                [d.new_administered, abbreviateNumber(d.doses_administered)],
+                [total_new_administered_per_100, total_administered_per_100.toFixed(2)]
+            ];
+
+            us_total_summary = [d.doses, d.doses_administered, d.administered1, d.administered2];
+        }
+        else {
+            var total_doses = state.doses;
+            var percentage_covered = total_doses / state.population;
+            var administered_per_100 = (state.doses_administered / state.population) * 100;
+            var state_data = {
+                "state": state.jurisdiction,
+                "code": state.code,
+                "doses": total_doses,
+                "doses_administered": state.doses_administered,
+                "population": state.population,
+                "percentage_covered": percentage_covered * 100,
+                "administered_per_100": administered_per_100,
+                "new_administered": state.new_administered,
+                "new_distributed": state.new_distributed,
+                "new_administered_per_100": (state.new_administered / state.population) * 100,
+                "new_distributed_per_100": (state.new_distributed / state.population) * 100,
+            };
+
+            var state_data_administered = {
+                "state": state.jurisdiction,
+                "code": state.code,
+                "doses": state.doses_administered,
+                "population": state.population,
+                "percentage_covered": administered_per_100
+            };
+            // Add distribution data to each state
+            data.forEach(function (d_state) {
+                if (d_state.properties.name === state.jurisdiction) {
+                    d_state['distribution'] = state_data
                 }
-                // })
             })
-        })
 
-        var total_population = d3.sum(data, d => d.distribution.population)
-
-        for (let i = 0; i < US_Distribution_Data.length; i++) {
-            if (US_Distribution_Data[i].jurisdiction === "U.S. Total") {
-                const d = US_Distribution_Data[i];
-                var total_percentage_covered = (d.doses / total_population) * 100;
-                var total_administered_per_100 = (d.doses_administered / total_population) * 100;
-
-                var total_new_distributed_per_100 = (d.new_distributed / total_population) * 100;
-                var total_new_administered_per_100 = (d.new_administered / total_population) * 100;
-
-                us_total_data_distributed = [
-                    "U.S. Total",
-                    [d.new_distributed, abbreviateNumber(d.doses)],
-                    [total_new_distributed_per_100, total_percentage_covered.toFixed(2)]
-                ];
-                us_total_data_administered = [
-                    "U.S. Total",
-                    [d.new_administered, abbreviateNumber(d.doses_administered)],
-                    [total_new_administered_per_100, total_administered_per_100.toFixed(2)]
-                ];
-
-                break;
+            data_administered.forEach(function (d_state) {
+                if (d_state.properties.name === state_data_administered.state) {
+                    d_state['distribution'] = state_data_administered
+                }
+            })
+            // if (special_jurisdictions.includes(state.jurisdiction)) {
+            //     data.push({"type": "Feature", "properties": {"name": state.jurisdiction, "type": "Territory"}, "distribution": state_data})
+            // }
+            // percentage_array.push(percentage_covered * 100)
+            // us_state_distribution.push(state_data)
+            if (!special_jurisdictions.includes(state.jurisdiction) || state.jurisdiction === "District of Columbia") {
+                table_distribution.push([
+                    state_data.state,
+                    [state_data.new_distributed, abbreviateNumber(state_data.doses)],
+                    [state_data.new_distributed_per_100, state_data.percentage_covered.toFixed(2)]
+                ])
+                table_distribution_administered.push([
+                    state_data.state,
+                    [state_data.new_administered, abbreviateNumber(state_data.doses_administered)],
+                    [state_data.new_administered_per_100, state_data.administered_per_100.toFixed(2)]
+                ])
             }
         }
-
     })
-
 
     const width = 960;
     const height = 605;
@@ -504,7 +488,7 @@
 
         // sort entire dataset
         table_distribution.sort(function (a, b) {
-            return b[2] - a[2];
+            return b[2][1] - a[2][1];
         });
         // console.log(table_distribution)
 

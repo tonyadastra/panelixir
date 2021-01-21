@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 20 - (Update 2) Optimize Load Speed, Merge US State (code, population) to database; Add opacity for new vaccinations per hundred in bar graph
 + January 20 - Add Map Zoom Feature, Update US Data(from USA database), combine Vaccination & Distribution, GZip
 + January 16 - Color Updates for US Map, Add hover effect for legend -> select country; country -> select legend; optimize daily new cells, attempt gzip
 + January 15 - Rectify US Map Data Mismatch and per 100 people error, ensure d3 tooltip does not go out of boundary; changed to a new file for USMap JSON; other styling updates

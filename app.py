@@ -234,16 +234,6 @@ def vaccineDevelopingProcess():
     return render_template("card-vaccine-developing-process.html")
 
 
-# @app.route("/vaccine-distribution")
-# def vaccineDistributionUSA():
-#     return render_template("vaccine-distribution.html")
-
-
-@app.route("/vaccine-entertainment")
-def vaccineEntertainment():
-    return render_template("dump/vaccine-entertainment.html")
-
-
 @app.route("/vaccine-faq")
 def vaccineFAQ():
     return render_template("vaccine-faq.html")
@@ -256,28 +246,6 @@ def getEntertainment():
     cur.execute("rollback")
     # print(data)
     return json.dumps(data)
-
-
-@app.route("/get-world-vaccinations")
-def getWorldVaccination():
-    world_vaccination_api = requests.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
-    world_vaccination_data = []
-    for key, country_data in world_vaccination_api.json().items():
-        country = country_data['location']
-        iso = key
-        total_vaccinations = 0
-        new_vaccinations = 0
-        vaccinations_per_hundred = 0.0
-        try:
-            total_vaccinations = int(country_data['data'][-1]['total_vaccinations'])
-            new_vaccinations = int(country_data['data'][-1]['new_vaccinations'])
-            vaccinations_per_hundred = country_data['data'][-1]['total_vaccinations_per_hundred']
-        except KeyError:
-            pass
-        country_data = {"country": country, "iso": iso, "total_vaccinations": total_vaccinations,
-                        "new_vaccinations": new_vaccinations, "vaccinations_per_hundred": vaccinations_per_hundred}
-        world_vaccination_data.append(country_data)
-    return jsonify(world_vaccination_data)
 
 
 @app.route("/get_update_time", methods=['GET'])
@@ -523,16 +491,6 @@ def load_country():
     return jsonify(data)
 
 
-@app.route('/data/us-states.csv', methods=['GET'])
-def load_us_states():
-    data = []
-    with open('data/us-states.csv') as csvFile:
-        csvReader = csv.DictReader(csvFile)
-        for rows in csvReader:
-            data.append(rows)
-    return jsonify(data)
-
-
 @app.route('/get-usa-distribution-data', methods=['GET'])
 def getUSADistributionData():
     cur2.execute('''SELECT json_agg(json_build_object(
@@ -540,7 +498,12 @@ def getUSADistributionData():
                 'doses', doses_available, 
                 'doses_administered', doses_administered, 
                 'new_administered', (doses_administered - prev_administered), 
-                'new_distributed', (doses_available - prev_distributed))) 
+                'new_distributed', (doses_available - prev_distributed), 
+                'population', population, 
+                'code', code, 
+                'administered1', administered_1, 
+                'administered2', administered_2
+                )) 
                 FROM "VaccineDistributionUSA"''')
     usa_distribution_data = cur2.fetchall()[0][0]
     cur2.execute("rollback")
@@ -555,27 +518,29 @@ def getWorldVaccinationData():
                 'vaccinations', vaccinations, 
                 'new_vaccinations', new_vaccinations, 
                 'vaccinations_per_hundred', vaccinations_per_hundred,
-                'population', population)) 
+                'population', population)
+                ) 
                 FROM "WorldVaccinations" WHERE country != \'United States\'''')
     world_vaccination_data = cur3.fetchall()[0][0]
     cur3.execute("rollback")
 
     cur3.execute('''SELECT json_agg(json_build_object(
                 'date', TO_CHAR(date, 'Month FMDD, YYYY'),
-                'country', 'United States', 
+                'country', CASE WHEN jurisdiction = \'U.S. Total\' THEN \'United States\' ELSE jurisdiction END,
                 'vaccinations', doses_administered, 
                 'new_vaccinations', (doses_administered - prev_administered), 
-                'vaccinations_per_hundred', ROUND(doses_administered  * 100.0 / 329484123.0, 2),
-                'population', 329484123)) 
-                FROM "VaccineDistributionUSA" WHERE jurisdiction = \'U.S. Total\'''')
-    us_vaccination_data = cur3.fetchall()[0][0][0]
+                'vaccinations_per_hundred', ROUND(doses_administered  * 100.0 / population, 2),
+                'population', population)) 
+                FROM "VaccineDistributionUSA" 
+                WHERE jurisdiction = \'U.S. Total\'''')
+    us_vaccination_data = cur3.fetchall()[0][0]
     cur3.execute("rollback")
 
     for vaccination_data in world_vaccination_data:
         if vaccination_data['country'] == "Vatican":
             vaccination_data['country'] = "Vatican City"
 
-    world_vaccination_data.append(us_vaccination_data)
+    world_vaccination_data.extend(us_vaccination_data)
 
     return jsonify(world_vaccination_data)
 

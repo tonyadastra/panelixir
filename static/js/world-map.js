@@ -1,8 +1,4 @@
 (async () => {
-    const world = await d3.json('../../data/map.json');
-    let countries = topojson.feature(world, world.objects.countries).features;
-    // neighbors = topojson.neighbors(world.objects.countries.geometries);
-
     const currentTime = new Date();
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"];
@@ -13,13 +9,35 @@
     const hour = currentTime.getHours();
     const daytime = currentTime.toLocaleString('en-US', {hour: 'numeric', hour12: true}).replace(" ", "");
 
-    var names, World_Vaccination_Data;
     var vaccinated_countries_count = 0;
     var world_data = [], table_distribution = [], graph_top_vaccinations = [];
-    var files = ["/data/world-countries.csv", "/get-world-vaccination-data"];
+
+    let WorldVaccinationData = [];
+    WorldVaccinationData = await d3.json("/get-world-vaccination-data");
+    for (let i = 0; i < WorldVaccinationData.length; i++) {
+        if (WorldVaccinationData[i].vaccinations > 0) {
+            if (WorldVaccinationData[i].country === "World") {
+                world_data.push(WorldVaccinationData[i]);
+            } else {
+                vaccinated_countries_count++;
+            }
+        }
+    }
+    if (world_data.length === 1) {
+        d3.select('p.vaccinations-title')
+            .html("As of <span class='vaccinations-title-daytime'>" + daytime + " on " + month + " " + day + ", " + year + "</span>, more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in <b>" + vaccinated_countries_count + " countries</b> around the world")
+    }
+
+    var names;
+
+    const world = await d3.json('../../data/map.json');
+    var countries = topojson.feature(world, world.objects.countries).features;
+    // neighbors = topojson.neighbors(world.objects.countries.geometries);
+
+    var files = ["/data/world-countries.csv"];
     await Promise.all(files.map(url => d3.json(url))).then(function (values) {
         names = values[0];
-        World_Vaccination_Data = values[1];
+        // WorldVaccinationData = values[1];
 
         countries.forEach(function (d) {
             // match csv country name with TOPOJSON
@@ -30,27 +48,8 @@
             }
         })
 
-        for (let i = 0; i < World_Vaccination_Data.length; i++) {
-            if (World_Vaccination_Data[i].vaccinations > 0) {
-                if (World_Vaccination_Data[i].country === "World") {
-                    world_data.push(World_Vaccination_Data[i]);
-                }
-                else {
-                    vaccinated_countries_count++;
-                }
-            }
-        }
-
-        if (world_data.length === 1) {
-            d3.select('p.vaccinations-title')
-                .html("As of <span class='vaccinations-title-daytime'>" + daytime + " on " + month + " " + day + ", " + year + "</span>, more than <span class='highlight-vaccinations'>" + abbreviateNumber(world_data[0].vaccinations) + "</span> doses have been administered in <b>" + vaccinated_countries_count + " countries</b> around the world")
-        }
-
         // add world vaccination data to json
-        World_Vaccination_Data.forEach(function (vaccination_data) {
-            // if (vaccination_data.country === "World") {
-            //     world_data.push(vaccination_data);
-            // }
+        WorldVaccinationData.forEach(function (vaccination_data) {
             countries.forEach(function (d) {
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
@@ -64,6 +63,7 @@
                         graph_top_vaccinations.push({
                             "country": d.name,
                             "vaccinations": vaccination_data.vaccinations,
+                            "new_vaccinations_per_hundred": new_vaccinations_per_hundred,
                             "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
                             "date": vaccination_data.date
                         })
@@ -83,8 +83,7 @@
     const width = 1050, height = 550;
     const legendDIVHeight = 85;
 
-    // var legendDIV = d3.select("#vis5").append("div")
-    //     .style("height", `${legendDIVHeight}px`);
+
     var legendSVG = d3.select("#vis5").append("svg")
         .attr('viewBox', `0 0 ${width} ${legendDIVHeight}`)
         .attr("class", "world-map-legend");
@@ -315,9 +314,6 @@
                 d3.select(this)
                     .attr('stroke-width', '1.5')
             }
-
-
-
             // legendSVG.selectAll('.swatch, .swatch-no-data')
             //     .attr("fill-opacity", "0.05");
 
@@ -349,11 +345,11 @@
             legendSVG.select(`[style="fill: ${color.replaceAll(',', ', ')};"]`)
                 .attr("stroke-width", "0");
         })
+
+    // Append Country Zoom In Menu
     d3.select("#vis5")
         .append("div")
         .attr("class", "world-map-projection-dropdown")
-
-        // .style("pointer-events", "none")
         .html(
             "<div class=\"btn-group-vertical\" id='WorldMapZoomBtnGroup'>" +
             // "  <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"WorldMapZoomDropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
@@ -370,7 +366,6 @@
             // "  </div>\n" +
             "</div>"
         )
-
 
 
     d3.selectAll(".zoom-dropdown")
@@ -394,35 +389,7 @@
                 svg.attr('transform', `translate(${continent_coordinates.x}, ${continent_coordinates.y}) scale(${continent_coordinates.k})`)
             }
 
-
-            // let zoom = d3.zoom()
-            //     .scaleExtent([1, 5])
-            //     .translateExtent([[-500, -300], [1500, 1000]])
-                    // {k: 3.149959619323031, x: -1258.021693317245, y: -11.213068146101023}
-                    // console.log(d3.transform({k: 4.022041854709582, x: -95.92845451874939, y: 679.0427027114971}))
-                    //"translate(-95.92845451874939, 679.0427027114971) scale(4.022041854709582)"
-
-
-            // svgWrapper.call(zoom);
-
         })
-
-
-
-    // .on('mouseout', tip.hide)
-
-    // d3.selectAll('.country.has-data')
-    //     .on("mouseover", function (d) {
-    //         d3.select(this)
-    //             .attr('stroke-width', '2')
-    //         // .attr('stroke', '#ff0000')
-    //         // d3.select(this).remove()
-    //
-    //     })
-    // .on("mouseout", function () {
-    //     d3.select(this)
-    //         .attr('stroke-width', '0.5')
-    // })
 
     legendSVG.selectAll('.swatch, .no-data-swatch')
         .on("mouseover", function (d) {
@@ -464,31 +431,6 @@
         //    });
         //
         // svgWrapper.call(zoom);
-
-
-    // svg.selectAll('.country')
-    //     .on("mouseover", function (d) {
-    //         var color = d3.select(this).style("fill");
-    //
-    //         // legendSVG.selectAll('.swatch, .swatch-no-data')
-    //         //     .attr("fill-opacity", "0.05");
-    //
-    //         legendSVG.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
-    //             .attr("stroke-width", "2")
-    //             .attr("stroke", "#111")
-    //             .attr("fill-opacity", "1");
-    //
-    //     })
-    //     .on("mouseout", function (d) {
-    //         var color = d3.select(this).style("fill");
-    //         legendSVG.selectAll(`[fill="${color.replaceAll(' ', '')}"]`)
-    //             .attr("stroke-width", "0");
-    //         // svg.selectAll('.country')
-    //         //     .attr("fill-opacity", "1");
-    //         // svg.selectAll('.country.no-data')
-    //         //     .attr("stroke", "#aeaeae");
-    //     })
-
 
     var borders = topojson.feature(world, world.objects.countries, function (a, b) {
         return a !== b;
@@ -603,7 +545,7 @@
 
     var countryMap = graph_top_vaccinations.map(d => d.country)
 
-    var graphColorScale = d3.scaleOrdinal(d3.schemeSpectral[10].slice(7, 10).concat(d3.schemeSpectral[10].slice(2, 7)))
+    var graphColorScale = d3.scaleOrdinal(d3.schemeDark2)
 
     graph_top_vaccinations.sort(function (a, b) {
         return b.vaccinations_per_hundred - a.vaccinations_per_hundred;
@@ -626,7 +568,25 @@
         .attr("class", "bar world-map-graph-bars")
         //.attr("x", function(d) { return x(d.sales); })
         .attr("width", function (d) {
-            return x(d.vaccinations_per_hundred);
+            console.log(d.new_vaccinations_per_hundred)
+            return x(d.vaccinations_per_hundred - d.new_vaccinations_per_hundred);
+        })
+        .attr("y", function (d) {
+            return y(d.country);
+        })
+        .attr("height", y.bandwidth())
+        .attr("fill", function (d) {
+            return graphColorScale(d.country)
+        });
+
+
+    bars.append("rect")
+        .attr("class", "bar world-map-graph-bars-new")
+        .attr("x", function(d) {
+            return x(d.vaccinations_per_hundred - d.new_vaccinations_per_hundred);
+        })
+        .attr("width", function (d) {
+            return x(d.new_vaccinations_per_hundred);
         })
         .attr("y", function (d) {
             return y(d.country);
@@ -635,6 +595,10 @@
         .attr("fill", function (d) {
             return graphColorScale(d.country)
         })
+        .attr("opacity", "0.6")
+
+
+    bars.selectAll('.bar')
         .on('mousemove', function (d) {
             var pageX = d3.event.pageX;
             var pageY = d3.event.pageY;
