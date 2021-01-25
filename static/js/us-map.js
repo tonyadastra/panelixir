@@ -73,10 +73,18 @@
                 }
             })
             // if (special_jurisdictions.includes(state.jurisdiction)) {
-            //     data.push({"type": "Feature", "properties": {"name": state.jurisdiction, "type": "Territory"}, "distribution": state_data})
+            //     data_administered.push({
+            //         "type": "Feature",
+            //         "properties": {"name": state.jurisdiction, "type": "Territory"},
+            //         "distribution": state_data_administered
+            //     })
+            //     data.push({
+            //         "type": "Feature",
+            //         "properties": {"name": state.jurisdiction, "type": "Territory"},
+            //         "distribution": state_data
+            //     })
             // }
-            // percentage_array.push(percentage_covered * 100)
-            // us_state_distribution.push(state_data)
+
             if (!special_jurisdictions.includes(state.jurisdiction) || state.jurisdiction === "District of Columbia") {
                 table_distribution.push([
                     state_data.state,
@@ -644,7 +652,7 @@
                 .text(function (d) {
                     d[0] = parseFloat(d[0].toFixed(2));
                     if (d[0] > 0)
-                        return "+" + d[0];
+                        return "+" + d[0].toFixed(2);
                 })
             per_hundred_cell.append("p")
                 .attr("class", "cell-total-new-vaccinations-portion")

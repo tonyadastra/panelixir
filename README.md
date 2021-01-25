@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 24 - New section for Bay Area News(BETA), User form submission, New numbers for bar graph, dotenv
 + January 20 - (Update 2) Optimize Load Speed, Merge US State (code, population) to database; Add opacity for new vaccinations per hundred in bar graph
 + January 20 - Add Map Zoom Feature, Update US Data(from USA database), combine Vaccination & Distribution, GZip
 + January 16 - Color Updates for US Map, Add hover effect for legend -> select country; country -> select legend; optimize daily new cells, attempt gzip

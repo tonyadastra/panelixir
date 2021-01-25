@@ -1,3 +1,5 @@
+/*@import "google-translate.scss";*/
+
 body {
     max-width: 100% !important;
     overflow-x: hidden!important;
@@ -1315,7 +1317,7 @@ span.highlight {
 /*}*/
 
 nav.nav-top {
-    z-index: 5;
+    z-index: 10;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -1773,6 +1775,7 @@ p.subtag {
     opacity: 0.3;
 }
 
+
 .mobile-dropdown-item-ctry {
     display: block;
     width: 100%;
@@ -1854,7 +1857,7 @@ h1.title {
 .news-wrapper {
     background-color: rgba(243, 243, 243, 0.6);
     /*border: 2px solid orangered;*/
-    /*width: 70%;*/
+    width: 90%;
     margin: 2rem auto;
     border-radius: 0.3rem;
 }
@@ -1898,6 +1901,7 @@ h1.title {
     margin-left: auto;
     margin-right: auto;
     letter-spacing: 0.4px;
+    text-align: center!important;
     /*text-decoration: underline solid white;*/
 }
 
@@ -1907,7 +1911,7 @@ h1.title {
     /*color: darkblue!important;*/
 }
 
-tspan {
+.vis-bars tspan {
     fill: #023cae;
 }
 
@@ -2237,6 +2241,21 @@ select.compare-dropdown {
     color: white;
 }
 
+.badge-phase-1a {
+    background-color: #c1c8e4;
+    color: white;
+}
+
+.badge-phase-1b {
+    background-color: #84ceeb;
+    color: white;
+}
+
+.badge-phase-1c {
+    background-color: #5ab9ea;
+    color: white;
+}
+
 .badge-none {
     display: none;
 }
@@ -2303,6 +2322,59 @@ select.compare-dropdown {
     #top-news {
         width: 90%;
     }
+
+    #google_translate_element {
+        width: 100%;
+    }
+
+    .card.county-wrapper {
+        width: 100% !important;
+        font-size: 70% !important;
+    }
+
+    h3.county {
+        font-size: 1.2rem !important;
+    }
+
+    .card.county-news-wrapper {
+        width: 97%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .county-news-wrapper h5.card-title {
+        font-size: 0.95rem;
+    }
+
+    .county-news-wrapper .card-text {
+        font-size: 11px;
+    }
+
+    .county-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .bay-area-vaccination {
+        font-size: 12px!important;
+    }
+
+    .successful-submission-alert {
+        font-size: 80%;
+    }
+
+}
+
+.county-news-wrapper.card .card-img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 @media screen and (min-width: 768px) {
@@ -2318,6 +2390,15 @@ select.compare-dropdown {
         right: 0;
         margin: auto;
     }
+
+    .county-body {
+        font-size: 18px;
+    }
+
+    .county-wrapper {
+        margin-bottom: 2rem;
+    }
+
 }
 
 #world-map {
@@ -2378,3 +2459,113 @@ span.vaccinations-title-daytime {
        url('../fonts/brush-cursive.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
 
+ .goog-te-banner-frame {display:none!important;visibility: hidden;}
+/*// Don't show Google Topbar*/
+ #goog-gt-tt {display:none!important;visibility:hidden!important;}
+
+/*#google_translate_element {*/
+/*  position: absolute;*/
+/*  bottom: calc(53px + 16px);*/
+/*  right: 16px!important;*/
+/*  // z-index: 99999;*/
+/*}*/
+/*.goog-te-gadget {*/
+/*  font-family: Roboto, 'Open Sans', sans-serif!important;*/
+/*  text-transform: uppercase;*/
+/*}*/
+/*.goog-te-gadget-simple  {*/
+/*  background-color: rgba(255,255,255,0.20)!important;*/
+/*  border: 1px solid rgba(255,255,255,0.50) !important;*/
+/*  padding: 8px!important;*/
+/*  border-radius: 4px!important;*/
+/*  font-size: 1rem!important;*/
+/*  line-height:2rem!important;*/
+/*  display: inline-block;*/
+/*  cursor: pointer;*/
+/*  zoom: 1;*/
+/*}*/
+/*.goog-te-menu2 {*/
+/*  max-width: 100%;*/
+/*}*/
+/*.goog-te-menu-value {*/
+/*  color: #fff !important;*/
+/*  !*  &:before {*!*/
+/*  !*  font-family: 'Material Icons';*!*/
+/*  !*  content: "\E927";*!*/
+/*  !*  margin-right: 16px;*!*/
+/*  !*  font-size: 2rem;*!*/
+/*  !*  vertical-align: -10px;*!*/
+/*  !*  // width:32px!important;*!*/
+/*  !*} *!*/
+/*}*/
+/*.goog-te-menu-value span:nth-child(5) {*/
+/*  display:none;*/
+/*}*/
+
+/*.goog-te-menu-value span:nth-child(3) {*/
+/*  border:none!important;*/
+/*  font-family: 'Material Icons';*/
+/*  !*&:after {*!*/
+/*  !*  font-family: 'Material Icons';*!*/
+/*  !*  content: "\E5C5";*!*/
+/*  !*  font-size: 1.5rem;*!*/
+/*  !*  vertical-align: -6px;*!*/
+/*  !*}  *!*/
+/*}*/
+
+/*.goog-te-gadget-icon {*/
+/*    background-image: url(https://placehold.it/32)!important;*/
+/*    background-position: 0px 0px;*/
+/*    height: 32px!important;*/
+/*    width: 32px!important;*/
+/*    margin-right: 8px!important;*/
+/*    //     OR*/
+/*    display: none;*/
+/*}*/
+
+/*// ============ HIDE TOP BAR ============ */
+.goog-te-banner-frame.skiptranslate {display: none!important;}
+body {top: 0px!important;}
+
+/* ================================== *\
+    Mediaqueries
+\* ================================== */
+/*@media (max-width: 667px) {*/
+/*    #google_translate_element {*/
+/*        bottom: calc(100% - 50% - 53px);*/
+/*        left: 16px !important;*/
+/*        width: 100% !important;*/
+
+/*    }*/
+
+/*    goog-te-gadget {*/
+/*        width: 100% !important;*/
+/*    }*/
+
+/*    .skiptranslate {*/
+/*        width: 100% !important;*/
+/*    }*/
+
+/*    .goog-te-gadget-simple {*/
+/*        width: calc(100% - 32px) !important;*/
+/*        text-align: center;*/
+/*    }*/
+/*}*/
+
+
+p.date {
+    margin-left: 0;
+}
+
+.notification-website {
+    font-size: 80%;
+    opacity: 0.8;
+}
+
+.bay-area-vaccination {
+    font-size: 20px;
+}
+
+.bay-area-vaccination:hover {
+    background-color: #f5f5f5;
+}

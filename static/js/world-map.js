@@ -163,7 +163,7 @@
             ]);
 
 
-    var legendTitle = legendSVG.append('text')
+    legendSVG.append('text')
         .attr("font-weight", "bold")
         .attr("class", "legend-title")
         .text("Number of Doses Administered Per 100 People")
@@ -207,7 +207,6 @@
 
     legendSVG.select('.legend-title')
         .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`);
-
 
 
 
@@ -421,7 +420,6 @@
         })
 
 
-
         // let zoom = d3.zoom()
         //    .scaleExtent([1, 7])
         //    // .translateExtent([[-500, -300], [1500, 1000]])
@@ -508,7 +506,7 @@
     //     .attr('viewBox', `0 0 ${width} 35`);
 
 
-    var graphMargin = {top: 50, right: 40, bottom: 70, left: 180}
+    var graphMargin = {top: 50, right: 90, bottom: 70, left: 160}
     var graphWidth = width - graphMargin.left - graphMargin.right,
         graphHeight;
     if (screen.width < 768)
@@ -568,7 +566,6 @@
         .attr("class", "bar world-map-graph-bars")
         //.attr("x", function(d) { return x(d.sales); })
         .attr("width", function (d) {
-            console.log(d.new_vaccinations_per_hundred)
             return x(d.vaccinations_per_hundred - d.new_vaccinations_per_hundred);
         })
         .attr("y", function (d) {
@@ -646,9 +643,12 @@
         .attr("x", function (d) {
             return x(d.vaccinations_per_hundred) + 3;
         })
-        .style("font-size", "14px")
-        .text(function (d) {
-            return d.vaccinations_per_hundred.toFixed(2);
+        .style("font-size", "13px")
+        .html(function (d) {
+            if (parseFloat(d.new_vaccinations_per_hundred.toFixed(2)) !== 0)
+                return d.vaccinations_per_hundred.toFixed(2) + "&nbsp;<tspan class='bars-new-vaccinations-text'>(+" + d.new_vaccinations_per_hundred.toFixed(2) + ")</tspan>";
+            else
+                return d.vaccinations_per_hundred.toFixed(2);
         });
 
 
@@ -745,6 +745,10 @@
         country_cell.append("span")
             .attr("class", "cell-update-date-portion")
             .text(function (d) {
+                if (d[0] === "United States"){
+                    d3.select(".us-map>p.date")
+                        .text("Updated " + d[1])
+                }
                 return "(Updated " + d[1] + ")"
             });
 
@@ -775,7 +779,7 @@
             .text(function (d) {
                 d[0] = parseFloat(d[0].toFixed(2));
                 if (d[0] > 0) {
-                    return "+" + d[0];
+                    return "+" + d[0].toFixed(2);
                 }
             })
         per_hundred_cell.append("p")

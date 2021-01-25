@@ -20,7 +20,7 @@ def match_logo(data, company_pos):
         logo_array = []
         for idx, company in enumerate(company_array):
             # Logo format:
-            logo = '../static/img/' + str(vaccine_id) + '-' + str(idx + 1) + '.png'
+            logo = '../static/img/logo/' + str(vaccine_id) + '-' + str(idx + 1) + '.png'
             if os.path.isfile(logo.replace('..', '.')):
                 logo_array.append(logo)
         intro_list.insert(3, logo_array)
