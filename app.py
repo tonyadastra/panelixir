@@ -1,16 +1,31 @@
 import random
 import string
 import os
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash
+from flask_mail import Mail, Message
 from models.vaccine_info import Db, Vaccine
 from models.match_company_to_logo import match_logo
 import psycopg2
 import numpy as np
 import json
 import csv
-import requests
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 application = app = Flask(__name__)
+app.secret_key = ''.join(random.choice(string.printable)
+                         for _ in range(20))
+app.config.update(dict(
+    MAIL_SERVER='smtp.googlemail.com',
+    MAIL_PORT=465,
+    MAIL_USE_TLS=False,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME='info.panelixir',
+    MAIL_PASSWORD=os.environ.get("MAIL_PASSWORD")
+))
+mail = Mail(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
@@ -33,6 +48,38 @@ filter_limit = ""
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.route('/email-form-submission-beta-section', methods=['POST'])
+def processEmailBetaSection():
+    email = request.form['email']
+    feedback = request.form['feedback']
+
+    if not email:
+        email = "anonymous user"
+
+    msg = Message('Bay Area Feedback Form Submission',
+                  sender='info.panelixir@gmail.com',
+                  recipients=['tonyliunyc@hotmail.com'])
+    msg.body = 'Feedback from ' + email + ': \n' + feedback
+    mail.send(msg)
+    session['submit'] = True
+
+    return redirect(url_for('getSFBayAreaVaccination'))
+
+
+@app.route('/email-form-submission-question', methods=['POST'])
+def processEmailQuestion():
+    feedback = request.form['question']
+
+    msg = Message('New Question for FAQ',
+                  sender='info.panelixir@gmail.com',
+                  recipients=['tonyliunyc@hotmail.com'])
+    msg.body = 'Question for Vaccination FAQs: ' + feedback
+    mail.send(msg)
+    session['submit'] = True
+
+    return redirect(url_for('vaccineFAQ'))
 
 
 @app.route('/', methods=['GET'])
@@ -236,7 +283,39 @@ def vaccineDevelopingProcess():
 
 @app.route("/vaccine-faq")
 def vaccineFAQ():
-    return render_template("vaccine-faq.html")
+    session_submit = False
+    if 'submit' in session:
+        session_submit = True
+        session.clear()
+    return render_template("vaccine-faq.html", session_submit=session_submit)
+
+
+@app.route("/virus-variants")
+def vaccineVirusVariants():
+    return render_template("virus-variants.html")
+
+
+@app.route("/bay-area-vaccination")
+def getSFBayAreaVaccination():
+    session_submit = False
+    cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
+                "doses_available, eligibility_text, body_text, additional_info, "
+                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website FROM local_vaccinations")
+    local_data = cur.fetchall()
+    cur.execute("rollback")
+
+    cur.execute('''SELECT title, content, url, image_url, source, author
+               FROM "newsAPI" ORDER BY time DESC''')
+    local_news = cur.fetchall()
+    cur.execute("rollback")
+    if 'submit' in session:
+        session_submit = True
+        session.clear()
+
+    return render_template("san-francisco-bay-area-info.html", local_data=local_data, local_news=local_news,
+                           session_submit=session_submit)
+    # else:
+    #     return render_template("san-francisco-bay-area-info.html", local_data=local_data, local_news=local_news)
 
 
 @app.route("/get-entertainment")
@@ -263,6 +342,16 @@ def getUpdateTime():
     total_rows = cur.fetchone()[0]
     cur.execute("rollback")
     return json.dumps({'update_time': update_time, 'total_rows': total_rows})
+
+
+@app.route("/get_local_data", methods=['GET'])
+def getLocalData():
+    cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
+                "doses_available, eligibility_text, body_text, additional_info, "
+                "TO_CHAR(date, 'Month FMDDth, YYYY') FROM local_vaccinations")
+    local_data = cur.fetchone()[0]
+    cur.execute("rollback")
+    return render_template("san-francisco-bay-area-info.html", local_data=local_data)
 
 
 @app.route("/get_bars_data", methods=['GET'])
@@ -551,8 +640,7 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app.secret_key = ''.join(random.choice(string.printable)
-                             for _ in range(20))
+
     app.run(debug=True)
 
 

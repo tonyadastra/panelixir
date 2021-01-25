@@ -6,7 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="PanElixir's COVID-19 vaccine tracker traces the distribution, development, and side effects of vaccines around the world. Here, you can also find news, stories, maps, and frequently asked questions from the CDC and medical experts.">
-    <title>Global COVID-19 Vaccine Frontline - PanElixir</title>
+    {% block title %}
+    {% endblock %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <!--External Source Library-->
     <link rel="stylesheet" href="../static/css/bootstrap.css">
@@ -46,7 +47,12 @@
 </div>
 
 <div class="social-media-share">
-    <span class="share-text">Help us spread positivity ❤ </span><div class="sharethis-inline-share-buttons"></div>
+{#    <div class="col col-md-12 col-sm-12">#}
+{#        <div id="google_translate_element"></div>#}
+{#    </div>#}
+{#    <div class="col col-md-12 col-sm-12">#}
+        <span class="share-text">Help us spread positivity ❤ </span><div class="sharethis-inline-share-buttons"></div>
+{#    </div>#}
 </div>
 
 <!-- Content -->
@@ -131,6 +137,13 @@ function scrollToTop() {
 </script>
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=600128edf4055d0012d6087d&product=inline-share-buttons" async="async"></script>
 
+{##}
+{#<script type="text/javascript">#}
+{#function googleTranslateElementInit() {#}
+{#  new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'ar,en,es,jv,ko,pa,pt,ru,zh-CN', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');#}
+{#}#}
+{#</script>#}
+{#<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>#}
 
 </body>
 
