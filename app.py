@@ -1,7 +1,7 @@
 import random
 import string
 import os
-from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash
 from flask_mail import Mail, Message
 from models.vaccine_info import Db, Vaccine
 from models.match_company_to_logo import match_logo
@@ -9,9 +9,10 @@ import psycopg2
 import numpy as np
 import json
 import csv
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
+import requests
 
-# load_dotenv('.env')
+load_dotenv('.env')
 
 application = app = Flask(__name__)
 app.secret_key = ''.join(random.choice(string.printable)
@@ -22,7 +23,7 @@ app.config.update(dict(
     MAIL_USE_TLS=False,
     MAIL_USE_SSL=True,
     MAIL_USERNAME='info.panelixir',
-    MAIL_PASSWORD='iloveNYC0704'
+    MAIL_PASSWORD=os.environ.get("MAIL_PASSWORD")
 ))
 mail = Mail(app)
 
