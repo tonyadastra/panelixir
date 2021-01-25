@@ -30,4 +30,3 @@ requests~=2.20.1
 bs4~=0.0.1
 beautifulsoup4~=4.6.3
 schedule~=0.6.0
-python-dotenv~=0.14.0
