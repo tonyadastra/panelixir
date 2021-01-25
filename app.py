@@ -9,9 +9,9 @@ import psycopg2
 import numpy as np
 import json
 import csv
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv('.env')
+# load_dotenv('.env')
 
 application = app = Flask(__name__)
 app.secret_key = ''.join(random.choice(string.printable)
@@ -22,7 +22,7 @@ app.config.update(dict(
     MAIL_USE_TLS=False,
     MAIL_USE_SSL=True,
     MAIL_USERNAME='info.panelixir',
-    MAIL_PASSWORD=os.environ.get("MAIL_PASSWORD")
+    MAIL_PASSWORD='iloveNYC0704'
 ))
 mail = Mail(app)
 
