@@ -2569,3 +2569,11 @@ p.date {
 .bay-area-vaccination:hover {
     background-color: #f5f5f5;
 }
+
+.county-doses-administered {
+    color: #028f7a;
+}
+
+.county-body div{
+    margin-bottom: 0.5rem;
+}

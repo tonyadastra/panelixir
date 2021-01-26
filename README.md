@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 25 - Vaccination Table + Facilities Info for Bay Area, other map optimizations
 + January 24 - New section for Bay Area News(BETA), User form submission, New numbers for bar graph, dotenv
 + January 20 - (Update 2) Optimize Load Speed, Merge US State (code, population) to database; Add opacity for new vaccinations per hundred in bar graph
 + January 20 - Add Map Zoom Feature, Update US Data(from USA database), combine Vaccination & Distribution, GZip
@@ -46,16 +47,17 @@
 + November 15 - Full Auto-Update NYTimes Deployed
 
 ## **To Do List**
-* [ ] WHO Website Auto-Update
 * [ ] Register/Login => Send latest information via e-mail, Comments
-* [ ] More information in database (doses, expected release date, etc.)
 * [ ] Logo Design
 * [ ] Info Icon to learn more (about Special Vaccines)
 * [ ] Vaccine Type Categories Explanation
 * [ ] Weekly Report on Vaccines - (comparison?)
 * [ ] Optimize CSS and JS files
-* [ ] Add-ons to map - display country and other information on hover
-* [ ] G-Zip Compression
+* [X] Local News Beta
+* [X] User Feedback Form Submission + E-mail
+* [X] More information in database (doses, expected release date, etc.)
+* [X] Add-ons to map - display country and other information on hover
+* [X] G-Zip Compression
 * [X] Full Auto-Update Data NYTimes Website
 * [X] Update General Vaccine News from Google
 * [X] Country Dropdown Query from Database
