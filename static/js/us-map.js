@@ -564,7 +564,7 @@
         us_total_per_hundred_cell.append('span')
             .attr("class", "cell-new-vaccinations-per-hundred-portion")
             .text(function (d) {
-                d[0] = parseFloat(d[0]);
+                d[0] = parseFloat(d[0].toFixed(2));
                 if (d[0] !== 0)
                     return "+" + d[0].toFixed(2);
             })

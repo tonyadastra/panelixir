@@ -85,7 +85,7 @@ id,name,continent_name
 268,Georgia,Europe
 268,Georgia,Asia
 270,Gambia,Africa
-275,"Palestinian Territory, Occupied",Asia
+275,Palestine,Asia
 276,Germany,Europe
 288,Ghana,Africa
 292,Gibraltar,Europe
@@ -111,7 +111,7 @@ id,name,continent_name
 372,Ireland,Europe
 376,Israel,Asia
 380,Italy,Europe
-384,Côte d'Ivoires,Africa
+384,Côte d'Ivoire,Africa
 388,Jamaica,North America
 392,Japan,Asia
 398,Kazakhstan,Europe

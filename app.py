@@ -301,14 +301,17 @@ def getSFBayAreaVaccination():
     session_submit = False
     cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
-                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website FROM local_vaccinations")
+                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, total_cases, population "
+                "FROM local_vaccinations "
+                "ORDER BY CASE WHEN county = 'San Mateo' THEN county END")
     local_data = cur.fetchall()
     cur.execute("rollback")
 
     cur.execute('''SELECT title, content, url, image_url, source, author
-               FROM "newsAPI" ORDER BY time DESC''')
+               FROM "newsAPI" ORDER BY time DESC LIMIT 20''')
     local_news = cur.fetchall()
     cur.execute("rollback")
+
     if 'submit' in session:
         session_submit = True
         session.clear()
@@ -370,8 +373,9 @@ def getBarsData():
                 " FROM info "
                 " INNER JOIN companies ON info.vac_id = companies.vac_id "
                 " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
-                " GROUP BY stage, progress, phase3_start_date, company"
-                " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company LIMIT 5;",
+                " GROUP BY stage, progress, phase3_start_date, company, efficacy"
+                " ORDER BY stage DESC, progress DESC NULLS LAST,"
+                " phase3_start_date NULLS LAST, company LIMIT 5;",
                 ("%" + continent + "%", ))
     bars_data = cur.fetchall()
     cur.execute("rollback")
@@ -546,7 +550,7 @@ def get_compare_info():
         if summary2[category] is None or not summary2[category]:
             summary2[category] = "Currently unavailable"
 
-    return render_template("compare.html", summary1=summary1, summary2=summary2)
+    return render_template("compare-vaccines.html", summary1=summary1, summary2=summary2)
 
 
 @app.route('/data/map.json', methods=['GET'])
@@ -629,6 +633,8 @@ def getWorldVaccinationData():
     for vaccination_data in world_vaccination_data:
         if vaccination_data['country'] == "Vatican":
             vaccination_data['country'] = "Vatican City"
+        if vaccination_data['country'] == "Cote d'Ivoire":
+            vaccination_data['country'] = "Côte d'Ivoire"
 
     world_vaccination_data.extend(us_vaccination_data)
 

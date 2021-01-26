@@ -81,11 +81,10 @@
     hideSpinnerWorld();
 
     const width = 1050, height = 550;
-    const legendDIVHeight = 85;
-
+    const legendSVGHeight = 85;
 
     var legendSVG = d3.select("#vis5").append("svg")
-        .attr('viewBox', `0 0 ${width} ${legendDIVHeight}`)
+        .attr('viewBox', `0 0 ${width} ${legendSVGHeight}`)
         .attr("class", "world-map-legend");
 
     var min_and_max_percentage = d3.extent(countries, function (d) {
@@ -123,8 +122,8 @@
 
     // if (p_max - unit_vaccinations_90thPercentile < 10) {
     p_domain = [p_min, unit_vaccinations_20thPercentile, unit_vaccinations_45thPercentile, unit_vaccinations_70thPercentile, unit_vaccinations_90thPercentile, p_max];
-    // p_domain = []
-    // }
+
+    
     const zoomCoordinates = {
         "World": {"x": 0, "y": 0, "k": 1},
         "North America": {"x": 122.44143621909018, "y": -19.26215789306815, "k": 2.042024251414407},
@@ -247,7 +246,7 @@
     //     .attr("fill", "#fff")
     //     .attr("d", path);
 
-    // get countries with data, append to the end (their border color will not be overridden)
+    // get countries with data, append to the end of the country json (their border color will not be overridden)
     var hasData = [];
     for (var i = 0; i < countries.length; i++) {
         if (countries[i].hasOwnProperty('vaccinations') && countries[i]['vaccinations']['vaccinations'] > 0) {
@@ -430,9 +429,9 @@
         //
         // svgWrapper.call(zoom);
 
-    var borders = topojson.feature(world, world.objects.countries, function (a, b) {
-        return a !== b;
-    });
+    // var borders = topojson.feature(world, world.objects.countries, function (a, b) {
+    //     return a !== b;
+    // });
 
 
     table_distribution.sort(function (a, b) {
@@ -802,7 +801,9 @@ function abbreviateNumber(value) {
         suffixNum++;
     }
 
-    newValue = newValue.toPrecision(3);
+    // not display 11.0 instead of 11
+    if (newValue >= 100 || suffixNum !== 0)
+        newValue = newValue.toPrecision(3);
 
     // Rounding errors for values such as 999600 --> returns 1.00e+3K
     // now it will return 1.00M

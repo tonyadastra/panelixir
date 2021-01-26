@@ -684,7 +684,6 @@ class localVaccinations extends HTMLElement {
         county_body.appendChild(date);
 
 
-
         var phase_and_eligibility = document.createElement('div')
         let phase = this.getAttribute('vac-phase');
         phase_and_eligibility.innerHTML = "<b>Phase and Eligibility</b>: "
@@ -693,6 +692,10 @@ class localVaccinations extends HTMLElement {
         }
         phase_and_eligibility.innerHTML += "&nbsp;" + this.getAttribute('vac-eligibility')
         county_body.appendChild(phase_and_eligibility)
+
+        var vaccination_facilities = document.createElement('div')
+        vaccination_facilities.innerHTML =  "<b>Vaccination Facilities</b>: <a href='https://www.vaccinateca.com/counties/" + countyName.toLowerCase().replace(' ', '_') + "' target='_blank'>Find facilities administering COVID-19 vaccines in " + countyName + " County</a>"
+        county_body.appendChild(vaccination_facilities);
 
         var info_link = document.createElement('div')
         info_link.innerHTML =  "<b>County Vaccination Info</b>: <a href='" + this.getAttribute('vac-info-website') + "' target='_blank'>Visit Vaccination Info Website</a>"
@@ -710,130 +713,106 @@ class localVaccinations extends HTMLElement {
             county_body.appendChild(notification);
         }
 
+        // if (this.getAttribute('vac-administered') !== "None" && this.getAttribute('vac-administered')!== "") {
+        //     var total_administered = document.createElement('div')
+        //     total_administered.className = "county-doses-administered"
+        //     total_administered.innerHTML = "<b>Total Doses Administered</b>: " + parseInt(this.getAttribute('vac-administered')).toLocaleString();
+        //     county_body.appendChild(total_administered);
+        // }
+        //
+        // if (this.getAttribute('vac-distributed') !== "None" && this.getAttribute('vac-distributed')!== "") {
+        //     var total_distributed = document.createElement('div')
+        //     total_distributed.innerHTML = "<b>Total Doses Distributed</b>: " + parseInt(this.getAttribute('vac-distributed')).toLocaleString();
+        //     county_body.appendChild(total_distributed);
+        // }
+
+        var population = this.getAttribute('population');
+
+//         if (this.getAttribute('total-cases') !== "None" && this.getAttribute('total-cases')!== "") {
+//             let total_cases = parseInt(this.getAttribute('total-cases')).toLocaleString();
+//             let total_cases_per_100 = parseFloat(this.getAttribute('total-cases') / population).toFixed(2)
+//             // if (doses_distributed === "NaN")
+//             //     doses_distributed = "-"
+//             // let doses_distributed_per_100 = parseFloat(this.getAttribute('vac-distributed') / population).toFixed(2)
+//             // if (doses_distributed_per_100 === "NaN")
+//             //     doses_distributed_per_100 = "-"
+//
+//             var cases_table = document.createElement('div')
+//             cases_table.className = "county-vaccination-table";
+//
+//             cases_table.innerHTML = "<b>Cases:</b>" + `
+//             <table class="table text-center">
+//                 <thead>
+//                     <tr>
+// <!--                        <th scope="col">County</th>-->
+//                         <th scope="col">Cases</th>
+//       <!--                   <th scope="col">Doses Available</th> -->
+//                         <th scope="col">Cases Per 100 People</th>
+//       <!--                   <th scope="col">Available Per 100 People</th> -->
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                     <tr>
+//                         <!-- <td>` + countyName + `</td>-->
+//                         <td style="color: rgb(241,21,72)">` + total_cases + `</td>
+//                         <td style="color: rgb(241,21,72)">` + total_cases_per_100 + `</td>
+//
+//                     </tr>
+//                 </tbody>
+//             </table>
+//                     `
+//
+//             county_body.appendChild(cases_table)
+//         }
+
         if (this.getAttribute('vac-administered') !== "None" && this.getAttribute('vac-administered')!== "") {
-            var total_administered = document.createElement('div')
-            total_administered.innerHTML = "<b>Total Doses Administered</b>: " + parseInt(this.getAttribute('vac-administered')).toLocaleString();
-            county_body.appendChild(total_administered);
+            let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString()
+            if (doses_distributed === "NaN")
+                doses_distributed = "-"
+            let doses_distributed_per_100 = parseFloat(this.getAttribute('vac-distributed') / population).toFixed(2)
+            if (doses_distributed_per_100 === "NaN")
+                doses_distributed_per_100 = "-"
+
+            var vaccination_table = document.createElement('div')
+            vaccination_table.className = "county-vaccination-table";
+
+            vaccination_table.innerHTML = "<b>Vaccinations:</b>" + `
+            <table class="table text-center">
+                <thead>
+                    <tr>
+<!--                        <th scope="col">County</th>-->
+                        <th style="background-color: rgb(126,226,211)" scope="col">Doses Given</th>
+                        <th  scope="col">Doses Available</th>
+                        <th style="background-color: rgb(126,226,211)" scope="col">Given Per 100 People</th>
+                        <th scope="col">Available Per 100 People</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- <td>` + countyName + `</td>-->
+                        <td style="color: rgb(7, 158, 138)">` + parseInt(this.getAttribute('vac-administered')).toLocaleString() + `</td>
+                        <td style="color: #016254">` + doses_distributed + `</td>
+                        <td style="color: rgb(7, 158, 138)">` + parseFloat(this.getAttribute('vac-administered') / population).toFixed(2) + `</td>
+                        <td style="color: #016254">` + doses_distributed_per_100 + `</td>
+
+                    </tr>
+                </tbody>
+            </table>
+                    `
+
+            county_body.appendChild(vaccination_table)
         }
 
-        if (this.getAttribute('vac-distributed') !== "None" && this.getAttribute('vac-distributed')!== "") {
-            var total_distributed = document.createElement('div')
-            total_distributed.innerHTML = "<b>Total Doses Distributed</b>: " + parseInt(this.getAttribute('vac-distributed')).toLocaleString();
-            county_body.appendChild(total_distributed);
+
+        if (this.getAttribute('vac-body') !== "None" && this.getAttribute('vac-body')!== "") {
+            var county_body_content = document.createElement('div')
+            county_body_content.className = "county-body-content"
+            county_body_content.innerHTML = this.getAttribute('vac-body');
+            county_body.appendChild(county_body_content);
         }
+
 
         countyWrapper.appendChild(county_body)
-
-
-
-        // var card = document.createElement('div');
-        //
-        // var tag = "";
-        // if (story_tag !== 'None' && story_tag !== '') {
-        //     tag = "<span class=\"badge badge-" + story_tag.toLowerCase() + "\">" + story_tag + "</span>"
-        // }
-        //
-        // var card_title = "<h5 class=\"card-title\">" + tag + "\n" + this.getAttribute('story-title') + "</h5>"
-        //
-        // var cardBody = document.createElement('div')
-        // cardBody.className = "card-body";
-        //
-        //
-        // if (this.getAttribute('story-category') === 'S') {
-        //     card.setAttribute('class', 'card horizontal-card mb-3 mx-auto')
-        //
-        //     var row_ng = document.createElement('div')
-        //     row_ng.setAttribute('class', 'row no-gutters')
-        //
-        //     var imgCol = document.createElement('div')
-        //     imgCol.setAttribute('class', 'col-md-4')
-        //
-        //     var image = document.createElement('img')
-        //     image.src = this.getAttribute('story-img')
-        //     image.className = "card-img";
-        //
-        //     imgCol.appendChild(image)
-        //
-        //     var textCol = document.createElement('div')
-        //     textCol.setAttribute('class', 'col-md-8')
-        //
-        //     // var cardBody = document.createElement('div')
-        //     // cardBody.className = "card-body";
-        //
-        //     // var cardTitle = document.createElement('h5')
-        //     // cardTitle.className = "card-title"
-        //     //
-        //     // cardTitle.innerHTML = tag + this.getAttribute('story-title')
-        //
-        //     var body_text = "<p class=\"card-text\">" + this.getAttribute('story-body-text')+ "</p>"
-        //
-        //     var card_source = ""
-        //     if (this.getAttribute('story-source') !== 'None' && this.getAttribute('story-source') !== '') {
-        //         card_source = "<p class=\"source\">" + this.getAttribute('story-source') + "</p>"
-        //     }
-        //
-        //     var stretched_link = "<a href=\"" + this.getAttribute('story-link') + "\" class=\"stretched-link\"></a>"
-        //
-        //     cardBody.innerHTML = card_title + body_text + card_source + stretched_link
-        //
-        //     textCol.appendChild(cardBody)
-        //
-        //     row_ng.appendChild(imgCol)
-        //     row_ng.appendChild(textCol)
-        //
-        //     card.appendChild(row_ng)
-        //
-        // }
-        // else if (this.getAttribute('story-category') === 'V') {
-        //     card.className = "card horizontal-card text-center mx-auto add-card-margin"
-        //
-        //     var video = '<video width="100%" height="auto" controls controlsList="nodownload">\n' +
-        //         '<source src="' + this.getAttribute('story-link') + '" type="video/mp4">\n' +
-        //         'Your browser does not support the video tag.\n' +
-        //         '</video>'
-        //
-        //     cardBody.innerHTML = card_title + video
-        //
-        //     card.appendChild(cardBody)
-        //
-        // }
-        // else if (this.getAttribute('story-category') === 'T') {
-        //
-        //     card.setAttribute('class', 'card horizontal-card mx-auto text-center add-card-margin')
-        //
-        //     var target_container = document.getElementById("stories-container")
-        //
-        //     var t_card_body = document.createElement('div')
-        //     t_card_body.setAttribute('class', 'card-body')
-        //
-        //     var t_card_title = document.createElement('h5')
-        //     t_card_title.setAttribute('class', 'card-title')
-        //
-        //     if (this.getAttribute('story-tag') === "Fun") {
-        //         var t_tag = "<span class='badge badge-info'>Fun</span>"
-        //         t_card_title.innerHTML = t_tag + "\n" + this.getAttribute('story-title')
-        //     } else {
-        //         t_card_title.innerHTML = this.getAttribute('story-title')
-        //     }
-        //
-        //     var t_body_content = this.getAttribute('story-body')
-        //
-        //     t_card_body.appendChild(t_card_title)
-        //     t_card_body.innerHTML += t_body_content
-        //
-        //     if (this.getAttribute('story-body-text') !== 'None' && this.getAttribute('story-body-text') !== '') {
-        //         var t_body_text = document.createElement('p')
-        //         t_body_text.setAttribute('class', 'card-text')
-        //         t_body_text.innerHTML = this.getAttribute('story-body-text')
-        //         t_card_body.appendChild(t_body_text)
-        //     }
-        //
-        //     card.appendChild(t_card_body)
-        //     console.log(card)
-        //     console.log(target_container)
-        //     target_container.appendChild(card)
-        //     target_container.appendChild(twitter_script)
-        // }
 
 
         shadow.appendChild(countyWrapper);
@@ -935,7 +914,7 @@ class newsAPI extends HTMLElement {
         //
         // cardTitle.innerHTML = tag + this.getAttribute('local-title')
 
-        var stretched_link = "<a href=\"" + this.getAttribute('local-url') + "\" class=\"stretched-link\"></a>"
+        var stretched_link = "<a href=\"" + this.getAttribute('local-url') + "\" class=\"stretched-link\" target='_blank'></a>"
 
 
         row_ng.innerHTML += stretched_link;
