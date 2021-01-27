@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ January 26 - New Data for US Map Table (Administered 1, Administered 2, Supply Used); County Table (Supply Used); other optimizations
 + January 25 - Vaccination Table + Facilities Info for Bay Area, other map optimizations
 + January 24 - New section for Bay Area News(BETA), User form submission, New numbers for bar graph, dotenv
 + January 20 - (Update 2) Optimize Load Speed, Merge US State (code, population) to database; Add opacity for new vaccinations per hundred in bar graph

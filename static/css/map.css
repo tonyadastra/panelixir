@@ -162,9 +162,9 @@ span.highlight-vaccinations {
         height: 30px;
     }
 
-    table.us-vaccine-distribution thead tr th:first-child {
-        min-width: 105px;
-    }
+    /*table.us-vaccine-distribution thead tr th:first-child {*/
+    /*    min-width: 105px;*/
+    /*}*/
 
     .btn-outline-primary, .btn-outline-info {
         font-size: 11px;
@@ -199,6 +199,16 @@ span.highlight-vaccinations {
         font-size: 0.5rem !important;
     }
 
+    .us-map {
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .world-map {
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+    }
+
 
 }
 
@@ -217,19 +227,19 @@ span.highlight-vaccinations {
         height: 58px;
     }
 
-    table.us-vaccine-distribution thead tr th:first-child {
-        min-width: 210px;
-    }
+    /*table.us-vaccine-distribution thead tr th:first-child {*/
+    /*    min-width: 210px;*/
+    /*}*/
 
-    table.us-vaccine-distribution thead tr th:last-child {
-        min-width: 310px;
-    }
+    /*table.us-vaccine-distribution thead tr th:last-child {*/
+    /*    min-width: 310px;*/
+    /*}*/
 
 
 
 }
 
-table.us-vaccine-distribution, table.world-vaccination-table {
+table.world-vaccination-table {
     overflow: hidden;
 }
 
@@ -265,6 +275,10 @@ table.us-vaccine-distribution, table.world-vaccination-table {
     -webkit-box-shadow: 0 4px 3px 1px rgba(0, 0, 0, 0.1);
 }
 
+table.us-vaccine-distribution{
+    width: 100%;
+}
+
 
 .us-vaccine-distribution th, .world-vaccination-table th {
     background-color: #dbdbdb;
@@ -274,8 +288,12 @@ table.us-vaccine-distribution, table.world-vaccination-table {
     /*opacity: 0.7;*/
 }
 
-.us-vaccine-distribution th, .world-vaccination-table th, .us-vaccine-distribution td, .world-vaccination-table td {
+.world-vaccination-table th,  .world-vaccination-table td {
     padding: 0.5rem 2rem;
+}
+
+.us-vaccine-distribution th, .us-vaccine-distribution td {
+    padding: 0.5rem 1rem;
 }
 
 
@@ -307,6 +325,20 @@ table.us-vaccine-distribution, table.world-vaccination-table {
 .per-hundred-cell {
     color: rgb(14, 112, 196);
     font-weight: bold;
+}
+
+.administered1-cell {
+    color: rgb(42, 145, 114);
+    font-weight: bold;
+}
+
+.administered2-cell {
+    color: rgb(3, 167, 103);
+    font-weight: bold;
+}
+
+.state-colgroup {
+    /*width: 30%;*/
 }
 
 
@@ -373,7 +405,7 @@ p.cell-total-vaccinations-portion, p.cell-total-new-vaccinations-portion {
 }
 
 td.percentage-cell, td.vaccination-cell, td.per-hundred-cell {
-    padding: 0.15rem 2rem!important;
+    padding: 0.15rem 1rem!important;
 }
 
 

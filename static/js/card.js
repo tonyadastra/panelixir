@@ -773,18 +773,24 @@ class localVaccinations extends HTMLElement {
             if (doses_distributed_per_100 === "NaN")
                 doses_distributed_per_100 = "-"
 
+            let supply_used = ((parseInt(this.getAttribute('vac-administered')) / parseInt(this.getAttribute('vac-distributed'))) * 100).toFixed(2) + "%";
+            if (supply_used === "NaN%")
+                supply_used = "-"
+
             var vaccination_table = document.createElement('div')
             vaccination_table.className = "county-vaccination-table";
+            vaccination_table.style.overflowX = "auto";
 
             vaccination_table.innerHTML = "<b>Vaccinations:</b>" + `
-            <table class="table text-center">
+            <table class="table text-center table-responsive county-table">
                 <thead>
                     <tr>
 <!--                        <th scope="col">County</th>-->
-                        <th style="background-color: rgb(126,226,211)" scope="col">Doses Given</th>
-                        <th  scope="col">Doses Available</th>
-                        <th style="background-color: rgb(126,226,211)" scope="col">Given Per 100 People</th>
+                        <th style="background-color: rgb(126,226,186)" scope="col">Doses Given</th>
+                        <th scope="col">Doses Available</th>
+                        <th style="background-color: rgb(126,226,186)" scope="col">Given Per 100 People</th>
                         <th scope="col">Available Per 100 People</th>
+                        <th style='background-color: rgb(147, 201, 248)' scope="col">Supply Used</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -794,6 +800,7 @@ class localVaccinations extends HTMLElement {
                         <td style="color: #016254">` + doses_distributed + `</td>
                         <td style="color: rgb(7, 158, 138)">` + parseFloat(this.getAttribute('vac-administered') / population).toFixed(2) + `</td>
                         <td style="color: #016254">` + doses_distributed_per_100 + `</td>
+                        <td style="color: rgb(14, 112, 196)">` + supply_used + `</td>
 
                     </tr>
                 </tbody>
