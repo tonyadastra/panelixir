@@ -2577,3 +2577,17 @@ p.date {
 .county-body div{
     margin-bottom: 0.5rem;
 }
+
+p.note {
+    font-size: 90%;
+    opacity: 0.7;
+}
+
+table.county-table thead tr{
+    font-size: 10px;
+}
+
+
+table.county-table td, table.county-table th {
+    padding: 0.25rem 0.5rem;
+}
