@@ -24,13 +24,13 @@
 
             us_total_data_distributed = [
                 "U.S. Total",
-                [d.new_distributed, abbreviateNumber(d.doses)],
+                [d.new_distributed, d.doses],
                 [total_new_distributed_per_100, total_percentage_covered.toFixed(2)],
                 (d.doses_administered / d.doses) * 100
             ];
             us_total_data_administered = [
                 "U.S. Total",
-                [d.new_administered, abbreviateNumber(d.doses_administered)],
+                [d.new_administered, d.doses_administered],
                 [total_new_administered_per_100, total_administered_per_100.toFixed(2)],
                 (d.administered1 / d.population) * 100,
                 (d.administered2 / d.population) * 100
@@ -94,13 +94,13 @@
             if (!special_jurisdictions.includes(state.jurisdiction) || state.jurisdiction === "District of Columbia") {
                 table_distribution.push([
                     state_data.state,
-                    [state_data.new_distributed, abbreviateNumber(state_data.doses)],
+                    [state_data.new_distributed, state_data.doses],
                     [state_data.new_distributed_per_100, state_data.percentage_covered.toFixed(2)],
                     state_data.supply_used
                 ])
                 table_distribution_administered.push([
                     state_data.state,
-                    [state_data.new_administered, abbreviateNumber(state_data.doses_administered)],
+                    [state_data.new_administered, state_data.doses_administered],
                     [state_data.new_administered_per_100, state_data.administered_per_100.toFixed(2)],
                     state_data.administered1_percentage,
                     state_data.administered2_percentage
@@ -526,7 +526,10 @@
             .data(table_title)
             .enter()
             .append("th")
-            .text(function (d) {
+            .html(function (d) {
+                if (d.includes("Per 100 People")) {
+                    return d + "<span id='us-map-filter-desc'>&nbsp;<i class=\"fas fa-caret-down\"></i></span>";
+                }
                 return d;
             })
             .style("background-color", function (d, i) {
@@ -538,6 +541,32 @@
                     return "rgb(212,245,224)"
                 else if (i === 4)
                     return "rgb(111,217,168)"
+            })
+            .on("click", function (d, i) {
+                let caret_down = "<span id=\"us-map-filter-desc\">&nbsp;<i class=\"fas fa-caret-down\"></i></span>"
+                if (!d3.select(this).html().includes(caret_down)) {
+                    d3.select("#us-map-filter-desc").remove();
+
+                    let existing_text = d3.select(this).html()
+                    d3.select(this).html(existing_text + caret_down)
+
+                    // console.log(i)
+                    var new_table_distribution = table_distribution;
+                    if (i === 0) {
+                        new_table_distribution.sort();
+                    } else if (i === 1 || i === 2) {
+                        new_table_distribution.sort(function (a, b) {
+                            return b[i][1] - a[i][1];
+                        });
+                    } else {
+                        new_table_distribution.sort(function (a, b) {
+                            return b[i] - a[i];
+                        });
+                    }
+                    table.selectAll('tbody.table-body-state').remove();
+                    update(new_table_distribution.slice(0, 12));
+                }
+
             });
 
 
@@ -572,6 +601,7 @@
                 }
             });
 
+
         let us_total_vaccination_cell = us_total_cells.filter(function (d, i) {
             return i === 1
         })
@@ -584,11 +614,11 @@
         us_total_vaccination_cell.append("p")
             .attr("class", "cell-total-vaccinations-portion")
             .text(function (d) {
-                return d[1];
+                return abbreviateNumber(d[1]);
             });
 
         let us_total_per_hundred_cell = us_total_cells.filter(function (d, i) {
-            return i === 2
+            return i === 2;
         })
         us_total_per_hundred_cell.append('span')
             .attr("class", "cell-new-vaccinations-per-hundred-portion")
@@ -600,11 +630,11 @@
         us_total_per_hundred_cell.append("p")
             .attr("class", "cell-total-new-vaccinations-portion")
             .text(function (d) {
-                return d[1];
+                return abbreviateNumber(d[1]);
             });
 
-
         update(table_distribution.slice(0, 12))
+
 
         d3.select("#us-table-show-more").on("click", () => {
             if (index + 20 >= table_distribution.length) {
@@ -676,7 +706,7 @@
             vaccination_cell.append("p")
                 .attr("class", "cell-total-vaccinations-portion")
                 .text(function (d) {
-                    return d[1];
+                    return abbreviateNumber(d[1]);
                 });
 
             let per_hundred_cell = cells.filter(function (d, i) {
@@ -692,7 +722,7 @@
             per_hundred_cell.append("p")
                 .attr("class", "cell-total-new-vaccinations-portion")
                 .text(function (d) {
-                    return d[1];
+                    return abbreviateNumber(d[1]);
                 });
 
         }

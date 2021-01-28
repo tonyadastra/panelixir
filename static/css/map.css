@@ -301,6 +301,10 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+table.us-vaccine-distribution thead tr th:hover, table.world-vaccination-table thead tr th:hover {
+    cursor: pointer;
+}
+
 
 table.us-vaccine-distribution, table.world-vaccination-table {
     /*color: #FFFFFF;*/
