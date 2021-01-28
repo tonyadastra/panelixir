@@ -57,7 +57,7 @@
                         var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
                         table_distribution.push([
                             [d.name, vaccination_data.date],
-                            [vaccination_data.new_vaccinations, abbreviateNumber(vaccination_data.vaccinations)],
+                            [vaccination_data.new_vaccinations, vaccination_data.vaccinations],
                             [new_vaccinations_per_hundred, vaccination_data.vaccinations_per_hundred.toFixed(2)]
                         ]);
                         graph_top_vaccinations.push({
@@ -662,7 +662,9 @@
         .data(["Country", "Vaccinations", "Doses Given Per 100 People"])
         .enter()
         .append("th")
-        .text(function (d) {
+        .html(function (d, i) {
+            if (i === 2)
+                return d + "<span id=\"world-map-filter-desc\">&nbsp;<i class=\"fas fa-caret-down\"></i></span>";
             return d;
         })
         .style("background-color", function (d) {
@@ -670,10 +672,36 @@
                 return "rgb(100, 208, 138)"
             if (d === "Doses Given Per 100 People")
                 return "rgb(147,201,248)"
+        })
+        .on("click", function (d, i) {
+            let caret_down_world = "<span id=\"world-map-filter-desc\">&nbsp;<i class=\"fas fa-caret-down\"></i></span>"
+
+            if (!d3.select(this).html().includes(caret_down_world)) {
+                d3.select("#world-map-filter-desc").remove();
+
+                let existing_text = d3.select(this).html()
+                d3.select(this).html(existing_text + caret_down_world)
+
+                var new_table_distribution = table_distribution;
+                if (i === 0) {
+                    new_table_distribution.sort();
+                } else if (i === 1 || i === 2) {
+                    new_table_distribution.sort(function (a, b) {
+                        return b[i][1] - a[i][1];
+                    });
+                } else {
+                    new_table_distribution.sort(function (a, b) {
+                        return b[i] - a[i];
+                    });
+                }
+                table.selectAll('tbody').remove();
+                updateWorldTable(new_table_distribution.slice(0, 16));
+            }
+
         });
 
 
-    updateWorldTable(table_distribution.slice(0, 16), 0)
+    updateWorldTable(table_distribution.slice(0, 16))
 
 
     d3.select("#btn4").on("click", () => {
@@ -685,7 +713,7 @@
 
         }
         var newData = table_distribution.slice(index, index + 20);
-        updateWorldTable(newData, index);
+        updateWorldTable(newData);
         index += 20;
 
     })
@@ -697,13 +725,13 @@
             .attr('style', 'display: inline-block');
         var newData = table_distribution.slice(0, 16);
         table.selectAll('tbody').remove();
-        updateWorldTable(newData, 0);
+        updateWorldTable(newData);
         index = 16;
     })
 
 
 
-    function updateWorldTable(newData, index) {
+    function updateWorldTable(newData) {
         var table_body = table.append("tbody");
         var rows = table_body
             .selectAll("tr")
@@ -758,15 +786,15 @@
         vaccination_cell.append("span")
             .attr("class", "cell-new-vaccinations-portion")
             .text(function (d) {
-                // i = i + index;
                 if (d[0] !== 0) {
                     return "+" + abbreviateNumber(d[0])
                 }
             })
+
         vaccination_cell.append("p")
             .attr("class", "cell-total-vaccinations-portion")
             .text(function (d) {
-                return d[1];
+                return abbreviateNumber(d[1]);
             });
 
 

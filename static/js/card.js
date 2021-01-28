@@ -690,7 +690,7 @@ class localVaccinations extends HTMLElement {
         if (phase !== "None" && phase!== "") {
             phase_and_eligibility.innerHTML += "<span class='badge badge-phase-" + phase + "'>Phase " + phase + "</span>"
         }
-        phase_and_eligibility.innerHTML += "&nbsp;" + this.getAttribute('vac-eligibility')
+        phase_and_eligibility.innerHTML += "&nbsp;" + this.getAttribute('vac-eligibility') + " Visit <a class='county-link' target='_blank' href='" + this.getAttribute('vac-appointment-website') + "'>the county's website</a> to see who is eligible."
         county_body.appendChild(phase_and_eligibility)
 
         var vaccination_facilities = document.createElement('div')
@@ -701,10 +701,10 @@ class localVaccinations extends HTMLElement {
         info_link.innerHTML =  "<b>County Vaccination Info</b>: <a href='" + this.getAttribute('vac-info-website') + "' target='_blank'>Visit Vaccination Info Website</a>"
         county_body.appendChild(info_link);
 
-        var appointment_link = document.createElement('div')
-        appointment_link.innerHTML = "<b>Appointments</b>: Visit <a class='county-link' target='_blank' href='" + this.getAttribute('vac-appointment-website') + "'>the county's website</a> to see who is eligible."
+        // var appointment_link = document.createElement('div')
+        // appointment_link.innerHTML = "
 
-        county_body.appendChild(appointment_link);
+        // county_body.appendChild(appointment_link);
 
         if (this.getAttribute('vac-notification') !== "None" && this.getAttribute('vac-notification')!== "") {
             var notification = document.createElement('div')
@@ -766,7 +766,7 @@ class localVaccinations extends HTMLElement {
 //         }
 
         if (this.getAttribute('vac-administered') !== "None" && this.getAttribute('vac-administered')!== "") {
-            let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString()
+            let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString();
             if (doses_distributed === "NaN")
                 doses_distributed = "-"
             let doses_distributed_per_100 = parseFloat(this.getAttribute('vac-distributed') / population).toFixed(2)
@@ -780,9 +780,10 @@ class localVaccinations extends HTMLElement {
             var vaccination_table = document.createElement('div')
             vaccination_table.className = "county-vaccination-table";
             vaccination_table.style.overflowX = "auto";
+            // vaccination_table.style.width = "100%";
 
             vaccination_table.innerHTML = "<b>Vaccinations:</b>" + `
-            <table class="table text-center table-responsive county-table">
+            <table class="table text-center county-table" style='margin-left: auto;margin-right: auto;'>
                 <thead>
                     <tr>
 <!--                        <th scope="col">County</th>-->
@@ -856,7 +857,11 @@ class newsAPI extends HTMLElement {
 
         var card = document.createElement('div');
 
+        var local_tag = this.getAttribute('local-tag')
         var tag = "";
+        if (local_tag !== 'None' && local_tag !== '') {
+            tag = "<span class=\"badge badge-" + local_tag.toLowerCase() + "\">" + local_tag + "</span>"
+        }
         // if (story_tag !== 'None' && story_tag !== '') {
         //     tag = "<span class=\"badge badge-" + story_tag.toLowerCase() + "\">" + story_tag + "</span>"
         // }

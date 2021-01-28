@@ -307,7 +307,7 @@ def getSFBayAreaVaccination():
     local_data = cur.fetchall()
     cur.execute("rollback")
 
-    cur.execute('''SELECT title, content, url, image_url, source, author
+    cur.execute('''SELECT title, content, url, image_url, source, author, tag
                FROM "newsAPI" ORDER BY time DESC LIMIT 20''')
     local_news = cur.fetchall()
     cur.execute("rollback")
