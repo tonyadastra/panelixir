@@ -8,7 +8,7 @@
 
 
 ## **Recent Updates**
-+ January 27 - New Tag for Bay Area Section; Enable sorting in World & US Maps; Styling optimizations
++ January 27 - New Tag for Bay Area Section; Enable sorting in World & US Maps; Styling optimizations (+ Simplify People and Stories image path)
 + January 26 - New Data for US Map Table (Administered 1, Administered 2, Supply Used); County Table (Supply Used); other optimizations
 + January 25 - Vaccination Table + Facilities Info for Bay Area, other map optimizations
 + January 24 - New section for Bay Area News(BETA), User form submission, New numbers for bar graph, dotenv
