@@ -625,12 +625,23 @@ def auto_update_nytimes(event, context):
 
             company_string = ""
             # remove "how ... vaccine works"
-            for i in range(len(company_names)):
-                if "how" in company_names[i].text.lower() and "works" in company_names[i].text.lower():
-                    del company_names[i]
+            # print(company_names)
+            i_index = 0
+            while i_index < len(company_names):
+                # try:
+                #     print(company_names[i].strong.a)
+                # except AttributeError:
+                #     continue
+                if ("how" in company_names[i_index].text.lower() and "works" in company_names[i_index].text.lower()
+                        or "Inside the B.1.1.7 Coronavirus Variant" in company_names[i_index].text.lower()):
+                    company_names.remove(company_names[i_index])
+                    i_index -= 1
+                i_index += 1
+
 
             for i in range(len(company_names)):
-                if "how" not in company_names[i].text.lower() and "works" not in company_names[i].text.lower():
+                if "how" not in company_names[i].text.lower() and "works" not in company_names[i].text.lower() and \
+                        "Inside the B.1.1.7 Coronavirus Variant" not in company_names[i].text.lower():
                     if i == len(company_names) - 1:
                         company_string += company_names[i].text.strip()
                     else:
@@ -1393,3 +1404,6 @@ def auto_update_nytimes(event, context):
     print(json.dumps(return_response))
 
     return return_response
+
+
+auto_update_nytimes(1, 2)

@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.7.7 - Fix delete index error
+  + Released: January 27, 2021
 - v2.7.6 - Fix "Sinovac" Mismatch, E.U. -> European Union
   + Released: January 7, 2021
 - v2.7.5 - Fix Oxford-AstraZeneca not found, Fix New Year changing prev. December also to new year
