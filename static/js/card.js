@@ -547,7 +547,7 @@ class stories extends HTMLElement {
             imgCol.setAttribute('class', 'col-md-4')
 
             var image = document.createElement('img')
-            image.src = this.getAttribute('story-img')
+            image.src = "../static/img/" + this.getAttribute('story-img')
             image.className = "card-img";
 
             imgCol.appendChild(image)
