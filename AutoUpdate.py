@@ -633,15 +633,14 @@ def auto_update_nytimes(event, context):
                 # except AttributeError:
                 #     continue
                 if ("how" in company_names[i_index].text.lower() and "works" in company_names[i_index].text.lower()
-                        or "Inside the B.1.1.7 Coronavirus Variant" in company_names[i_index].text.lower()):
+                        or "Inside the B.1.1.7 Coronavirus Variant".lower() in company_names[i_index].text.lower()):
                     company_names.remove(company_names[i_index])
                     i_index -= 1
                 i_index += 1
 
-
             for i in range(len(company_names)):
                 if "how" not in company_names[i].text.lower() and "works" not in company_names[i].text.lower() and \
-                        "Inside the B.1.1.7 Coronavirus Variant" not in company_names[i].text.lower():
+                        "Inside the B.1.1.7 Coronavirus Variant".lower() not in company_names[i].text.lower():
                     if i == len(company_names) - 1:
                         company_string += company_names[i].text.strip()
                     else:
@@ -1406,4 +1405,4 @@ def auto_update_nytimes(event, context):
     return return_response
 
 
-auto_update_nytimes(1, 2)
+# auto_update_nytimes(1, 2)
