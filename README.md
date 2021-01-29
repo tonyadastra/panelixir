@@ -16,10 +16,9 @@
 ## The Lambda Function
 - This program is a lambda function that obtains the latest news for vaccination in SF Bay Area from newsAPI and updates database local_vaccinations
 
-
 ## Run Frequency
-- This program runs every day at 0:00 under AWS EventBridge (CloudWatch Events)
-- cron expression: `0 * * * ? *`
+- This program runs every hour under AWS EventBridge (CloudWatch Events)
+- cron expression: `0 * * * ? *`    
     + Note: The cron expression AWS uses is quite different from the general cron expression. Check out [AWS Cron Expression Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html) for more details
 
 ## Project Structure
@@ -53,7 +52,7 @@
 [comment]: <> (3. Add additional packages to the package folder if necessary. If no new packages are added, skip to step 7.)
 
 [comment]: <> (    + `pip install --target ./package [new-package]`)
-4. Go to the package directory
+1. Go to the package directory
     + `cd package`
 5. Zip the package folder (`$OLDPWD` stands for OLDPrintWorkingDirectory, which corresponds to the directory before the `cd` command)
     + `zip -r9 ${OLDPWD}/function.zip .`
