@@ -194,11 +194,11 @@ def auto_update_nytimes(event, context):
                 cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (leading_vaccine_id,))
                 LC_allow_auto_update = cur.fetchall()[0]
                 if LC_allow_auto_update:
-                    if approved_countries and "other countries" not in approved_countries:
+                    if approved_countries and "other" not in approved_countries:
                         cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
                                     (approved_countries, leading_vaccine_id))
                         conn.commit()
-                    if limited_countries and "other countries" not in limited_countries:
+                    if limited_countries and "other" not in limited_countries:
                         cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
                                     (limited_countries, leading_vaccine_id))
                         conn.commit()
