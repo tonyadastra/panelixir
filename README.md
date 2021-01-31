@@ -8,6 +8,8 @@
 + ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 
 ## Version History
+- v2.8.0 - Find Limited/Approved countries through NYTimes intro
+  + Released: January 30, 2021
 - v2.7.9 - Limited/Approved Countries 'others' override
   + Released: January 30, 2021
 - v2.7.8 - Fix 'Inside the B.1.1.7 Coronavirus Variant' as company

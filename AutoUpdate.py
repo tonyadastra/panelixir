@@ -129,82 +129,82 @@ def auto_update_nytimes(event, context):
     top_candidates_id_and_company = cur.fetchall()
     cur.execute("rollback")
 
-    top_developers = []
-    for i in range(len(top_candidates_id_and_company)):
-        top_developers.append(top_candidates_id_and_company[i][1])
-    # print(top_developers)
-    leading_match_string = ""
-    for candidate in leading_candidates:
-        candidate_developer = candidate.find('a').text
-        index = get_close_matches_indexes(candidate_developer, top_developers, n=1, cutoff=0.9)
-        try:
-            leading_vaccine_id = top_candidates_id_and_company[index[0]][0]
-        except IndexError:
-            leading_vaccine_id = -1
-            leading_match_string += "New leading company: " + candidate_developer + ".||"
-
-        approved_and_limited_countries = candidate.find('td', class_="g-small g-last")
-        if approved_and_limited_countries is None and leading_vaccine_id == 29:
-            approved_and_limited_countries = candidate.find_all('td', class_="g-small")[-1]
-        ALText = approved_and_limited_countries.text
-
-        if approved_and_limited_countries is not None and "in" in ALText \
-                and ("Approved".lower() in ALText.lower()
-                     or "Limited".lower() in ALText.lower()
-                     or "Emergency".lower() in ALText.lower()
-                     or "Early".lower() in ALText.lower()):
-            LC_output = [ALText]
-            # print(ALText)
-            approved_countries = ""
-            limited_countries = ""
-
-            if "Early use in " in ALText:
-                ALText = ALText.replace("Early use in ", "Emergency use in ")
-            if "Limited use in " in ALText:
-                ALText = ALText.replace("Limited use in ", "Emergency use in ")
-
-            # if a_index != -1 and e_index != -1:
-            countries_array = ALText.split("Emergency use in ")
-            for i in range(len(countries_array)):
-                if i != 0:
-                    countries_array[i] = "Emergency use in " + countries_array[i]
-
-            for countries in countries_array:
-                if "Approved in " in countries:
-                    countries = countries.replace("Approved in ", "")
-                    country_array = countries.split(', ')
-                    format_country(country_array)
-                    for j in range(len(country_array)):
-                        if j == len(country_array) - 1:
-                            approved_countries += country_array[j]
-                        else:
-                            approved_countries += country_array[j] + ", "
-
-                elif "Emergency use in " in countries:
-                    countries = countries.replace("Emergency use in ", "")
-                    country_array = countries.split(', ')
-                    format_country(country_array)
-                    for j in range(len(country_array)):
-                        limited_countries += country_array[j] + ", "
-
-            if limited_countries.endswith(", "):
-                limited_countries = limited_countries[0: len(limited_countries) - 2]
-
-            if leading_vaccine_id != -1:
-                cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (leading_vaccine_id,))
-                LC_allow_auto_update = cur.fetchall()[0]
-                if LC_allow_auto_update:
-                    if approved_countries and "other" not in approved_countries:
-                        cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
-                                    (approved_countries, leading_vaccine_id))
-                        conn.commit()
-                    if limited_countries and "other" not in limited_countries:
-                        cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
-                                    (limited_countries, leading_vaccine_id))
-                        conn.commit()
-                    LC_output.append(approved_countries)
-                    LC_output.append(limited_countries)
-            print(LC_output)
+    # top_developers = []
+    # for i in range(len(top_candidates_id_and_company)):
+    #     top_developers.append(top_candidates_id_and_company[i][1])
+    # # print(top_developers)
+    # leading_match_string = ""
+    # for candidate in leading_candidates:
+    #     candidate_developer = candidate.find('a').text
+    #     index = get_close_matches_indexes(candidate_developer, top_developers, n=1, cutoff=0.9)
+    #     try:
+    #         leading_vaccine_id = top_candidates_id_and_company[index[0]][0]
+    #     except IndexError:
+    #         leading_vaccine_id = -1
+    #         leading_match_string += "New leading company: " + candidate_developer + ".||"
+    #
+    #     approved_and_limited_countries = candidate.find('td', class_="g-small g-last")
+    #     if approved_and_limited_countries is None and leading_vaccine_id == 29:
+    #         approved_and_limited_countries = candidate.find_all('td', class_="g-small")[-1]
+    #     ALText = approved_and_limited_countries.text
+    #
+    #     if approved_and_limited_countries is not None and "in" in ALText \
+    #             and ("Approved".lower() in ALText.lower()
+    #                  or "Limited".lower() in ALText.lower()
+    #                  or "Emergency".lower() in ALText.lower()
+    #                  or "Early".lower() in ALText.lower()):
+    #         LC_output = [ALText]
+    #         # print(ALText)
+    #         approved_countries = ""
+    #         limited_countries = ""
+    #
+    #         if "Early use in " in ALText:
+    #             ALText = ALText.replace("Early use in ", "Emergency use in ")
+    #         if "Limited use in " in ALText:
+    #             ALText = ALText.replace("Limited use in ", "Emergency use in ")
+    #
+    #         # if a_index != -1 and e_index != -1:
+    #         countries_array = ALText.split("Emergency use in ")
+    #         for i in range(len(countries_array)):
+    #             if i != 0:
+    #                 countries_array[i] = "Emergency use in " + countries_array[i]
+    #
+    #         for countries in countries_array:
+    #             if "Approved in " in countries:
+    #                 countries = countries.replace("Approved in ", "")
+    #                 country_array = countries.split(', ')
+    #                 format_country(country_array)
+    #                 for j in range(len(country_array)):
+    #                     if j == len(country_array) - 1:
+    #                         approved_countries += country_array[j]
+    #                     else:
+    #                         approved_countries += country_array[j] + ", "
+    #
+    #             elif "Emergency use in " in countries:
+    #                 countries = countries.replace("Emergency use in ", "")
+    #                 country_array = countries.split(', ')
+    #                 format_country(country_array)
+    #                 for j in range(len(country_array)):
+    #                     limited_countries += country_array[j] + ", "
+    #
+    #         if limited_countries.endswith(", "):
+    #             limited_countries = limited_countries[0: len(limited_countries) - 2]
+    #
+    #         if leading_vaccine_id != -1:
+    #             cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (leading_vaccine_id,))
+    #             LC_allow_auto_update = cur.fetchall()[0]
+    #             if LC_allow_auto_update:
+    #                 if approved_countries and "other" not in approved_countries:
+    #                     cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
+    #                                 (approved_countries, leading_vaccine_id))
+    #                     conn.commit()
+    #                 if limited_countries and "other" not in limited_countries:
+    #                     cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
+    #                                 (limited_countries, leading_vaccine_id))
+    #                     conn.commit()
+    #                 LC_output.append(approved_countries)
+    #                 LC_output.append(limited_countries)
+    #         print(LC_output)
 
     latest_news = []
     for news in nytimes_news:
@@ -514,11 +514,10 @@ def auto_update_nytimes(event, context):
         # Find all Phase III intro
         phase2_and_3_company_intro = new_soup.find_all('p', attrs={
             "class": "g-body g-list-item g-filter-item g-filter-phase2 g-filter-phase3"})
-        phase3_and_limited_approval_company_intro = new_soup.find_all('p', attrs={
-            "class": "g-body g-list-item g-filter-item g-filter-phase3 g-filter-approved"})
+
         phase3_company_intro = new_soup.find_all('p',
                                                  attrs={"class": "g-body g-list-item g-filter-item g-filter-phase3"})
-        all_phase3_intro = phase3_company_intro + phase3_and_limited_approval_company_intro + phase2_and_3_company_intro
+        all_phase3_intro = phase3_company_intro + phase2_and_3_company_intro
         phase3_count += len(all_phase3_intro)
 
         # Find all Phase II intro
@@ -555,7 +554,15 @@ def auto_update_nytimes(event, context):
             intro_text = intro.text.replace('\n', '')
             intro_text = intro_text.replace('<THIS IS A LINE BREAK>', '\n')
 
-            vaccine_info_html = intro.find_all('span', class_="g-info")
+            vaccine_info_html = []
+            status_section = []
+            vaccine_info_sections = intro.find_all('span', class_="g-vacinfo")
+            if vaccine_info_sections:
+                vaccine_info_html = vaccine_info_sections[0].find_all('span', class_="g-info")
+                if len(vaccine_info_sections) > 1:
+                    status_section = vaccine_info_sections[1].find_all('span', class_="g-info")
+
+            # vaccine_info_html = intro.find_all('span', class_="g-info")
             candidate_name = ""
             efficacy = ""
             dose = ""
@@ -563,8 +570,11 @@ def auto_update_nytimes(event, context):
             storage = ""
 
             if vaccine_info_html:
-                all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1] \
-                    .split('\n\n', 1)[1].strip()
+                all_intro_text = intro_text.replace(vaccine_info_sections[0].text, '').strip()
+                if len(vaccine_info_sections) > 1:
+                    all_intro_text = all_intro_text.replace(vaccine_info_sections[1].text, '').strip()
+                # all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1] \
+                #     .split('\n\n', 1)[1].strip()
                 all_intro_text = all_intro_text.replace('\n', ' ')
 
                 vaccine_info_text = "Vaccine Name:" + \
@@ -607,6 +617,78 @@ def auto_update_nytimes(event, context):
                             storage = ""
             else:
                 all_intro_text = intro_text.replace('\n', ' ')
+
+            approved_countries = ""
+            limited_countries = ""
+            if status_section:
+                all_status_text = vaccine_info_sections[1].text.strip()
+                # print(all_status_text)
+                status_split_array = all_status_text.split('<THIS IS A LINE BREAK>')
+                cleaned_status_array = list(filter(None, status_split_array))
+                # print(cleaned_status_array)
+                for status in cleaned_status_array:
+                    status = status.strip()
+                    if "Early use in:" in status:
+                        if limited_countries:
+                            limited_countries += ", "
+                        limited_countries += status.replace("Early use in:", "").strip()
+                        if limited_countries.endswith("."):
+                            limited_countries = limited_countries[:-1]
+
+                    if "Approved for use in:" in status:
+                        approved_countries = status.replace("Approved for use in:", "").strip()
+                        if approved_countries.endswith("."):
+                            approved_countries = approved_countries[:-1]
+
+                    if "Emergency use in:" in status:
+                        if limited_countries:
+                            limited_countries += ", "
+                        limited_countries += status.replace("Emergency use in:", "").strip()
+                        if limited_countries.endswith("."):
+                            limited_countries = limited_countries[:-1]
+                approved_countries = approved_countries
+                limited_countries = limited_countries
+                # print("Approved: " + approved_countries)
+                # print("Limited: " + limited_countries)
+
+                # status_text = "Vaccine Name:" + \
+                #                     (intro_text.split(vaccine_info_html[0].text, 1)[1]
+                #                         .split('\n\n', 1)[0])
+                #
+                # vaccine_info_text_array = vaccine_info_text.split('\n')
+                # # print(vaccine_info_text_array)
+                #
+                # for vaccine_info in vaccine_info_text_array:
+                #     if "Vaccine Name" in vaccine_info:
+                #         start_index = vaccine_info.find(': ') + 2
+                #         if start_index != -1:
+                #             candidate_name = vaccine_info[start_index:]
+                #         else:
+                #             candidate_name = ""
+                #     if "Efficacy" in vaccine_info:
+                #         start_index = vaccine_info.find(': ') + 2
+                #         if start_index != -1:
+                #             efficacy = vaccine_info[start_index:]
+                #         else:
+                #             efficacy = ""
+                #     if "Dose" in vaccine_info:
+                #         start_index = vaccine_info.find(': ') + 2
+                #         if start_index != -1:
+                #             dose = vaccine_info[start_index:]
+                #         else:
+                #             dose = ""
+                #     if "Type" in vaccine_info:
+                #         start_index = vaccine_info.find(': ') + 2
+                #         if start_index != -1:
+                #             injection_type = vaccine_info[start_index:]
+                #         else:
+                #             injection_type = ""
+                #     if "Storage" in vaccine_info:
+                #         start_index = vaccine_info.find(': ') + 2
+                #         if start_index != -1:
+                #             storage = vaccine_info[start_index:]
+                #         else:
+                #             storage = ""
 
             # if vaccine_info_html:
             #     print(intro_text)
@@ -806,6 +888,20 @@ def auto_update_nytimes(event, context):
                 vaccine_array.append(injection_type)
                 vaccine_array.append(storage)
 
+                cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (vaccine_id,))
+                LC_allow_auto_update = cur.fetchall()[0]
+                if LC_allow_auto_update:
+                    if approved_countries:
+                        # print("Approved: " + approved_countries)
+                        cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
+                                    (approved_countries, vaccine_id))
+                        conn.commit()
+                    if limited_countries:
+                        # print("Limited: " + limited_countries)
+                        cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
+                                    (limited_countries, vaccine_id))
+                        conn.commit()
+
                 new_data_array.append(vaccine_array)
 
     # Get last fetched data from database
@@ -814,6 +910,7 @@ def auto_update_nytimes(event, context):
                 "injection_type, storage from nytimes ORDER BY intro_id;")
     existing_data_array = cur.fetchall()
     cur.execute("rollback")
+
     existing_id_array = []
     for i in range(len(existing_data_array)):
         existing_id = existing_data_array[i][0]
@@ -900,6 +997,8 @@ def auto_update_nytimes(event, context):
 
         if proceed:
             try:
+                if new_date == (" " + str(now.year)):
+                    new_date = ""
                 cur.execute("SELECT TO_DATE(%s, 'Mon FMDD YYYY') - %s AS interval, "
                             "TO_DATE(%s, 'Mon FMDD YYYY') - update_date AS info_interval, "
                             "allow_auto_update "
