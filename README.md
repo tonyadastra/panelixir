@@ -10,6 +10,10 @@
     + ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 ## Version History
+- v2.0 - Improve Filter
+    + Released: January 31, 2021
+- v1.1 - Fix duplicate news
+    + Released: January 30, 2021
 - v1.0 - Initial release 
     + Released: January 28, 2021
 

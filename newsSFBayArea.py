@@ -16,33 +16,36 @@ def updateBayAreaNews(event, context):
     cur.execute("DELETE FROM \"newsAPI\" WHERE (CURRENT_DATE - time::date) > 15")
     conn.commit()
 
-    cur.execute("SELECT url, CURRENT_DATE - time AS interval FROM \"newsAPI\" WHERE tag = %s", ("New",))
+    cur.execute("SELECT url, (CURRENT_DATE - time::date) AS interval FROM \"newsAPI\" WHERE tag = %s", ("New",))
     news_new = cur.fetchall()
     cur.execute("rollback")
 
     for i in range(len(news_new)):
-        if news_new[i][1].days >= 1:
+        if news_new[i][1] >= 1:
             cur.execute("UPDATE \"newsAPI\" SET tag = %s WHERE url = %s", ('', news_new[i][0]))
             conn.commit()
 
     result = requests.get('https://newsapi.org/v2/everything?'
-                          'q=+((vaccine)AND(bay%20area)OR(san%20mateo)OR((san%20francisco)))'
+                          'q=+((vaccine)AND((bay%20area)OR(san%20mateo)OR(san%20francisco)))'
                           '-((Quebec)OR(Canada)OR(warehouse))'
+                          '&qInTitle=+((bay%20area)OR(california)OR(san%20mateo)OR(san%20francisco)OR(santa%20clara)OR(san%20jose)OR(pacifica)OR(napa)OR(santa%20cruz)OR(marin)OR(alameda)OR(sonoma)OR(oakland)OR(stanford)OR(berkeley)OR(Contra%20Costa)OR(solano))'
                           'san%20francisco%20bay%20area%20covid%20vaccine'
                           '&from=' + str(limit_days.year) + '-' + str(limit_days.month) + '-' + str(limit_days.day) +
                           '&to=' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +
-                          '&excludeDomains=fool.com'
+                          '&excludeDomains=fool.com,sinocism.com,politico.com,sf.funcheap.com,startribune.com,kyma.com,'
+                          'wsoctv.com,boston25news.com'
                           '&sortBy=relevancy'
                           '&language=en'
-                          '&pageSize=40'
+                          '&pageSize=100'
                           '&apiKey=a0832e04c08e426e979ab84d74401580')
+
+    # 'https://newsapi.org/v2/everything?q=+((vaccine)AND((bay%20area)OR(san%20mateo)OR(san%20francisco)))-((Quebec)OR(Canada)OR(warehouse))&qInTitle=+((bay%20area)OR(california)OR(san%20mateo)OR(san%20francisco)OR(santa%20clara)OR(san%20jose)OR(pacifica)OR(napa))san%20francisco%20bay%20area%20covid%20vaccine&excludeDomains=fool.com,sinocism.com,politico.com,sf.funcheap.com,startribune.com,kyma.com,wsoctv.com,boston25news.com&sortBy=relevancy&language=en&pageSize=40&apiKey=a0832e04c08e426e979ab84d74401580'
 
     newsResponseBayArea = result.json()
 
     cur.execute('''SELECT title, content, source, url FROM "newsAPI"''')
-    existing_articles = cur.fetchall()
+    existing_articles = list(cur.fetchall())
     cur.execute("rollback")
-
 
     def cleanHTML(raw_html):
         cleanR = re.compile('<.*?>')
@@ -84,7 +87,7 @@ def updateBayAreaNews(event, context):
 
                 if hasUpdate:
                     for existing_article in existing_articles:
-                        if existing_article[3] == url or existing_article[0] == title:
+                        if existing_article[3] == url or existing_article[0] == title or existing_article[1] == content:
                             hasUpdate = False
 
                 if hasUpdate:
@@ -95,17 +98,10 @@ def updateBayAreaNews(event, context):
                     ))
                     conn.commit()
                     updates += 1
+                    existing_articles.append([title, content, source, url])
 
             except KeyError:
                 continue
-
-
-    # def update_prev_usa_distribution(event, context):
-
-    #
-    # cur.execute('''UPDATE "VaccineDistributionUSA" SET prev_administered = doses_administered,
-    # prev_distributed = doses_available''')
-    # conn.commit()
 
     return_response = {
         "statusCode": result.status_code,
