@@ -28,8 +28,8 @@ def updateBayAreaNews(event, context):
     result = requests.get('https://newsapi.org/v2/everything?'
                           'q=+((vaccine)AND((bay%20area)OR(san%20mateo)OR(san%20francisco)))'
                           '-((Quebec)OR(Canada)OR(warehouse))'
-                          '&qInTitle=+((bay%20area)OR(california)OR(san%20mateo)OR(san%20francisco)OR(santa%20clara)OR(san%20jose)OR(pacifica)OR(napa)OR(santa%20cruz)OR(marin)OR(alameda)OR(sonoma)OR(oakland)OR(stanford)OR(berkeley)OR(Contra%20Costa)OR(solano))'
                           'san%20francisco%20bay%20area%20covid%20vaccine'
+                          '&qInTitle=+((bay%20area)OR(california)OR(san%20mateo)OR(san%20francisco)OR(santa%20clara)OR(san%20jose)OR(pacifica)OR(napa)OR(santa%20cruz)OR(marin)OR(alameda)OR(sonoma)OR(oakland)OR(stanford)OR(berkeley)OR(Contra%20Costa)OR(solano))'
                           '&from=' + str(limit_days.year) + '-' + str(limit_days.month) + '-' + str(limit_days.day) +
                           '&to=' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +
                           '&excludeDomains=fool.com,sinocism.com,politico.com,sf.funcheap.com,startribune.com,kyma.com,'
