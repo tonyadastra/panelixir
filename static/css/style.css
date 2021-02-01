@@ -1,9 +1,8 @@
-/*@import "google-translate.scss";*/
-
 body {
     max-width: 100% !important;
     overflow-x: hidden!important;
-    /*position: relative;*/
+    margin: 0;
+    padding: 0;
 }
 
 /* Header */
@@ -1286,7 +1285,7 @@ span.highlight {
 /* filter menu */
 .filter {
     /* background-color: rgba(255, 194, 129, 0.25); */
-    background-color: #faf4e5;
+    background-color: #fcf5f1;
     /*margin-top: 0.5rem;*/
     padding: 0.5rem 0 0.5rem 2rem;
     /* padding-left: 2rem;
@@ -2216,7 +2215,7 @@ select.compare-dropdown {
 }
 
 .badge-featured {
-    background-color: #f6691d;
+    background-color: #9400D3;
     color: white;
 }
 
@@ -2227,12 +2226,17 @@ select.compare-dropdown {
 }
 
 .badge-new {
-    background-color: #ff8c00;
+    background-color: #fc9648;
     color: white;
 }
 
 .badge-breaking-news {
     background-color: #800080;
+    color: white;
+}
+
+.badge-top {
+    background-color: #02b3b3;
     color: white;
 }
 

@@ -6,7 +6,8 @@
 
 .wrapper {
   margin: 0 10px 50px 10px;
-  background-color: #ebf6f3;
+  background-color: #faf9f3;
+  /*background-color: #ebf6f3;*/
   box-shadow: 4px 7px #eeeded;
   padding-bottom: 2rem;
 }
@@ -129,7 +130,7 @@ span.highlight-warp-speed {
   margin-left: 0.5rem;
   font-weight: 500;
   text-transform: uppercase;
-  color: #d72d85;
+  color: #c660f1;
 }
 
 @media screen and (max-width: 767px) {
@@ -151,7 +152,7 @@ span.highlight-warp-speed {
 
   .wrapper {
     margin: 0 7px 30px 7px;
-    background-color: #ebf6f3;
+    /*background-color: #ebf6f3;*/
     box-shadow: 4px 7px #dbd9d9;
     padding-left: 5px;
     padding-right: 5px;
@@ -399,9 +400,10 @@ span.highlight-warp-speed {
   margin: 0;
 }
 
-.approved-countries{
-  color: #9d4b13;
-  font-weight: bold;
+.approved-countries {
+  /*color: #74139d;*/
+  color: rgb(35, 114, 17);
+  /*font-weight: bold;*/
 }
 
 /*[data-tooltip]:before {*/
