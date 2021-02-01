@@ -135,12 +135,12 @@ def desktopForm():
 
     if desktop_stages == "4-1":
         desktop_stages = "_"
-        filter_limit = "AND early_approval"
+        filter_limit = "AND early_approval AND NOT abandoned"
     elif desktop_stages == "0-1":
         desktop_stages = "_"
         filter_limit = "AND abandoned"
     else:
-        filter_limit = ""
+        filter_limit = "AND NOT abandoned"
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
@@ -152,14 +152,15 @@ def desktopForm():
         " AND country LIKE '%" + desktop_country + "%' "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
-        "LIMIT 10")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company")
 
     data = cur.fetchall()
     cur.execute("rollback")
+    total_rows = len(data)
+    data = data[:10]
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
-    return render_template("institutions.html", data=data)
+    return render_template("institutions.html", data=data, total_rows=total_rows)
 
 
 @app.route("/card", methods=['GET'])
@@ -201,12 +202,12 @@ def mobileForm():
 
     if mobile_stages == "4-1":
         mobile_stages = "_"
-        filter_limit = "AND early_approval"
+        filter_limit = "AND early_approval AND NOT abandoned"
     elif mobile_stages == "0-1":
         mobile_stages = "_"
         filter_limit = "AND abandoned"
     else:
-        filter_limit = ""
+        filter_limit = "AND NOT abandoned"
 
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
@@ -218,14 +219,15 @@ def mobileForm():
         " AND country LIKE '%" + mobile_country + "%' "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
-        "LIMIT 10")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company")
 
     data = cur.fetchall()
     cur.execute("rollback")
+    total_rows = len(data)
+    data = data[:10]
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
-    return render_template("institutions.html", data=data)
+    return render_template("institutions.html", data=data, total_rows=total_rows)
 
 
 @app.route("/mobile-card", methods=['GET'])
@@ -308,7 +310,7 @@ def getSFBayAreaVaccination():
     cur.execute("rollback")
 
     cur.execute('''SELECT title, content, url, image_url, source, author, tag
-               FROM "newsAPI" ORDER BY time DESC LIMIT 20''')
+               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC LIMIT 10''')
     local_news = cur.fetchall()
     cur.execute("rollback")
 
@@ -333,19 +335,19 @@ def getEntertainment():
 
 @app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
-    cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
-                "(SELECT update_date FROM info "
-                "WHERE update_date IS NOT NULL "
-                "UNION "
-                "SELECT date AS update_date FROM news "
-                "ORDER BY update_date DESC LIMIT 1) AS date")
-    update_time = cur.fetchone()[0]
-    cur.execute("rollback")
+    # cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
+    #             "(SELECT update_date FROM info "
+    #             "WHERE update_date IS NOT NULL "
+    #             "UNION "
+    #             "SELECT date AS update_date FROM news "
+    #             "ORDER BY update_date DESC LIMIT 1) AS date")
+    # update_time = cur.fetchone()[0]
+    # cur.execute("rollback")
 
     cur.execute("SELECT COUNT(*) FROM info")
     total_rows = cur.fetchone()[0]
     cur.execute("rollback")
-    return json.dumps({'update_time': update_time, 'total_rows': total_rows})
+    return json.dumps({'update_time': None, 'total_rows': total_rows})
 
 
 @app.route("/get_local_data", methods=['GET'])

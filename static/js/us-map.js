@@ -564,9 +564,8 @@
                         });
                     }
                     table.selectAll('tbody.table-body-state').remove();
-                    update(new_table_distribution.slice(0, 12));
+                    update(new_table_distribution.slice(0, index));
                 }
-
             });
 
 

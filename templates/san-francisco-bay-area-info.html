@@ -32,17 +32,22 @@
 <nav class="nav-top">
     <div class="scroll-menu" id="scroll-menu">
         <div class="nav-top-items">
-            <a class="active style-a" href="#" id="a-vaccination" data-scroll="county-vaccination">Getting Vaccinated</a>
+            <a class="style-a" href="/">Home</a>
+
+            <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
+
+            <a class="active style-a" href="#" id="a-news" data-scroll="county-news">News</a>
+            <a class="style-a" href="#" id="a-vaccination" data-scroll="county-vaccination">Getting Vaccinated</a>
 {#            <a class="style-a" href="#" id="a-distribution" data-scroll="distribution">Distribution</a>#}
 {#            <a class="style-a" href="#" id="a-development" data-scroll="development">Development</a>#}
 {#            <a class="style-a" href="#" id="a-science" data-scroll="science">Science</a>#}
-            <a class="style-a" href="#" id="a-news" data-scroll="county-news">News</a>
+
 
             <a class="style-a" href="#" id="a-news" data-scroll="county-feedback">Feedback</a>
 {#            <a class="style-a" href="#" data-scroll="stories">People and Stories</a>#}
 {#            <a class="style-a" href="#" id="a-developers" data-scroll="developers">Vaccine Database</a>#}
             <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
-            <a class="style-a" href="/">Home</a>
+
             <a class="style-a" href="/vaccine-faq">FAQs</a>
             <a class="style-a" href="/about-us">About Us</a>
         </div>
@@ -62,6 +67,15 @@
     </div>
 {% endif %}
 
+<section data-anchor="county-news">
+    <h2 id="news-title">Bay Area and Vaccination News</h2>
+    {% for news in local_news %}
+        <local-news local-title="{{news[0]}}" local-content="{{news[1]}}" local-url="{{news[2]}}"
+                     local-img="{{news[3]}}" local-source="{{news[4]}}" local-author="{{news[5]}}"
+                    local-tag="{{news[6]}}">
+        </local-news>
+    {% endfor %}
+</section>
 
 <section data-anchor="county-vaccination">
     <h2 id="news-title">Getting Vaccinated</h2>
@@ -78,15 +92,6 @@
     </div>
 </section>
 
-<section data-anchor="county-news">
-    <h2 id="news-title">Bay Area and Vaccination News</h2>
-    {% for news in local_news %}
-        <local-news local-title="{{news[0]}}" local-content="{{news[1]}}" local-url="{{news[2]}}"
-                     local-img="{{news[3]}}" local-source="{{news[4]}}" local-author="{{news[5]}}"
-                    local-tag="{{news[6]}}">
-        </local-news>
-    {% endfor %}
-</section>
 
 <section data-anchor="county-feedback">
     <div class="ctr">

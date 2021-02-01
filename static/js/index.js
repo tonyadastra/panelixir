@@ -98,178 +98,178 @@ function resize() {
                 window.map_response = JSON.parse(response).map_data.vaccines;
                 var vac_country = window.map_response.map(d => d.country);
                 var vac_stage = window.map_response.map(d => d.stage);
-                /** Interactive Map Response **/
+                /** Interactive Map Response -- Hidden **/
                 // filter unique countries with highest stage
-                for (let i = 0; i < vac_country.length; i++) {
-                    if (vac_country[i].includes(",")) {
-                        let arr = vac_country[i].split(",")
-                        arr.forEach(function (elem) {
-                            if (!vac_map.get(elem.trim()) || vac_map.get(elem.trim()) < vac_stage[i]) {
-                                vac_map.set(elem.trim(), vac_stage[i]);
-                            }
-                        });
-                    } else {
-                        if (!vac_map.get(vac_country[i]) || vac_map.get(vac_country[i]) < vac_stage[i]) {
-                            vac_map.set(vac_country[i], vac_stage[i]);
-                        }
-                    }
-                }
-
-                var files = ["/data/map.json", "/data/world-countries.csv"];
-
-                Promise.all(files.map(url => d3.json(url))).then(function (values) {
-                    world = values[0]
-                    // console.log("map", values[0])
-                    names = values[1]
-                    // console.log(world)
-                    // console.log("custom", world_continent)
-                    var globe = {type: "Sphere"},
-                        land = topojson.feature(world, world.objects.land),
-                        borders = topojson.mesh(world, world.objects.countries, function (a, b) {
-                            return a !== b;
-                        })
-                    let grid = graticule();
-                    countries = topojson.feature(world, world.objects.countries).features;
-                    map.insert("path", ".graticule")
-                        .datum(land)
-                        .attr("class", "land")
-                        .attr("d", path);
-
-                    for (let i = 0; i < Object.values(names).length; i++) {
-                        for (let j = 0; j < countries.length; j++) {
-
-                            let map_continent;
-                            if (countries[j].id === Object.values(names)[i].id) {
-                                map_continent = Object.values(names)[i].continent_name;
-
-                                let curr_color = colors.clickable;
-                                let curr_stage = -1;
-                                if (vac_map.get(Object.values(names)[i].name) !== undefined) {
-                                    curr_stage = vac_map.get(Object.values(names)[i].name);
-                                    // console.log(curr_stage);
-                                    // console.log(Object.values(names)[i].name);
-                                }
-
-                                if (curr_stage === 0) {
-                                    curr_color = colors.p0;
-                                } else if (curr_stage === 1) {
-                                    curr_color = colors.p1;
-                                } else if (curr_stage === 2) {
-                                    curr_color = colors.p2;
-                                } else if (curr_stage === 3) {
-                                    curr_color = colors.p3;
-                                } else if (curr_stage === 4) {
-                                    curr_color = colors.p4;
-                                }
-                                // console.log(j, Object.values(names)[i].name);
-
-
-                                map.insert("path", ".graticule")
-                                    .datum(countries[j])
-                                    .attr("fill", curr_color)
-                                    .attr("d", path)
-                                    .attr("class", "clickable")
-                                    .attr("data-country-id", j)
-                                    .attr("continent", map_continent)
-                                    .attr("countryname", Object.values(names)[i].name)
-                                    .on("click", function () {
-                                        needs_update = true;
-                                        var prev_color = colors.clickable, prev_stage = -1;
-                                        var temp;
-                                        world_continents.continent = d3.select(this).attr("continent");
-
-                                        d3.selectAll(".clicked")
-                                            .classed("clicked", false)
-                                            .select(function () {
-                                                // console.log(this)
-                                                // console.log(d3.select(this).attr("countryname"));
-                                                temp = vac_map.get(d3.select(this).attr("countryname"));
-                                                prev_stage = temp === undefined ? -1 : temp;
-
-                                                if (prev_stage === 0) {
-                                                    prev_color = colors.p0;
-                                                } else if (prev_stage === 1) {
-                                                    prev_color = colors.p1;
-                                                } else if (prev_stage === 2) {
-                                                    prev_color = colors.p2;
-                                                } else if (prev_stage === 3) {
-                                                    prev_color = colors.p3;
-                                                } else if (prev_stage === 4) {
-                                                    prev_color = colors.p4;
-                                                } else {
-                                                    prev_color = colors.clickable;
-                                                }
-                                                d3.select(this).attr("fill", prev_color);
-                                                // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                                            })
-
-                                        d3.selectAll("path").filter(function (d) {
-                                            return d3.select(this).attr("continent") === map_continent;
-                                        })
-                                            .attr("fill", colors.clicked)
-                                            .classed("clicked", true);
-
-
-                                        (function transition() {
-                                            d3.select(".clicked").transition()
-                                                .duration(1000)
-                                                .tween("rotate", function () {
-                                                    // console.log(ContinentArray[map_continent])
-                                                    // Assign Continent to Rotate to
-                                                    var r = d3.interpolate(projection.rotate(), ContinentArray[map_continent])
-
-                                                    return function (t) {
-                                                        // projection.rotate(r(t)).scale(s(t));
-                                                        projection.rotate(r(t));
-                                                        map.selectAll("path").attr("d", path);
-                                                    }
-                                                });
-                                        })();
-                                    })
-
-                                    .on("mousemove", function () {
-                                        var c = d3.select(this);
-                                        if (c.classed("clicked")) {
-                                            c.attr("fill", colors.clickhover);
-                                        } else {
-                                            // d3.selectAll("path").filter(function (d) {
-                                            //   console.log(d3.select(this).attr("continent"))
-                                            //   return d3.select(this).attr("continent") == continent;
-
-                                            // })
-                                            //   .attr("fill", colors.hover);
-                                            // && d3.select(this).attr("data-country-id") != countries[j].id;
-                                            // .classed("clicked", true);
-                                            c.attr("fill", colors.hover);
-                                        }
-                                        // console.log("mouse move", Object.values(names)[i].name);
-                                    })
-
-                                    .on("mouseout", function () {
-                                        var c = d3.select(this);
-
-                                        if (c.classed("clicked")) {
-                                            c.attr("fill", colors.clicked);
-                                            // d3.selectAll("path").filter(function (d) {
-                                            //   return d3.select(this).attr("continent") == continent;
-                                            // })
-                                            //   .attr("fill", colors.clicked);
-                                            // console.log("clicked mouse out", Object.values(names)[i].name)
-                                        } else {
-                                            // console.log("unclicked mouse out", Object.values(names)[i].name)
-                                            d3.select(this).attr("fill", curr_color);
-                                        }
-                                        // console.log("mouse out");
-                                    });
-                            }
-                        }
-                    }
-
-                    map.insert("path", ".graticule")
-                        .datum(borders)
-                        .attr("class", "boundary")
-                        .attr("d", path);
-
+                // for (let i = 0; i < vac_country.length; i++) {
+                //     if (vac_country[i].includes(",")) {
+                //         let arr = vac_country[i].split(",")
+                //         arr.forEach(function (elem) {
+                //             if (!vac_map.get(elem.trim()) || vac_map.get(elem.trim()) < vac_stage[i]) {
+                //                 vac_map.set(elem.trim(), vac_stage[i]);
+                //             }
+                //         });
+                //     } else {
+                //         if (!vac_map.get(vac_country[i]) || vac_map.get(vac_country[i]) < vac_stage[i]) {
+                //             vac_map.set(vac_country[i], vac_stage[i]);
+                //         }
+                //     }
+                // }
+                //
+                // var files = ["/data/map.json", "/data/world-countries.csv"];
+                //
+                // Promise.all(files.map(url => d3.json(url))).then(function (values) {
+                //     world = values[0]
+                //     // console.log("map", values[0])
+                //     names = values[1]
+                //     // console.log(world)
+                //     // console.log("custom", world_continent)
+                //     var globe = {type: "Sphere"},
+                //         land = topojson.feature(world, world.objects.land),
+                //         borders = topojson.mesh(world, world.objects.countries, function (a, b) {
+                //             return a !== b;
+                //         })
+                //     let grid = graticule();
+                //     countries = topojson.feature(world, world.objects.countries).features;
+                //     map.insert("path", ".graticule")
+                //         .datum(land)
+                //         .attr("class", "land")
+                //         .attr("d", path);
+                //
+                //     for (let i = 0; i < Object.values(names).length; i++) {
+                //         for (let j = 0; j < countries.length; j++) {
+                //
+                //             let map_continent;
+                //             if (countries[j].id === Object.values(names)[i].id) {
+                //                 map_continent = Object.values(names)[i].continent_name;
+                //
+                //                 let curr_color = colors.clickable;
+                //                 let curr_stage = -1;
+                //                 if (vac_map.get(Object.values(names)[i].name) !== undefined) {
+                //                     curr_stage = vac_map.get(Object.values(names)[i].name);
+                //                     // console.log(curr_stage);
+                //                     // console.log(Object.values(names)[i].name);
+                //                 }
+                //
+                //                 if (curr_stage === 0) {
+                //                     curr_color = colors.p0;
+                //                 } else if (curr_stage === 1) {
+                //                     curr_color = colors.p1;
+                //                 } else if (curr_stage === 2) {
+                //                     curr_color = colors.p2;
+                //                 } else if (curr_stage === 3) {
+                //                     curr_color = colors.p3;
+                //                 } else if (curr_stage === 4) {
+                //                     curr_color = colors.p4;
+                //                 }
+                //                 // console.log(j, Object.values(names)[i].name);
+                //
+                //
+                //                 map.insert("path", ".graticule")
+                //                     .datum(countries[j])
+                //                     .attr("fill", curr_color)
+                //                     .attr("d", path)
+                //                     .attr("class", "clickable")
+                //                     .attr("data-country-id", j)
+                //                     .attr("continent", map_continent)
+                //                     .attr("countryname", Object.values(names)[i].name)
+                //                     .on("click", function () {
+                //                         needs_update = true;
+                //                         var prev_color = colors.clickable, prev_stage = -1;
+                //                         var temp;
+                //                         world_continents.continent = d3.select(this).attr("continent");
+                //
+                //                         d3.selectAll(".clicked")
+                //                             .classed("clicked", false)
+                //                             .select(function () {
+                //                                 // console.log(this)
+                //                                 // console.log(d3.select(this).attr("countryname"));
+                //                                 temp = vac_map.get(d3.select(this).attr("countryname"));
+                //                                 prev_stage = temp === undefined ? -1 : temp;
+                //
+                //                                 if (prev_stage === 0) {
+                //                                     prev_color = colors.p0;
+                //                                 } else if (prev_stage === 1) {
+                //                                     prev_color = colors.p1;
+                //                                 } else if (prev_stage === 2) {
+                //                                     prev_color = colors.p2;
+                //                                 } else if (prev_stage === 3) {
+                //                                     prev_color = colors.p3;
+                //                                 } else if (prev_stage === 4) {
+                //                                     prev_color = colors.p4;
+                //                                 } else {
+                //                                     prev_color = colors.clickable;
+                //                                 }
+                //                                 d3.select(this).attr("fill", prev_color);
+                //                                 // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+                //                             })
+                //
+                //                         d3.selectAll("path").filter(function (d) {
+                //                             return d3.select(this).attr("continent") === map_continent;
+                //                         })
+                //                             .attr("fill", colors.clicked)
+                //                             .classed("clicked", true);
+                //
+                //
+                //                         (function transition() {
+                //                             d3.select(".clicked").transition()
+                //                                 .duration(1000)
+                //                                 .tween("rotate", function () {
+                //                                     // console.log(ContinentArray[map_continent])
+                //                                     // Assign Continent to Rotate to
+                //                                     var r = d3.interpolate(projection.rotate(), ContinentArray[map_continent])
+                //
+                //                                     return function (t) {
+                //                                         // projection.rotate(r(t)).scale(s(t));
+                //                                         projection.rotate(r(t));
+                //                                         map.selectAll("path").attr("d", path);
+                //                                     }
+                //                                 });
+                //                         })();
+                //                     })
+                //
+                //                     .on("mousemove", function () {
+                //                         var c = d3.select(this);
+                //                         if (c.classed("clicked")) {
+                //                             c.attr("fill", colors.clickhover);
+                //                         } else {
+                //                             // d3.selectAll("path").filter(function (d) {
+                //                             //   console.log(d3.select(this).attr("continent"))
+                //                             //   return d3.select(this).attr("continent") == continent;
+                //
+                //                             // })
+                //                             //   .attr("fill", colors.hover);
+                //                             // && d3.select(this).attr("data-country-id") != countries[j].id;
+                //                             // .classed("clicked", true);
+                //                             c.attr("fill", colors.hover);
+                //                         }
+                //                         // console.log("mouse move", Object.values(names)[i].name);
+                //                     })
+                //
+                //                     .on("mouseout", function () {
+                //                         var c = d3.select(this);
+                //
+                //                         if (c.classed("clicked")) {
+                //                             c.attr("fill", colors.clicked);
+                //                             // d3.selectAll("path").filter(function (d) {
+                //                             //   return d3.select(this).attr("continent") == continent;
+                //                             // })
+                //                             //   .attr("fill", colors.clicked);
+                //                             // console.log("clicked mouse out", Object.values(names)[i].name)
+                //                         } else {
+                //                             // console.log("unclicked mouse out", Object.values(names)[i].name)
+                //                             d3.select(this).attr("fill", curr_color);
+                //                         }
+                //                         // console.log("mouse out");
+                //                     });
+                //             }
+                //         }
+                //     }
+                //
+                //     map.insert("path", ".graticule")
+                //         .datum(borders)
+                //         .attr("class", "boundary")
+                //         .attr("d", path);
+                //
                     // Map Rotation
                     // d3.timer(function () {
                     //     var feature = map.selectAll("path");
@@ -282,7 +282,7 @@ function resize() {
                     //         feature.attr("d", path);
                     //     }
                     // });
-                });
+                // });
             }
         })
     }
@@ -360,11 +360,11 @@ $(document).ready(function () {
         type: "get",
         async: true,
         success: function (response) {
-            var update_date = JSON.parse(response).update_time
+            // var update_date = JSON.parse(response).update_time
             total_rows = JSON.parse(response).total_rows
 
-            d3.select('#update_top').append('span')
-                .text("Latest Update: " + update_date.replace('   ', ' '))
+            // d3.select('#update_top').append('span')
+            //     .text("Latest Update: " + update_date.replace('   ', ' '))
 
             $.ajax({
                 url: "get_vaccine_countries",
@@ -512,7 +512,7 @@ $(document).ready(function () {
                     .attr('id', 'vis2')
                     .attr('viewBox', `0 0 ${svgW} ${svgH}`);
 
-                colorScale = d3.scaleOrdinal()
+                let colorScale = d3.scaleOrdinal()
                     .domain(states)
                     .range(['#c1c8e4', '#84ceeb', '#5ab9ea',
                         '#2b98d2', '#3aafa9']);
@@ -633,7 +633,6 @@ $(document).ready(function () {
                                     $('#company-modal').modal('show');
                                 },
                             });
-                            return false;
                         })
 
                     // Append Flag Image
@@ -683,67 +682,67 @@ $(document).ready(function () {
             },
         });
 
-        /** change map on button click */
+        /** change map on button click -- Hidden */
         // setTimeout(() => {
-        if (world_continents.continent !== continent) {
-            needs_update = false;
-            processing = continent !== 'World';
-            world_continents.continent = continent;
-            var prev_color = colors.clickable, prev_stage = -1;
-
-            if (window.screen.width > 768) {
-                d3.selectAll(".clicked")
-                    .classed("clicked", false)
-                    .select(function () {
-                        // console.log(this)
-                        // console.log(d3.select(this).attr("countryname"));
-                        var temp = vac_map.get(d3.select(this).attr("countryname"));
-                        prev_stage = temp === undefined ? -1 : temp;
-
-                        if (prev_stage === 0) {
-                            prev_color = colors.p0;
-                        } else if (prev_stage === 1) {
-                            prev_color = colors.p1;
-                        } else if (prev_stage === 2) {
-                            prev_color = colors.p2;
-                        } else if (prev_stage === 3) {
-                            prev_color = colors.p3;
-                        } else if (prev_stage === 4) {
-                            prev_color = colors.p4;
-                        } else {
-                            prev_color = colors.clickable;
-                        }
-                        d3.select(this).attr("fill", prev_color);
-                        // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                    })
-
-                d3.selectAll("path").filter(function (d) {
-                    return d3.select(this).attr("continent") === continent;
-                })
-                    .attr("fill", colors.clicked)
-                    .classed("clicked", true);
-
-                // d3.select(this)
-                //   .select(function () {
-                //     d3.select(this).attr("fill", curr_color);
-                //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
-                //   });
-                // .attr("fill", colors.clicked);
-
-                (function transition() {
-                    d3.select(".clicked").transition()
-                        .duration(1000)
-                        .tween("rotate", function () {
-                            var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
-                            return function (t) {
-                                // projection.rotate(r(t)).scale(s(t));
-                                projection.rotate(r(t));
-                                map.selectAll("path").attr("d", path);
-                            }
-                        });
-                })();
-            }
-        }
+        // if (world_continents.continent !== continent) {
+        //     needs_update = false;
+        //     processing = continent !== 'World';
+        //     world_continents.continent = continent;
+        //     var prev_color = colors.clickable, prev_stage = -1;
+        //
+        //     if (window.screen.width > 768) {
+        //         d3.selectAll(".clicked")
+        //             .classed("clicked", false)
+        //             .select(function () {
+        //                 // console.log(this)
+        //                 // console.log(d3.select(this).attr("countryname"));
+        //                 var temp = vac_map.get(d3.select(this).attr("countryname"));
+        //                 prev_stage = temp === undefined ? -1 : temp;
+        //
+        //                 if (prev_stage === 0) {
+        //                     prev_color = colors.p0;
+        //                 } else if (prev_stage === 1) {
+        //                     prev_color = colors.p1;
+        //                 } else if (prev_stage === 2) {
+        //                     prev_color = colors.p2;
+        //                 } else if (prev_stage === 3) {
+        //                     prev_color = colors.p3;
+        //                 } else if (prev_stage === 4) {
+        //                     prev_color = colors.p4;
+        //                 } else {
+        //                     prev_color = colors.clickable;
+        //                 }
+        //                 d3.select(this).attr("fill", prev_color);
+        //                 // console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+        //             })
+        //
+        //         d3.selectAll("path").filter(function (d) {
+        //             return d3.select(this).attr("continent") === continent;
+        //         })
+        //             .attr("fill", colors.clicked)
+        //             .classed("clicked", true);
+        //
+        //         // d3.select(this)
+        //         //   .select(function () {
+        //         //     d3.select(this).attr("fill", curr_color);
+        //         //     console.log("unselected", prev_stage, prev_color, d3.select(this).attr("countryname"));
+        //         //   });
+        //         // .attr("fill", colors.clicked);
+        //
+        //         (function transition() {
+        //             d3.select(".clicked").transition()
+        //                 .duration(1000)
+        //                 .tween("rotate", function () {
+        //                     var r = d3.interpolate(projection.rotate(), ContinentArray[continent])
+        //                     return function (t) {
+        //                         // projection.rotate(r(t)).scale(s(t));
+        //                         projection.rotate(r(t));
+        //                         map.selectAll("path").attr("d", path);
+        //                     }
+        //                 });
+        //         })();
+        //     }
+        // }
     });
 
     // Mobile - Show Active Dropdown Item when Dropdown is clicked
@@ -814,10 +813,15 @@ var j_tester = -1; // placeholder for previous section scrolled through
 let box = document.querySelector('div#scroll-menu');
 let box_width = box.clientWidth;
 
-$(window).scroll(function () {
+$('#developer-show-more').on("click", function () {
+    console.log(total_rows)
+    if (mobile_count * (limit + 1) >= total_rows) {
+        d3.select("#developer-show-more")
+            .style("display", "none");
+    }
     if (window.screen.width <= 768) {
-        if ($(window).scrollTop() + $(window).height() >=
-            $(document).height() - $('.page-footer').height() - 150) {
+        // if ($(window).scrollTop() + $(window).height() >=
+        //     $(document).height() - $('.page-footer').height() - 150) {
             if (mobile_count < (total_rows / limit) && prev_mobile_count !== mobile_count) {
                 $.ajax({
                     url: '/mobile-card',
@@ -844,10 +848,10 @@ $(window).scroll(function () {
                 });
                 prev_mobile_count = mobile_count;
             }
-        }
+        // }
     } else {
-        if ($(window).scrollTop() + $(window).height() >=
-            $(document).height() - $('.page-footer').height()) {
+        // if ($(window).scrollTop() + $(window).height() >=
+        //     $(document).height() - $('.page-footer').height()) {
             if (count < (total_rows / limit) && prev_count !== count) {
                 $.ajax({
                     url: '/card',
@@ -880,8 +884,79 @@ $(window).scroll(function () {
                 prev_count = count
             }
 
-        }
+        // }
     }
+})
+
+$(window).scroll(function () {
+    // if (window.screen.width <= 768) {
+    //     if ($(window).scrollTop() + $(window).height() >=
+    //         $(document).height() - $('.page-footer').height() - 150) {
+    //         if (mobile_count < (total_rows / limit) && prev_mobile_count !== mobile_count) {
+    //             $.ajax({
+    //                 url: '/mobile-card',
+    //                 type: 'GET',
+    //                 data: {
+    //                     'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
+    //                     'mobile_count': mobile_count, 'limit': limit
+    //                 },
+    //                 beforeSend: function () {
+    //                     // show spinner when loading
+    //                     $('#spinner-2').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+    //                 },
+    //                 complete: function () {
+    //                     // hide the spinner
+    //                     $('#spinner-2').html("");
+    //                 },
+    //                 success: function (response) {
+    //                     if (response !== prev_response_mobile) {
+    //                         $('#mobile_container').append(response);
+    //                         mobile_count = mobile_count + 1;
+    //                     }
+    //                     prev_response_mobile = response;
+    //                 }
+    //             });
+    //             prev_mobile_count = mobile_count;
+    //         }
+    //     }
+    // } else {
+    //     if ($(window).scrollTop() + $(window).height() >=
+    //         $(document).height() - $('.page-footer').height()) {
+    //         if (count < (total_rows / limit) && prev_count !== count) {
+    //             $.ajax({
+    //                 url: '/card',
+    //                 type: 'get',
+    //                 data: {
+    //                     'desktop_stage': desktop_stage,
+    //                     'desktop_country': desktop_country,
+    //                     'desktop_type': desktop_type,
+    //                     'count': count,
+    //                     'limit': limit
+    //                 },
+    //                 beforeSend: function () {
+    //                     // show spinner when loading
+    //                     $('#spinner-2').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+    //                 },
+    //                 complete: function () {
+    //                     // hide the spinner
+    //                     $('#spinner-2').html("");
+    //                 },
+    //                 success: function (response) {
+    //                     if (response !== prev_response) {
+    //                         var info = document.createElement('div');
+    //                         info.innerHTML = response;
+    //                         $('#card_container').append(info);
+    //                         count = count + 1;
+    //                     }
+    //                     prev_response = response;
+    //                 }
+    //             });
+    //             prev_count = count
+    //         }
+    //
+    //     }
+    // }
+
     // if (world_continents.continent === 'World'){
     //     // When Map Outside of Window, stop map spinning
     //     processing = $(window).scrollTop() > $(window).height();
@@ -909,8 +984,8 @@ $(window).scroll(function () {
                             }
                         }
 
-                        $('nav a.active').removeClass('active');
-                        $('nav a').eq(prev_i).addClass('active');
+                        $('nav a[data-scroll].active').removeClass('active');
+                        $('nav a[data-scroll]').eq(prev_i).addClass('active');
 
                         j_tester = prev_i;
                     }
@@ -921,8 +996,8 @@ $(window).scroll(function () {
 
     } else {
         // $('nav').removeClass('fixed');
-        $('nav a.active').removeClass('active');
-        $('nav a:first').addClass('active');
+        $('nav a[data-scroll].active').removeClass('active');
+        $('nav a[data-scroll]:first').addClass('active');
     }
 
 
@@ -940,7 +1015,7 @@ $(window).scroll(function () {
 });
 
 
-$('nav a').on('click', function() {
+$('nav a[data-scroll]').on('click', function() {
 
     var scrollAnchor = $(this).attr('data-scroll'),
         scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 55;
@@ -1101,6 +1176,17 @@ $(".submit-mobile-form").click(function () {
         },
         success: function (response) {
             $('.initial-cards').remove();
+            let startIndex = response.indexOf("<!--Total Rows: ") + "<!--Total Rows: ".length;
+            let endIndex = response.indexOf("-->");
+            total_rows = parseInt(response.substring(startIndex, endIndex))
+            if (total_rows > limit) {
+                d3.select("#developer-show-more")
+                    .style("display", "inline-block")
+            }
+            else {
+                d3.select("#developer-show-more")
+                    .style("display", "none")
+            }
             // $('#card_container').remove();
             document.getElementById('mobile_container').innerHTML = response;
             mobile_count = 1;
@@ -1240,24 +1326,16 @@ $('.clear-filter').click(function () {
     var dropdown_title_type = document.getElementById('dropdown-desktop-type')
     dropdown_title_type.innerHTML = "Vaccine Platform ";
 
-    // document.addEventListener("DOMContentLoaded", function () {
+    d3.select("#developer-show-more")
+        .style("display", "inline-block");
+
     document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
-    // });
 })
 
 $('.desktop-dropdown').on("click", function () {
-    desktopClick()
-    // return false;
+    desktopClick();
 })
 
-$('.clear-filter').click(function () {
-    var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
-    dropdown_title_stage.innerHTML = "Vaccine Stage ";
-    var dropdown_title_country = document.getElementById('dropdown-desktop-country')
-    dropdown_title_country.innerHTML = "Country / Region ";
-    var dropdown_title_type = document.getElementById('dropdown-desktop-type')
-    dropdown_title_type.innerHTML = "Vaccine Platform ";
-})
 
 function desktopClick(){
     $('#dropdown-desktop-stage').dropdown('hide');
@@ -1286,6 +1364,17 @@ function desktopClick(){
         },
         success: function (response) {
             $('.initial-cards').remove();
+            let startIndex = response.indexOf("<!--Total Rows: ") + "<!--Total Rows: ".length;
+            let endIndex = response.indexOf("-->");
+            total_rows = parseInt(response.substring(startIndex, endIndex))
+            if (total_rows > limit) {
+                d3.select("#developer-show-more")
+                    .style("display", "inline-block")
+            }
+            else {
+                d3.select("#developer-show-more")
+                    .style("display", "none")
+            }
             // $('#mobile_container').remove();
             document.getElementById('card_container').innerHTML = response;
             count = 1;

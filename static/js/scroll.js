@@ -28,8 +28,8 @@ $(window).scroll(function () {
                             }
                         }
 
-                        $('nav a.active').removeClass('active');
-                        $('nav a').eq(prev_i).addClass('active');
+                        $('nav a[data-scroll].active').removeClass('active');
+                        $('nav a[data-scroll]').eq(prev_i).addClass('active');
 
                         j_tester = prev_i;
                     }
@@ -40,8 +40,8 @@ $(window).scroll(function () {
 
     } else {
         // $('nav').removeClass('fixed');
-        $('nav a.active').removeClass('active');
-        $('nav a:first').addClass('active');
+        $('nav a[data-scroll].active').removeClass('active');
+        $('nav a[data-scroll]:first').addClass('active');
     }
 
 
@@ -57,7 +57,7 @@ $(window).scroll(function () {
     //     }, 500);
     // }
 });
-$('nav a').on('click', function() {
+$('nav a[data-scroll]').on('click', function() {
 
     var scrollAnchor = $(this).attr('data-scroll'),
         scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 55;

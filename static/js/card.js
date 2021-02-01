@@ -1,4 +1,4 @@
-class myCard extends HTMLElement {
+class developerCard extends HTMLElement {
     connectedCallback() {
         const shadow = this.attachShadow({mode: 'open'});
 
@@ -165,16 +165,18 @@ class myCard extends HTMLElement {
 
         if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-approved-countries') !== 'None' && this.getAttribute('data-approved-countries') !== '') {
             var approved_countries = document.createElement('p');
+            var approved_countries_count = this.getAttribute('data-approved-countries').replace(", ", ",").split(",").length
             approved_countries.setAttribute('class', 'approved-countries');
-            approved_countries.innerHTML = "<span class='highlight-warp-speed' id='pbar5' style='color: white; margin: 0;'><i class=\"fas fa-check-circle\"></i> Approved Countries</span>&nbsp;" + this.getAttribute('data-approved-countries');
+            approved_countries.innerHTML = "<span class='highlight-warp-speed' id='pbar5' style='color: white; margin: 0;'><i class=\"fas fa-check-circle\"></i> Approved Countries</span>&nbsp;" + "(" + approved_countries_count + ") <b>" + this.getAttribute('data-approved-countries') + "</b>";
             wrapper.appendChild(approved_countries);
             // displayButton = true;
         }
 
         if (this.getAttribute('data-early') === 'True' && this.getAttribute('data-limited-countries') !== 'None' && this.getAttribute('data-limited-countries') !== '') {
             var limited_countries = document.createElement('p');
+            var limited_countries_count = this.getAttribute('data-limited-countries').replace(", ", ",").split(",").length
             limited_countries.setAttribute('class', 'approved-countries');
-            limited_countries.innerHTML = "<span class='highlight-warp-speed' id='early' style='color: white; margin: 0;'><i class=\"far fa-check-circle\"></i> Limited Use Countries</span>&nbsp;" + this.getAttribute('data-limited-countries');
+            limited_countries.innerHTML = "<span class='highlight-warp-speed' id='early' style='color: white; margin: 0;'><i class=\"far fa-check-circle\"></i> Limited Use Countries</span>&nbsp;" + "(" + limited_countries_count + ") <b>" + this.getAttribute('data-limited-countries') + "</b>";
             wrapper.appendChild(limited_countries);
             // displayButton = true;
         }
@@ -337,7 +339,7 @@ class myCard extends HTMLElement {
     }
 
 }
-customElements.define('my-card', myCard);
+customElements.define('my-card', developerCard);
 
 
 // class instDetail extends HTMLElement extends HTMLUListElement{
