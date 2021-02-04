@@ -1551,6 +1551,10 @@ nav.nav-top {
     border: 0;
 }
 
+.local-vaccination-table-head {
+    font-size: 1rem;
+}
+
 .dropdown-item-0-1.active, .dropdown-item-0-1:active {
     color: #fff;
     background-color: rgb(136, 8, 8);
@@ -1879,12 +1883,12 @@ h1.title {
 .news-company {
     font-weight: 400;
     color: #023cae;
-    text-decoration: underline;
 }
 
 .news-company:hover {
     cursor: pointer;
-    color: #051058;
+    text-decoration: underline;
+    /*color: #051058;*/
 }
 
 /*.news-company:visited{*/
@@ -2599,4 +2603,13 @@ p.note {
     opacity: 0.7;
 }
 
+
+.text-with-tooltip, .anchor-text {
+    font-weight: bold;
+    color: #0a87ac;
+}
+
+.anchor-text:hover {
+    color: #23a2c8;
+}
 

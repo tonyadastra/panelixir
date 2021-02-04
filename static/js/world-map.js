@@ -47,27 +47,30 @@
                 }
             }
         })
-
+         // WorldVaccinationData.forEach(function (vaccination_data) {
+         //
+         // })
         // add world vaccination data to json
         WorldVaccinationData.forEach(function (vaccination_data) {
+            if (vaccination_data.vaccinations !== 0) {
+                 var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
+                 table_distribution.push([
+                     [vaccination_data.country, vaccination_data.date],
+                     [vaccination_data.new_vaccinations, vaccination_data.vaccinations],
+                     [new_vaccinations_per_hundred, vaccination_data.vaccinations_per_hundred.toFixed(2)]
+                 ]);
+                 graph_top_vaccinations.push({
+                     "country": vaccination_data.country,
+                     "vaccinations": vaccination_data.vaccinations,
+                     "new_vaccinations_per_hundred": new_vaccinations_per_hundred,
+                     "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
+                     "date": vaccination_data.date
+                 })
+             }
             countries.forEach(function (d) {
                 if (d.name === vaccination_data.country) {
                     d['vaccinations'] = vaccination_data;
-                    if (vaccination_data.vaccinations !== 0) {
-                        var new_vaccinations_per_hundred = (vaccination_data.new_vaccinations / vaccination_data.population) * 100;
-                        table_distribution.push([
-                            [d.name, vaccination_data.date],
-                            [vaccination_data.new_vaccinations, vaccination_data.vaccinations],
-                            [new_vaccinations_per_hundred, vaccination_data.vaccinations_per_hundred.toFixed(2)]
-                        ]);
-                        graph_top_vaccinations.push({
-                            "country": d.name,
-                            "vaccinations": vaccination_data.vaccinations,
-                            "new_vaccinations_per_hundred": new_vaccinations_per_hundred,
-                            "vaccinations_per_hundred": vaccination_data.vaccinations_per_hundred,
-                            "date": vaccination_data.date
-                        })
-                    }
+
                 }
                 if (d.name === "United States" && (vaccination_data.country === "Northern Mariana Islands" || vaccination_data.country === "Virgin Islands, U.S." || vaccination_data.country === "Guam" || vaccination_data.country === "Guam" || vaccination_data.country === "Puerto Rico")) {
                     d['vaccinations'] = vaccination_data;
