@@ -360,26 +360,30 @@ span.highlight-warp-speed {
 
 }
 
-.intro > a {
-  margin: 0;
-}
-.intro > b {
-  margin: 0;
-}
-.intro > i {
-  margin: 0;
-}
-.intro > span {
-  margin: 0;
-}
-.intro > ul {
-  margin: 0;
-}
-.intro > li {
+.approved-countries span, .approved-countries b {
   margin: 0;
 }
 
-.info-tag > b {
+.intro a {
+  margin: 0;
+}
+.intro b {
+  margin: 0;
+}
+.intro i {
+  margin: 0;
+}
+.intro span {
+  margin: 0;
+}
+.intro ul {
+  margin: 0;
+}
+.intro li {
+  margin: 0;
+}
+
+.info-tag b {
   margin: 0;
 }
 
@@ -387,7 +391,7 @@ span.highlight-warp-speed {
   margin: 0;
 }
 
-.highlight-warp-speed > i{
+.highlight-warp-speed i{
   margin: 0;
 }
 
@@ -396,9 +400,6 @@ span.highlight-warp-speed {
   color: #0b58de;
 }
 
-.approved-countries > b {
-  margin: 0;
-}
 
 .approved-countries {
   /*color: #74139d;*/

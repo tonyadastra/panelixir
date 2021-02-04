@@ -8,6 +8,7 @@
 
 
 ## **Recent Updates**
++ February 3 - Fetch Another Set of Bay Area News, fix small countries not displaying on world map table, county vaccination table reorganize, replace 'a' with personalized anchor text; other styling optimizations
 + January 31 - Rearrange Bay Area News / Getting Vaccinated; Optimize Nav Menus; Optimize Vaccine Database developer display and optimize colors; other styling updates
 + January 27 - New Tag for Bay Area Section; Enable sorting in World & US Maps; Styling optimizations (+ Simplify People and Stories image path)
 + January 26 - New Data for US Map Table (Administered 1, Administered 2, Supply Used); County Table (Supply Used); other optimizations

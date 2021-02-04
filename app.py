@@ -303,7 +303,8 @@ def getSFBayAreaVaccination():
     session_submit = False
     cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
-                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, total_cases, population "
+                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, total_cases, population, "
+                "administered_1, administered_2 "
                 "FROM local_vaccinations "
                 "ORDER BY CASE WHEN county = 'San Mateo' THEN county END")
     local_data = cur.fetchall()
@@ -320,8 +321,19 @@ def getSFBayAreaVaccination():
 
     return render_template("san-francisco-bay-area-info.html", local_data=local_data, local_news=local_news,
                            session_submit=session_submit)
-    # else:
-    #     return render_template("san-francisco-bay-area-info.html", local_data=local_data, local_news=local_news)
+
+
+@app.route("/get-bay-area-news")
+def getBayAreaNews():
+    limit = int(request.args.get('limit'))
+    count = int(request.args.get('count'))
+    cur.execute('''SELECT title, content, url, image_url, source, author, tag
+               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC 
+               OFFSET %s ROWS FETCH FIRST %s ROW ONLY''',
+                (str(count * limit), str(limit)))
+    local_news = cur.fetchall()
+    cur.execute("rollback")
+    return render_template("bay-area-news.html", local_news=local_news)
 
 
 @app.route("/get-entertainment")

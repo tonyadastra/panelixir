@@ -9,10 +9,6 @@ section#vaccine-distribution .source {
     color: #7a7a7a;
 }
 
-.text-with-tooltip {
-    font-weight: bold;
-    color: #0a87ac;
-}
 
 .us-map {
     position: relative;
@@ -80,6 +76,7 @@ span.highlight-vaccinations {
 .vaccinations-title {
     font-size: 110%;
 }
+
 
 .world-map-graph-button.active {
     background-color: #98aaf1;

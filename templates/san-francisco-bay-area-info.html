@@ -25,6 +25,33 @@
     <script rel="text/javascript" src="../static/js/card.js"></script>
     <script src="../static/js/scroll.js"></script>
 
+    <script type="text/javascript">
+    let bayAreaNewsCount = 0;
+    let bayAreaNewsLimit = 10;
+    $('#fetch-new-set-news').on("click", function () {
+        bayAreaNewsCount++;
+        $.ajax({
+            url: "/get-bay-area-news",
+            data: {
+                'count': bayAreaNewsCount, 'limit': bayAreaNewsLimit
+            },
+            type: "GET",
+            beforeSend: function() {
+                // show the preloader (progress bar)
+                $('#loading-progress-bar').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+            },
+            complete: function () {
+                // hide the preloader (progress bar)
+                $('#loading-progress-bar').html("");
+            },
+            success: function (response) {
+                // $('#card_container').remove();
+                document.getElementById('bay-area-news').innerHTML = response;
+            },
+        });
+    })
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -52,7 +79,9 @@
             <a class="style-a" href="/about-us">About Us</a>
         </div>
     </div>
+    <div id="loading-progress-bar"></div>
 </nav>
+
 
 {% if session_submit == true %}
     <div class="alert alert-success successful-submission-alert" role="alert">
@@ -69,12 +98,12 @@
 
 <section data-anchor="county-news">
     <h2 id="news-title">Bay Area and Vaccination News</h2>
-    {% for news in local_news %}
-        <local-news local-title="{{news[0]}}" local-content="{{news[1]}}" local-url="{{news[2]}}"
-                     local-img="{{news[3]}}" local-source="{{news[4]}}" local-author="{{news[5]}}"
-                    local-tag="{{news[6]}}">
-        </local-news>
-    {% endfor %}
+    <div id="bay-area-news">
+        {% include 'bay-area-news.html' %}
+    </div>
+    <div class="text-center">
+        <button class="btn btn-outline-primary" id="fetch-new-set-news">Fetch Another Set of News</button>
+    </div>
 </section>
 
 <section data-anchor="county-vaccination">
@@ -85,7 +114,7 @@
             <local-vaccinations vac-county="{{data[0]}}" vac-area="{{data[1]}}" vac-phase="{{data[2]}}" vac-info-website="{{data[3]}}"
             vac-appointment-website="{{data[4]}}" vac-administered="{{data[5]}}" vac-distributed="{{data[6]}}" vac-eligibility="{{data[7]}}"
             vac-body="{{data[8]}}" vac-additional-info="{{data[9]}}" vac-date="{{data[10]}}" vac-notification="{{data[11]}}"
-            total-cases="{{data[12]}}" population="{{data[13]}}"></local-vaccinations>
+            total-cases="{{data[12]}}" population="{{data[13]}}" vac-administered-1="{{data[14]}}" vac-administered-2="{{data[15]}}"></local-vaccinations>
         {% endfor %}
 
         <p class="note">Information for more counties will be available soon.</p>
