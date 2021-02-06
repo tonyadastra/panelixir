@@ -1,7 +1,7 @@
 .institutions {
   width: 70%;
   margin-left: 15%;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .wrapper {
@@ -10,6 +10,13 @@
   /*background-color: #ebf6f3;*/
   box-shadow: 4px 7px #eeeded;
   padding-bottom: 2rem;
+  /*transform: translateY(100px);*/
+  /*animation: come-in 1s ease forwards;*/
+}
+
+
+@keyframes come-in {
+  to { transform: translateY(0);opacity: 1; }
 }
 
 .wrapper * {
@@ -125,13 +132,7 @@ span.highlight-warp-speed {
   color: #7a7a7a;
 }
 
-.source {
-  font-family: Kefa, sans-serif;
-  margin-left: 0.5rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: #c660f1;
-}
+
 
 @media screen and (max-width: 767px) {
   .img_wrapper {
@@ -146,8 +147,7 @@ span.highlight-warp-speed {
   .institutions {
     /* position: absolute; */
     width: 100% !important;
-    margin: 1rem 0 0.5rem 0 !important;
-    /*margin-top: 30px;*/
+    margin: 2rem 0 0.5rem !important;
   }
 
   .wrapper {
@@ -435,3 +435,4 @@ span.highlight-warp-speed {
 /*[data-tooltip]:not([data-tooltip-persistent]):before {*/
 /*    pointer-events: none;*/
 /*}*/
+

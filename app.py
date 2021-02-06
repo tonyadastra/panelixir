@@ -117,13 +117,22 @@ def index():
     cur.execute("rollback")
 
     cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "
+                # "WHERE category = 'H' "
+                "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
+                "CASE WHEN tag='New' THEN tag END, "
+                "date DESC LIMIT 1")
+    top_headlines = cur.fetchall()
+    cur.execute("rollback")
+
+    cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "
                 "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
                 "CASE WHEN tag='New' THEN tag END, "
                 "date DESC")
     stories = cur.fetchall()
     cur.execute("rollback")
 
-    return render_template("index.html", data=data, news_data=news_data, general_news=general_news, stories=stories)
+    return render_template("index.html", data=data, news_data=news_data, top_headlines=top_headlines,
+                           general_news=general_news, stories=stories)
 
 
 @app.route("/desktop-form", methods=['GET'])
@@ -182,7 +191,8 @@ def card():
         " AND (vac_type LIKE '%" + desktop_type + "%') "
         "" + filter_limit + " "
         " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
-        " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+        # " OFFSET " + str(count * limit) + " ROWS"
+        " FETCH FIRST " + str((count + 1) * limit) + " ROWS ONLY")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -248,7 +258,8 @@ def mobileAppendCards():
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
         " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company"
-        " OFFSET " + str(count * limit) + " ROWS FETCH FIRST " + str(limit) + " ROW ONLY")
+        # " OFFSET " + str(count * limit) + " ROWS"
+        " FETCH FIRST " + str((count + 1) * limit) + " ROWS ONLY")
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -311,7 +322,7 @@ def getSFBayAreaVaccination():
     cur.execute("rollback")
 
     cur.execute('''SELECT title, content, url, image_url, source, author, tag
-               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC LIMIT 10''')
+               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC LIMIT 15''')
     local_news = cur.fetchall()
     cur.execute("rollback")
 

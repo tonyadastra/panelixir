@@ -814,21 +814,26 @@ let box = document.querySelector('div#scroll-menu');
 let box_width = box.clientWidth;
 
 $('#developer-show-more').on("click", function () {
-    console.log(total_rows)
+    const scriptAOS = "<script>AOS.init({ duration: 1000, offset: -50,})</script>";
+    // console.log(total_rows)
     if (mobile_count * (limit + 1) >= total_rows) {
         d3.select("#developer-show-more")
             .style("display", "none");
     }
+    $('[data-aos=slide-up]').removeAttr("data-aos").removeClass('aos-init').removeClass('aos-animate');
     if (window.screen.width <= 768) {
         // if ($(window).scrollTop() + $(window).height() >=
         //     $(document).height() - $('.page-footer').height() - 150) {
-            if (mobile_count < (total_rows / limit) && prev_mobile_count !== mobile_count) {
+            if (mobile_count < (total_rows / limit)) {
                 $.ajax({
                     url: '/mobile-card',
                     type: 'GET',
                     data: {
-                        'mobile_stage': mobile_stage, 'mobile_country': mobile_country, 'mobile_type': mobile_type,
-                        'mobile_count': mobile_count, 'limit': limit
+                        'mobile_stage': mobile_stage,
+                        'mobile_country': mobile_country,
+                        'mobile_type': mobile_type,
+                        'mobile_count': mobile_count,
+                        'limit': limit
                     },
                     beforeSend: function () {
                         // show spinner when loading
@@ -840,19 +845,20 @@ $('#developer-show-more').on("click", function () {
                     },
                     success: function (response) {
                         if (response !== prev_response_mobile) {
-                            $('#mobile_container').append(response);
-                            mobile_count = mobile_count + 1;
+                            document.getElementById('card_container').innerHTML = response;
+                            // $('#mobile_container').append(response);
+                            mobile_count++;
                         }
                         prev_response_mobile = response;
                     }
                 });
-                prev_mobile_count = mobile_count;
+                // prev_mobile_count = mobile_count;
             }
         // }
     } else {
         // if ($(window).scrollTop() + $(window).height() >=
         //     $(document).height() - $('.page-footer').height()) {
-            if (count < (total_rows / limit) && prev_count !== count) {
+            if (count < (total_rows / limit)) {
                 $.ajax({
                     url: '/card',
                     type: 'get',
@@ -866,22 +872,51 @@ $('#developer-show-more').on("click", function () {
                     beforeSend: function () {
                         // show spinner when loading
                         $('#spinner-2').html("<div class='spinner-grow text-success' id='elixir' role='status'><span class='sr-only'>Loading</span></div>");
+
                     },
                     complete: function () {
                         // hide the spinner
                         $('#spinner-2').html("");
                     },
                     success: function (response) {
-                        if (response !== prev_response) {
-                            var info = document.createElement('div');
-                            info.innerHTML = response;
-                            $('#card_container').append(info);
-                            count = count + 1;
-                        }
+                        $('.initial-cards').remove();
+                        // console.log(response)
+                        // if (response !== prev_response) {
+                        //     let new_card_div = document.createElement('div');
+                        //     new_card_div.innerHTML = response + scriptAOS;
+                            // let new_cards = "<div>" + response + "</div>";
+                                // + scriptAOS + "</div>";
+                            // document.getElementById('card_container').appendChild(new_card_div);
+                        // let existingContent = document.getElementById('card_container').innerHTML;
+                        // document.getElementById('card_container').innerHTML = "";
+                        /**
+                         // DOESNT WORK: response = last 10 cards, innerHTML += response
+                           ISSUE: recreate DOM causing duplicate calls to existing cards
+
+                         // WORKS: create node for response; response = last 10 cards, appendChild([node])
+                            ISSUE: AOS incompatible - not initialized
+                         */
+
+                        /**
+                         // CURRENT VERSION: response = all existing cards, innerHTML = response
+                            WORKS FOR BOTH
+                            ISSUE: New Cards may not fit to the right position
+                         */
+                        document.getElementById('card_container').innerHTML = response;
+
+                            // document.getElementById('card_container').innerHTML += response;
+
+                            // var info = document.createElement('div');
+                            // info.innerHTML = response;
+                            // $('#card_container').append(info + "<script>AOS.init({\n" +
+                            //     "            duration: 1000,\n" +
+                            //     "        })</script>");
+                            count++;
+                        // }
                         prev_response = response;
                     }
                 });
-                prev_count = count
+                // prev_count = count
             }
 
         // }
@@ -1151,11 +1186,13 @@ $('.btn-clear').click(function () {
 
 
     // document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
 })
 
 // AJAX Request for submitting mobile form
 $(".submit-mobile-form").click(function () {
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
+
     mobile_stage = document.querySelector('.active.btn-mobile-stage#stages').value;
     mobile_country = document.querySelector('.active.mobile-dropdown-item-ctry#country').value;
     mobile_type = document.querySelector('.active.btn-mobile-type#type').value;
@@ -1168,14 +1205,14 @@ $(".submit-mobile-form").click(function () {
         type: "GET",
         beforeSend: function() {
             // show the preloader (progress bar)
-            $('#TagIWantToLoadTo').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+            $('#preloader').html("<div class='load-progress'><div class='indeterminate'></div></div>");
         },
         complete: function () {
             // hide the preloader (progress bar)
-            $('#TagIWantToLoadTo').html("");
+            $('#preloader').html("");
         },
         success: function (response) {
-            $('.initial-cards').remove();
+            // $('.initial-cards').remove();
             let startIndex = response.indexOf("<!--Total Rows: ") + "<!--Total Rows: ".length;
             let endIndex = response.indexOf("-->");
             total_rows = parseInt(response.substring(startIndex, endIndex))
@@ -1188,7 +1225,7 @@ $(".submit-mobile-form").click(function () {
                     .style("display", "none")
             }
             // $('#card_container').remove();
-            document.getElementById('mobile_container').innerHTML = response;
+            document.getElementById('card_container').innerHTML = response;
             mobile_count = 1;
         },
     });
@@ -1264,7 +1301,7 @@ $('.dropdown-item-stages').click(function () {
     }
     var dropdown_title_stage = document.getElementById('dropdown-desktop-stage')
     dropdown_title_stage.innerHTML = active_stage;
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
 })
 
 $('.dropdown-item-ctry').click(function () {
@@ -1276,7 +1313,7 @@ $('.dropdown-item-ctry').click(function () {
     // }
     // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     // dropdown_title_country.innerHTML = active_country;
-    // document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    // document.getElementById('FilterMenuTop').scrollIntoView(true);
 })
 
 $('.dropdown-item-type').click(function () {
@@ -1307,7 +1344,7 @@ $('.dropdown-item-type').click(function () {
 
     var dropdown_title_type = document.getElementById('dropdown-desktop-type')
     dropdown_title_type.innerHTML = active_type;
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
 })
 
 $('.clear-filter').click(function () {
@@ -1329,7 +1366,7 @@ $('.clear-filter').click(function () {
     d3.select("#developer-show-more")
         .style("display", "inline-block");
 
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
 })
 
 $('.desktop-dropdown').on("click", function () {
@@ -1338,6 +1375,8 @@ $('.desktop-dropdown').on("click", function () {
 
 
 function desktopClick(){
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
+
     $('#dropdown-desktop-stage').dropdown('hide');
     $('#dropdown-desktop-country').dropdown('hide');
     $('#dropdown-desktop-type').dropdown('hide');
@@ -1355,12 +1394,12 @@ function desktopClick(){
         type: "GET",
         beforeSend: function () {
             // show the preloader (progress bar)
-            $('#TagIWantToLoadTo').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+            $('#preloader').html("<div class='load-progress'><div class='indeterminate'></div></div>");
             // setTimeout(() => {}, 2000);
         },
         complete: function () {
             // hide the preloader (progress bar)
-            $('#TagIWantToLoadTo').html("");
+            $('#preloader').html("");
         },
         success: function (response) {
             $('.initial-cards').remove();
@@ -1387,7 +1426,7 @@ function desktopClick(){
     // }
     // var dropdown_title_country = document.getElementById('dropdown-desktop-country')
     // dropdown_title_country.innerHTML = active_country;
-    document.getElementById('TagIWantToLoadTo').scrollIntoView(true);
+    document.getElementById('FilterMenuTop').scrollIntoView(true);
 }
 $(".desktop-dropdown.dropdown-item-ctry").click(function () {
     setDesktopCountryTitle();
@@ -1451,8 +1490,17 @@ $('.top-news-close').click(function () {
 })
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 })
+
+
+
+$(function() {
+    AOS.init({
+        duration: 1000,
+        offset: -50,
+    })
+});
 
 
 // $(function() {
