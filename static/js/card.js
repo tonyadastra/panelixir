@@ -1,31 +1,40 @@
 class developerCard extends HTMLElement {
-    connectedCallback() {
-        const shadow = this.attachShadow({mode: 'open'});
+    constructor() {
+        super();
+        // const shadow = this.attachShadow({mode: 'open'});
+        //
+        // const linkElem1 = document.createElement('link');
+        // linkElem1.setAttribute('rel', 'stylesheet');
+        // linkElem1.setAttribute('href', '../static/css/card.css');
+        // shadow.appendChild(linkElem1);
+        //
+        // const linkElem2 = document.createElement('link');
+        // linkElem2.setAttribute('rel', 'stylesheet');
+        // linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        // shadow.appendChild(linkElem2);
+        //
+        // const linkElem3 = document.createElement('link');
+        // linkElem3.setAttribute('rel', 'stylesheet');
+        // linkElem3.setAttribute('href', '../static/css/all.css');
+        // shadow.appendChild(linkElem3);
+        //
+        // const linkElem4 = document.createElement('link');
+        // linkElem4.setAttribute('rel', 'stylesheet');
+        // linkElem4.setAttribute('href', '../static/css/style.css');
+        // shadow.appendChild(linkElem4);
+        //
+        // const linkElem5 = document.createElement('link');
+        // linkElem5.setAttribute('rel', 'stylesheet');
+        // linkElem5.setAttribute('href', '../static/css/aos.css');
+        // shadow.appendChild(linkElem5);
+        // console.log(this)
+        function noneCheck(attr) {
+            return (attr !== undefined && attr !== 'None' && attr !== '');
+        }
 
-        // link css
-        const linkElem1 = document.createElement('link');
-        linkElem1.setAttribute('rel', 'stylesheet');
-        linkElem1.setAttribute('href', '../static/css/card.css');
-        shadow.appendChild(linkElem1);
-
-        const linkElem2 = document.createElement('link');
-        linkElem2.setAttribute('rel', 'stylesheet');
-        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-        shadow.appendChild(linkElem2);
-
-        const linkElem3 = document.createElement('link');
-        linkElem3.setAttribute('rel', 'stylesheet');
-        linkElem3.setAttribute('href', '../static/css/all.css');
-        shadow.appendChild(linkElem3);
-
-        const linkElem4 = document.createElement('link');
-        linkElem4.setAttribute('rel', 'stylesheet');
-        linkElem4.setAttribute('href', '../static/css/style.css');
-        shadow.appendChild(linkElem4);
-
-        // the outer most div
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
+        wrapper.setAttribute('data-aos', 'slide-up');
 
         // tag wrapper
         var tag_wrapper = document.createElement('div');
@@ -33,7 +42,7 @@ class developerCard extends HTMLElement {
 
         // country tag
         // #e37222'
-        if (this.getAttribute('data-country') !== '') {
+        if (noneCheck(this.getAttribute('data-country'))) {
             var countryArr = this.getAttribute('data-country').split(',')
             if (window.screen.width >= 768) {
                 countryArr = countryArr.reverse()
@@ -49,7 +58,7 @@ class developerCard extends HTMLElement {
         }
 
 
-        if (this.getAttribute('data-vactype') !== '') {
+        if (noneCheck(this.getAttribute('data-vactype'))) {
             // vaccine type tag
             var vac_tag = document.createElement('span');
             vac_tag.setAttribute('class', 'vac_tag');
@@ -66,7 +75,7 @@ class developerCard extends HTMLElement {
 
         // logo image
         // Note: typeof data-img is string, not array (despite having brackets)
-        if (this.getAttribute('data-img') !== '[]' && this.getAttribute('data-img') !== 'None') {
+        if (this.getAttribute('data-img') !== '[]' && noneCheck(this.getAttribute('data-vactype'))) {
             const imgUrlArr = this.getAttribute('data-img').split(',')
             imgUrlArr.forEach((imgUrl) => {
                 imgUrl = imgUrl.replace(/\s|\'|\]|\[/g, '');
@@ -80,7 +89,7 @@ class developerCard extends HTMLElement {
         } else {
             img_wrapper.setAttribute('style', 'height: 70px;');
         }
-        wrapper.appendChild(img_wrapper)
+        wrapper.appendChild(img_wrapper);
 
 
         // progress bar
@@ -168,7 +177,7 @@ class developerCard extends HTMLElement {
 
         var displayButton = Boolean(false);
 
-        if (this.getAttribute('data-stage') == 4 && this.getAttribute('data-approved-countries') !== 'None' && this.getAttribute('data-approved-countries') !== '') {
+        if (this.getAttribute('data-stage') == 4 && noneCheck(this.getAttribute('data-approved-countries'))) {
             var approved_countries = document.createElement('p');
             var approved_countries_count = this.getAttribute('data-approved-countries').replace(", ", ",").split(",").length
             approved_countries.setAttribute('class', 'approved-countries');
@@ -177,7 +186,7 @@ class developerCard extends HTMLElement {
             // displayButton = true;
         }
 
-        if (this.getAttribute('data-early') === 'True' && this.getAttribute('data-limited-countries') !== 'None' && this.getAttribute('data-limited-countries') !== '') {
+        if (this.getAttribute('data-early') === 'True' && noneCheck(this.getAttribute('data-limited-countries') )) {
             var limited_countries = document.createElement('p');
             var limited_countries_count = this.getAttribute('data-limited-countries').replace(", ", ",").split(",").length
             limited_countries.setAttribute('class', 'approved-countries');
@@ -187,7 +196,7 @@ class developerCard extends HTMLElement {
         }
 
         // vaccine info
-        if (this.getAttribute('data-candidate') !== 'None' && this.getAttribute('data-candidate') !== '') {
+        if (noneCheck(this.getAttribute('data-candidate'))) {
             var candidate_name = document.createElement('p');
             candidate_name.setAttribute('class', 'info-tag');
             candidate_name.innerHTML = "<b>Candidate Name: </b>" + this.getAttribute('data-candidate');
@@ -195,7 +204,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-efficacy') !== 'None' && this.getAttribute('data-efficacy') !== 'Unknown' && this.getAttribute('data-efficacy') !== '') {
+        if (noneCheck(this.getAttribute('data-efficacy'))) {
             var efficacy = document.createElement('p');
             efficacy.setAttribute('class', 'info-tag');
             efficacy.innerHTML = "<b>Efficacy: </b>" + this.getAttribute('data-efficacy');
@@ -203,7 +212,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-age-group') !== 'None' && this.getAttribute('data-age-group') !== '') {
+        if (noneCheck(this.getAttribute('data-age-group'))) {
             var age_group = document.createElement('p');
             age_group.setAttribute('class', 'info-tag');
             age_group.innerHTML = "<b>Age Group: </b>" + this.getAttribute('data-age-group');
@@ -211,7 +220,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-dose') !== 'None' && this.getAttribute('data-dose') !== '') {
+        if (noneCheck(this.getAttribute('data-dose'))) {
             var dose = document.createElement('p');
             dose.setAttribute('class', 'info-tag');
             dose.innerHTML = "<b>Dose: </b>" + this.getAttribute('data-dose');
@@ -219,7 +228,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-injection-type') !== 'None' && this.getAttribute('data-injection-type') !== '') {
+        if (noneCheck(this.getAttribute('data-injection-type'))) {
             var injection_type = document.createElement('p');
             injection_type.setAttribute('class', 'info-tag');
             injection_type.innerHTML = "<b>Injection Type: </b>" + this.getAttribute('data-injection-type');
@@ -227,7 +236,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-trial-size') !== 'None' && this.getAttribute('data-trial-size') !== '') {
+        if (noneCheck(this.getAttribute('data-trial-size'))) {
             var trial_size = document.createElement('p');
             trial_size.setAttribute('class', 'info-tag');
             trial_size.innerHTML = "<b>Trial Size: </b>" + this.getAttribute('data-trial-size');
@@ -235,7 +244,7 @@ class developerCard extends HTMLElement {
             // displayButton = true;
         }
 
-        if (this.getAttribute('data-storage') !== 'None' && this.getAttribute('data-storage') !== '') {
+        if (noneCheck(this.getAttribute('data-storage'))) {
             var storage = document.createElement('p');
             storage.setAttribute('class', 'info-tag');
             storage.innerHTML = "<b>Storage Requirements: </b>" + this.getAttribute('data-storage');
@@ -243,7 +252,7 @@ class developerCard extends HTMLElement {
             displayButton = true;
         }
 
-        if (this.getAttribute('data-side-effects') !== 'None' && this.getAttribute('data-side-effects') !== '') {
+        if (noneCheck(this.getAttribute('data-side-effects'))) {
             var side_effects = document.createElement('p');
             side_effects.setAttribute('class', 'info-tag');
             // side_effects.style.color = "crimson";
@@ -252,57 +261,48 @@ class developerCard extends HTMLElement {
             // displayButton = true;
         }
 
+
         // short company intro
         var text = document.createElement('p');
         text.setAttribute('class', 'intro intro-mobile-font');
         text.innerHTML = this.getAttribute('data-intro');
-        if (displayButton){
-            text.style.display = "none";
+        if (noneCheck(this.getAttribute('data-intro'))) {
+            wrapper.appendChild(text);
         }
-        wrapper.appendChild(text);
-
-        var latest_news_title = document.createElement('b');
-        latest_news_title.setAttribute('class', 'intro intro-mobile-font');
-        latest_news_title.setAttribute('style', 'color:purple;');
-        latest_news_title.innerHTML = "Latest News:";
 
 
         // latest news section
         var latest_news = document.createElement('p');
         latest_news.setAttribute('class', 'intro intro-mobile-font');
         latest_news.setAttribute('style', 'color:purple;');
-        latest_news.innerHTML = this.getAttribute('data-news');
+        latest_news.innerHTML = "<b>Latest News:</b><br>" + this.getAttribute('data-news');
 
-        // wrapper.appendChild(text);
-        if (this.getAttribute('data-news') !== 'None' && this.getAttribute('data-news') !== '') {
-            // wrapper.appendChild(line_break);
-            if (displayButton) {
-                latest_news_title.style.display = "none";
-                latest_news.style.display = "none";
-            }
-            wrapper.appendChild(latest_news_title);
+
+        if (noneCheck(this.getAttribute('data-news'))) {
             wrapper.appendChild(latest_news);
         }
 
+
         // button to learn more
         if (displayButton) {
+            latest_news.style.display = "none";
+            text.style.display = "none";
             var btn = document.createElement('button');
             btn.setAttribute('class', 'card-collapsible');
             btn.setAttribute('type', 'button');
             btn.innerHTML = 'Learn More';
             wrapper.appendChild(btn);
 
+
             btn.addEventListener("click", function () {
                 // this.classList.toggle("active");
                 if (text.style.display === "block") {
                     text.style.display = "none";
-                    latest_news_title.style.display = "none";
                     latest_news.style.display = "none";
                     btn.innerHTML = "Learn More"
                     // document.get
                 } else {
                     text.style.display = "block";
-                    latest_news_title.style.display = "block";
                     latest_news.style.display = "block";
                     btn.innerHTML = "Show Less";
                 }
@@ -310,7 +310,7 @@ class developerCard extends HTMLElement {
         }
 
 
-        if (this.getAttribute('data-date') !== 'None') {
+        if (noneCheck(this.getAttribute('data-date'))) {
             var update_time = document.createElement('span');
             update_time.setAttribute('class', 'date intro-mobile-font');
             // var update_time_text = " Updated " + this.getAttribute('data-date');
@@ -337,14 +337,27 @@ class developerCard extends HTMLElement {
         // wrapper.appendChild(content);
         //
         // //toggle
+        this.appendChild(wrapper);
 
 
-        shadow.appendChild(wrapper);
-        // this.attachShadow({ mode: 'close' });
+        // const scriptAOS = document.createElement('script');
+        // // scriptAOS.setAttribute('rel', 'stylesheet');
+        // scriptAOS.setAttribute('src', '../static/js/library/aos.js');
+        // shadow.appendChild(scriptAOS);
+        //
+        // const scriptAOSInit = document.createElement('script');
+        // // scriptAOS.setAttribute('rel', 'stylesheet');
+        // scriptAOSInit.innerHTML = "AOS.init({ duration: 1000, offset: -50,})"
+        // shadow.appendChild(scriptAOSInit);
+    //     // this.attachShadow({ mode: 'close' });
     }
 
+    // connectedCallback() {
+    //
+    // }
+
 }
-customElements.define('my-card', developerCard);
+window.customElements.define('my-card', developerCard);
 
 
 // class instDetail extends HTMLElement extends HTMLUListElement{
@@ -364,24 +377,25 @@ customElements.define('my-card', developerCard);
 
 
 class news extends HTMLElement {
-    connectedCallback() {
-        const shadow = this.attachShadow({ mode: 'open' });
+    constructor() {
+        super();
+        // const shadow = this.attachShadow({ mode: 'open' });
 
         // link css
-        const linkElem1 = document.createElement('link');
-        linkElem1.setAttribute('rel', 'stylesheet');
-        linkElem1.setAttribute('href', '../static/css/style.css');
-        shadow.appendChild(linkElem1);
-
-        const linkElem2 = document.createElement('link');
-        linkElem2.setAttribute('rel', 'stylesheet');
-        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-        shadow.appendChild(linkElem2);
-
-        const linkElem3 = document.createElement('link');
-        linkElem3.setAttribute('rel', 'stylesheet');
-        linkElem3.setAttribute('href', '../static/css/card.css');
-        shadow.appendChild(linkElem3);
+        // const linkElem1 = document.createElement('link');
+        // linkElem1.setAttribute('rel', 'stylesheet');
+        // linkElem1.setAttribute('href', '../static/css/style.css');
+        // shadow.appendChild(linkElem1);
+        //
+        // const linkElem2 = document.createElement('link');
+        // linkElem2.setAttribute('rel', 'stylesheet');
+        // linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        // shadow.appendChild(linkElem2);
+        //
+        // const linkElem3 = document.createElement('link');
+        // linkElem3.setAttribute('rel', 'stylesheet');
+        // linkElem3.setAttribute('href', '../static/css/card.css');
+        // shadow.appendChild(linkElem3);
 
         // list news
         var list = document.createElement('li');
@@ -475,6 +489,7 @@ class news extends HTMLElement {
                 link.target = "_blank";
                 link.setAttribute('style', 'font-weight: bold;')
             }
+            link.className = "anchor-text"
             link.innerHTML = " " + this.getAttribute('news-text') + " ";
             news_text.appendChild(link);
             list.appendChild(news_text);
@@ -499,33 +514,38 @@ class news extends HTMLElement {
         date.innerHTML = this.getAttribute('news-date').replace('  ', '&nbsp;')
         list.appendChild(date);
 
-        shadow.appendChild(list);
+        this.appendChild(list);
+        // shadow.appendChild(list);
         // this.attachShadow({ mode: 'close' });
+    }
+    connectedCallback() {
+
     }
 
 }
-customElements.define('latest-news', news);
+window.customElements.define('latest-news', news);
 
 
 class stories extends HTMLElement {
-    connectedCallback() {
-        const shadow = this.attachShadow({ mode: 'open' });
-
-        // link css
-        const linkElem1 = document.createElement('link');
-        linkElem1.setAttribute('rel', 'stylesheet');
-        linkElem1.setAttribute('href', '../static/css/style.css');
-        shadow.appendChild(linkElem1);
-
-        const linkElem2 = document.createElement('link');
-        linkElem2.setAttribute('rel', 'stylesheet');
-        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-        shadow.appendChild(linkElem2);
-
-        const linkElem3 = document.createElement('link');
-        linkElem3.setAttribute('rel', 'stylesheet');
-        linkElem3.setAttribute('href', '../static/css/card.css');
-        shadow.appendChild(linkElem3);
+    constructor() {
+        super();
+        // const shadow = this.attachShadow({ mode: 'open' });
+        //
+        // // link css
+        // const linkElem1 = document.createElement('link');
+        // linkElem1.setAttribute('rel', 'stylesheet');
+        // linkElem1.setAttribute('href', '../static/css/style.css');
+        // shadow.appendChild(linkElem1);
+        //
+        // const linkElem2 = document.createElement('link');
+        // linkElem2.setAttribute('rel', 'stylesheet');
+        // linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+        // shadow.appendChild(linkElem2);
+        //
+        // const linkElem3 = document.createElement('link');
+        // linkElem3.setAttribute('rel', 'stylesheet');
+        // linkElem3.setAttribute('href', '../static/css/card.css');
+        // shadow.appendChild(linkElem3);
 
 
         // var twitter_script = document.createElement('script');
@@ -547,8 +567,8 @@ class stories extends HTMLElement {
         cardBody.className = "card-body";
 
 
-        if (this.getAttribute('story-category') === 'S') {
-            card.setAttribute('class', 'card horizontal-card mb-3 mx-auto')
+        if (this.getAttribute('story-category') === 'S' || this.getAttribute('story-category') === 'H') {
+            card.setAttribute('class', 'card horizontal-card mb-3 mx-auto people-and-stories-card')
 
             var row_ng = document.createElement('div')
             row_ng.setAttribute('class', 'row no-gutters')
@@ -643,13 +663,16 @@ class stories extends HTMLElement {
         //     target_container.appendChild(twitter_script)
         // }
 
-
-        shadow.appendChild(card);
+        this.appendChild(card);
+        // shadow.appendChild(card);
         // this.attachShadow({ mode: 'close' });
+    }
+    connectedCallback() {
+
     }
 
 }
-customElements.define('people-and-stories', stories);
+window.customElements.define('people-and-stories', stories);
 
 
 
@@ -787,6 +810,7 @@ class localVaccinations extends HTMLElement {
         if (!isNaN(total_administered) && !isNaN(administered_1) && !isNaN(administered_2)) {
             let population_given_dose_1 = ((administered_1 / population) * 100).toFixed(2) + "%";
             let population_given_dose_2 = ((administered_2 / population) * 100).toFixed(2) + "%";
+            let administered_per_100 = parseFloat(total_administered / population).toFixed(2);
 
             let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString();
             if (doses_distributed === "NaN")
@@ -822,9 +846,9 @@ class localVaccinations extends HTMLElement {
                 <tbody>
                     <tr style='font-weight: bold;'>
                         <!-- <td>` + countyName + `</td>-->
-                        <td style="color: rgb(7, 158, 138)">` + parseInt(this.getAttribute('vac-administered')).toLocaleString() + `</td>
+                        <td style="color: rgb(7, 158, 138)">` + total_administered.toLocaleString() + `</td>
                         <!--<td style="color: #016254">` + doses_distributed + `</td> -->
-                        <td style="color: rgb(14, 112, 196)">` + parseFloat(this.getAttribute('vac-administered') / population).toFixed(2) + `</td>
+                        <td style="color: rgb(14, 112, 196)">` + administered_per_100 + `</td>
                         <td style="color: rgb(42, 145, 114)">` + population_given_dose_1 + `</td>
                         <td style="color: rgb(7, 158, 138)">` + population_given_dose_2 + `</td>
                         <!--<td style="color: #016254">` + doses_distributed_per_100 + `</td> -->
@@ -855,32 +879,34 @@ class localVaccinations extends HTMLElement {
     }
 
 }
-customElements.define('local-vaccinations', localVaccinations);
+window.customElements.define('local-vaccinations', localVaccinations);
 
 
 
 class newsAPI extends HTMLElement {
-    connectedCallback() {
-        const shadow = this.attachShadow({mode: 'open'});
+    constructor() {
+        super();
+        // const shadow = this.attachShadow({mode: 'open'});
 
         // link css
         const linkElem1 = document.createElement('link');
         linkElem1.setAttribute('rel', 'stylesheet');
         linkElem1.setAttribute('href', '../static/css/style.css');
-        shadow.appendChild(linkElem1);
+        // shadow.appendChild(linkElem1);
 
         const linkElem2 = document.createElement('link');
         linkElem2.setAttribute('rel', 'stylesheet');
         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-        shadow.appendChild(linkElem2);
+        // shadow.appendChild(linkElem2);
 
         const linkElem3 = document.createElement('link');
         linkElem3.setAttribute('rel', 'stylesheet');
         linkElem3.setAttribute('href', '../static/css/card.css');
-        shadow.appendChild(linkElem3);
+        // shadow.appendChild(linkElem3);
 
 
         // var story_tag = this.getAttribute('story-tag');
+        var wrapper = document.createElement('div');
 
         var card = document.createElement('div');
 
@@ -930,11 +956,19 @@ class newsAPI extends HTMLElement {
             var imgCol = document.createElement('div')
             imgCol.className = 'col-md-2 col-3';
 
+            var imgWrapperDiv = document.createElement('div');
+            imgWrapperDiv.className = "img-wrapper-div";
+
+            // imgWrapperDiv.style.backgroundImage = "url(" + this.getAttribute('local-img') + ")";
+
+
             var image = document.createElement('img')
             image.src = this.getAttribute('local-img')
             image.className = "card-img";
 
-            imgCol.appendChild(image);
+            imgWrapperDiv.appendChild(image)
+
+            imgCol.appendChild(imgWrapperDiv);
             row_ng.appendChild(textCol);
             row_ng.appendChild(imgCol);
 
@@ -1011,10 +1045,16 @@ class newsAPI extends HTMLElement {
         //     target_container.appendChild(card)
         //     target_container.appendChild(twitter_script)
         // }
+        wrapper.appendChild(card);
 
-        shadow.appendChild(card);
+        this.innerHTML = wrapper.innerHTML;
+        // shadow.appendChild(card);
         // this.attachShadow({ mode: 'close' });
+
     }
+    // connectedCallback() {
+    //
+    //     }
 
 }
-customElements.define('local-news', newsAPI);
+window.customElements.define('local-news', newsAPI);

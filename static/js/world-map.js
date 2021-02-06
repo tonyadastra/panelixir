@@ -474,7 +474,7 @@
                 d3.select(".world-vaccination-table")
                     .style("display", "table")
 
-                if (index + 20 >= table_distribution.length) {
+                if (index + 30 >= table_distribution.length) {
                     d3.select('#btn4')
                         .attr('style', 'display: none;')
                     d3.select('#btn3')
@@ -708,16 +708,16 @@
 
 
     d3.select("#btn4").on("click", () => {
-        if (index + 20 >= table_distribution.length) {
+        if (index + 30 >= table_distribution.length) {
             d3.select('#btn4')
                 .attr('style', 'display: none;')
             d3.select('#btn3')
                 .attr('style', 'display: inline-block;')
 
         }
-        var newData = table_distribution.slice(index, index + 20);
+        var newData = table_distribution.slice(index, index + 30);
         updateWorldTable(newData);
-        index += 20;
+        index += 30;
 
     })
 

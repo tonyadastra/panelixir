@@ -27,7 +27,7 @@
 
     <script type="text/javascript">
     let bayAreaNewsCount = 0;
-    let bayAreaNewsLimit = 10;
+    let bayAreaNewsLimit = 15;
     $('#fetch-new-set-news').on("click", function () {
         bayAreaNewsCount++;
         $.ajax({
@@ -50,6 +50,7 @@
             },
         });
     })
+
     </script>
 
 {% endblock %}
