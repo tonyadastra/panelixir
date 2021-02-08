@@ -2289,6 +2289,13 @@ select.compare-dropdown {
 
 
 @media screen and (max-width: 767px) {
+    #logo-img {
+        height: 30px;
+    }
+
+    h1.title a.elixir.style-a {
+        font-size: 15px;
+    }
     .card .card-title {
         font-size: 1rem;
     }
@@ -2382,6 +2389,9 @@ select.compare-dropdown {
 }
 
 @media screen and (min-width: 768px) {
+    #logo-img {
+        height: 40px;
+    }
     .card .card-img {
         max-height: 100%;
         max-width: 100%;

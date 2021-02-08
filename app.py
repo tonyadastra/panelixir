@@ -105,7 +105,7 @@ def index():
     cur.execute("rollback")
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
-                "WHERE category = 'G' AND (CURRENT_DATE - date <= 3 OR tag='Top') "
+                "WHERE category = 'G' AND (CURRENT_DATE - date <= 4 OR tag='Top') "
                 "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 45")
     general_news = cur.fetchall()
     for i in range(len(general_news)):

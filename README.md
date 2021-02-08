@@ -53,11 +53,11 @@
 
 ## **To Do List**
 * [ ] Register/Login => Send latest information via e-mail, Comments
-* [ ] Logo Design
 * [ ] Info Icon to learn more (about Special Vaccines)
 * [ ] Vaccine Type Categories Explanation
 * [ ] Weekly Report on Vaccines - (comparison?)
 * [ ] Optimize CSS and JS files
+* [X] Logo Design (Thanks to Chad!)
 * [X] Local News Beta
 * [X] User Feedback Form Submission + E-mail
 * [X] More information in database (doses, expected release date, etc.)
