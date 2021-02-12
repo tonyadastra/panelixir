@@ -19,7 +19,7 @@ def update_world_vaccinations(event, context):
     world_vaccination_data = []
     for key, country_data in world_vaccination_api.json().items():
         country = country_data['location']
-        population = country_data['population']
+        # population = country_data['population']
         iso = key
         total_vaccinations = 0
         new_vaccinations = 0
