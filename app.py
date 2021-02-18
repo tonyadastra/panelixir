@@ -312,13 +312,16 @@ def vaccineVirusVariants():
 @app.route("/bay-area-vaccination")
 def getSFBayAreaVaccination():
     session_submit = False
-    cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
+    cur.execute("SELECT l.county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
                 "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, population, "
-                "administered_1, administered_2 "
-                "FROM local_vaccinations "
-                "ORDER BY CASE WHEN county = 'San Mateo' THEN county END")
+                "l.administered_1, l.administered_2 "
+                # ", (SELECT address, time_window FROM facilities WHERE l.id = cid LIMIT 1) "
+                "FROM local_vaccinations l "
+                # "LEFT OUTER JOIN facilities f ON l.id = f.cid "
+                "ORDER BY l.id ")
     local_data = cur.fetchall()
+    # print(local_data)
     cur.execute("rollback")
 
     cur.execute('''SELECT title, content, url, image_url, source, author, tag
@@ -345,15 +348,6 @@ def getBayAreaNews():
     local_news = cur.fetchall()
     cur.execute("rollback")
     return render_template("bay-area-news.html", local_news=local_news)
-
-
-@app.route("/get-entertainment")
-def getEntertainment():
-    cur.execute("SELECT tag, title, body, body_text, likes FROM entertainment ORDER BY date DESC")
-    data = cur.fetchall()
-    cur.execute("rollback")
-    # print(data)
-    return json.dumps(data)
 
 
 @app.route("/get_update_time", methods=['GET'])
