@@ -52,11 +52,13 @@
 + November 15 - Full Auto-Update NYTimes Deployed
 
 ## **To Do List**
+* [ ] Today's Headlines + Post on social media
 * [ ] Register/Login => Send latest information via e-mail, Comments
 * [ ] Info Icon to learn more (about Special Vaccines)
 * [ ] Vaccine Type Categories Explanation
 * [ ] Weekly Report on Vaccines - (comparison?)
 * [ ] Optimize CSS and JS files
+
 * [X] Logo Design (Thanks to Chad!)
 * [X] Local News Beta
 * [X] User Feedback Form Submission + E-mail

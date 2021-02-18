@@ -314,7 +314,7 @@ def getSFBayAreaVaccination():
     session_submit = False
     cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
-                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, total_cases, population, "
+                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, population, "
                 "administered_1, administered_2 "
                 "FROM local_vaccinations "
                 "ORDER BY CASE WHEN county = 'San Mateo' THEN county END")
