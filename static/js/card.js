@@ -678,25 +678,8 @@ window.customElements.define('people-and-stories', stories);
 
 
 class localVaccinations extends HTMLElement {
-    connectedCallback() {
-        const shadow = this.attachShadow({ mode: 'open' });
-
-        // link css
-        const linkElem1 = document.createElement('link');
-        linkElem1.setAttribute('rel', 'stylesheet');
-        linkElem1.setAttribute('href', '../static/css/style.css');
-        shadow.appendChild(linkElem1);
-
-        const linkElem2 = document.createElement('link');
-        linkElem2.setAttribute('rel', 'stylesheet');
-        linkElem2.setAttribute('href', '../static/css/bootstrap.css');
-        shadow.appendChild(linkElem2);
-
-        const linkElem3 = document.createElement('link');
-        linkElem3.setAttribute('rel', 'stylesheet');
-        linkElem3.setAttribute('href', '../static/css/card.css');
-        shadow.appendChild(linkElem3);
-
+    constructor() {
+        super();
 
         const countyName = this.getAttribute('vac-county');
         var countyWrapper = document.createElement('div')
@@ -727,7 +710,7 @@ class localVaccinations extends HTMLElement {
         county_body.appendChild(phase_and_eligibility);
 
         var vaccination_facilities = document.createElement('div')
-        vaccination_facilities.innerHTML =  "<b>Vaccination Facilities</b>: <a class='anchor-text' class='anchor-text' href='https://www.vaccinateca.com/counties/" + countyName.toLowerCase().replace(' ', '_') + "' target='_blank'>Find facilities administering COVID-19 vaccines in " + countyName + " County</a>"
+        vaccination_facilities.innerHTML =  "<b>Vaccination Facilities</b>: <a class='anchor-text' href='https://www.vaccinateca.com/counties/" + countyName.toLowerCase().replace(' ', '_') + "' target='_blank'>Find facilities administering COVID-19 vaccines in " + countyName + " County</a>"
         county_body.appendChild(vaccination_facilities);
 
         var info_link = document.createElement('div')
@@ -810,7 +793,7 @@ class localVaccinations extends HTMLElement {
         if (!isNaN(total_administered) && !isNaN(administered_1) && !isNaN(administered_2)) {
             let population_given_dose_1 = ((administered_1 / population) * 100).toFixed(2) + "%";
             let population_given_dose_2 = ((administered_2 / population) * 100).toFixed(2) + "%";
-            let administered_per_100 = parseFloat(total_administered / population).toFixed(2);
+            let administered_per_100 = (parseFloat(total_administered / population) * 100).toFixed(2);
 
             let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString();
             if (doses_distributed === "NaN")
@@ -871,10 +854,206 @@ class localVaccinations extends HTMLElement {
         }
 
 
-        countyWrapper.appendChild(county_body)
-
-
-        shadow.appendChild(countyWrapper);
+        countyWrapper.appendChild(county_body);
+        this.appendChild(countyWrapper)
+    }
+    connectedCallback() {
+//         const shadow = this.attachShadow({ mode: 'open' });
+//
+//         // link css
+//         const linkElem1 = document.createElement('link');
+//         linkElem1.setAttribute('rel', 'stylesheet');
+//         linkElem1.setAttribute('href', '../static/css/style.css');
+//         shadow.appendChild(linkElem1);
+//
+//         const linkElem2 = document.createElement('link');
+//         linkElem2.setAttribute('rel', 'stylesheet');
+//         linkElem2.setAttribute('href', '../static/css/bootstrap.css');
+//         shadow.appendChild(linkElem2);
+//
+//         const linkElem3 = document.createElement('link');
+//         linkElem3.setAttribute('rel', 'stylesheet');
+//         linkElem3.setAttribute('href', '../static/css/card.css');
+//         shadow.appendChild(linkElem3);
+//
+//
+//         const countyName = this.getAttribute('vac-county');
+//         var countyWrapper = document.createElement('div')
+//         countyWrapper.setAttribute('class', 'card county-wrapper');
+//
+//         var county_body = document.createElement('div')
+//         county_body.setAttribute('class', 'county-body card-body');
+//
+//         var county_name = document.createElement('div')
+//         county_name.setAttribute('class', 'county-name card-title')
+//         county_name.innerHTML = "<h3 class='county'>" + countyName + " County</h3>";
+//         county_body.appendChild(county_name);
+//
+//
+//         var date = document.createElement('p')
+//         date.setAttribute('class', 'date')
+//         date.innerHTML = "Updated " + this.getAttribute('vac-date');
+//         county_body.appendChild(date);
+//
+//
+//         var phase_and_eligibility = document.createElement('div')
+//         let phase = this.getAttribute('vac-phase');
+//         phase_and_eligibility.innerHTML = "<b>Phase and Eligibility</b>: "
+//         if (phase !== "None" && phase!== "") {
+//             phase_and_eligibility.innerHTML += "<span class='badge badge-phase-" + phase + "'>Phase " + phase + "</span>"
+//         }
+//         phase_and_eligibility.innerHTML += "&nbsp;" + this.getAttribute('vac-eligibility') + " Visit <a class='county-link anchor-text' target='_blank' href='" + this.getAttribute('vac-appointment-website') + "'>the county's website</a> to see who is eligible."
+//         county_body.appendChild(phase_and_eligibility);
+//
+//         var vaccination_facilities = document.createElement('div')
+//         vaccination_facilities.innerHTML =  "<b>Vaccination Facilities</b>: <a class='anchor-text' class='anchor-text' href='https://www.vaccinateca.com/counties/" + countyName.toLowerCase().replace(' ', '_') + "' target='_blank'>Find facilities administering COVID-19 vaccines in " + countyName + " County</a>"
+//         county_body.appendChild(vaccination_facilities);
+//
+//         var info_link = document.createElement('div')
+//         info_link.innerHTML =  "<b>County Vaccination Info</b>: <a class='anchor-text' href='" + this.getAttribute('vac-info-website') + "' target='_blank'>Visit Vaccination Info Website</a>"
+//         county_body.appendChild(info_link);
+//
+//         // var appointment_link = document.createElement('div')
+//         // appointment_link.innerHTML = "
+//
+//         // county_body.appendChild(appointment_link);
+//
+//         if (this.getAttribute('vac-notification') !== "None" && this.getAttribute('vac-notification')!== "") {
+//             var notification = document.createElement('div')
+//             notification.setAttribute('class', 'notification-website')
+//             notification.innerHTML = "Not currently eligible? Don't worry. " + countyName + " has enabled the vaccine notification system. <a class='anchor-text' class='county-link' target='_blank' href='" + this.getAttribute('vac-notification') + "'>Click here to sign up for notifications</a>"
+//             county_body.appendChild(notification);
+//         }
+//
+//         // if (this.getAttribute('vac-administered') !== "None" && this.getAttribute('vac-administered')!== "") {
+//         //     var total_administered = document.createElement('div')
+//         //     total_administered.className = "county-doses-administered"
+//         //     total_administered.innerHTML = "<b>Total Doses Administered</b>: " + parseInt(this.getAttribute('vac-administered')).toLocaleString();
+//         //     county_body.appendChild(total_administered);
+//         // }
+//         //
+//         // if (this.getAttribute('vac-distributed') !== "None" && this.getAttribute('vac-distributed')!== "") {
+//         //     var total_distributed = document.createElement('div')
+//         //     total_distributed.innerHTML = "<b>Total Doses Distributed</b>: " + parseInt(this.getAttribute('vac-distributed')).toLocaleString();
+//         //     county_body.appendChild(total_distributed);
+//         // }
+//
+//         let population = parseInt(this.getAttribute('population'));
+// //         if (this.getAttribute('total-cases') !== "None" && this.getAttribute('total-cases')!== "") {
+// //             let total_cases = parseInt(this.getAttribute('total-cases')).toLocaleString();
+// //             let total_cases_per_100 = parseFloat(this.getAttribute('total-cases') / population).toFixed(2)
+// //             // if (doses_distributed === "NaN")
+// //             //     doses_distributed = "-"
+// //             // let doses_distributed_per_100 = parseFloat(this.getAttribute('vac-distributed') / population).toFixed(2)
+// //             // if (doses_distributed_per_100 === "NaN")
+// //             //     doses_distributed_per_100 = "-"
+// //
+// //             var cases_table = document.createElement('div')
+// //             cases_table.className = "county-vaccination-table";
+// //
+// //             cases_table.innerHTML = "<b>Cases:</b>" + `
+// //             <table class="table text-center">
+// //                 <thead>
+// //                     <tr>
+// // <!--                        <th scope="col">County</th>-->
+// //                         <th scope="col">Cases</th>
+// //       <!--                   <th scope="col">Doses Available</th> -->
+// //                         <th scope="col">Cases Per 100 People</th>
+// //       <!--                   <th scope="col">Available Per 100 People</th> -->
+// //                     </tr>
+// //                 </thead>
+// //                 <tbody>
+// //                     <tr>
+// //                         <!-- <td>` + countyName + `</td>-->
+// //                         <td style="color: rgb(241,21,72)">` + total_cases + `</td>
+// //                         <td style="color: rgb(241,21,72)">` + total_cases_per_100 + `</td>
+// //
+// //                     </tr>
+// //                 </tbody>
+// //             </table>
+// //                     `
+// //
+// //             county_body.appendChild(cases_table)
+// //         }
+//         let total_administered = parseInt(this.getAttribute('vac-administered'));
+//         let administered_1 = parseInt(this.getAttribute('vac-administered-1'));
+//         let administered_2 = parseInt(this.getAttribute('vac-administered-2'));
+//
+//         if (isNaN(administered_1) && !(isNaN(total_administered) && isNaN(administered_2)))
+//             administered_1 = total_administered - administered_2
+//         if (isNaN(administered_2) && !(isNaN(total_administered) && isNaN(administered_1)))
+//             administered_2 = total_administered - administered_1
+//         if (isNaN(total_administered) && !(isNaN(administered_1) && isNaN(administered_2)))
+//             total_administered = administered_1 + administered_2
+//
+//         if (!isNaN(total_administered) && !isNaN(administered_1) && !isNaN(administered_2)) {
+//             let population_given_dose_1 = ((administered_1 / population) * 100).toFixed(2) + "%";
+//             let population_given_dose_2 = ((administered_2 / population) * 100).toFixed(2) + "%";
+//             let administered_per_100 = (parseFloat(total_administered / population) * 100).toFixed(2);
+//
+//             let doses_distributed = parseInt(this.getAttribute('vac-distributed')).toLocaleString();
+//             if (doses_distributed === "NaN")
+//                 doses_distributed = "-"
+//             let doses_distributed_per_100 = parseFloat(this.getAttribute('vac-distributed') / population).toFixed(2)
+//             if (doses_distributed_per_100 === "NaN")
+//                 doses_distributed_per_100 = "-"
+//
+//             let supply_used = ((parseInt(this.getAttribute('vac-administered')) / parseInt(this.getAttribute('vac-distributed'))) * 100).toFixed(2) + "%";
+//             if (supply_used === "NaN%")
+//                 supply_used = "-"
+//
+//             var vaccination_table = document.createElement('div')
+//             vaccination_table.className = "county-vaccination-table";
+//             vaccination_table.style.overflowX = "auto";
+//             // vaccination_table.style.width = "100%";
+//
+//             vaccination_table.innerHTML = "<b>Vaccinations:</b>" + `
+//             <table class="table text-center county-table" style='margin-left: auto;margin-right: auto;'>
+//                 <thead>
+//                     <tr class='local-vaccination-table-head'>
+// <!--                        <th scope="col">County</th>-->
+//                         <th style="background-color: rgb(100,208,138)" scope="col">Doses Administered</th>
+//                         <th style="background-color: rgb(147,201,248)" scope="col">Doses Given Per 100 People</th>
+//                         <th style="background-color: rgb(212,245,224)" scope="col">Population Given At Least 1 Dose</th>
+//                         <th style="background-color: rgb(111,217,168)" scope="col">Population Fully Vaccinated</th>
+//                         <!--<th scope="col">Doses Available</th> -->
+//
+//                         <!--<th scope="col">Available Per 100 People</th>-->
+//                         <!--<th style='background-color: rgb(147, 201, 248)' scope="col">Supply Used</th>-->
+//                     </tr>
+//                 </thead>
+//                 <tbody>
+//                     <tr style='font-weight: bold;'>
+//                         <!-- <td>` + countyName + `</td>-->
+//                         <td style="color: rgb(7, 158, 138)">` + total_administered.toLocaleString() + `</td>
+//                         <!--<td style="color: #016254">` + doses_distributed + `</td> -->
+//                         <td style="color: rgb(14, 112, 196)">` + administered_per_100 + `</td>
+//                         <td style="color: rgb(42, 145, 114)">` + population_given_dose_1 + `</td>
+//                         <td style="color: rgb(7, 158, 138)">` + population_given_dose_2 + `</td>
+//                         <!--<td style="color: #016254">` + doses_distributed_per_100 + `</td> -->
+//                         <!--<td style="color: rgb(14, 112, 196)">` + supply_used + `</td>-->
+//
+//                     </tr>
+//                 </tbody>
+//             </table>
+//                     `
+//
+//             county_body.appendChild(vaccination_table)
+//         }
+//
+//
+//         if (this.getAttribute('vac-body') !== "None" && this.getAttribute('vac-body')!== "") {
+//             var county_body_content = document.createElement('div')
+//             county_body_content.className = "county-body-content"
+//             county_body_content.innerHTML = this.getAttribute('vac-body');
+//             county_body.appendChild(county_body_content);
+//         }
+//
+//
+//         countyWrapper.appendChild(county_body);
+//
+//
+//         shadow.appendChild(countyWrapper);
         // this.attachShadow({ mode: 'close' });
     }
 

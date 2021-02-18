@@ -2671,3 +2671,12 @@ p.note {
     transform:translate3d(0,60%,0)
 }
 
+.CtBT1 {
+    color: #9400D3;
+    font-weiggitht: bold;
+}
+
+.CtBT2 {
+    color: #0066d3;
+    font-weight: bold;
+}
