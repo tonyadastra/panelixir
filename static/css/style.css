@@ -2673,10 +2673,10 @@ p.note {
 
 .CtBT1 {
     color: #9400D3;
-    font-weiggitht: bold;
+    font-weight: bold;
 }
 
 .CtBT2 {
-    color: #0066d3;
-    font-weight: bold;
+    /*color: #00d389;*/
+    /*font-weight: bold;*/
 }
