@@ -6,6 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="PanElixir's COVID-19 vaccine tracker traces the distribution, development, and side effects of vaccines around the world. Here, you can also find news, stories, maps, and frequently asked questions from the CDC and medical experts.">
+{#    <meta name="google-signin-client_id" content="46183730312-76vb8c66oje6imovcntvgh60fi0robdq.apps.googleusercontent.com">#}
+
     {% block title %}
     {% endblock %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -29,6 +31,10 @@
 </head>
 
 <body>
+{#<div class="g-signin2" data-onsuccess="onSignIn"></div>#}
+{#<a href="#" onclick="signOut();">Sign out</a>#}
+
+
 
 <!-- Heading Bar of Webpage-->
 <div class="title-bar">
@@ -125,6 +131,7 @@
 <!-- Scripts -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-175789024-1"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -146,6 +153,7 @@ function scrollToTop() {
     document.documentElement.scrollTop = 0;
 }
 </script>
+{#<script src="https://apis.google.com/js/platform.js" async defer></script>#}
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=600128edf4055d0012d6087d&product=inline-share-buttons" async="async"></script>
 
 {##}
