@@ -20,7 +20,7 @@ tabula-py==2.1.1
 Werkzeug==1.0.1
 
 pip~=20.2.3
-cryptography~=3.0
+cryptography==3.1
 py~=1.7.0
 lxml~=4.2.5
 keyring~=17.0.0
@@ -37,3 +37,5 @@ flask-mail~=0.9.1
 # oauthlib==3.1.0
 # pyOpenSSL==19.0.0
 
+PyJWT~=2.0.1
+httplib2~=0.19.0

@@ -1,7 +1,7 @@
 import random
 import string
 import os
-from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash, Blueprint
 from flask_mail import Mail, Message
 from models.vaccine_info import Db, Vaccine
 from models.match_company_to_logo import match_logo
@@ -9,12 +9,15 @@ import psycopg2
 import numpy as np
 import json
 import csv
+import models.bhs_daily_bulletin_summary as bhsDBSummary
 from dotenv import load_dotenv
 import requests
 
 load_dotenv('.env')
 
 application = app = Flask(__name__)
+app.register_blueprint(bhsDBSummary.app)
+
 app.secret_key = ''.join(random.choice(string.printable)
                          for _ in range(20))
 app.config.update(dict(
