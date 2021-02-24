@@ -28,6 +28,9 @@ scopes = "https://www.googleapis.com/auth/documents.readonly"
 # Set how long this token will be valid in seconds
 expires_in = 3600   # Expires in 1 hour
 
+
+
+
 def load_json_credentials(filename):
     ''' Load the Google Service Account Credentials from Json file '''
 
@@ -129,6 +132,11 @@ def gce_list_instances(accessToken):
     for item in j['items']:
         print(item['name'])
 
+@app.route("/1")
+def home():
+    resp = flask.Response("Foo bar baz")
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 @app.route('/get-bhs-daily-bulletin-data')
 def get_daily_bulletin_data():
@@ -233,8 +241,15 @@ def get_daily_bulletin_data():
                                                 if textRun['textStyle'] == TARGET_subheadingTextStyle:
                                                     summary.append({"subheading": textRun['content']
                                                                    .replace('\n', '').strip()})
+
     return flask.jsonify(summary)
     print(summary)
+
+
+@app.after_request
+def apply_caching(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
                                             # print(tableCellElement['textRun'])
                                         # print(tableCellContent[''])

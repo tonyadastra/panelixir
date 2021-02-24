@@ -1,7 +1,7 @@
 import random
 import string
 import os
-from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash, Blueprint
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash, Response, Blueprint
 from flask_mail import Mail, Message
 from models.vaccine_info import Db, Vaccine
 from models.match_company_to_logo import match_logo
