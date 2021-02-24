@@ -26,9 +26,7 @@ json_filename = 'models/calendar-1613977057601-6d8f60ed2291.json'
 scopes = "https://www.googleapis.com/auth/documents.readonly"
 
 # Set how long this token will be valid in seconds
-expires_in = 3600   # Expires in 1 hour
-
-
+expires_in = 3600  # Expires in 1 hour
 
 
 def load_json_credentials(filename):
@@ -39,10 +37,12 @@ def load_json_credentials(filename):
 
     return json.loads(data)
 
+
 def load_private_key(json_cred):
     ''' Return the private key from the json credentials '''
 
     return json_cred['private_key']
+
 
 def create_signed_jwt(pkey, pkey_id, email, scope):
     ''' Create a Signed JWT from a service account Json credentials file
@@ -53,31 +53,32 @@ def create_signed_jwt(pkey, pkey_id, email, scope):
 
     issued = int(time.time())
     print(issued)
-    expires = issued + expires_in   # expires_in is in seconds
+    expires = issued + expires_in  # expires_in is in seconds
 
     # Note: this token expires and cannot be refreshed. The token must be recreated
 
     # JWT Headers
     additional_headers = {
-            'kid': pkey_id,
-            "alg": "RS256",
-            "typ": "JWT"    # Google uses SHA256withRSA
+        'kid': pkey_id,
+        "alg": "RS256",
+        "typ": "JWT"  # Google uses SHA256withRSA
     }
 
     # JWT Payload
     payload = {
-        "iss": email,       # Issuer claim
-        "sub": email,       # Issuer claim
-        "aud": auth_url,    # Audience claim
-        "iat": issued,      # Issued At claim
-        "exp": expires,     # Expire time
-        "scope": scope      # Permissions
+        "iss": email,  # Issuer claim
+        "sub": email,  # Issuer claim
+        "aud": auth_url,  # Audience claim
+        "iat": issued,  # Issued At claim
+        "exp": expires,  # Expire time
+        "scope": scope  # Permissions
     }
 
     # Encode the headers and payload and sign creating a Signed JWT (JWS)
     sig = jwt.encode(payload, pkey, algorithm="RS256", headers=additional_headers)
 
     return sig
+
 
 def exchangeJwtForAccessToken(signed_jwt):
     '''
@@ -94,7 +95,7 @@ def exchangeJwtForAccessToken(signed_jwt):
     r = requests.post(auth_url, data=params)
 
     if r.ok:
-        return(r.json()['access_token'], '')
+        return (r.json()['access_token'], '')
 
     return None, r.text
 
@@ -132,25 +133,33 @@ def gce_list_instances(accessToken):
     for item in j['items']:
         print(item['name'])
 
-@app.route("/1")
-def home():
-    resp = flask.Response("Foo bar baz")
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    return resp
+
+def foundTargetSubheading(textRun):
+    text_style = textRun['textStyle']
+    content = textRun['content']
+    if "bold" in text_style and "underline" in text_style:
+        if text_style['bold'] is True and text_style['underline'] is True:
+            discard_keywords = ["https", "www", "register here"]
+            discard = False
+            for keyword in discard_keywords:
+                if keyword.lower() in content.lower():
+                    discard = True
+            if not discard:
+                return True
+
 
 @app.route('/get-bhs-daily-bulletin-data')
 def get_daily_bulletin_data():
-
-# if __name__ == '__main__':
+    # if __name__ == '__main__':
     cred = load_json_credentials(json_filename)
 
     private_key = load_private_key(cred)
 
     s_jwt = create_signed_jwt(
-            private_key,
-            cred['private_key_id'],
-            cred['client_email'],
-            scopes)
+        private_key,
+        cred['private_key_id'],
+        cred['client_email'],
+        scopes)
 
     token, err = exchangeJwtForAccessToken(s_jwt)
 
@@ -159,64 +168,65 @@ def get_daily_bulletin_data():
         exit(1)
 
     # print(token)
-    daily_bulletin_api = requests.get('https://docs.googleapis.com/v1/documents/1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI?access_token=' + token + '&key=AIzaSyBuaFkg_yHsazZ_PJjME_Tis7Aq8tJs50Q')
+    daily_bulletin_api = requests.get(
+        'https://docs.googleapis.com/v1/documents/1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI?access_token=' + token + '&key=AIzaSyBuaFkg_yHsazZ_PJjME_Tis7Aq8tJs50Q')
 
     TARGET_subheadingTextStyle = {
-                                "bold": True,
-                                "underline": True,
-                                "backgroundColor": {
-                                  "color": {
-                                    "rgbColor": {
-                                      "red": 1,
-                                      "green": 1,
-                                      "blue": 1
-                                    }
-                                  }
-                                },
-                                "foregroundColor": {
-                                  "color": {
-                                    "rgbColor": {
-                                      "red": 0.13333334,
-                                      "green": 0.13333334,
-                                      "blue": 0.13333334
-                                    }
-                                  }
-                                }
+        "bold": True,
+        "underline": True,
+        "backgroundColor": {
+            "color": {
+                "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
+                }
+            }
+        },
+        "foregroundColor": {
+            "color": {
+                "rgbColor": {
+                    "red": 0.13333334,
+                    "green": 0.13333334,
+                    "blue": 0.13333334
+                }
+            }
+        }
     }
 
     TARGET_headingTextStyle = {
-                                "bold": True,
-                                "fontSize": {
-                                  "magnitude": 14,
-                                  "unit": "PT"
-                                }
+        "bold": True,
+        "fontSize": {
+            "magnitude": 14,
+            "unit": "PT"
+        }
     }
 
     TARGET_headingTextStyle2 = {
-            "bold": True,
-            "backgroundColor": {
-                "color": {
-                    "rgbColor": {
-                        "red": 1,
-                        "green": 1,
-                        "blue": 1
-                    }
+        "bold": True,
+        "backgroundColor": {
+            "color": {
+                "rgbColor": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1
                 }
-            },
-            "foregroundColor": {
-                "color": {
-                    "rgbColor": {
-                        "red": 0.13333334,
-                        "green": 0.13333334,
-                        "blue": 0.13333334
-                    }
-                }
-            },
-            "fontSize": {
-                "magnitude": 14,
-                "unit": "PT"
             }
+        },
+        "foregroundColor": {
+            "color": {
+                "rgbColor": {
+                    "red": 0.13333334,
+                    "green": 0.13333334,
+                    "blue": 0.13333334
+                }
+            }
+        },
+        "fontSize": {
+            "magnitude": 14,
+            "unit": "PT"
         }
+    }
 
     summary = []
 
@@ -238,12 +248,12 @@ def get_daily_bulletin_data():
                                                     # print(textRun['content'])
                                                     summary.append({"heading": textRun['content']
                                                                    .replace('\n', '').strip()})
-                                                if textRun['textStyle'] == TARGET_subheadingTextStyle:
+                                                if foundTargetSubheading(textRun):
                                                     summary.append({"subheading": textRun['content']
                                                                    .replace('\n', '').strip()})
 
     return flask.jsonify(summary)
-    print(summary)
+    # print(summary)
 
 
 @app.after_request
@@ -251,10 +261,10 @@ def apply_caching(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
 
-                                            # print(tableCellElement['textRun'])
-                                        # print(tableCellContent[''])
-                                # for s1Key, Content in content[i]['table'].items():
-                                #     print(tableCellMain['content'])
+    # print(tableCellElement['textRun'])
+    # print(tableCellContent[''])
+    # for s1Key, Content in content[i]['table'].items():
+    #     print(tableCellMain['content'])
     # print(token)
 
     # gce_list_instances(token)
