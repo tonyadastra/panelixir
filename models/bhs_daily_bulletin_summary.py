@@ -137,6 +137,30 @@ def gce_list_instances(accessToken):
 def foundTargetSubheading(textRun):
     text_style = textRun['textStyle']
     content = textRun['content']
+    targetExceptions = ["CSM Promise Scholars Application Workshops", "Counseling Office & Career Center Newsletters for Juniors & Seniors",
+                        "Virtual College Visits for SMUHSD Students", "College of San Mateo Umoja Info Sessions", "College Board BigFuture Days - Virtual College Fairs",
+                        "Burlingame Rotary & Lions Club Scholarships", "Burlingame Alumni Association Scholarship", "BHS Faculty & Staff Scholarship",
+                        "BHS Booster Scholarships - Athletics, Drama, Music, and Italian Exchange", "San Mateo County Alumnae Panhellenic Scholarship",
+                        "Citizens Environmental Council of Burlingame Scholarship", "San Mateo Organization for Chinese Americans Scholarship",
+                        "San Mateo Credit Union Scholarship", "Sons of Italy & Italian Catholic Federation Scholarships", "Law Scholarship",
+                        "Asian Pacific Fund Scholarships", "TheDream.US Scholarship", "Cabrillo Civic Clubs of California", "Students Rising Above (JUNIORS)"]
+    for exception in targetExceptions:
+        if content.strip() == exception:
+            return True
+    if "bold" in text_style and "underline" in text_style:
+        if text_style['bold'] is True and text_style['underline'] is True:
+            discard_keywords = ["https", "www", "register here"]
+            discard = False
+            for keyword in discard_keywords:
+                if keyword.lower() in content.lower():
+                    discard = True
+            if not discard:
+                return True
+
+
+def foundTargetHeading(textRun):
+    text_style = textRun['textStyle']
+    content = textRun['content']
     if "bold" in text_style and "underline" in text_style:
         if text_style['bold'] is True and text_style['underline'] is True:
             discard_keywords = ["https", "www", "register here"]
@@ -166,6 +190,7 @@ def get_daily_bulletin_data():
     if token is None:
         print('Error:', err)
         exit(1)
+    # print(token)
 
     # print(token)
     daily_bulletin_api = requests.get(
@@ -229,6 +254,8 @@ def get_daily_bulletin_data():
     }
 
     summary = []
+    all_text = ""
+    prev_type = "None"
 
     for key, docContent in daily_bulletin_api.json().items():
         if key == "body":
@@ -240,19 +267,73 @@ def get_daily_bulletin_data():
                             for tableRowContent in tableContent:
                                 for tableCellMain in tableRowContent['tableCells']:
                                     for tableCellContent in tableCellMain['content']:
-                                        for tableCellElement in tableCellContent['paragraph']['elements']:
+                                        for j, tableCellElement in enumerate(tableCellContent['paragraph']['elements']):
                                             textRun = tableCellElement['textRun']
                                             if textRun['content'] != "\n":
                                                 if (textRun['textStyle'] == TARGET_headingTextStyle
                                                         or textRun['textStyle'] == TARGET_headingTextStyle2):
+                                                    if all_text:
+                                                        summary.append({"text": all_text})
+                                                        all_text = ""
                                                     # print(textRun['content'])
                                                     summary.append({"heading": textRun['content']
                                                                    .replace('\n', '').strip()})
-                                                if foundTargetSubheading(textRun):
+                                                    prev_type = "heading"
+
+                                                elif foundTargetSubheading(textRun):
+                                                    if all_text:
+                                                        summary.append({"text": all_text})
+                                                        all_text = ""
+
                                                     summary.append({"subheading": textRun['content']
                                                                    .replace('\n', '').strip()})
+                                                    prev_type = "subheading"
 
-    return flask.jsonify(summary)
+                                                else:
+                                                    if "link" in textRun['textStyle']:
+                                                        url = textRun['textStyle']['link']['url']
+                                                        all_text += "<a target='_blank' href='" + url + "'>" + textRun['content'] + "</a>"
+                                                    # if prev_type == "text":
+                                                    #     if prev_text not in all_text:
+                                                    #         all_text += prev_text
+                                                    else:
+                                                        all_text += textRun['content']
+                                                    prev_type = "text"
+                                                    # all_text = textRun['content']
+                                                    prev_text = textRun['content']
+                                                    # if j == len(tableCellContent['paragraph']['elements']) - 1 and all_text:
+                                                    #     summary.append({"text": all_text})
+                                                    #     all_text = ""
+                                                    # summary.append({"text": textRun['content']
+                                                    #                .replace('\n', '').strip()})
+    if all_text:
+        summary.append({"text": all_text.strip()})
+
+    ordered_summary = []
+    heading = {}
+    subheading = {}
+    subheading_array = []
+    text = {}
+    for summaryText in summary:
+        if "heading" in summaryText:
+            if len(subheading_array) != 0 and len(heading) != 0:
+                heading['body'] = subheading_array
+                ordered_summary.append(heading)
+                subheading_array = []
+            heading = {"structure": "heading", "innerText": summaryText['heading']}
+        if "subheading" in summaryText:
+            if len(text) != 0 and len(subheading) != 0:
+                subheading['body'] = text
+
+            subheading = {"structure": "subheading", "innerText": summaryText['subheading']}
+            subheading_array.append(subheading)
+        if "text" in summaryText:
+            text = {"structure": "text", "innerText": summaryText['text']}
+            # ordered_summary
+            # print(heading)
+    heading['body'] = subheading_array
+    ordered_summary.append(heading)
+    return flask.jsonify(ordered_summary)
     # print(summary)
 
 
