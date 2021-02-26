@@ -136,6 +136,8 @@ def gce_list_instances(accessToken):
 
 def foundTargetSubheading(textRun):
     text_style = textRun['textStyle']
+    if "link" in text_style:
+        return False
     content = textRun['content']
     targetExceptions = ["CSM Promise Scholars Application Workshops", "Counseling Office & Career Center Newsletters for Juniors & Seniors",
                         "Virtual College Visits for SMUHSD Students", "College of San Mateo Umoja Info Sessions", "College Board BigFuture Days - Virtual College Fairs",
@@ -196,28 +198,6 @@ def get_daily_bulletin_data():
     daily_bulletin_api = requests.get(
         'https://docs.googleapis.com/v1/documents/1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI?access_token=' + token + '&key=AIzaSyBuaFkg_yHsazZ_PJjME_Tis7Aq8tJs50Q')
 
-    TARGET_subheadingTextStyle = {
-        "bold": True,
-        "underline": True,
-        "backgroundColor": {
-            "color": {
-                "rgbColor": {
-                    "red": 1,
-                    "green": 1,
-                    "blue": 1
-                }
-            }
-        },
-        "foregroundColor": {
-            "color": {
-                "rgbColor": {
-                    "red": 0.13333334,
-                    "green": 0.13333334,
-                    "blue": 0.13333334
-                }
-            }
-        }
-    }
 
     TARGET_headingTextStyle = {
         "bold": True,
@@ -255,7 +235,6 @@ def get_daily_bulletin_data():
 
     summary = []
     all_text = ""
-    prev_type = "None"
 
     for key, docContent in daily_bulletin_api.json().items():
         if key == "body":
@@ -275,10 +254,8 @@ def get_daily_bulletin_data():
                                                     if all_text:
                                                         summary.append({"text": all_text})
                                                         all_text = ""
-                                                    # print(textRun['content'])
                                                     summary.append({"heading": textRun['content']
                                                                    .replace('\n', '').strip()})
-                                                    prev_type = "heading"
 
                                                 elif foundTargetSubheading(textRun):
                                                     if all_text:
@@ -287,25 +264,15 @@ def get_daily_bulletin_data():
 
                                                     summary.append({"subheading": textRun['content']
                                                                    .replace('\n', '').strip()})
-                                                    prev_type = "subheading"
 
                                                 else:
                                                     if "link" in textRun['textStyle']:
                                                         url = textRun['textStyle']['link']['url']
                                                         all_text += "<a target='_blank' href='" + url + "'>" + textRun['content'] + "</a>"
-                                                    # if prev_type == "text":
-                                                    #     if prev_text not in all_text:
-                                                    #         all_text += prev_text
+
                                                     else:
                                                         all_text += textRun['content']
-                                                    prev_type = "text"
-                                                    # all_text = textRun['content']
-                                                    prev_text = textRun['content']
-                                                    # if j == len(tableCellContent['paragraph']['elements']) - 1 and all_text:
-                                                    #     summary.append({"text": all_text})
-                                                    #     all_text = ""
-                                                    # summary.append({"text": textRun['content']
-                                                    #                .replace('\n', '').strip()})
+
     if all_text:
         summary.append({"text": all_text.strip()})
 
@@ -341,11 +308,5 @@ def get_daily_bulletin_data():
 def apply_caching(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
-
-    # print(tableCellElement['textRun'])
-    # print(tableCellContent[''])
-    # for s1Key, Content in content[i]['table'].items():
-    #     print(tableCellMain['content'])
-    # print(token)
 
     # gce_list_instances(token)
