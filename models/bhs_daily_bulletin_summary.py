@@ -136,19 +136,28 @@ def gce_list_instances(accessToken):
 
 def foundTargetSubheading(textRun):
     text_style = textRun['textStyle']
-    if "link" in text_style:
-        return False
     content = textRun['content']
-    targetExceptions = ["CSM Promise Scholars Application Workshops", "Counseling Office & Career Center Newsletters for Juniors & Seniors",
-                        "Virtual College Visits for SMUHSD Students", "College of San Mateo Umoja Info Sessions", "College Board BigFuture Days - Virtual College Fairs",
-                        "Burlingame Rotary & Lions Club Scholarships", "Burlingame Alumni Association Scholarship", "BHS Faculty & Staff Scholarship",
-                        "BHS Booster Scholarships - Athletics, Drama, Music, and Italian Exchange", "San Mateo County Alumnae Panhellenic Scholarship",
-                        "Citizens Environmental Council of Burlingame Scholarship", "San Mateo Organization for Chinese Americans Scholarship",
-                        "San Mateo Credit Union Scholarship", "Sons of Italy & Italian Catholic Federation Scholarships", "Law Scholarship",
-                        "Asian Pacific Fund Scholarships", "TheDream.US Scholarship", "Cabrillo Civic Clubs of California", "Students Rising Above (JUNIORS)"]
+    targetExceptions = ["CSM Promise Scholars Application Workshops",
+                        "Counseling Office & Career Center Newsletters for Juniors & Seniors",
+                        "Virtual College Visits for SMUHSD Students", "College of San Mateo Umoja Info Sessions",
+                        "College Board BigFuture Days - Virtual College Fairs",
+                        "Burlingame Rotary & Lions Club Scholarships", "Burlingame Alumni Association Scholarship",
+                        "BHS Faculty & Staff Scholarship",
+                        "BHS Booster Scholarships - Athletics, Drama, Music, and Italian Exchange",
+                        "San Mateo County Alumnae Panhellenic Scholarship",
+                        "Citizens Environmental Council of Burlingame Scholarship",
+                        "San Mateo Organization for Chinese Americans Scholarship",
+                        "San Mateo Credit Union Scholarship",
+                        "Sons of Italy & Italian Catholic Federation Scholarships", "Law Scholarship",
+                        "Asian Pacific Fund Scholarships", "TheDream.US Scholarship",
+                        "Cabrillo Civic Clubs of California", "Students Rising Above (JUNIORS)"]
     for exception in targetExceptions:
         if content.strip() == exception:
             return True
+
+    if "link" in text_style:
+        return False
+
     if "bold" in text_style and "underline" in text_style:
         if text_style['bold'] is True and text_style['underline'] is True:
             discard_keywords = ["https", "www", "register here"]
@@ -163,9 +172,10 @@ def foundTargetSubheading(textRun):
 def foundTargetHeading(textRun):
     text_style = textRun['textStyle']
     content = textRun['content']
-    if "bold" in text_style and "underline" in text_style:
-        if text_style['bold'] is True and text_style['underline'] is True:
-            discard_keywords = ["https", "www", "register here"]
+    if "bold" in text_style and "fontSize" in text_style:
+        if text_style['bold'] is True and text_style['fontSize']['magnitude'] == 14 \
+                and text_style['fontSize']['unit'] == "PT":
+            discard_keywords = []
             discard = False
             for keyword in discard_keywords:
                 if keyword.lower() in content.lower():
@@ -176,7 +186,6 @@ def foundTargetHeading(textRun):
 
 @app.route('/get-bhs-daily-bulletin-data')
 def get_daily_bulletin_data():
-    # if __name__ == '__main__':
     cred = load_json_credentials(json_filename)
 
     private_key = load_private_key(cred)
@@ -196,46 +205,12 @@ def get_daily_bulletin_data():
 
     # print(token)
     daily_bulletin_api = requests.get(
-        'https://docs.googleapis.com/v1/documents/1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI?access_token=' + token + '&key=AIzaSyBuaFkg_yHsazZ_PJjME_Tis7Aq8tJs50Q')
-
-
-    TARGET_headingTextStyle = {
-        "bold": True,
-        "fontSize": {
-            "magnitude": 14,
-            "unit": "PT"
-        }
-    }
-
-    TARGET_headingTextStyle2 = {
-        "bold": True,
-        "backgroundColor": {
-            "color": {
-                "rgbColor": {
-                    "red": 1,
-                    "green": 1,
-                    "blue": 1
-                }
-            }
-        },
-        "foregroundColor": {
-            "color": {
-                "rgbColor": {
-                    "red": 0.13333334,
-                    "green": 0.13333334,
-                    "blue": 0.13333334
-                }
-            }
-        },
-        "fontSize": {
-            "magnitude": 14,
-            "unit": "PT"
-        }
-    }
+        'https://docs.googleapis.com/v1/documents/1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI?access_token=' + token
+    )
 
     summary = []
     all_text = ""
-
+    prev_content = ""
     for key, docContent in daily_bulletin_api.json().items():
         if key == "body":
             content = docContent['content']
@@ -246,11 +221,14 @@ def get_daily_bulletin_data():
                             for tableRowContent in tableContent:
                                 for tableCellMain in tableRowContent['tableCells']:
                                     for tableCellContent in tableCellMain['content']:
-                                        for j, tableCellElement in enumerate(tableCellContent['paragraph']['elements']):
+                                        hasBullet = False
+                                        for tableCellElement in tableCellContent['paragraph']['elements']:
+                                            if "bullet" in tableCellContent['paragraph']:
+                                                hasBullet = True
+
                                             textRun = tableCellElement['textRun']
                                             if textRun['content'] != "\n":
-                                                if (textRun['textStyle'] == TARGET_headingTextStyle
-                                                        or textRun['textStyle'] == TARGET_headingTextStyle2):
+                                                if foundTargetHeading(textRun):
                                                     if all_text:
                                                         summary.append({"text": all_text})
                                                         all_text = ""
@@ -266,12 +244,20 @@ def get_daily_bulletin_data():
                                                                    .replace('\n', '').strip()})
 
                                                 else:
+                                                    text_content = textRun['content']
+                                                    if hasBullet:
+                                                        if prev_content.endswith("\n"):
+                                                            text_content = "&emsp;•&emsp;" + text_content
+
                                                     if "link" in textRun['textStyle']:
                                                         url = textRun['textStyle']['link']['url']
-                                                        all_text += "<a target='_blank' href='" + url + "'>" + textRun['content'] + "</a>"
+                                                        if len(text_content) > 70 and (text_content.startswith("http") or text_content.startswith("www.")):
+                                                            text_content = text_content[:70] + "..."
+                                                        all_text += "<a target='_blank' href='" + url + "'>" + text_content + "</a>"
 
                                                     else:
-                                                        all_text += textRun['content']
+                                                        all_text += text_content
+                                                    prev_content = text_content
 
     if all_text:
         summary.append({"text": all_text.strip()})
@@ -291,6 +277,7 @@ def get_daily_bulletin_data():
         if "subheading" in summaryText:
             if len(text) != 0 and len(subheading) != 0:
                 subheading['body'] = text
+                text = ""
 
             subheading = {"structure": "subheading", "innerText": summaryText['subheading']}
             subheading_array.append(subheading)
@@ -301,7 +288,6 @@ def get_daily_bulletin_data():
     heading['body'] = subheading_array
     ordered_summary.append(heading)
     return flask.jsonify(ordered_summary)
-    # print(summary)
 
 
 @app.after_request
