@@ -394,7 +394,7 @@ $(document).ready(function () {
                     }
 
                     var option1_value = 2; // BioNTech-Pfizer: default1
-                    var option2_value = 1; // Moderna: default2
+                    var option2_value = 14; // Moderna: default2
                     $.ajax({
                         url: '/get-compare-vaccine-info',
                         type: 'GET',

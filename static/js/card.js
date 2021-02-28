@@ -419,7 +419,7 @@ class news extends HTMLElement {
         if (this.getAttribute('news-tag') !== 'None' && this.getAttribute('news-tag') !== '') {
             // news tag
             var news_tag = document.createElement('span');
-            news_tag.className = "badge badge-" + this.getAttribute('news-tag').toLowerCase();
+            news_tag.className = "badge badge-" + this.getAttribute('news-tag').toLowerCase().replaceAll(" ", "-");
             news_tag.innerHTML = this.getAttribute('news-tag');
             list.appendChild(news_tag);
         }
