@@ -52,7 +52,6 @@ def create_signed_jwt(pkey, pkey_id, email, scope):
     auth_url = "https://www.googleapis.com/oauth2/v4/token"
 
     issued = int(time.time())
-    print(issued)
     expires = issued + expires_in  # expires_in is in seconds
 
     # Note: this token expires and cannot be refreshed. The token must be recreated
@@ -101,7 +100,6 @@ def exchangeJwtForAccessToken(signed_jwt):
 
 
 def gce_list_instances(accessToken):
-    print(accessToken)
     '''
     This functions lists the Google Compute Engine Instances in one zone
     '''
@@ -285,6 +283,7 @@ def get_daily_bulletin_data():
             text = {"structure": "text", "innerText": summaryText['text']}
             # ordered_summary
             # print(heading)
+    subheading_array[-1]['body'] = text
     heading['body'] = subheading_array
     ordered_summary.append(heading)
     return flask.jsonify(ordered_summary)

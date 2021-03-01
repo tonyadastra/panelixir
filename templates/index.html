@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-<title>Global COVID-19 Vaccine Frontline - PanElixir</title>
+{{ super() }}
 {% endblock %}
 
 {% block styles %}
@@ -43,7 +43,7 @@
 
 
 var index = 0;
-$("#top-news").html("<div><span class='badge badge-" + google_news[index][1].toLowerCase() + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
+$("#top-news").html("<div><span class='badge badge-" + google_news[index][1].toLowerCase().replaceAll(" ", "-") + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
 index++;
 setInterval(function() {
     $("#top-news").animate({
@@ -53,7 +53,7 @@ setInterval(function() {
                 $(this).html("");
                 index = 0;
             }
-            $(this).html("<div><span class='badge badge-" + google_news[index][1].toLowerCase() + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
+            $(this).html("<div><span class='badge badge-" + google_news[index][1].toLowerCase().replaceAll(" ", "-") + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
             {#$(this).text(google_news[index][3]).animate({opacity: 1})#}
             index++;
 

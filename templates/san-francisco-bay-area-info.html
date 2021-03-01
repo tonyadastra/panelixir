@@ -36,7 +36,7 @@
                 'count': bayAreaNewsCount, 'limit': bayAreaNewsLimit
             },
             type: "GET",
-            beforeSend: function() {
+            beforeSend: function () {
                 // show the preloader (progress bar)
                 $('#loading-progress-bar').html("<div class='load-progress'><div class='indeterminate'></div></div>");
             },
@@ -49,6 +49,8 @@
                 document.getElementById('bay-area-news').innerHTML = response;
             },
         });
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     })
 
     </script>
