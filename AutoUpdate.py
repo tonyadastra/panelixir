@@ -216,13 +216,16 @@ def auto_update_nytimes(event, context):
     for idx, news in enumerate(latest_news):
         news_array = []
         update_time = news.find('td', class_="g-small g-gray")
-        if "June" in update_time.text:
-            update_time.text = update_time.text.replace('June', 'Jun.')
-        if "July" in update_time.text:
-            update_time.text = update_time.text.replace('July', 'Jul.')
-        if "Sept." in update_time.text:
-            update_time.text = update_time.text.replace('Sept.', 'Sep.')
-        if "Jan." in update_time.text:
+        update_time_text = update_time.text
+        if "March" in update_time_text:
+            update_time_text = update_time_text.replace('March', 'Mar.')
+        if "June" in update_time_text:
+            update_time_text = update_time_text.replace('June', 'Jun.')
+        if "July" in update_time_text:
+            update_time_text = update_time_text.replace('July', 'Jul.')
+        if "Sept." in update_time_text:
+            update_time_text = update_time_text.replace('Sept.', 'Sep.')
+        if "Jan." in update_time_text:
             newYear = True
 
         news_text = news.find('td', class_="g-news g-last").text.strip()
@@ -237,9 +240,6 @@ def auto_update_nytimes(event, context):
                 company_string += news_company[i].text.strip()
             else:
                 company_string += news_company[i].text.strip() + ", "
-
-        if company_string == "GeneOne":
-            company_string = "GeneOne Life Science"
 
         index = get_close_matches_indexes(company_string, company_array_possibilities, n=1, cutoff=0.7)
         try:
@@ -325,17 +325,20 @@ def auto_update_nytimes(event, context):
             vaccine_id = 11
         if company_string == "Sinovac":
             vaccine_id = 29
-
-        if company_string == "GeneOne Life Science" and "GeneOne Life Science" not in news_text:
-            company_string = "GeneOne"
+        if company_string == "Sputnik V":
+            vaccine_id = 13
+        if company_string == "Abdala":
+            vaccine_id = 193
+        if company_string == "GeneOne":
+            vaccine_id = 199
 
         year = now.year
-        if newYear and "Dec." in update_time.text:
+        if newYear and "Dec." in update_time_text:
             year -= 1
 
         news_array.append(news_text.replace('\n\t•\xa0 ', '').replace(' \n', ''))
         news_array.append(company_string)
-        news_array.append(update_time.text + " " + str(year))
+        news_array.append(update_time_text + " " + str(year))
         # Issue: When entering a new year, dates of previous years would be changed to new, making them at the top
         news_array.append(vaccine_id)
 
@@ -544,8 +547,8 @@ def auto_update_nytimes(event, context):
             "class": "g-body g-list-item g-filter-item g-filter-abandoned"})
         abandoned_count += len(abandoned_intro)
 
-        all_vaccines_intro = all_approved_intro + all_phase3_intro + all_phase2_intro + all_phase1_company_intro + \
-                             all_preclinical_intro + abandoned_intro
+        all_vaccines_intro = (all_approved_intro + all_phase3_intro + all_phase2_intro + all_phase1_company_intro +
+                              all_preclinical_intro + abandoned_intro)
         for intro in all_vaccines_intro:
             vaccine_array = []
             discard = False
@@ -570,11 +573,15 @@ def auto_update_nytimes(event, context):
             storage = ""
 
             if vaccine_info_html:
-                all_intro_text = intro_text.replace(vaccine_info_sections[0].text, '').strip()
+                section_info_text = vaccine_info_sections[0].text.replace('\n', '')
+                section_info_text = section_info_text.replace('<THIS IS A LINE BREAK>', '\n')
+
+                all_intro_text = intro_text.replace(section_info_text, '').strip()
                 if len(vaccine_info_sections) > 1:
-                    all_intro_text = all_intro_text.replace(vaccine_info_sections[1].text, '').strip()
-                # all_intro_text = intro_text.split(vaccine_info_html[-1].text)[1] \
-                #     .split('\n\n', 1)[1].strip()
+                    section_status_text = vaccine_info_sections[1].text.replace('\n', '')
+                    section_status_text = section_status_text.replace('<THIS IS A LINE BREAK>', '\n')
+                    all_intro_text = all_intro_text.replace(section_status_text, '').strip()
+
                 all_intro_text = all_intro_text.replace('\n', ' ')
 
                 vaccine_info_text = "Vaccine Name:" + \
@@ -843,6 +850,8 @@ def auto_update_nytimes(event, context):
             # Remove final "updated" time in Intro
             if update_time is not None and update_time.text in all_intro_text:
                 date = update_time.text.replace('Updated ', '')
+                if "March" in date:
+                    date = date.replace('March', 'Mar.')
                 if "June" in date:
                     date = date.replace('June', 'Jun.')
                 if "July" in date:
@@ -888,19 +897,20 @@ def auto_update_nytimes(event, context):
                 vaccine_array.append(injection_type)
                 vaccine_array.append(storage)
 
-                cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (vaccine_id,))
-                LC_allow_auto_update = cur.fetchall()[0]
-                if LC_allow_auto_update:
-                    if approved_countries:
-                        # print("Approved: " + approved_countries)
-                        cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
-                                    (approved_countries, vaccine_id))
-                        conn.commit()
-                    if limited_countries:
-                        # print("Limited: " + limited_countries)
-                        cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
-                                    (limited_countries, vaccine_id))
-                        conn.commit()
+                if vaccine_id != -1:
+                    cur.execute("SELECT allow_auto_update FROM info WHERE vac_id = %s", (vaccine_id,))
+                    LC_allow_auto_update = cur.fetchall()[0]
+                    if LC_allow_auto_update:
+                        if approved_countries:
+                            # print("Approved: " + approved_countries)
+                            cur.execute("UPDATE info SET approved_countries = %s WHERE vac_id = %s",
+                                        (approved_countries, vaccine_id))
+                            conn.commit()
+                        if limited_countries:
+                            # print("Limited: " + limited_countries)
+                            cur.execute("UPDATE info SET limited_countries = %s WHERE vac_id = %s",
+                                        (limited_countries, vaccine_id))
+                            conn.commit()
 
                 new_data_array.append(vaccine_array)
 
@@ -999,6 +1009,8 @@ def auto_update_nytimes(event, context):
             try:
                 if new_date == (" " + str(now.year)):
                     new_date = ""
+                if ".." in new_date:
+                    new_date = new_date.replace("..", ".")
                 cur.execute("SELECT TO_DATE(%s, 'Mon FMDD YYYY') - %s AS interval, "
                             "TO_DATE(%s, 'Mon FMDD YYYY') - update_date AS info_interval, "
                             "allow_auto_update "
