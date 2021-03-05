@@ -153,7 +153,7 @@ def foundTargetSubheading(textRun):
         if content.strip() == exception:
             return True
 
-    if "link" in text_style:
+    if "link" in text_style or not content.strip():
         return False
 
     if "bold" in text_style and "underline" in text_style:
