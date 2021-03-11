@@ -100,8 +100,8 @@ def update_usa_distribution(event, context):
                     # if state != "U.S. Total":
                     #     distributed_per_100 = int(vaccination_data['Dist_Per_100K']) / 1000
 
-                    administered_dose_1 = vaccination_data['Administered_Dose1']
-                    administered_dose_2 = vaccination_data['Administered_Dose2']
+                    administered_dose_1 = vaccination_data['Administered_Dose1_Recip']
+                    administered_dose_2 = vaccination_data['Administered_Dose2_Recip']
 
                     # usa_total_distributed += distributed_doses
                     state_vaccination_data = {"state": state, "doses_administered": administered_doses,
@@ -191,4 +191,4 @@ def update_usa_distribution(event, context):
     return return_response
 
 
-update_usa_distribution(1, 2)
+# update_usa_distribution(1, 2)
