@@ -14,7 +14,7 @@ def format_intro(nytimes_intro):
                 join_indexes.append(idx - 1)
         except IndexError:
             pass
-        join_keywords = ['U.S', 'St', 'U.K', 'U.A.E', 'F.D.A', 'Dr', 'Vladimir V', 'C.E.O']
+        join_keywords = ['U.S', 'St', 'U.K', 'U.A.E', 'F.D.A', 'Dr', 'Vladimir V', 'C.E.O', 'Anthony S']
         for keyword in join_keywords:
             if intro.endswith(keyword):
                 join_indexes.append(idx)

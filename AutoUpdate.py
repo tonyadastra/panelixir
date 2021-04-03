@@ -219,6 +219,8 @@ def auto_update_nytimes(event, context):
         update_time_text = update_time.text
         if "March" in update_time_text:
             update_time_text = update_time_text.replace('March', 'Mar.')
+        if "April" in update_time_text:
+            update_time_text = update_time_text.replace('April', 'Apr.')
         if "June" in update_time_text:
             update_time_text = update_time_text.replace('June', 'Jun.')
         if "July" in update_time_text:
@@ -852,6 +854,8 @@ def auto_update_nytimes(event, context):
                 date = update_time.text.replace('Updated ', '')
                 if "March" in date:
                     date = date.replace('March', 'Mar.')
+                if "April" in date:
+                    date = date.replace('April', 'Apr.')
                 if "June" in date:
                     date = date.replace('June', 'Jun.')
                 if "July" in date:
@@ -1511,7 +1515,7 @@ def auto_update_nytimes(event, context):
 
     }
 
-    print(json.dumps(return_response))
+    print(json.dumps(return_response, indent=2))
 
     return return_response
 
