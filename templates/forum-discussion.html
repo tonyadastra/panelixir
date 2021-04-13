@@ -1,0 +1,90 @@
+{% extends "forumLayout.html" %}
+
+{% block title %}
+    <title>{{ post['title'] }} - PanElixir Forums</title>
+{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+
+    {{ super() }}
+
+    <script type="text/javascript">
+    let allRepliesDivision = document.getElementById('all-discussion-replies');
+
+    {% set loggedIn = (user_info is not none)|lower %}
+    {% for reply in replies %}
+
+        // constructor(_pid, _rid, _username, _picture, _reply, _timeAgo, _likes, _likedByUser, _postedByUser, _edited, _comments)
+        allRepliesDivision.appendChild(new postReplies(
+            {{ reply['rid'] }}, {{ reply['pid'] }}, '{{ reply['username'] }}', '{{ reply['picture'] }}',
+            `{{ reply['reply']|safe }}`, '{{ reply['date'] }}', {{ reply['likes'] }}, {{ reply['likedByUser'] }},
+            {{ reply['postedByUser'] }},{{ reply['edited'] }}, {{ reply['comments']|tojson }},
+            {{ loggedIn }}
+        ));
+    {% endfor %}
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    {% set loggedIn = (user_info is not none)|lower %}
+    <div class="ctr mt-2">
+        <div class="back-to-prev">
+            <a href="/forum"><i class="fas fa-chevron-left"></i>Back to Forums</a>
+        </div>
+        {{ m.showPost(post, loggedIn) }}
+        <hr>
+        {% if replies|length %}
+            <h5>{{ post['replies'] }} {% if post['replies'] == 1 %} Reply {% else %} Replies {% endif %}</h5>
+        {% endif %}
+
+        <div id="all-discussion-replies"></div>
+{#        {% for reply in replies %}#}
+{#            <post-replies rid="{{ reply['rid'] }}" pid="{{ reply['pid'] }}" r-username="{{ reply['username'] }}" r-picture="{{ reply['picture'] }}"#}
+{#                                r-reply="{{ reply['reply'] }}"  r-date="{{ reply['date'] }}" r-likes="{{ reply['likes'] }}" r-edited="{{ reply['edited'] }}"#}
+{#                                r-liked-by-user="{{ reply['likedByUser'] }}" r-posted-by-user="{{ reply['postedByUser'] }}" r-comments="{{ reply['comments'] }}"></post-replies>#}
+{#        {% endfor %}#}
+
+        {% if user_info is not none %}
+            <div class="comment">
+                <form method="post" action="/forum/post-reply?pid={{ post['pid'] }}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="FormControlTextareaComment">Add a Comment</label>
+                        <textarea class="form-control" id="FormControlTextareaComment" rows="4" name="reply" autocomplete="off" required></textarea>
+                    </div>
+
+        {#            <p>Thank you very much for your time. We really appreciate your suggestion!</p>#}
+                    <button type="submit" class="btn btn-primary">Comment</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <page-pagination page="{{ pagi_data['page'] }}" baseuri="{{ pagi_data['baseuri'] }}" totalpages="{{ pagi_data['totalPages'] }}"></page-pagination>
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+<!--                Delete this reply permanently? Deleting will also remove all likes and comments for this reply. This action cannot be undone.-->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form method="post" class="forum-delete-form" action="/forum/delete-entity" enctype="multipart/form-data">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+    </div>
+
+{% endblock %}

@@ -32,6 +32,8 @@ class developerCard extends HTMLElement {
             return (attr !== undefined && attr !== 'None' && attr !== '');
         }
 
+        let stage = parseInt(this.getAttribute('data-stage'));
+
         var wrapper = document.createElement('div');
         wrapper.setAttribute('class', 'wrapper');
         wrapper.setAttribute('data-aos', 'slide-up');
@@ -138,7 +140,7 @@ class developerCard extends HTMLElement {
         var pbar8 = document.createElement('div');
         pbar8.setAttribute('class', 'progress-bar');
         pbar8.setAttribute('id', 'abandoned');
-        pbar8.setAttribute('style', 'width: ' + (100 - (parseInt(this.getAttribute('data-stage')) + 1) * 20) + "%");
+        pbar8.setAttribute('style', 'width: ' + (100 - (stage + 1) * 20) + "%");
         pbar8.innerHTML = 'ABANDONED';
 
         var pbar9 = document.createElement('div');
@@ -146,19 +148,19 @@ class developerCard extends HTMLElement {
         pbar9.setAttribute('id', 'paused');
         pbar9.innerHTML = 'PAUSED';
 
-        if (this.getAttribute('data-stage') >= 0)
+        if (stage >= 0)
             bar_wrapper.appendChild(pbar1);
 
-        if (this.getAttribute('data-stage') >= 1)
+        if (stage >= 1)
             bar_wrapper.appendChild(pbar2);
 
-        if (this.getAttribute('data-stage') >= 2)
+        if (stage >= 2)
             bar_wrapper.appendChild(pbar3);
 
-        if (this.getAttribute('data-stage') >= 3)
+        if (stage >= 3)
             bar_wrapper.appendChild(pbar4);
 
-        if (this.getAttribute('data-stage') == 4) {
+        if (stage === 4) {
             bar_wrapper.appendChild(pbar5);
         }
         else {
@@ -177,7 +179,7 @@ class developerCard extends HTMLElement {
 
         var displayButton = Boolean(false);
 
-        if (this.getAttribute('data-stage') == 4 && noneCheck(this.getAttribute('data-approved-countries'))) {
+        if (stage === 4 && noneCheck(this.getAttribute('data-approved-countries'))) {
             var approved_countries = document.createElement('p');
             var approved_countries_count = this.getAttribute('data-approved-countries').replace(", ", ",").split(",").length
             approved_countries.setAttribute('class', 'approved-countries');

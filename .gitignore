@@ -1,6 +1,7 @@
 .sublime-workspace
 .idea
 .DS_store
+.env
 dump
 venv
 # Elastic Beanstalk Files
@@ -16,6 +17,7 @@ dump/update_news.py
 updates.csv
 .flaskenv
 latest.dump
+forum.dump
 who-scrape.py
 google.py
 t.py

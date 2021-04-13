@@ -638,9 +638,10 @@ $(document).ready(function () {
                     // Append Flag Image
                     // If multiple countries
                     for (let a = 0; a < flagMap[i].length; a++) {
+                        console.log(flagMap[i][a])
                         // if flagMap[i][a] is not undefined
                         if (flagMap[i][a] !== '.') {
-                            for (let j = 0; j < flagMap[i][a].length; j++) {
+                            // for (let j = 0; j < flagMap[i][a].length; j++) {
                                 svg.append('svg:image')
                                     .attr('xlink:href', flagMap[i][a])
                                     .attr('height', 25)
@@ -650,7 +651,7 @@ $(document).ready(function () {
                                         return (index + 1) * segmentWidth + progressStart + 5 + a * 50;
                                     })
                                     .attr('y', 77.5 + 60 * i);
-                            }
+                            // }
                         }
                     }
                     // If single country
@@ -665,7 +666,6 @@ $(document).ready(function () {
                             })
                             .attr('y', 77.5 + 60 * i);
                     }
-
                 }
                 // Append orange bar
                 svg.append('rect')

@@ -26,9 +26,7 @@ lxml~=4.2.5
 keyring~=17.0.0
 setuptools~=47.3.1
 Cython~=0.29.2
-requests~=2.20.1
-bs4~=0.0.1
-beautifulsoup4~=4.6.3
+requests~=2.24.0
 schedule~=0.6.0
 python-dotenv~=0.14.0
 flask-mail~=0.9.1
@@ -39,3 +37,8 @@ flask-mail~=0.9.1
 
 PyJWT~=2.0.1
 httplib2~=0.19.0
+google-api-python-client==1.12.8
+google-auth==1.27.0
+Authlib==0.11
+
+timeago~=1.0.15

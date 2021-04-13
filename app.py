@@ -1,25 +1,40 @@
 import random
 import string
 import os
-from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session, flash, Response, Blueprint
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session
 from flask_mail import Mail, Message
-from models.vaccine_info import Db, Vaccine
-from models.match_company_to_logo import match_logo
 import psycopg2
 import numpy as np
 import json
 import csv
-import models.bhs_daily_bulletin_summary as bhsDBSummary
 from dotenv import load_dotenv
-import requests
+
+from models.models import Db, Vaccine
+from modules.match_company_to_logo import match_logo
+import modules.gapi as PanElixirGAPI
+import google_auth
+import forum
+
 
 load_dotenv('.env')
 
 application = app = Flask(__name__)
-app.register_blueprint(bhsDBSummary.app)
+app.register_blueprint(PanElixirGAPI.app)
+app.register_blueprint(google_auth.app)
+app.register_blueprint(forum.app)
+
+# # Send static files to subdomain
+# app.add_url_rule('/static/<path:filename>',
+#                  endpoint='static',
+#                  subdomain='forum',
+#                  view_func=app.send_static_file)
+#
+# app.config['SERVER_NAME'] = 'localhost:7000'
 
 app.secret_key = ''.join(random.choice(string.printable)
                          for _ in range(20))
+
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.update(dict(
     MAIL_SERVER='smtp.googlemail.com',
     MAIL_PORT=465,
@@ -32,13 +47,21 @@ mail = Mail(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
-conn = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
-                        " dbname=vaccinedb user=internetuser password=welcometopanelixir")
-conn2 = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
-                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
-conn3 = psycopg2.connect("host=panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com"
-                         " dbname=vaccinedb user=internetuser password=welcometopanelixir")
+conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DATABASE_PASSWORD')}''')
+conn2 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DATABASE_PASSWORD')}''')
+conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DATABASE_PASSWORD')}''')
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+app.config['SQLALCHEMY_BINDS'] = {
+    'vaccinedb': 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb',
+    'forumdb': 'postgresql://postgres:iloveNYC0704@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/forumdb'
+}
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' \
+#                                         'postgres:iloveNYC0704' \
+#                                         '@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
@@ -88,6 +111,8 @@ def processEmailQuestion():
 
 @app.route('/', methods=['GET'])
 def index():
+    # if google_auth.is_logged_in():
+    #     user_info = google_auth.get_user_info()
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
                 "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
@@ -154,21 +179,25 @@ def desktopForm():
     else:
         filter_limit = "AND NOT abandoned"
 
+    print(desktop_type)
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
-        " AND country LIKE '%" + desktop_country + "%' "
-        " AND (vac_type LIKE '%" + desktop_type + "%') "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+        " AND country LIKE %s "
+        " AND (vac_type LIKE '%%" + desktop_type.replace("%", "%%") + "%%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company",
+        (f"%{desktop_stages}%", f"%{desktop_country}%")
+    )
 
     data = cur.fetchall()
     cur.execute("rollback")
     total_rows = len(data)
+    # if total_rows > 11:
     data = data[:10]
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
@@ -189,13 +218,14 @@ def card():
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + desktop_stages + "%' "
-        " AND country LIKE '%" + desktop_country + "%' "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+        " AND country LIKE %s "
         " AND (vac_type LIKE '%" + desktop_type + "%') "
         "" + filter_limit + " "
         " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
         # " OFFSET " + str(count * limit) + " ROWS"
-        " FETCH FIRST " + str((count + 1) * limit) + " ROWS ONLY")
+        " FETCH FIRST %s ROWS ONLY",
+        (f"%{desktop_stages}%", f"%{desktop_country}%", str((count + 1) * limit)))
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -228,11 +258,12 @@ def mobileForm():
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
-        " AND country LIKE '%" + mobile_country + "%' "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+        " AND country LIKE %s "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
-        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company")
+        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company",
+        (f"%{mobile_stages}%", f"%{mobile_country}%"))
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -256,13 +287,14 @@ def mobileAppendCards():
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE '%" + mobile_stages + "%' "
-        " AND country LIKE '%" + mobile_country + "%' "
+        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+        " AND country LIKE %s "
         " AND (vac_type LIKE '%" + mobile_type + "%') "
         "" + filter_limit + " "
         " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company"
         # " OFFSET " + str(count * limit) + " ROWS"
-        " FETCH FIRST " + str((count + 1) * limit) + " ROWS ONLY")
+        " FETCH FIRST %s ROWS ONLY",
+        (f"%{mobile_stages}%", f"%{mobile_country}%", str((count + 1) * limit)))
 
     data = cur.fetchall()
     cur.execute("rollback")
@@ -280,7 +312,8 @@ def displayCompany():
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
         " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE info.vac_id = " + companyID + "")
+        " WHERE info.vac_id = %s ",
+        (companyID,))
     data = cur.fetchall()
     cur.execute("rollback")
     # call function match_logo([data], [position of company in data])
@@ -398,7 +431,7 @@ def getBarsData():
                 " GROUP BY stage, progress, phase3_start_date, company, efficacy"
                 " ORDER BY stage DESC, progress DESC NULLS LAST,"
                 " phase3_start_date NULLS LAST, company LIMIT 5;",
-                ("%" + continent + "%", ))
+                (f"%{continent}%",))
     bars_data = cur.fetchall()
     cur.execute("rollback")
 
@@ -420,7 +453,7 @@ def getBarsData():
                 " FROM info "
                 " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
                 " GROUP BY stage ORDER BY stage",
-                ("%" + continent + "%", ))
+                (f"%{continent}%", ))
     continent_data = np.array(cur.fetchall(), dtype=object)
     cur.execute("rollback")
 
@@ -454,7 +487,7 @@ def getBarsData():
 
 @app.route('/load_data', methods=['GET'])
 def load_data():
-    # map data - uses SQLAlchemy models/vaccine_intro.py
+    # map data - uses SQLAlchemy models/models.py/Vaccine
     vaccines_json = {'vaccines': []}
     vaccines = Vaccine.query.all()
     for vaccine in vaccines:
@@ -665,11 +698,11 @@ def getWorldVaccinationData():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('error/404.html'), 404
 
 
 if __name__ == '__main__':
-
+    Db.create_all()
     app.run(debug=True)
 
 

@@ -1,0 +1,314 @@
+{% extends "forumLayout.html" %}
+
+{% block styles %}
+    <style>
+
+    .user-profile-page {
+        width: 70vw;
+        min-height: 80vh;
+        {#display: flex;#}
+        {#align-items: center;#}
+        {#justify-content: center;#}
+    }
+
+    .user-post {
+        padding: 0.5rem;
+        border-bottom: 1px solid lightgray;
+    }
+
+    .tab-pane {
+        margin-bottom: 1rem;
+    }
+    @media (max-width: 425px) and (max-width: 767.98px) {
+        .user-profile-page {
+            width: 80vw;
+        }
+    }
+
+    @media (max-width: 425px) {
+        .user-profile-page {
+            width: 95vw;
+        }
+    }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container mt-3 user-profile-page">
+{#    <h3 class="text-center mb-3">Your User Profile</h3>#}
+        <div class="row" style="display: flex; justify-content: center;">
+
+            <div class="col-lg-9 order-lg-2">
+{#                <ul class="nav nav-tabs">#}
+{#                    <li class="nav-item">#}
+{#                        <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a href="" data-target="#activity" data-toggle="tab" class="nav-link">Activity</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>#}
+{#                    </li>#}
+{#                </ul>#}
+
+                <div class="tab-content py-4">
+
+                        <div class="tab-pane active" id="profile">
+                            <h5 class="mb-1">Personal Profile</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {% if isCurrentUser %}
+                                        <h6>Name</h6>
+                                        <p>
+                                            {{ user_info['firstName'] }} {{ user_info['lastName'] }}
+                                        </p>
+                                        <h6>E-mail</h6>
+                                        <p>
+                                            {{ user_info['email'] }}
+                                        </p>
+                                    {% endif %}
+                                    <h6>PanElixir Username</h6>
+                                    <p>
+                                        @{{ username }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% if isCurrentUser %}
+                            <p class="note">Note: Your name and e-mail will not be shown to others.</p>
+                        {% endif %}
+
+
+                    <div class="tab-pane active" id="profile">
+                        <h5 class="mb-1">Recent Activity</h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Posts</h6>
+                                {% if recent_posts|length > 0 %}
+                                    {% for recentPost in recent_posts %}
+    {#                                    {{ showPost(recentPost, true) }}#}
+                                        <div class="user-post">
+    {#                                    <div class="card mb-1">#}
+    {#                                        <div class="card-body px-3 py-1">#}
+                                            <div class="main-body">
+                                                <a class="text-decoration-none" href="{{ url_for("forum.discussion", post_id=recentPost.pid) }}">{{ recentPost['title'] }}</a>
+                                            </div>
+                                            <div class="forum-stats small text-muted">
+                                                <span class="picon forum-views"><i class="far fa-eye"></i> {{ m.replaceZero(recentPost['views']) }}</span>
+                                                <span class="picon forum-replies"><i class="far fa-comment"></i> {{ m.replaceZero(recentPost['replies']) }}</span>
+                                                <span class="picon forum-likes disabled view-only" id="like"><i class="far fa-heart" id="like-icon"></i> {{ m.replaceZero(recentPost['likes']) }}</span>
+                                                <span class="float-right">{{ recentPost['date'] }}</span>
+                                            </div>
+
+    {#                                        </div>#}
+    {#                                        <div class="card-footer">#}
+    {##}
+    {#                                        </div>#}
+    {#                                    </div>#}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p> {% if isCurrentUser %}You don't{% else %}This user doesn't{% endif %} have any recent posts yet.</p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+{#                            <div class="col-md-6">#}
+{#                                <h6>Recent badges</h6>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">html5</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">react</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">codeply</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">angularjs</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">css3</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">jquery</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">bootstrap</a>#}
+{#                                <a href="#" class="badge badge-dark badge-pill">responsive-design</a>#}
+{#                                <hr>#}
+{#                                <span class="badge badge-primary"><i class="fa fa-user"></i> 900 Followers</span>#}
+{#                                <span class="badge badge-success"><i class="fa fa-cog"></i> 43 Forks</span>#}
+{#                                <span class="badge badge-danger"><i class="fa fa-eye"></i> 245 Views</span>#}
+{#                            </div>#}
+{#                            <div class="col-md-12">#}
+{#                                <h5 class="mt-2"><span class="fa fa-clock-o ion-clock float-right"></span> Recent Activity</h5>#}
+{#                                <table class="table table-sm table-hover table-striped">#}
+{#                                    <tbody>#}
+{#                                        <tr>#}
+{#                                            <td>#}
+{#                                                <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <td>#}
+{#                                                <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <td>#}
+{#                                                <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <td>#}
+{#                                                <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                        <tr>#}
+{#                                            <td>#}
+{#                                                <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>#}
+{#                                            </td>#}
+{#                                        </tr>#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!--/row-->#}
+{#                    </div>#}
+
+
+{#                    <div class="tab-pane" id="messages">#}
+{#                        <div class="alert alert-info alert-dismissable">#}
+{#                            <a class="panel-close close" data-dismiss="alert">×</a> This is an <strong>.alert</strong>. Use this to show important messages to the user.#}
+{#                        </div>#}
+{#                        <table class="table table-hover table-striped">#}
+{#                            <tbody>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                       <span class="float-right font-weight-bold">3 hrs ago</span> Here is your a link to the latest summary report from the..#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                       <span class="float-right font-weight-bold">Yesterday</span> There has been a request on your account since that was..#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                       <span class="float-right font-weight-bold">9/10</span> Porttitor vitae ultrices quis, dapibus id dolor. Morbi venenatis lacinia rhoncus.#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                       <span class="float-right font-weight-bold">9/4</span> Vestibulum tincidunt ullamcorper eros eget luctus.#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>#}
+{#                                       <span class="float-right font-weight-bold">9/4</span> Maxamillion ais the fix for tibulum tincidunt ullamcorper eros.#}
+{#                                    </td>#}
+{#                                </tr>#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+
+
+{#                    <div class="tab-pane" id="edit">#}
+{#                        <form role="form">#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">First name</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="text" value="Jane">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Last name</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="text" value="Bishop">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Email</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="email" value="email@gmail.com">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Company</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="text" value="">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Website</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="url" value="">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Address</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="text" value="" placeholder="Street">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label"></label>#}
+{#                                <div class="col-lg-6">#}
+{#                                    <input class="form-control" type="text" value="" placeholder="City">#}
+{#                                </div>#}
+{#                                <div class="col-lg-3">#}
+{#                                    <input class="form-control" type="text" value="" placeholder="State">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Time Zone</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <select id="user_time_zone" class="form-control" size="0">#}
+{#                                        <option value="Hawaii">(GMT-10:00) Hawaii</option>#}
+{#                                        <option value="Alaska">(GMT-09:00) Alaska</option>#}
+{#                                        <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>#}
+{#                                        <option value="Arizona">(GMT-07:00) Arizona</option>#}
+{#                                        <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>#}
+{#                                        <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>#}
+{#                                        <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>#}
+{#                                        <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Username</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="text" value="janeuser">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Password</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="password" value="11111122333">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input class="form-control" type="password" value="11111122333">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="form-group row">#}
+{#                                <label class="col-lg-3 col-form-label form-control-label"></label>#}
+{#                                <div class="col-lg-9">#}
+{#                                    <input type="reset" class="btn btn-secondary" value="Cancel">#}
+{#                                    <input type="button" class="btn btn-primary" value="Save Changes">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </form>#}
+                    </div>
+{#                </div>#}
+{#            </div>#}
+
+            </div>
+            <div class="col-lg-3 order-lg-1 text-center">
+                <img src="{{ user_info['picture'] }}" class="mx-auto img-fluid img-circle d-block rounded-circle" alt="Profile Photo">
+                <h6 class="mt-2">Profile Photo</h6>
+{#                <label class="custom-file">#}
+{#                    <input type="file" id="file" class="custom-file-input">#}
+{#                    <span class="custom-file-control">Choose file</span>#}
+{#                </label>#}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

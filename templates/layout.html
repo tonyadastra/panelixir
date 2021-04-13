@@ -6,7 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="PanElixir's COVID-19 vaccine tracker traces the distribution, development, and side effects of vaccines around the world. Here, you can also find news, stories, maps, and frequently asked questions from the CDC and medical experts.">
-{#    <meta name="google-signin-client_id" content="46183730312-76vb8c66oje6imovcntvgh60fi0robdq.apps.googleusercontent.com">#}
 
     {% block title %}
         <title>Global COVID-19 Vaccine Frontline - PanElixir</title>
@@ -33,19 +32,15 @@
 
 <body>
 
-{#<div class="g-signin2" data-onsuccess="onSignIn"></div>#}
-{#<a href="#" onclick="signOut();">Sign out</a>#}
-
-
-
 <!-- Heading Bar of Webpage-->
 <div class="title-bar">
 {#    <div class="row">#}
 
-        <h1 class="title text-center">
-            <img id="logo-img" src="../static/img/panelixir-logo.png" alt="logo" style="height: 40px; display: inline;">
-            <a class="style-a elixir" href="/">Global COVID-19 Vaccine Frontline</a>
-        </h1>
+    <h1 class="title text-center">
+        <img id="logo-img" src="../static/img/panelixir-logo.png" alt="logo" style="height: 40px; display: inline;">
+        <a class="style-a elixir" href="/">Global COVID-19 Vaccine Frontline</a>
+    </h1>
+
 <!--        <h5 class="header-text align-right" style="right: 27%">Home</h5>-->
 {#        <h5 class="header-text" id="submit-data" style="position: absolute; right: 15%">#}
 {#            <b style="color: darkorange;">New! </b>#}
@@ -59,6 +54,7 @@
 </div>
 
 <div class="social-media-share">
+{#    <a href="/google/login"><button class="btn btn-primary" style="float: left;">Login</button></a>#}
 {#    <div class="col col-md-12 col-sm-12">#}
 {#        <div id="google_translate_element"></div>#}
 {#    </div>#}
@@ -72,7 +68,7 @@
 {% endblock %}
 
 <div style="height: 2rem;"></div>
-    <footer class="page-footer font-small pt-4" style="background-color: #00261c; color:#c6cecc;">
+    <footer class="page-footer font-small pt-4">
 
         <!-- Footer Links -->
         <div class="container-fluid text-center text-md-left">
@@ -82,8 +78,8 @@
                     <!-- Content -->
                     <h4 class="text-uppercase">PanElixir</h4>
                     <!-- <p>Legal Disclaimer</p> -->
-                    <p class="disclaimer-font" style="color: #00a56b">This website and all of its contents, including all data, visualizations, and analysis is provided for general information purpose only. All the information of this website is collected from multiple publicly available sources that do not always agree. While we do our best to keep the information accurate and up-to-date, we do not make any warranties about the completeness, timeliness, liability, and accuracy of the information presented on this website. We will not be liable for any losses and/or damages in connection with the use of our website.</p>
-                    <p class="disclaimer-font" style="color: #00a56b">Sources:&nbsp;<i>World Health Organization, The New York Times, New England Journal of Medicine, U.S. Department of Health and Human Services</i></p>
+                    <p class="disclaimer-font">This website and all of its contents, including all data, visualizations, and analysis is provided for general information purpose only. All the information of this website is collected from multiple publicly available sources that do not always agree. While we do our best to keep the information accurate and up-to-date, we do not make any warranties about the completeness, timeliness, liability, and accuracy of the information presented on this website. We will not be liable for any losses and/or damages in connection with the use of our website.</p>
+                    <p class="disclaimer-font">Sources:&nbsp;<i>World Health Organization, The New York Times, New England Journal of Medicine, U.S. Department of Health and Human Services</i></p>
 
                 </div>
 
@@ -125,8 +121,8 @@
         </div>
 
         <!-- Copyright -->
-        <div class="footer-copyright text-center py-3" style="color:#c6cecc; ">© 2021 Copyright:
-            <a href="https://PANELIXIR.com/" style="color:#c6cecc"> panelixir.com</a>
+        <div class="footer-copyright text-center py-3" style="color:#c6cecc; ">Copyright © 2021 PanElixir. All rights reserved.
+{#            <a href="https://PANELIXIR.com/" style="color:#c6cecc"> panelixir.com</a>#}
         </div>
     </footer>
 
@@ -142,6 +138,7 @@
   gtag('config', 'UA-175789024-1');
 </script>
 
+
 {% block scripts %}
 {% endblock %}
 
@@ -154,6 +151,28 @@ function scrollToTop() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
+{#const buttons = document.querySelectorAll("a.ripple");#}
+{#    buttons.forEach(function (button) {#}
+{#        button.addEventListener('click', function (e) {#}
+            {#let x = event.clientX - event.target.offsetLeft;#}
+            {#let y = event.clientY - event.target.offsetTop;#}
+{##}
+{#            let bodyOffsets = document.body.getBoundingClientRect();#}
+{#            let x = e.pageX - bodyOffsets.left;#}
+{#            let y = e.pageY;#}
+{##}
+{#            let rippleElement = document.createElement('span');#}
+{#            rippleElement.className = "ripples";#}
+{#            rippleElement.style.left = x + 'px';#}
+{#            rippleElement.style.top = y + 'px';#}
+{#            this.appendChild(rippleElement);#}
+{#            // setTimeout(function () {#}
+{#            //    rippleElement.remove();#}
+{#            // }, 500);#}
+{#        });#}
+{#    });#}
+
+
 </script>
 {#<script src="https://apis.google.com/js/platform.js" async defer></script>#}
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=600128edf4055d0012d6087d&product=inline-share-buttons" async="async"></script>

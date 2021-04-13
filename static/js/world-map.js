@@ -352,20 +352,20 @@
         .append("div")
         .attr("class", "world-map-projection-dropdown")
         .html(
-            "<div class=\"btn-group-vertical\" id='WorldMapZoomBtnGroup'>" +
-            // "  <button class=\"btn btn-outline-primary dropdown-toggle\" type=\"button\" id=\"WorldMapZoomDropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
-            // "    World\n" +
-            // "  </button>\n" +
-            // "  <div class=\"dropdown-menu\" id='world-map-dropdown-items' aria-labelledby=\"WorldMapZoomDropdown\">\n" +
-            "    <button class=\"active dropdown-item zoom-dropdown\" type=\"button\">World</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Europe</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Middle East</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">North America</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Asia</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">South America</button>" +
-            "    <button class=\"dropdown-item zoom-dropdown\" type=\"button\">Oceania</button>" +
-            // "  </div>\n" +
-            "</div>"
+            `<div class="btn-group-vertical" id='WorldMapZoomBtnGroup'>
+<!--              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="WorldMapZoomDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                World-->
+<!--              </button>-->
+<!--              <div class="dropdown-menu" id='world-map-dropdown-items' aria-labelledby="WorldMapZoomDropdown">-->
+                <button class="active dropdown-item zoom-dropdown" type="button">World</button>
+                <button class="dropdown-item zoom-dropdown" type="button">Europe</button>
+                <button class="dropdown-item zoom-dropdown" type="button">Middle East</button>
+                <button class="dropdown-item zoom-dropdown" type="button">North America</button>
+                <button class="dropdown-item zoom-dropdown" type="button">Asia</button>
+                <button class="dropdown-item zoom-dropdown" type="button">South America</button>
+                <button class="dropdown-item zoom-dropdown" type="button">Oceania</button>
+<!--              </div>-->
+            </div>`
         )
 
 
