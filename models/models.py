@@ -38,6 +38,8 @@ class Post(Db.Model):
     date = Db.Column(Db.TIMESTAMP, nullable=False, default=datetime.datetime.utcnow)
     views = Db.Column(Db.Integer, nullable=False, default=0)
     edited = Db.Column(Db.Boolean, nullable=False, default=False)
+    pinned = Db.Column(Db.Boolean, nullable=False, default=False)
+    status = Db.Column(Db.String, nullable=False, default='ok')
     likes = Db.relationship('UserReaction', backref='posts', lazy='dynamic', cascade="all, delete, delete-orphan")
     replies = Db.relationship('PostReplies', backref='posts', lazy=True, cascade="all, delete, delete-orphan")
 

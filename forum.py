@@ -529,7 +529,9 @@ def forumDeleteEntity():
             if category == "post":
                 thisPost = Post.query.filter_by(pid=pid, author=uid).first()
                 Db.session.delete(thisPost)
+                Db.session.query(Favorites).filter(Favorites.entity == getEntityID('p', pid)).delete()
                 Db.session.commit()
+
                 return redirect(url_for(".forum"))
 
             elif category == "reply":
@@ -540,6 +542,7 @@ def forumDeleteEntity():
                 Db.session.delete(thisComment)
             else:
                 return jsonify({"status": "failure", "error": "unidentified category of delete"})
+
 
             Db.session.commit()
 
