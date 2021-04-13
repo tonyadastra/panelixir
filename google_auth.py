@@ -6,7 +6,6 @@ from authlib.client import OAuth2Session
 import google.oauth2.credentials
 import googleapiclient.discovery
 from models.models import Db, User
-from forum import login_required
 
 
 load_dotenv('.env')
