@@ -638,7 +638,6 @@ $(document).ready(function () {
                     // Append Flag Image
                     // If multiple countries
                     for (let a = 0; a < flagMap[i].length; a++) {
-                        console.log(flagMap[i][a])
                         // if flagMap[i][a] is not undefined
                         if (flagMap[i][a] !== '.') {
                             // for (let j = 0; j < flagMap[i][a].length; j++) {
