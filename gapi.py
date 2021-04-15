@@ -11,13 +11,13 @@ import requests
 import httplib2
 import flask
 # import psycopg2.extras
-# import psycopg2
+import psycopg2
 import os
 from modules.ApiResultProcessor import DocsTableProcessor
 
-# conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
-#                          dbname=bhsdb user={os.environ.get('AWS_DATABASE_MASTER_USER')}
-#                          password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
+conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
+                         dbname=bhsdb user={os.environ.get('AWS_DATABASE_MASTER_USER')}
+                         password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
 # cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 app = flask.Blueprint('daily_bulletin', __name__)
