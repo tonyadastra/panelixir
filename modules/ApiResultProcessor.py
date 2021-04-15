@@ -123,7 +123,7 @@ class DocsTableProcessor(object):
 def foundTargetSubheading(text_run):
     text_style = text_run['textStyle']
     content = text_run['content']
-    targetExceptions = ["CSM Promise Scholars Application Workshops",
+    targetExceptions = ["SMUHSD Scholarship Handbook 2020-21", "CSM Promise Scholars Application Workshops",
                         "Counseling Office & Career Center Newsletters for Juniors & Seniors",
                         "Virtual College Visits for SMUHSD Students", "College of San Mateo Umoja Info Sessions",
                         "College Board BigFuture Days - Virtual College Fairs",
@@ -136,7 +136,13 @@ def foundTargetSubheading(text_run):
                         "San Mateo Credit Union Scholarship",
                         "Sons of Italy & Italian Catholic Federation Scholarships", "Law Scholarship",
                         "Asian Pacific Fund Scholarships", "TheDream.US Scholarship",
-                        "Cabrillo Civic Clubs of California", "Students Rising Above (JUNIORS)"]
+                        "Cabrillo Civic Clubs of California", "Students Rising Above (JUNIORS)",
+                        "Counseling Office & Career Center Newsletters for Juniors & Seniors",
+                        "Common App Essay Presentation - Class of 2022",
+                        "Upcoming Events for Admitted Students - CSU & UC",
+                        "RACC Virtual College Fair", "CSM Connect to College - April 29th",
+                        "CSM Promise Scholars Program - Application Workshops",
+                        "SMUHSD Black Parent Group Scholarship", "Skyline College Family Night Webinar -"]
     for exception in targetExceptions:
         if content.strip() == exception:
             return True
