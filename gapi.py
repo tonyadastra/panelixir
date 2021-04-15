@@ -267,6 +267,7 @@ def get_daily_bulletin_data():
                             INNER JOIN bulletin_categories bc on ba.category = bc.cid
                             ORDER BY cid, CASE WHEN tag = \'New\' THEN tag END, aid''')
     announcements = cur.fetchall()
+    cur.execute("rollback")
 
     ordered_announcements = []
     heading_array = []
