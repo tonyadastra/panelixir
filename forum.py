@@ -6,9 +6,12 @@ from models.models import Db, User, Post, UserReaction, PostReplies, UserReactio
     LikedComments, Favorites
 from sqlalchemy import desc, case, and_
 from modules.forumFormat import getTimeAgo, formatInput, toJSBoolean, getEntityID, readEntity, readPost
+from dotenv import load_dotenv
 import os
 import datetime
 import json
+
+load_dotenv('.env')
 
 # conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
 #                          dbname=forumdb user={os.environ.get('AWS_DATABASE_MASTER_USER')}
