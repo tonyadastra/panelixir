@@ -1,7 +1,6 @@
 .sublime-workspace
 .idea
 .DS_store
-.env
 dump
 venv
 # Elastic Beanstalk Files
