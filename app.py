@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 from models.models import Db, Vaccine
 from modules.match_company_to_logo import match_logo
-import modules.gapi as PanElixirGAPI
+import gapi as PanElixirGAPI
 import google_auth
 import forum
 
