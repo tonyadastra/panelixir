@@ -1,6 +1,6 @@
 from flask import request, render_template, redirect, url_for, Blueprint, session, jsonify, abort
 import google_auth
-import psycopg2
+# import psycopg2
 import functools
 from models.models import Db, User, Post, UserReaction, PostReplies, UserReactionReplies, PostReplyComments, \
     LikedComments, Favorites
@@ -10,10 +10,10 @@ import os
 import datetime
 import json
 
-conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
-                         dbname=forumdb user={os.environ.get('AWS_DATABASE_MASTER_USER')} 
-                         password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-cur = conn.cursor()
+# conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
+#                          dbname=forumdb user={os.environ.get('AWS_DATABASE_MASTER_USER')}
+#                          password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
+# cur = conn.cursor()
 
 app = Blueprint('forum', __name__)
 
