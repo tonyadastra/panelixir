@@ -10,15 +10,18 @@ import jwt
 import requests
 import httplib2
 import flask
-# import psycopg2.extras
-import psycopg2
+# import psycopg2
+import psycopg2.extras
 import os
+from dotenv import load_dotenv
 from modules.ApiResultProcessor import DocsTableProcessor
+
+load_dotenv('.env')
 
 conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
                          dbname=bhsdb user={os.environ.get('AWS_DATABASE_MASTER_USER')}
                          password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-# cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 app = flask.Blueprint('daily_bulletin', __name__)
 
@@ -261,45 +264,45 @@ def get_daily_bulletin_gdoc_data():
     return flask.jsonify(ordered_summary)
 
 
-# @app.route('/api/bhs/daily-bulletin')
-# def get_daily_bulletin_data():
-#     cur.execute('''SELECT * FROM bulletin_announcements ba
-#                             INNER JOIN bulletin_categories bc on ba.category = bc.cid
-#                             ORDER BY cid, CASE WHEN tag = \'New\' THEN tag END, aid''')
-#     announcements = cur.fetchall()
-#     cur.execute("rollback")
-#
-#     ordered_announcements = []
-#     heading_array = []
-#     e_announcement = {}
-#
-#     for existing_announcement in announcements:
-#         e_title = existing_announcement['title']
-#         e_heading = existing_announcement['heading']
-#         e_body = existing_announcement['body']
-#         e_tag = existing_announcement['tag']
-#
-#         # if e_title not in e_categories:
-#         appended_categories = list(map(lambda x: x['innerText'], ordered_announcements))
-#         if e_title not in appended_categories:
-#             if len(appended_categories) != 0 and heading_array:
-#                 e_announcement['body'] = heading_array
-#                 heading_array = []
-#             e_announcement = {"innerText": e_title, "structure": "category"}
-#
-#             ordered_announcements.append(e_announcement)
-#
-#         heading_array.append({"structure": "heading", "innerText": e_heading,
-#                               "tag": e_tag,
-#                               "body": {
-#                                   "innerText": e_body, "structure": "text"
-#                               }}
-#                              )
-#
-#     if heading_array:
-#         ordered_announcements[-1]['body'] = heading_array
-#
-#     return flask.jsonify(ordered_announcements)
+@app.route('/api/bhs/daily-bulletin')
+def get_daily_bulletin_data():
+    cur.execute('''SELECT * FROM bulletin_announcements ba
+                            INNER JOIN bulletin_categories bc on ba.category = bc.cid
+                            ORDER BY cid, CASE WHEN tag = \'New\' THEN tag END, aid''')
+    announcements = cur.fetchall()
+    cur.execute("rollback")
+
+    ordered_announcements = []
+    heading_array = []
+    e_announcement = {}
+
+    for existing_announcement in announcements:
+        e_title = existing_announcement['title']
+        e_heading = existing_announcement['heading']
+        e_body = existing_announcement['body']
+        e_tag = existing_announcement['tag']
+
+        # if e_title not in e_categories:
+        appended_categories = list(map(lambda x: x['innerText'], ordered_announcements))
+        if e_title not in appended_categories:
+            if len(appended_categories) != 0 and heading_array:
+                e_announcement['body'] = heading_array
+                heading_array = []
+            e_announcement = {"innerText": e_title, "structure": "category"}
+
+            ordered_announcements.append(e_announcement)
+
+        heading_array.append({"structure": "heading", "innerText": e_heading,
+                              "tag": e_tag,
+                              "body": {
+                                  "innerText": e_body, "structure": "text"
+                              }}
+                             )
+
+    if heading_array:
+        ordered_announcements[-1]['body'] = heading_array
+
+    return flask.jsonify(ordered_announcements)
 
 
 @app.after_request
