@@ -5,7 +5,6 @@ import functools
 from models.models import Db, User, Post, UserReaction, PostReplies, UserReactionReplies, PostReplyComments, \
     LikedComments, Favorites
 from sqlalchemy import desc, case, and_
-# from modules.timeInterval import getTimeAgo
 from modules.forumFormat import getTimeAgo, formatInput, toJSBoolean, getEntityID, readEntity, readPost
 import os
 import datetime
@@ -73,6 +72,7 @@ def navbar_templated(template=None):
 
 
 @app.route('/forum')
+@app.route('/forums')
 @navbar_templated('forum.html')
 def forum():
     page = int(request.args.get('page', default=1))

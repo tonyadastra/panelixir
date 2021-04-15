@@ -10,7 +10,15 @@ import jwt
 import requests
 import httplib2
 import flask
+import psycopg2
+import psycopg2.extras
+import os
 from modules.ApiResultProcessor import DocsTableProcessor
+
+conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
+                         dbname=bhsdb user={os.environ.get('AWS_DATABASE_MASTER_USER')} 
+                         password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
+cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 app = flask.Blueprint('daily_bulletin', __name__)
 
@@ -185,7 +193,11 @@ def gce_list_instances(accessToken):
 
 # if __name__ == '__main__':
 @app.route('/get-bhs-daily-bulletin-data')
-def get_daily_bulletin_data():
+def get_daily_bulletin_gdoc_data():
+    access_token = flask.request.args.get('access_token')
+    if access_token != "DWeU9aPLlVDvWz7B":
+        flask.abort(403)
+
     cred = load_json_credentials(json_filename)
 
     private_key = load_private_key(cred)
@@ -227,7 +239,7 @@ def get_daily_bulletin_data():
                 heading['body'] = subheading_array
                 ordered_summary.append(heading)
                 subheading_array = []
-            heading = {"structure": "heading", "innerText": summaryText['heading']}
+            heading = {"structure": "category", "innerText": summaryText['heading']}
         if "subheading" in summaryText:
             # if len(text.strip()) == 0 and len(subheading) != 0:
             #     subheading['innerText'] += summaryText['subheading']
@@ -236,7 +248,7 @@ def get_daily_bulletin_data():
                 subheading['body'] = text
                 text = ""
 
-            subheading = {"structure": "subheading", "innerText": summaryText['subheading']}
+            subheading = {"structure": "heading", "innerText": summaryText['subheading']}
             subheading_array.append(subheading)
         if "text" in summaryText:
             text = {"structure": "text", "innerText": summaryText['text'].strip()}
@@ -247,6 +259,46 @@ def get_daily_bulletin_data():
     heading['body'] = subheading_array
     ordered_summary.append(heading)
     return flask.jsonify(ordered_summary)
+
+
+@app.route('/api/bhs/daily-bulletin')
+def get_daily_bulletin_data():
+    cur.execute('''SELECT * FROM bulletin_announcements ba
+                            INNER JOIN bulletin_categories bc on ba.category = bc.cid 
+                            ORDER BY cid, CASE WHEN tag = \'New\' THEN tag END, aid''')
+    announcements = cur.fetchall()
+
+    ordered_announcements = []
+    heading_array = []
+    e_announcement = {}
+
+    for existing_announcement in announcements:
+        e_title = existing_announcement['title']
+        e_heading = existing_announcement['heading']
+        e_body = existing_announcement['body']
+        e_tag = existing_announcement['tag']
+
+        # if e_title not in e_categories:
+        appended_categories = list(map(lambda x: x['innerText'], ordered_announcements))
+        if e_title not in appended_categories:
+            if len(appended_categories) != 0 and heading_array:
+                e_announcement['body'] = heading_array
+                heading_array = []
+            e_announcement = {"innerText": e_title, "structure": "category"}
+
+            ordered_announcements.append(e_announcement)
+
+        heading_array.append({"structure": "heading", "innerText": e_heading,
+                              "tag": e_tag,
+                              "body": {
+                                  "innerText": e_body, "structure": "text"
+                              }}
+                             )
+
+    if heading_array:
+        ordered_announcements[-1]['body'] = heading_array
+
+    return flask.jsonify(ordered_announcements)
 
 
 @app.after_request
