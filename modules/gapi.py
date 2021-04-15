@@ -10,8 +10,8 @@ import jwt
 import requests
 import httplib2
 import flask
-import psycopg2
 import psycopg2.extras
+import psycopg2
 import os
 from modules.ApiResultProcessor import DocsTableProcessor
 
