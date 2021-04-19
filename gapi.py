@@ -23,7 +23,7 @@ conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')}
                          password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
 cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-app = flask.Blueprint('daily_bulletin', __name__)
+app = flask.Blueprint('gapi', __name__)
 
 # Project ID for this request.
 project = 'calendar-1613977057601'
@@ -193,14 +193,7 @@ def gce_list_instances(accessToken):
 #             if not discard:
 #                 return True
 
-
-# if __name__ == '__main__':
-@app.route('/get-bhs-daily-bulletin-data')
-def get_daily_bulletin_gdoc_data():
-    access_token = flask.request.args.get('access_token')
-    if access_token != "DWeU9aPLlVDvWz7B":
-        flask.abort(403)
-
+def get_access_token():
     cred = load_json_credentials(json_filename)
 
     private_key = load_private_key(cred)
@@ -216,59 +209,117 @@ def get_daily_bulletin_gdoc_data():
     if token is None:
         print('Error:', err)
         exit(1)
-    # print(token)
+    return token
 
-    # print(token)
+
+# if __name__ == '__main__':
+@app.route('/get-bhs-daily-bulletin-data')
+@app.route('/bhs/d/daily-bulletin', subdomain='gapi')
+def get_daily_bulletin_gdoc_data(access_token=None):
+    if access_token is None:
+        access_token = flask.request.args.get('access_token')
+    if access_token != "DWeU9aPLlVDvWz7B":
+        flask.abort(403)
+
+    token = get_access_token()
+    if token is None:
+        raise Exception("Google Access Token Cannot be Found.")
+
     GDoc_ID_daily_bulletin = '1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI'
+    # Model ID: 1YkhOygPCk1LDZOdg4c0QHWDD1Xhvx8g2FiGuJH5tuC0
+    # Bulletin ID: 1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI
     daily_bulletin_url = (
-        'https://docs.googleapis.com/v1/documents/' + GDoc_ID_daily_bulletin + '?access_token=' + token
+        f'https://docs.googleapis.com/v1/documents/{GDoc_ID_daily_bulletin}?access_token={token}'
     )
     # print(daily_bulletin_url)
     daily_bulletin_api = requests.get(daily_bulletin_url)
 
     processor = DocsTableProcessor(daily_bulletin_api)
     summary = processor.return_processed_json()
-    # print(len(summary))
+    # print(json.dumps(summary, indent=2))
 
     ordered_summary = []
+    category = {}
     heading = {}
-    subheading = {}
-    subheading_array = []
+    heading_array = []
     text = {}
-    # prev_group = ""
+    todayInfo = {}
+    date = {}
+    prev_group = ""
     for summaryText in summary:
+        if "date" in summaryText:
+            date = {"date": summaryText['date']}
+        if "todayInfo" in summaryText:
+            todayInfo = {"todayInfo": summaryText['todayInfo']}
+        if "category" in summaryText:
+            if len(heading_array) != 0 and len(category) != 0:
+                heading['body'] = text
+                category['body'] = heading_array
+                ordered_summary.append(category)
+                heading_array = []
+            category = {"structure": "category", "innerText": summaryText['category']}
+            prev_group = "category"
         if "heading" in summaryText:
-            if len(subheading_array) != 0 and len(heading) != 0:
-                heading['body'] = subheading_array
-                ordered_summary.append(heading)
-                subheading_array = []
-            heading = {"structure": "category", "innerText": summaryText['heading']}
-        if "subheading" in summaryText:
-            # if len(text.strip()) == 0 and len(subheading) != 0:
-            #     subheading['innerText'] += summaryText['subheading']
+            # if len(text.strip()) == 0 and len(heading) != 0:
+            #     heading['innerText'] += summaryText['heading']
             # else:
-            if len(text) != 0 and len(subheading) != 0:
-                subheading['body'] = text
+            if len(text) != 0 and len(heading) != 0:
+                heading['body'] = text
                 text = ""
 
-            subheading = {"structure": "heading", "innerText": summaryText['subheading']}
-            subheading_array.append(subheading)
+            heading = {"structure": "heading", "innerText": summaryText['heading']}
+            heading_array.append(heading)
+            prev_group = "heading"
         if "text" in summaryText:
             text = {"structure": "text", "innerText": summaryText['text'].strip()}
-            # ordered_summary
-            # print(heading)
-    if subheading_array:
-        subheading_array[-1]['body'] = text
-    heading['body'] = subheading_array
-    ordered_summary.append(heading)
-    return flask.jsonify(ordered_summary)
+            if prev_group == "category":
+                # heading['description'] = summaryText['text'].strip()
+                heading = {"structure": "heading", "innerText": category['innerText'], "body": text}
+                heading_array.append(heading)
+            # else:
+                # text = {"structure": "text", "innerText": summaryText['text'].strip()}
+
+            prev_group = "text"
+    if heading_array:
+        heading_array[-1]['body'] = text
+    category['body'] = heading_array
+    ordered_summary.append(category)
+
+    bulletinInfo = {"header": None, "summary": None}
+
+    if date and todayInfo:
+        bulletinInfo['header'] = {"date": date['date'], "todayInfo": todayInfo['todayInfo']}
+    bulletinInfo['summary'] = ordered_summary
+
+    return flask.jsonify(bulletinInfo)
+
+
+# @app.route('/get-bhs-counseling-newsletter-data')
+# @app.route('/bhs/d/counseling-newsletter', subdomain='gapi')
+# def get_counseling_newsletter_gdoc_data():
+#     token = get_access_token()
+#     if token is None:
+#         raise Exception("Google Access Token Cannot be Found.")
+#
+#     # print(token)
+#     GDoc_ID_counseling_newsletter = '1s9c-EqbkKcYK89K23VI2Dwiw8jcKc1IEI83ltRqVfgA'
+#     counseling_newsletter_url = (
+#         f'https://docs.googleapis.com/v1/documents/{GDoc_ID_counseling_newsletter}?access_token={token}'
+#     )
+#     counseling_newsletter_api = requests.get(counseling_newsletter_url)
+#     # print(len(counseling_newsletter_api.json()['body']['content']))
+#     # for bodyContent in counseling_newsletter_api.json()['body']['content']:
+#     #     print(type(bodyContent))
+#     return flask.jsonify(counseling_newsletter_api.json())
 
 
 @app.route('/api/bhs/daily-bulletin')
+@app.route('/bhs/d/daily-bulletin', subdomain='api')
 def get_daily_bulletin_data():
     cur.execute('''SELECT * FROM bulletin_announcements ba
                             INNER JOIN bulletin_categories bc on ba.category = bc.cid
-                            ORDER BY cid, CASE WHEN tag = \'New\' THEN tag END, aid''')
+                            WHERE bc._order >= 0 AND ba._order >= 0
+                            ORDER BY bc._order, ba._order''')
     announcements = cur.fetchall()
     cur.execute("rollback")
 
@@ -302,7 +353,9 @@ def get_daily_bulletin_data():
     if heading_array:
         ordered_announcements[-1]['body'] = heading_array
 
-    return flask.jsonify(ordered_announcements)
+    header = get_daily_bulletin_gdoc_data(access_token='DWeU9aPLlVDvWz7B').get_json().get("header", None)
+
+    return flask.jsonify({"summary": ordered_announcements, "header": header})
 
 
 @app.after_request
