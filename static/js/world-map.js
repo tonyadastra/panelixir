@@ -251,13 +251,14 @@
 
     // get countries with data, append to the end of the country json (their border color will not be overridden)
     var hasData = [];
+    // console.log(countries)
     for (var i = 0; i < countries.length; i++) {
         if (countries[i].hasOwnProperty('vaccinations') && countries[i]['vaccinations']['vaccinations'] > 0) {
             hasData.push(countries[i]);
             countries.splice(i, 1);
             i--;
         }
-        if (countries[i].name === "Antarctica") {
+        else if (countries[i].name === "Antarctica") {
             countries.splice(i, 1);
             i--;
         }
