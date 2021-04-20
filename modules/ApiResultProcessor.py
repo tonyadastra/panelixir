@@ -78,11 +78,15 @@ class DocsTableProcessor(object):
                     self.summary.append({"category": textRun['content'].replace('\n', '').strip()})
 
                 elif foundTargetHeading(textRun):
+                    heading_text_content = textRun['content'].replace('\n', '')
                     if self.all_text:
                         self.summary.append({"text": self.all_text})
                         self.all_text = ""
+                    if "italic" in textRun['textStyle'] and textRun['textStyle']['italic']:
+                        # the first space is to for the subheading-remove-all-caps; the &nbsp; inserts a word break
+                        heading_text_content = f"<i> {heading_text_content}&nbsp;</i>"
 
-                    self.summary.append({"heading": textRun['content'].replace('\n', '').strip()})
+                    self.summary.append({"heading": heading_text_content.strip()})
                     if "link" in textRun['textStyle']:
                         url = textRun['textStyle']['link']['url']
                         openInNewTab = True
@@ -113,9 +117,16 @@ class DocsTableProcessor(object):
                                         f"href='{url}'>{text_content.strip()}</a>")
                         if newLine:
                             text_content += "<br>"
+
                     elif ("bold" in textRun['textStyle']
                           or "underline" in textRun['textStyle']) and text_content.strip():
-                        text_content = f"<b>{text_content}</b>"
+                        bold = textRun['textStyle'].get("bold", None)
+                        underline = textRun['textStyle'].get("underline", None)
+                        if bold or underline:
+                            text_content = f"<b>{text_content}</b>"
+
+                    if "italic" in textRun['textStyle'] and textRun['textStyle']['italic']:
+                        text_content = f"<i>{text_content}</i>"
 
                     if "backgroundColor" in textRun['textStyle']:
                         backgroundColor = textRun['textStyle']["backgroundColor"]['color']['rgbColor']
@@ -146,6 +157,9 @@ class DocsTableProcessor(object):
         for i, summaryText in enumerate(list(self.summary)):
             key = next(iter(summaryText))
             value = next(iter(summaryText.values())).strip()
+
+            # if not value:
+            #     continue
 
             if prev_key == key:
                 try:
@@ -197,7 +211,8 @@ def foundTargetHeading(text_run):
                         "RACC Virtual College Fair", "CSM Connect to College - April 29th",
                         "CSM Promise Scholars Program - Application Workshops",
                         "SMUHSD Black Parent Group Scholarship", "Skyline College Family Night Webinar -",
-                        "Tips on How to Access College & Career Prep Resources at BHS - "]
+                        "Tips on How to Access College & Career Prep Resources at BHS - ",
+                        "College PEP Events", "Skyline College Priority Enrollment Program (PEP) -"]
     for exception in targetExceptions:
         if content.strip() == exception:
             return True
@@ -225,7 +240,7 @@ def foundTargetHeading(text_run):
                         and \
                         not (fgRed == 0.06666667 and fgGreen == 0.33333334 and fgBlue == 0.8):
                     return False
-            discard_keywords = ["https", "www", "register here"]
+            discard_keywords = ["https", "www", "register here", "here"]
             discard = False
             for keyword in discard_keywords:
                 if keyword.lower() in content.lower():
