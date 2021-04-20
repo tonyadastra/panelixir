@@ -260,6 +260,10 @@ def get_daily_bulletin_gdoc_data(access_token=None):
             category = {"structure": "category", "innerText": summaryText['category']}
             prev_group = "category"
         if "heading" in summaryText:
+            headingText = summaryText['heading']
+            # Exception Handling: Cañada
+            if headingText == "College PEP Events":
+                headingText = "Cañada College PEP Events"
             # if len(text.strip()) == 0 and len(heading) != 0:
             #     heading['innerText'] += summaryText['heading']
             # else:
@@ -267,10 +271,14 @@ def get_daily_bulletin_gdoc_data(access_token=None):
                 heading['body'] = text
                 text = ""
 
-            heading = {"structure": "heading", "innerText": summaryText['heading']}
+            heading = {"structure": "heading", "innerText": headingText}
             heading_array.append(heading)
             prev_group = "heading"
         if "text" in summaryText:
+            # Exception Handling: Cañada
+            if summaryText['text'].strip() == "<b>Cañada</b>":
+                continue
+
             text = {"structure": "text", "innerText": summaryText['text'].strip()}
             if prev_group == "category":
                 # heading['description'] = summaryText['text'].strip()
