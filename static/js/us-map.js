@@ -721,7 +721,7 @@
             per_hundred_cell.append("p")
                 .attr("class", "cell-total-new-vaccinations-portion")
                 .text(function (d) {
-                    return abbreviateNumber(d[1]);
+                    return abbreviateNumber(parseFloat(d[1]));
                 });
 
         }

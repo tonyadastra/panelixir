@@ -106,7 +106,7 @@ def exchangeJwtForAccessToken(signed_jwt):
     r = requests.post(auth_url, data=params)
 
     if r.ok:
-        return (r.json()['access_token'], '')
+        return r.json()['access_token'], ''
 
     return None, r.text
 
@@ -227,11 +227,12 @@ def get_daily_bulletin_gdoc_data(access_token=None):
 
     GDoc_ID_daily_bulletin = '1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI'
     # Model ID: 1YkhOygPCk1LDZOdg4c0QHWDD1Xhvx8g2FiGuJH5tuC0
+    # Test Version ID: 1d0b75W4_PwCsxfHGReHxpseA9FuprL8-aA7UG0i8U1k
     # Bulletin ID: 1tyq-Gj_VwNbucWIelMOBYVkYT3_QixGGxDc9qC_K2uI
     daily_bulletin_url = (
         f'https://docs.googleapis.com/v1/documents/{GDoc_ID_daily_bulletin}?access_token={token}'
     )
-    # print(daily_bulletin_url)
+    print(daily_bulletin_url)
     daily_bulletin_api = requests.get(daily_bulletin_url)
 
     processor = DocsTableProcessor(daily_bulletin_api)

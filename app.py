@@ -74,7 +74,7 @@ filter_limit = ""
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'static/favicon.ico', mimetype='image/vnd.microsoft.icon')
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/email-form-submission-beta-section', methods=['POST'])
@@ -109,7 +109,7 @@ def processEmailQuestion():
     return redirect(url_for('vaccineFAQ'))
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     # if google_auth.is_logged_in():
     #     user_info = google_auth.get_user_info()
@@ -692,7 +692,6 @@ def getWorldVaccinationData():
             vaccination_data['country'] = "Côte d'Ivoire"
 
     world_vaccination_data.extend(us_vaccination_data)
-
 
     return jsonify(world_vaccination_data)
 
