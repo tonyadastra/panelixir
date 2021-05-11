@@ -787,7 +787,9 @@ $(document).ready(function () {
         event.stopPropagation();
     });
     $('#all-dropdown-items-stages').on('click', function (event) {
-        event.stopPropagation();
+        event.
+
+        ropagation();
     });
     $('#all-dropdown-items-platforms').on('click', function (event) {
         event.stopPropagation();

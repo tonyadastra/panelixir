@@ -4,12 +4,17 @@ import json
 class DocsTableProcessor(object):
     def __init__(self, api_result):
         self.summary = []
+        self.document = {}
         self.all_text = ""
         self.prev_content = ""
+        self.prevHasBullet = False
+        self.prevNestedList = False
+        self.prevListType = "ul"
         self.process_api_result(api_result)
 
     def process_api_result(self, api_result):
         doc_dict = api_result.json()
+        self.document = doc_dict
         if "body" in doc_dict:
             self.process_body(doc_dict["body"])
 
@@ -38,10 +43,47 @@ class DocsTableProcessor(object):
 
                 self.process_table(content_element_dict["table"], tableCount)
 
+    def process_list_id(self, listID, nestingLevel=0):
+        # print(self.document.keys())
+        try:
+            lists_dict = self.document["lists"]
+            specified_list = lists_dict[listID]
+            listProperty = specified_list['listProperties']['nestingLevels'][nestingLevel]
+            # print(json.dumps(specified_list['listProperties']['nestingLevels'][nestingLevel],indent=2))
+
+            glyphType = listProperty.get("glyphType", None)
+            glyphSymbol = listProperty.get("glyphSymbol", None)
+            ulSymbols = ["●", "○", "■", "\u25cf"]
+            olGlyphTypes = ["DECIMAL", "ROMAN", "ALPHA", "UPPER_ALPHA", "UPPER_ROMAN"]
+            if glyphType == "GLYPH_TYPE_UNSPECIFIED" or glyphSymbol in ulSymbols:
+                return "ul"
+            elif glyphType in olGlyphTypes:
+                return "ol"
+            # for listProperty in specified_list['nestingLevels']:
+        except KeyError:
+            raise Exception("Key not found.")
+
+        return "ul"
+
     def process_table(self, table_dict, table_count):
         for tableRowContent in table_dict["tableRows"]:
             for tableCellMain in tableRowContent["tableCells"]:
                 for tableCellContent in tableCellMain['content']:
+                    if "paragraph" not in tableCellContent:
+                        if "table" in tableCellContent:
+                            self.all_text += "<table class='table table-bordered'><tbody>"
+                            table = tableCellContent['table']
+                            tableRows = table['tableRows']
+                            for tableRow in tableRows:
+                                self.all_text += "<tr>"
+                                for tableColumn in tableRow['tableCells']:
+                                    for tableCellElement in tableColumn['content']:
+                                        self.all_text += "<td>"
+                                        self.process_cell_content(tableCellElement)
+                                        self.all_text += "</td>"
+                                self.all_text += "</tr>"
+                            self.all_text += "</tbody></table>"
+                        continue
                     if table_count == 1:
                         todayInfo = ""
                         for tableCellElement in tableCellContent["paragraph"]["elements"]:
@@ -51,18 +93,54 @@ class DocsTableProcessor(object):
                             except KeyError:
                                 continue
                         self.summary.append({"todayInfo": todayInfo})
-
-                        # print(json.dumps(tableCellContent, indent=2))
                     self.process_cell_content(tableCellContent)
+
         if self.all_text:
             self.summary.append({"text": self.all_text})
             self.all_text = ""
 
     def process_cell_content(self, table_cell_dict):
-        hasBullet = False
-        for tableCellElement in table_cell_dict["paragraph"]["elements"]:
-            if "bullet" in table_cell_dict["paragraph"]:
-                hasBullet = True
+        # hasBullet = False
+        paragraph = table_cell_dict["paragraph"]
+        # paragraphStyle = table_cell_dict["paragraph"]
+        if "bullet" in paragraph:
+            listID = paragraph['bullet']['listId']
+            nestingLevel = paragraph['bullet'].get("nestingLevel", 0)
+            listType = self.process_list_id(listID, nestingLevel=nestingLevel)
+
+            if nestingLevel > 0:
+                # nestingLevel = paragraph['bullet']['nestingLevel']
+                if not self.prevNestedList:
+                    self.all_text += f"<{listType}>"
+                else:
+                    self.all_text += "</li>"
+                self.all_text += "<li>"
+                self.prevNestedList = True
+                self.prevListType = listType
+
+            elif "nestingLevel" not in paragraph['bullet'] or nestingLevel == 0:
+                if self.prevNestedList:
+                    self.all_text += f"</{listType}>"
+                self.prevNestedList = False
+
+            if not nestingLevel > 0:
+                if not self.prevHasBullet:
+                    self.all_text += f"<{listType}>"
+                else:
+                    self.all_text += "</li>"
+                self.all_text += "<li>"
+                self.prevHasBullet = True
+                self.prevNestedList = False
+                self.prevListType = listType
+            # hasBullet = True
+        else:
+            if self.prevHasBullet:
+                # print(self.prevListType)
+                self.all_text += f"</{self.prevListType}>"
+            self.prevHasBullet = False
+
+        for tableCellElement in paragraph["elements"]:
+
             if "textRun" not in tableCellElement:
                 if "person" in tableCellElement:
                     email = tableCellElement['person']['personProperties']['email']
@@ -84,7 +162,7 @@ class DocsTableProcessor(object):
                         self.all_text = ""
                     if "italic" in textRun['textStyle'] and textRun['textStyle']['italic']:
                         # the first space is to for the subheading-remove-all-caps; the &nbsp; inserts a word break
-                        heading_text_content = f"<i> {heading_text_content}&nbsp;</i>"
+                        heading_text_content = f"<i> {heading_text_content}</i>"
 
                     self.summary.append({"heading": heading_text_content.strip()})
                     if "link" in textRun['textStyle']:
@@ -97,50 +175,7 @@ class DocsTableProcessor(object):
                                           f"href='{url}'>(link)</a>")
 
                 else:
-                    text_content = textRun['content']
-                    if hasBullet:
-                        if self.prev_content.endswith("\n"):
-                            text_content = "&emsp;•&emsp;" + text_content
-
-                    if "link" in textRun['textStyle']:
-                        url = textRun['textStyle']['link']['url']
-                        newLine = False
-                        if text_content.startswith("http") or text_content.startswith("www."):
-                            if len(text_content) > 70:
-                                text_content = text_content[:70] + "..."
-                                # newLine = True
-                        openInNewTab = True
-                        if "@" in url:
-                            openInNewTab = False
-                        HTML_openInNewTab = "target='_blank'"
-                        text_content = (f"<a {HTML_openInNewTab if openInNewTab else ''} " +
-                                        f"href='{url}'>{text_content.strip()}</a>")
-                        if newLine:
-                            text_content += "<br>"
-
-                    elif ("bold" in textRun['textStyle']
-                          or "underline" in textRun['textStyle']) and text_content.strip():
-                        bold = textRun['textStyle'].get("bold", None)
-                        underline = textRun['textStyle'].get("underline", None)
-                        if bold or underline:
-                            text_content = f"<b>{text_content}</b>"
-
-                    if "italic" in textRun['textStyle'] and textRun['textStyle']['italic']:
-                        text_content = f"<i>{text_content}</i>"
-
-                    if "backgroundColor" in textRun['textStyle']:
-                        backgroundColor = textRun['textStyle']["backgroundColor"]['color']['rgbColor']
-                        bgRed, bgGreen, bgBlue = 0, 0, 0
-                        if "red" in backgroundColor:
-                            bgRed = backgroundColor['red']
-                        if "green" in backgroundColor:
-                            bgGreen = backgroundColor['green']
-                        if "blue" in backgroundColor:
-                            bgBlue = backgroundColor['blue']
-
-                        if bgRed == 1 and bgGreen == 1 and bgBlue == 0:
-                            text_content = f"<mark>{text_content}</mark>"
-
+                    text_content = self.process_text_content(textRun)
                     # else:
                     # if self.all_text.strip():
                     self.all_text += text_content
@@ -149,11 +184,55 @@ class DocsTableProcessor(object):
                 if not self.all_text.endswith("\n\n"):
                     self.all_text += "\n"
 
+    def process_text_content(self, textRun):
+        text_content = textRun['content']
+
+        if "link" in textRun['textStyle']:
+            url = textRun['textStyle']['link']['url']
+            newLine = False
+            if text_content.startswith("http") or text_content.startswith("www."):
+                if len(text_content) > 70:
+                    text_content = text_content[:70] + "..."
+                    # newLine = True
+            openInNewTab = True
+            if "@" in url:
+                openInNewTab = False
+            HTML_openInNewTab = "target='_blank'"
+            text_content = (f"<a {HTML_openInNewTab if openInNewTab else ''} " +
+                            f"href='{url}'>{text_content.strip()}</a>")
+            if newLine:
+                text_content += "<br>"
+
+        elif ("bold" in textRun['textStyle']
+              or "underline" in textRun['textStyle']) and text_content.strip():
+            bold = textRun['textStyle'].get("bold", None)
+            underline = textRun['textStyle'].get("underline", None)
+            if bold or underline:
+                text_content = f"<b>{text_content}</b>"
+
+        if "italic" in textRun['textStyle'] and textRun['textStyle']['italic']:
+            text_content = f"<i>{text_content}</i>"
+
+        if "backgroundColor" in textRun['textStyle']:
+            backgroundColor = textRun['textStyle']["backgroundColor"]['color']['rgbColor']
+            bgRed, bgGreen, bgBlue = 0, 0, 0
+            if "red" in backgroundColor:
+                bgRed = backgroundColor['red']
+            if "green" in backgroundColor:
+                bgGreen = backgroundColor['green']
+            if "blue" in backgroundColor:
+                bgBlue = backgroundColor['blue']
+
+            if bgRed == 1 and bgGreen == 1 and bgBlue == 0:
+                text_content = f"<mark>{text_content}</mark>"
+        return text_content
+
     def organize_summary(self):
         # Join same tags that are consecutive
         self.summary = [sText for sText in self.summary if next(iter(sText.values())).strip()]
 
         prev_key = ""
+        addSpace = True
         for i, summaryText in enumerate(list(self.summary)):
             key = next(iter(summaryText))
             value = next(iter(summaryText.values())).strip()
@@ -165,11 +244,16 @@ class DocsTableProcessor(object):
                 try:
                     formatted_prev_value = self.summary[self.summary.index(summaryText) - 1][prev_key].strip()
 
-                    self.summary[self.summary.index(summaryText) - 1][prev_key] = formatted_prev_value + f" {value}"
+                    self.summary[self.summary.index(summaryText) - 1][prev_key] = \
+                        formatted_prev_value + f"{' ' if addSpace else ''}{value}"
+                    addSpace = True
                     self.summary.remove(summaryText)
                 except IndexError:
                     # print(self.summary[i - 1].values())
                     pass
+
+            if len(value) < 2:
+                addSpace = False
 
                 # except KeyError:
                 #     print(self.summary[i - 1])
@@ -212,7 +296,8 @@ def foundTargetHeading(text_run):
                         "CSM Promise Scholars Program - Application Workshops",
                         "SMUHSD Black Parent Group Scholarship", "Skyline College Family Night Webinar -",
                         "Tips on How to Access College & Career Prep Resources at BHS - ",
-                        "College PEP Events", "Skyline College Priority Enrollment Program (PEP) -"]
+                        "College PEP Events", "Skyline College Priority Enrollment Program (PEP) -",
+                        "State of the Student Summit: Of the Students"]
     for exception in targetExceptions:
         if content.strip() == exception:
             return True
