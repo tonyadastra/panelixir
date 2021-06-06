@@ -330,6 +330,13 @@ def foundTargetHeading(text_run):
             for keyword in discard_keywords:
                 if keyword.lower() in content.lower():
                     discard = True
+
+            exact_discard_keywords = ['Wednesday, May 26', 'th', 'nd', 'from 5-6pm PST', 'Wednesday, June 2',
+                                      "RSVP:", "tinyurl.com/TeslaRSVP"]
+            for eKeyword in exact_discard_keywords:
+                if content.strip() == eKeyword.strip():
+                    discard = True
+
             if not discard:
                 return True
     return False
