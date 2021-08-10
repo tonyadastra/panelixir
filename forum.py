@@ -171,6 +171,7 @@ def discussion(post_id):
     post = dict(favoritedByUser=favorited_by_user, **readPost(cPost, session_uid=session_uid,
                                                               latest_reply_time=latest_reply_time))
 
+
     all_Replies = Db.session.query(
         User, PostReplies
     ).filter(
@@ -345,118 +346,110 @@ def forumNewPost():
     return
 
 
-@app.route('/forum/like-entity', methods=['GET', 'POST'])
+@app.route('/forum/like-entity', methods=['POST'])
 def forumLikeEntity():
-    if request.method == "POST":
-        pid = request.args.get('pid')
-        rid = request.args.get('rid', default=None)
-        cid = request.args.get('cid', default=None)
-        entityCategory = request.args.get('category')
-        if "username" in session:
-            uid = User.query.filter_by(username=session['username']).first().uid
-            # uid = request.args.get('uid')
-            likeAdded = False
-            if entityCategory == "post":
-                if UserReaction.query.filter_by(user_id=uid, liked_pid=pid).first() is None:
-                    user_reaction = UserReaction(user_id=uid, liked_pid=pid)
-                    Db.session.add(user_reaction)
-                    Db.session.commit()
-                    likeAdded = True
-                all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
+    pid = request.args.get('pid')
+    rid = request.args.get('rid', default=None)
+    cid = request.args.get('cid', default=None)
+    entityCategory = request.args.get('category')
+    if "username" in session:
+        uid = User.query.filter_by(username=session['username']).first().uid
+        # uid = request.args.get('uid')
+        likeAdded = False
+        if entityCategory == "post":
+            if UserReaction.query.filter_by(user_id=uid, liked_pid=pid).first() is None:
+                user_reaction = UserReaction(user_id=uid, liked_pid=pid)
+                Db.session.add(user_reaction)
+                Db.session.commit()
+                likeAdded = True
+            all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
 
-                return jsonify({"likes": all_likes, "liked": likeAdded})
+            return jsonify({"likes": all_likes, "liked": likeAdded})
 
-            elif entityCategory == "reply":
-                if UserReactionReplies.query.filter_by(user_id=uid, post=pid, liked_rid=rid).first() is None:
-                    user_reaction_reply = UserReactionReplies(user_id=uid, post=pid, liked_rid=rid)
-                    Db.session.add(user_reaction_reply)
-                    Db.session.commit()
-                    likeAdded = True
-                all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
+        elif entityCategory == "reply":
+            if UserReactionReplies.query.filter_by(user_id=uid, post=pid, liked_rid=rid).first() is None:
+                user_reaction_reply = UserReactionReplies(user_id=uid, post=pid, liked_rid=rid)
+                Db.session.add(user_reaction_reply)
+                Db.session.commit()
+                likeAdded = True
+            all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
 
-                return jsonify({"likes": all_likes, "liked": likeAdded})
+            return jsonify({"likes": all_likes, "liked": likeAdded})
 
-            elif entityCategory == "comment":
-                if LikedComments.query.filter_by(user_id=uid, post=pid, reply=rid, liked_cid=cid).first() is None:
-                    liked_comment = LikedComments(user_id=uid, post=pid, reply=rid, liked_cid=cid)
-                    Db.session.add(liked_comment)
-                    Db.session.commit()
-                    likeAdded = True
-                all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
+        elif entityCategory == "comment":
+            if LikedComments.query.filter_by(user_id=uid, post=pid, reply=rid, liked_cid=cid).first() is None:
+                liked_comment = LikedComments(user_id=uid, post=pid, reply=rid, liked_cid=cid)
+                Db.session.add(liked_comment)
+                Db.session.commit()
+                likeAdded = True
+            all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
 
-                return jsonify({"likes": all_likes, "liked": likeAdded})
-            else:
-                return jsonify({"liked": False, "error": "Unidentified category of like."})
-            # return jsonify()
-
-        # else:
-        # if entityCategory == "post":
-        #     all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
-        # elif entityCategory == "reply":
-        #     all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
-        # elif entityCategory == "comment":
-        #     all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
-        return jsonify({"liked": False, "error": "You must be logged in to post your reactions."})
-    else:
-        abort(405)
-
-
-@app.route('/forum/unlike-entity', methods=['GET', 'POST'])
-def forumUnlikeEntity():
-    if request.method == "POST":
-        pid = request.args.get('pid')
-        rid = request.args.get('rid', default=None)
-        cid = request.args.get('cid', default=None)
-        entityCategory = request.args.get('category')
-        if "username" in session:
-            uid = User.query.filter_by(username=session['username']).first().uid
-            # uid = 1
-            if entityCategory == "post":
-                added_reaction = UserReaction.query.filter_by(user_id=uid, liked_pid=pid).first()
-            elif entityCategory == "reply":
-                added_reaction = UserReactionReplies.query.filter_by(user_id=uid, post=pid, liked_rid=rid).first()
-            elif entityCategory == "comment":
-                added_reaction = LikedComments.query.filter_by(user_id=uid, post=pid, reply=rid, liked_cid=cid).first()
-            else:
-                return jsonify({"unliked": False, "error": "The category of this action is not specified."})
-
-            Db.session.delete(added_reaction)
-            Db.session.commit()
-
-            if entityCategory == "post":
-                all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
-            elif entityCategory == "reply":
-                all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
-            elif entityCategory == "comment":
-                all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
-            else:
-                return jsonify({"unliked": False, "error": "Unidentified category of unlike."})
-
-            return jsonify({"unliked": True, "likes": all_likes})
-
-        return jsonify({"unliked": False, "error": "We cannot verify your identity."})
-    else:
-        abort(405)
-
-
-@app.route('/forum/post-reply', methods=['GET', 'POST'])
-def forumPostReply():
-    if request.method == "POST":
-        pid = request.args.get('pid')
-        reply = request.form['reply'].strip()
-        if "username" in session:
-            uid = User.query.filter_by(username=session['username']).first().uid
-            # uid = request.args.get('uid')
-            Reply = PostReplies(post=pid, author=uid, reply=reply)
-            Db.session.add(Reply)
-            Db.session.commit()
-
-            return redirect(url_for("forum.discussion", post_id=pid))
-
+            return jsonify({"likes": all_likes, "liked": likeAdded})
         else:
-            return "You must be logged in to post a reply."
+            return jsonify({"liked": False, "error": "Unidentified category of like."})
+        # return jsonify()
+
+    # else:
+    # if entityCategory == "post":
+    #     all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
+    # elif entityCategory == "reply":
+    #     all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
+    # elif entityCategory == "comment":
+    #     all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
+    return jsonify({"liked": False, "error": "You must be logged in to post your reactions."})
+
+
+@app.route('/forum/unlike-entity', methods=['POST'])
+def forumUnlikeEntity():
+    pid = request.args.get('pid')
+    rid = request.args.get('rid', default=None)
+    cid = request.args.get('cid', default=None)
+    entityCategory = request.args.get('category')
+    if "username" in session:
+        uid = User.query.filter_by(username=session['username']).first().uid
+        # uid = 1
+        if entityCategory == "post":
+            added_reaction = UserReaction.query.filter_by(user_id=uid, liked_pid=pid).first()
+        elif entityCategory == "reply":
+            added_reaction = UserReactionReplies.query.filter_by(user_id=uid, post=pid, liked_rid=rid).first()
+        elif entityCategory == "comment":
+            added_reaction = LikedComments.query.filter_by(user_id=uid, post=pid, reply=rid, liked_cid=cid).first()
+        else:
+            return jsonify({"unliked": False, "error": "The category of this action is not specified."})
+
+        Db.session.delete(added_reaction)
+        Db.session.commit()
+
+        if entityCategory == "post":
+            all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
+        elif entityCategory == "reply":
+            all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
+        elif entityCategory == "comment":
+            all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
+        else:
+            return jsonify({"unliked": False, "error": "Unidentified category of unlike."})
+
+        return jsonify({"unliked": True, "likes": all_likes})
+
+    return jsonify({"unliked": False, "error": "We cannot verify your identity."})
+
+
+@app.route('/forum/post-reply', methods=['POST'])
+def forumPostReply():
+    pid = request.args.get('pid')
+    reply = request.form['reply'].strip()
+    if "username" in session:
+        uid = User.query.filter_by(username=session['username']).first().uid
+        # uid = request.args.get('uid')
+        Reply = PostReplies(post=pid, author=uid, reply=reply)
+        Db.session.add(Reply)
+        Db.session.commit()
+
+        return redirect(url_for("forum.discussion", post_id=pid))
+
     else:
-        abort(405)
+        return "You must be logged in to post a reply."
+
 
 
 @app.route('/forum/post-reply-comment', methods=['GET', 'POST'])
