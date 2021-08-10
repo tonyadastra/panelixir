@@ -55,11 +55,13 @@ conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=v
                     user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DATABASE_PASSWORD')}''')
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_BINDS'] = {
-    'vaccinedb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/vaccinedb',
-    'forumdb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/forumdb',
+    'vaccinedb': f'postgresql://postgres:7VgFrM4n5bdbtgNYC!@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb',
+    'forumdb': 'postgresql://postgres:7VgFrM4n5bdbtgNYC!@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/forumdb'
 }
 
-
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' \
+#                                         'postgres:iloveNYC0704' \
+#                                         '@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()
