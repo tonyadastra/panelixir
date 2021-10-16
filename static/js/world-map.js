@@ -834,8 +834,9 @@ function abbreviateNumber(value) {
     }
 
     // not display 11.0 instead of 11
-    if (newValue >= 100 || suffixNum !== 0)
-        newValue = newValue.toPrecision(3);
+    if (newValue >= 100 || suffixNum !== 0) {
+        newValue = Number(newValue).toPrecision(3);
+    }
 
     // Rounding errors for values such as 999600 --> returns 1.00e+3K
     // now it will return 1.00M
