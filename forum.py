@@ -390,13 +390,44 @@ def forumLikeEntity():
         # return jsonify()
 
     # else:
+    # likeAdded = False
+    if entityCategory == "post":
+        # if UserReaction.query.filter_by(user_id=uid, liked_pid=pid).first() is None:
+        user_reaction = UserReaction(user_id=0, liked_pid=pid)
+        Db.session.add(user_reaction)
+        Db.session.commit()
+        likeAdded = True
+        all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
+
+        return jsonify({"likes": all_likes, "liked": likeAdded})
+
+    elif entityCategory == "reply":
+        # if UserReactionReplies.query.filter_by(user_id=-1, post=pid, liked_rid=rid).first() is None:
+        user_reaction_reply = UserReactionReplies(user_id=0, post=pid, liked_rid=rid)
+        Db.session.add(user_reaction_reply)
+        Db.session.commit()
+        likeAdded = True
+        all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
+
+        return jsonify({"likes": all_likes, "liked": likeAdded})
+
+    elif entityCategory == "comment":
+        liked_comment = LikedComments(user_id=0, post=pid, reply=rid, liked_cid=cid)
+        Db.session.add(liked_comment)
+        Db.session.commit()
+        likeAdded = True
+        all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
+
+        return jsonify({"likes": all_likes, "liked": likeAdded})
+    else:
+        return jsonify({"liked": False, "error": "Unidentified category of like."})
     # if entityCategory == "post":
     #     all_likes = UserReaction.query.filter_by(liked_pid=pid).count()
     # elif entityCategory == "reply":
     #     all_likes = UserReactionReplies.query.filter_by(post=pid, liked_rid=rid).count()
     # elif entityCategory == "comment":
     #     all_likes = LikedComments.query.filter_by(post=pid, reply=rid, liked_cid=cid).count()
-    return jsonify({"liked": False, "error": "You must be logged in to post your reactions."})
+    # return jsonify({"liked": False, "error": "You must be logged in to post your reactions."})
 
 
 @app.route('/forum/unlike-entity', methods=['POST'])
