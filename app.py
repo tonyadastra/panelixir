@@ -59,9 +59,7 @@ app.config['SQLALCHEMY_BINDS'] = {
     'forumdb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/forumdb',
 }
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://' \
-#                                         'postgres:iloveNYC0704' \
-#                                         '@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 Db.init_app(app)
 cur = conn.cursor()

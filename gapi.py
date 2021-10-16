@@ -35,7 +35,7 @@ zone = 'us-west1-a'
 json_filename = 'modules/calendar-1613977057601-6d8f60ed2291.json'
 
 # Permissions to request for Access Token
-scopes = "https://www.googleapis.com/auth/documents.readonly"
+scopes = "https://www.googleapis.com/auth/documents.readonly https://www.googleapis.com/auth/gmail.send"
 
 # Set how long this token will be valid in seconds
 expires_in = 3600  # Expires in 1 hour
@@ -82,7 +82,8 @@ def create_signed_jwt(pkey, pkey_id, email, scope):
         "aud": auth_url,  # Audience claim
         "iat": issued,  # Issued At claim
         "exp": expires,  # Expire time
-        "scope": scope  # Permissions
+        "scope": scope,  # Permissions,
+        "subject": "22liut83@stu.smuhsd.org"
     }
 
     # Encode the headers and payload and sign creating a Signed JWT (JWS)
@@ -325,6 +326,11 @@ def get_daily_bulletin_gdoc_data(access_token=None):
 @app.route('/api/bhs/daily-bulletin')
 @app.route('/bhs/d/daily-bulletin', subdomain='api')
 def get_daily_bulletin_data():
+    userId = "me"
+    url = f"https://gmail.googleapis.com/gmail/v1/users/{userId}/messages/send?access_token={get_access_token()}"
+    payload = {'raw': 'Q29udGVudC1UeXBlOiB0ZXh0L2h0bWw7IGNoYXJzZXQ9InVzLWFzY2lpIgpNSU1FLVZlcnNpb246IDEuMApDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA3Yml0CnRvOiB0b255bGl1bnljQGhvdG1haWwuY29tCmZyb206IGJocy5yZXNvdXJjZS5jZW50ZXJAZ21haWwuY29tCnN1YmplY3Q6IFRlc3QKCjxpPmRpZCB5b3UgcmVjZWl2ZSBteSBtZXNzYWdlPzwvaT4='}
+    print(requests.post(url, json=payload).text)
+    # get_access_token()
     cur.execute('''SELECT * FROM bulletin_announcements ba
                             INNER JOIN bulletin_categories bc on ba.category = bc.cid
                             WHERE bc._order >= 0 AND ba._order >= 0
