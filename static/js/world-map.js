@@ -137,7 +137,7 @@
         "South America": {"x": -150.8000339752533, "y": -465.27446886367454, "k": 2.0448570612198758},
         "Africa": {"x": -516.5232680367267, "y": -248.22992125495517, "k": 1.8327372893507303}
         //, "Asia": {"x": -1302.7331916850462, "y": -159.89007233762175, "k": 2.099433367246173}
-        }
+    }
 
 
     // var colorScale = d3.scaleLinear()
@@ -159,6 +159,7 @@
     var colorScale = d3.scaleQuantile()
         .domain(p_domain)
         .range([
+            // "#E9F8EC", "#C2DACC", "#9BBCAB", "#759F8B", "#4E816A", "#27634A", "#004529"
         "rgb(232,248,247)", "rgb(210,241,229)", "rgb(150,214,188)",
             "rgb(102,194,164)", "rgb(51,176,117)",
             "rgb(8,148,117)", "rgb(1,110,66)"
@@ -166,7 +167,7 @@
 
 
     legendSVG.append('text')
-        .attr("font-weight", "bold")
+        .attr("font-weight", "500")
         .attr("class", "legend-title")
         .text("Number of Doses Administered Per 100 People")
 
@@ -193,11 +194,12 @@
         .attr("class", "no-data-swatch")
         .attr("width", legendSVG.select(".swatch").node().getBBox().width)
         .attr("height", legendSVG.select(".swatch").node().getBBox().height)
-        .style("fill", "#f5f5f5")
+        .style("fill", "#f5f5f5");
 
     noDataG.append('text')
         .attr("class", "label")
         .text("No Data")
+
         .style("text-anchor", "middle")
         .attr("transform", legendSVG.select('g.legendCells>g.cell>text.label').attr("transform"))
 
@@ -210,7 +212,7 @@
     legendSVG.select('.legend-title')
         .attr("transform", `translate(${(width - d3.select('.legend-title').node().getBBox().width) / 2},25)`);
 
-
+    legendSVG.selectAll('text.label').attr("font-size", "13px");
 
     var svgWrapper = d3.select("#vis5").append("svg")
         .attr("id", "world-map")

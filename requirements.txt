@@ -7,10 +7,9 @@ gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-numpy==1.19.1
-pandas==1.1.0
+numpy==1.21.0rc1
 psycopg2-binary==2.8.5
-PyPDF2==1.26.0
+PyPDF2
 python-dateutil==2.8.1
 pytz==2020.1
 six==1.15.0
@@ -22,7 +21,6 @@ Werkzeug==1.0.1
 pip~=20.2.3
 cryptography==3.1
 py~=1.7.0
-lxml~=4.2.5
 keyring~=17.0.0
 setuptools~=47.3.1
 Cython~=0.29.2
