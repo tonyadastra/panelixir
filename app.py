@@ -121,9 +121,16 @@ def index():
                 "LIMIT 10")
 
     data = cur.fetchall()
+    vaccines = []
+    for v in data:
+        v = list(v)
+        if v[0] == 28:
+            v[3] = v[3].replace("Researchers at China's Sinopharm have created a protein-based vaccine that uses a genetically engineered spike protein to help the body produce antibodies. Sinopharm started a Phase I/II trial on April 24.<br><br>", "")
+        vaccines.append(v)
+
     cur.execute("rollback")
     # call function match_logo([data], [position of company in data]) - insert logo at index 3
-    match_logo(data, 8)
+    match_logo(vaccines, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
                 "WHERE category = 'S' AND (CURRENT_DATE - date <= 30 OR tag='Top') "
@@ -158,7 +165,7 @@ def index():
     stories = cur.fetchall()
     cur.execute("rollback")
 
-    return render_template("index.html", data=data, news_data=news_data, top_headlines=top_headlines,
+    return render_template("index.html", data=vaccines, news_data=news_data, top_headlines=top_headlines,
                            general_news=general_news, stories=stories)
 
 
@@ -668,7 +675,7 @@ def getWorldVaccinationData():
                 'vaccinations_per_hundred', vaccinations_per_hundred,
                 'population', population)
                 ) 
-                FROM "WorldVaccinations" WHERE country != \'United States\'''')
+                FROM world_vaccinations WHERE country != \'United States\'''')
     world_vaccination_data = cur3.fetchall()[0][0]
     cur3.execute("rollback")
 
