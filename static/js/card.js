@@ -605,7 +605,7 @@ class stories extends HTMLElement {
 
             textCol.appendChild(cardBody)
 
-            var stretched_link = "<a href=\"" + this.getAttribute('story-link') + "\" class=\"stretched-link\"></a>"
+            var stretched_link = "<a href=\"" + this.getAttribute('story-link') + "\" class=\"stretched-link\" target='_blank'></a>"
 
             row_ng.appendChild(imgCol);
             row_ng.appendChild(textCol);

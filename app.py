@@ -675,7 +675,7 @@ def getWorldVaccinationData():
                 'vaccinations_per_hundred', vaccinations_per_hundred,
                 'population', population)
                 ) 
-                FROM world_vaccinations WHERE country != \'United States\'''')
+                FROM "WorldVaccinations" WHERE country != \'United States\'''')
     world_vaccination_data = cur3.fetchall()[0][0]
     cur3.execute("rollback")
 
