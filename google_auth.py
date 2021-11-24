@@ -68,7 +68,7 @@ def no_cache(view):
 
 
 @app.route('/google/login')
-@no_cache
+# @no_cache
 def login():
     redirect_uri = flask.request.args.get('uri', default=None)
     if redirect_uri is not None:
@@ -87,7 +87,7 @@ def login():
 
 
 @app.route('/google/auth')
-@no_cache
+# @no_cache
 def google_auth_redirect():
     global BASE_URI
 
@@ -128,7 +128,7 @@ def google_auth_redirect():
 
 
 @app.route('/google/logout')
-@no_cache
+# @no_cache
 def logout():
     flask.session.pop(AUTH_TOKEN_KEY, None)
     flask.session.pop(AUTH_STATE_KEY, None)
