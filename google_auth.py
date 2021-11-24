@@ -90,32 +90,39 @@ def login():
 @no_cache
 def google_auth_redirect():
     global BASE_URI
+
     req_state = flask.request.args.get('state', default=None, type=None)
-    if req_state != flask.session[AUTH_STATE_KEY]:
-        response = flask.make_response('Invalid state parameter', 401)
-        return response
+    # if not req_state or AUTH_STATE_KEY not in flask.session:
+    #     flask.abort(400, "invalid request.")
+    try:
+        if req_state != flask.session[AUTH_STATE_KEY]:
+            response = flask.make_response('Invalid state parameter', 401)
+            return response
 
-    session = OAuth2Session(CLIENT_ID, CLIENT_SECRET,
-                            scope=AUTHORIZATION_SCOPE,
-                            state=flask.session[AUTH_STATE_KEY],
-                            redirect_uri=AUTH_REDIRECT_URI)
+        session = OAuth2Session(CLIENT_ID, CLIENT_SECRET,
+                                scope=AUTHORIZATION_SCOPE,
+                                state=flask.session[AUTH_STATE_KEY],
+                                redirect_uri=AUTH_REDIRECT_URI)
 
-    oauth2_tokens = session.fetch_access_token(
-        ACCESS_TOKEN_URI,
-        authorization_response=flask.request.url)
+        oauth2_tokens = session.fetch_access_token(
+            ACCESS_TOKEN_URI,
+            authorization_response=flask.request.url)
 
-    flask.session[AUTH_TOKEN_KEY] = oauth2_tokens
+        flask.session[AUTH_TOKEN_KEY] = oauth2_tokens
 
-    user_info = get_user_info()
-    flask.session['user_info'] = user_info
-    user = User.query.filter_by(email=user_info['email']).first()
-    if user is None:
-        return flask.redirect(flask.url_for("forum.newUser"))
-    else:
-        flask.session['username'] = user.username
+        user_info = get_user_info()
+        flask.session['user_info'] = user_info
+        user = User.query.filter_by(email=user_info['email']).first()
+        if user is None:
+            return flask.redirect(flask.url_for("forum.newUser"))
+        else:
+            flask.session['username'] = user.username
 
-    if "redirect_uri" in flask.session:
-        BASE_URI = flask.session['redirect_uri']
+        if "redirect_uri" in flask.session:
+            BASE_URI = flask.session['redirect_uri']
+
+    except Exception as e:
+        print(e)
 
     return flask.redirect(BASE_URI, code=302)
 
