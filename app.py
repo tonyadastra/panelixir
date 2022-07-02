@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 from models.models import Db, Vaccine
 from modules.match_company_to_logo import match_logo
-import gapi
+# import gapi
 import google_auth
 import forum
 
@@ -19,7 +19,7 @@ import forum
 load_dotenv('.env')
 
 application = app = Flask(__name__)
-app.register_blueprint(gapi.app)
+# app.register_blueprint(gapi.app)
 app.register_blueprint(google_auth.app)
 app.register_blueprint(forum.app)
 
