@@ -45,14 +45,13 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'postgresql://internetuser:welcometopanelixir@panelixirdb.cxpzv5isdmqi.us-west-1.rds.amazonaws.com/vaccinedb'
+
 conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
-                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DB_GUEST_PASSWORD')}''')
+                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
 conn2 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
-                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DB_GUEST_PASSWORD')}''')
+                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
 conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
-                    user={os.environ.get('AWS_DATABASE_USER')} password={os.environ.get('AWS_DB_GUEST_PASSWORD')}''')
+                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
 # conn = psycopg2.connect("dbname=vaccinedb user=postgres")
 app.config['SQLALCHEMY_BINDS'] = {
     'vaccinedb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/vaccinedb',
