@@ -13,7 +13,7 @@ from models.models import Db, Vaccine
 from modules.match_company_to_logo import match_logo
 # import gapi
 import google_auth
-import forum
+# import forum
 
 
 load_dotenv('.env')
@@ -21,7 +21,7 @@ load_dotenv('.env')
 application = app = Flask(__name__)
 # app.register_blueprint(gapi.app)
 app.register_blueprint(google_auth.app)
-app.register_blueprint(forum.app)
+# app.register_blueprint(forum.app)
 
 # # Send static files to subdomain
 # app.add_url_rule('/static/<path:filename>',
@@ -46,16 +46,18 @@ app.config.update(dict(
 mail = Mail(app)
 
 
-conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
                     user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-conn2 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+conn2 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
                     user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname=vaccinedb 
+conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
                     user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-# conn = psycopg2.connect("dbname=vaccinedb user=postgres")
+# conn = psycopg2.connect("dbname={os.environ.get('AWS_DATABASE_NAME')} user=postgres")
+
+
 app.config['SQLALCHEMY_BINDS'] = {
-    'vaccinedb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/vaccinedb',
-    'forumdb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/forumdb',
+    'vaccinedb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/{os.environ.get("AWS_DATABASE_NAME")}',
+    # 'forumdb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/forumdb',
 }
 
 
