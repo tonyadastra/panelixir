@@ -10,13 +10,9 @@ venv
 !.elasticbeanstalk/*.global.yml
 
 data.pdf
-dump/seed.py
 update.py
-dump/update_news.py
 updates.csv
 .flaskenv
-latest.dump
-forum.dump
 who-scrape.py
 google.py
 t.py
