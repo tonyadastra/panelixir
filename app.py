@@ -2,6 +2,7 @@ import random
 import string
 import os
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session
+from sqlalchemy.engine.url import make_url
 from flask_mail import Mail, Message
 import psycopg2
 import numpy as np
@@ -46,22 +47,26 @@ app.config.update(dict(
 mail = Mail(app)
 
 
-conn = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
-                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-conn2 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
-                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
-conn3 = psycopg2.connect(f'''host={os.environ.get('AWS_DATABASE_HOST')} dbname={os.environ.get('AWS_DATABASE_NAME')} 
-                    user={os.environ.get('AWS_DATABASE_MASTER_USER')} password={os.environ.get('AWS_DATABASE_MASTER_PASSWORD')}''')
+
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://ckefcevsviywuu:400acc850b0ce7d2a645b80069db5de7739d86a2638116a4d3fada7f116b3723@ec2-34-233-115-14.compute-1.amazonaws.com:5432/d8352gom6hp5ij')
+db_url = make_url(DATABASE_URL)
+
+conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
+                    user={db_url.username} password={db_url.password}''')
+conn2 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
+                    user={db_url.username} password={db_url.password}''')
+conn3 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
+                    user={db_url.username} password={db_url.password}''')
 # conn = psycopg2.connect("dbname={os.environ.get('AWS_DATABASE_NAME')} user=postgres")
 
 
 app.config['SQLALCHEMY_BINDS'] = {
-    'vaccinedb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/{os.environ.get("AWS_DATABASE_NAME")}',
-    # 'forumdb': f'postgresql://postgres:{os.environ.get("AWS_DATABASE_MASTER_PASSWORD")}@{os.environ.get("AWS_DATABASE_HOST")}/forumdb',
+    'vaccinedb': DATABASE_URL,
 }
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 Db.init_app(app)
 cur = conn.cursor()
 cur2 = conn2.cursor()
