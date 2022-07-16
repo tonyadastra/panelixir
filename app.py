@@ -48,7 +48,7 @@ mail = Mail(app)
 
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://ckefcevsviywuu:400acc850b0ce7d2a645b80069db5de7739d86a2638116a4d3fada7f116b3723@ec2-34-233-115-14.compute-1.amazonaws.com:5432/d8352gom6hp5ij')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://ckefcevsviywuu:400acc850b0ce7d2a645b80069db5de7739d86a2638116a4d3fada7f116b3723@ec2-34-233-115-14.compute-1.amazonaws.com:5432/d8352gom6hp5ij').replace('postgres://', 'postgresql://')
 db_url = make_url(DATABASE_URL)
 
 conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
@@ -57,7 +57,6 @@ conn2 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
                     user={db_url.username} password={db_url.password}''')
 conn3 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
                     user={db_url.username} password={db_url.password}''')
-# conn = psycopg2.connect("dbname={os.environ.get('AWS_DATABASE_NAME')} user=postgres")
 
 
 app.config['SQLALCHEMY_BINDS'] = {
