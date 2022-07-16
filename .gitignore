@@ -3,6 +3,8 @@
 .DS_store
 dump
 venv
+
+__pycache__
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 #.ebextensions/*
@@ -19,4 +21,6 @@ t.py
 dump/test-list.html
 news-api.py
 .env
+forum.py
+gapi.py
 
