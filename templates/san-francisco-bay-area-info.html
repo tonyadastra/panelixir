@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    <title>San Francisco Bay Area Counties Vaccination - PanElixir</title>
+{% endblock %}
+
+{% block styles %}
+<style>
+    p.note {
+        font-size: 10px;
+        opacity: 0.7;
+    }
+</style>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--External Source Libraries-->
+    <script src="../static/js/library/jquery.js"></script>
+{#    <script src="../static/js/library/popper.js"></script>#}
+    <script src="../static/js/library/bootstrap.js"></script>
+{#    <script src="../static/js/library/d3.v5.js"></script>#}
+{##}
+{#    <script rel="text/javascript" src="../static/js/index.js"></script>#}
+    <script rel="text/javascript" src="../static/js/card.js"></script>
+    <script src="../static/js/scroll.js"></script>
+
+    <script type="text/javascript">
+    let bayAreaNewsCount = 0;
+    let bayAreaNewsLimit = 15;
+    $('#fetch-new-set-news').on("click", function () {
+        bayAreaNewsCount++;
+        $.ajax({
+            url: "/get-bay-area-news",
+            data: {
+                'count': bayAreaNewsCount, 'limit': bayAreaNewsLimit
+            },
+            type: "GET",
+            beforeSend: function () {
+                // show the preloader (progress bar)
+                $('#loading-progress-bar').html("<div class='load-progress'><div class='indeterminate'></div></div>");
+            },
+            complete: function () {
+                // hide the preloader (progress bar)
+                $('#loading-progress-bar').html("");
+            },
+            success: function (response) {
+                // $('#card_container').remove();
+                document.getElementById('bay-area-news').innerHTML = response;
+            },
+        });
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    })
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+<nav class="nav-top">
+    <div class="scroll-menu" id="scroll-menu">
+        <div class="nav-top-items">
+            <a class="style-a" href="/">Home</a>
+
+            <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
+
+            <a class="active style-a" href="#" id="a-news" data-scroll="county-news">News</a>
+            <a class="style-a" href="#" id="a-vaccination" data-scroll="county-vaccination">Getting Vaccinated</a>
+{#            <a class="style-a" href="#" id="a-distribution" data-scroll="distribution">Distribution</a>#}
+{#            <a class="style-a" href="#" id="a-development" data-scroll="development">Development</a>#}
+{#            <a class="style-a" href="#" id="a-science" data-scroll="science">Science</a>#}
+
+
+            <a class="style-a" href="#" id="a-news" data-scroll="county-feedback">Feedback</a>
+{#            <a class="style-a" href="#" data-scroll="stories">People and Stories</a>#}
+{#            <a class="style-a" href="#" id="a-developers" data-scroll="developers">Vaccine Database</a>#}
+            <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
+
+            <a class="style-a" href="/vaccine-faq">FAQs</a>
+            <a class="style-a" href="/about-us">About Us</a>
+        </div>
+    </div>
+    <div id="loading-progress-bar"></div>
+</nav>
+
+
+{% if session_submit == true %}
+    <div class="alert alert-success successful-submission-alert" role="alert">
+        <h5 class="alert-heading">Thank you, your feedback has been successfully submitted!</h5>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+      </button>
+        <p>We appreciate your feedback. Your suggestion helps make PanElixir a better website!</p>
+
+    {#    <hr>#}
+    {#    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>#}
+    </div>
+{% endif %}
+
+<section data-anchor="county-news">
+    <h2 id="news-title">Bay Area and Vaccination News</h2>
+    <div id="bay-area-news">
+        {% include 'bay-area-news.html' %}
+    </div>
+    <div class="text-center">
+        <button class="btn btn-outline-primary" id="fetch-new-set-news">Fetch Another Set of News</button>
+    </div>
+</section>
+
+<section data-anchor="county-vaccination">
+    <h2 id="news-title">Getting Vaccinated</h2>
+
+    <div class="ctr">
+        {% for data in local_data %}
+            <local-vaccinations vac-county="{{data[0]}}" vac-area="{{data[1]}}" vac-phase="{{data[2]}}" vac-info-website="{{data[3]}}"
+            vac-appointment-website="{{data[4]}}" vac-administered="{{data[5]}}" vac-distributed="{{data[6]}}" vac-eligibility="{{data[7]}}"
+            vac-body="{{data[8]}}" vac-additional-info="{{data[9]}}" vac-date="{{data[10]}}" vac-notification="{{data[11]}}"
+            population="{{data[12]}}" vac-administered-1="{{data[13]}}" vac-administered-2="{{data[14]}}"></local-vaccinations>
+        {% endfor %}
+
+        <p class="note">Information for more counties will be available soon.</p>
+    </div>
+</section>
+
+
+<section data-anchor="county-feedback">
+    <div class="ctr">
+        <h3>Tell Us What You Think</h3>
+        <form method="post" action="/email-form-submission-beta-section" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="FormControlTextareaFeedback">Feedback</label>
+                <textarea class="form-control" id="FormControlTextareaFeedback" rows="4" name="feedback" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="FormControlInputEmail">Email address (optional)</label>
+                <input name="email" class="form-control" id="FormControlInputEmail" placeholder="name@example.com">
+            </div>
+            <p>Thank you very much for your time. We really appreciate your suggestion!</p>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</section>
+
+
+{% endblock %}
