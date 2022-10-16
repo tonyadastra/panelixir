@@ -1,0 +1,575 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+
+{% block styles %}
+<!--External CSS Files-->
+<link href="../static/css/aos.css" rel="stylesheet">
+
+{#<link rel="stylesheet" href="../static/css/all.css"> <!--FontAwesome-->#}
+
+<!--Internal CSS Files-->
+<link rel="stylesheet" href="../static/css/map.css">
+<link rel="stylesheet" href="../static/css/card.css">
+<link rel="stylesheet" href="../static/css/interactive.css">
+
+{% endblock %}
+
+
+{% block scripts %}
+<!--External Source Libraries-->
+<script src="../static/js/library/jquery.js"></script>
+<script src="../static/js/library/popper.js"></script>
+<script src="../static/js/library/bootstrap.js"></script>
+<script src="../static/js/library/d3.v5.js"></script>
+<script src="../static/js/library/topojson.client.js"></script>
+<script src="../static/js/library/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+
+<!--Internal JS Files-->
+<script src="../static/js/world-map.js"></script>
+<script src="../static/js/us-map.js"></script>
+<script src="../static/js/card.js"></script>
+<script src="../static/js/index.js"></script>
+
+<script>
+    var google_news = [];
+    {% for g_news in general_news %}
+        google_news.push({{g_news|tojson|safe}})
+    {% endfor %}
+
+
+var index = 0;
+$("#top-news").html("<div><span class='badge badge-" + google_news[index][1].toLowerCase().replaceAll(" ", "-") + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
+index++;
+setInterval(function() {
+    $("#top-news").animate({
+        opacity: 0
+    }, function () {
+            if (index === google_news.length){
+                $(this).html("");
+                index = 0;
+            }
+            $(this).html("<div><span class='badge badge-" + google_news[index][1].toLowerCase().replaceAll(" ", "-") + " top-news-badge'>" + google_news[index][1] + "</span> <span class='top-news-title'>" + google_news[index][3] + "</span> <a href='" + google_news[index][7] + "' target='_blank' class='stretched-link'></a> <span class='source'>" + google_news[index][5].replaceAll(' ', '&nbsp;')+ "</span> </div>").animate({opacity: 1})
+            {#$(this).text(google_news[index][3]).animate({opacity: 1})#}
+            index++;
+
+    });
+}, 4000);
+</script>
+
+{#<script src="../static/js/library/twitter-widget.js"></script>#}
+
+{% endblock %}
+
+{% block content %}
+{#    <iframe src="https://protect2.fireeye.com/url?k=d03e466b-8c6b4f78-d03e7754-0cc47adb5650-8a64b953bb1b9bb3&u=https://vaccinefinder.org/widget/hhs" scrolling="no" height="270" frameborder="0" width="280" title="Vaccine Finder" style="overflow: hidden;" ></iframe>#}
+<nav class="nav-top">
+    <div class="scroll-menu" id="scroll-menu">
+        <div class="nav-top-items">
+            <a class="active style-a" href="#" id="a-vaccination" data-scroll="vaccination">Vaccination</a>
+{#            <a class="style-a" href="#" id="a-distribution" data-scroll="distribution">Distribution</a>#}
+            <a class="style-a" href="#" id="a-development" data-scroll="development">Development</a>
+
+{#            <a class="style-a" href="#" id="a-news" data-scroll="news">News</a>#}
+            <a class="style-a" href="#" data-scroll="stories">People and Stories</a>
+            <a class="style-a" href="#" id="a-science" data-scroll="science">Science</a>
+            <a class="style-a" href="#" id="a-developers" data-scroll="developers">Vaccine Candidates</a>
+            <span style="margin-left: 20px;border-left: 2px solid silver;"></span>
+{#            <a class="style-a" href="/forum"><span class="badge badge-real-time">Beta</span> Forums</a>#}
+{#            <a class="style-a" href="/bay-area-vaccination"><span class="badge badge-real-time">BETA</span> Bay Area Vaccination</a>#}
+            <a class="style-a" href="/vaccine-faq">FAQs</a>
+            <a class="style-a" href="/about-us">About Us</a>
+        </div>
+    </div>
+</nav>
+
+<div class="top-news-wrapper">
+{#    <div class="today-headlines">#}
+{#        <h3 id="news-title">Today's Headlines</h3>#}
+{#        {% for story in top_headlines %}#}
+{#            <people-and-stories story-tag="{{story[0]}}" story-title="{{story[1]}}" story-img="{{story[2]}}" story-body="{{story[3]}}"#}
+{#                         story-body-text="{{story[4]}}" story-link="{{story[5]}}" story-source="{{story[6]}}" story-category="{{story[7]}}"></people-and-stories>#}
+{#        {% endfor %}#}
+{#    </div>#}
+    <div class="text-center position-relative mb-2" id="top-news"><b class="darkblue">Top News</b>
+
+    </div>
+    <button type="button" class="close top-news-close" aria-label="Close">
+{#                    <span aria-hidden="true"></span>#}
+        <i class="fa fa-times"></i>
+    </button>
+</div>
+
+{% include 'world-vaccination-and-distribution.html' %}
+
+
+<!-- Data Visualizations-->
+<section id="interactive-developing-process" data-anchor="development">
+    <div class="text-center">
+        <h3 id="news-title">World Vaccine Development</h3>
+    </div>
+    <div class="row">
+
+    {#    <div class="col-xl-6 col-lg col-md-12" style="padding: 0;">#}
+    {#        <p class="update-time text-center" id="update_top">&nbsp;</p>#}
+    {#        <div id="vis1" class="vis"></div>#}
+    {#    </div>#}
+        <div class="col-xl col-lg col-md-12 col-xs-12 text-center">
+            <div class="interactive-buttons" style="margin-bottom: 0.5rem;">
+                <button class="btn btn-outline-worldwide button-font active" data-value="World" value="World"><i class="fa fa-globe-americas"></i>&nbsp;Worldwide</button>
+                <button class="btn btn-outline-continent button-font" data-value="North America" value="North America">North
+                    America</button>
+                <button class="btn btn-outline-continent button-font" data-value="Europe" value="Europe">Europe</button>
+                <button class="btn btn-outline-continent button-font" data-value="Asia" value="Asia">Asia</button>
+                <button class="btn btn-outline-continent button-font" data-value="Oceania" value="Oceania">Oceania</button>
+                <button class="btn btn-outline-continent button-font" data-value="Africa" value="Africa">Africa</button>
+                <button class="btn btn-outline-continent button-font" data-value="South America" value="South America">South
+                    America</button>
+            </div>
+
+            <div class="interactive-progress row">
+                <!--            Extended Length of Bar1-->
+                <div class="stage0" style="width: 18px"></div>
+                <!--            Bar1-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage0">
+                        <div class="bar-data" id="progress0">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow1-->
+                <div class="arrow-right-stage0 stage1"></div>
+
+                <!--            Bar2-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage1">
+                        <div class="bar-data" id="progress1">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- Arrow2-->
+                <div class="arrow-right-stage1 stage2"></div>
+                <!-- Bar3-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage2">
+                        <div class="bar-data" id="progress2">&nbsp;</div>
+                    </div>
+                </div>
+                <!-- Arrow3-->
+                <div class="arrow-right-stage2 stage3"></div>
+                <!-- Bar4-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage3">
+                        <div class="bar-data" id="progress3">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="arrow-right-stage3 stage4"></div>
+
+{#                <div class="arrow-right-stage3 stageEarly"></div>#}
+
+{#                <div class="col" style="padding: 0;">#}
+{#                    <div class="interactive-bar stageEarly">#}
+{#                        <div class="bar-data" id="progress0">&nbsp;</div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!--            Arrow1-->#}
+{#                <div class="arrow-right-stageEarly stage4"></div>#}
+                <!--            Arrow4-->
+                <!--            Bar5-->
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar stage4">
+                        <div class="bar-data" id="progress4">&nbsp;</div>
+                    </div>
+                </div>
+                <!--            Arrow5-->
+                <div class="arrow-right-stage4"></div>
+            </div>
+            <div class="interactive-progress row" id="tag-between">
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage0">Pre-Clinical</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage1">Phase I</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage2">Phase II</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage3">Phase III</div>
+                    </div>
+                </div>
+                <div class="col" style="padding: 0;">
+                    <div class="interactive-bar">
+                        <div class="bar-tag text-stage4">Approved</div>
+                    </div>
+                </div>
+            </div>
+            <div class="vis-bars">
+{#                <div class="row">#}
+{#                    <div class="col-lg-2"#}
+{#                </div>#}
+                <div id="vis2" class="vis"></div>
+                <div id="vis3" class="vis"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="news-wrapper">
+            <div class="news" style="margin-top: 0.5rem">
+                <h2 class="text-center" id="news-title">Vaccine Development Updates</h2>
+                <ul class="news-list overflow" style="list-style-type: none;/*list-style: inside; text-align: center*/">
+                    {% for news in news_data %}
+                        <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
+                                     news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="news-wrapper vaccine-and-life" style="display: none;">
+            <div class="news">
+                <h2 class="text-center" id="news-title">Vaccine and Life</h2>
+                <ul class="news-list overflow" style="list-style-type: none;overflow-x: hidden;/*list-style: inside; text-align: center*/">
+                    {% for news in general_news %}
+                        <latest-news news-vac-id="{{news[0]}}" news-tag="{{news[1]}}" news-company="{{news[2]}}" news-text="{{news[3]}}"
+                                     news-date="{{news[4]}}" news-source="{{news[5]}}" news-category="{{news[6]}}" news-link="{{news[7]}}"></latest-news>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="ctr text-center" id="vaccine-compare-section">
+        <h3 id="news-title">Compare Different Vaccines</h3>
+        <div class="compare-header">
+            <table class="table-bordered compare-vaccines" id="compare-title">
+                <thead style="display: table-header-group;">
+                <tr>
+                    <th style="width: 20%;">Category</th>
+                    <th style="width: 40%;">
+                        <select class="compare-dropdown" id="compare-dropdown-1">
+                            <option class="vaccine-option-1" value="2">BioNTech-Pfizer</option>
+                            <option class="vaccine-option-1" value="1">Moderna</option>
+                            <option class="vaccine-option-2" value="14">Johnson & Johnson</option>
+                            <option class="vaccine-option-1" value="20">Novavax</option>
+                            <option class="vaccine-option-1" value="11">AstraZeneca</option>
+                            <option class="vaccine-option-1" value="35">Sinopharm</option>
+                            <option class="vaccine-option-1" value="29">Sinovac</option>
+                            <option class="vaccine-option-1" value="13">Gamaleya</option>
+                        </select>
+                    </th>
+                    <th style="width: 40%;">
+                        <select class="compare-dropdown" id="compare-dropdown-2">
+                            <option class="vaccine-option-2" value="14">Johnson & Johnson</option>
+                            <option class="vaccine-option-2" value="2">BioNTech-Pfizer</option>
+                            <option class="vaccine-option-2" value="1">Moderna</option>
+                            <option class="vaccine-option-1" value="20">Novavax</option>
+                            <option class="vaccine-option-2" value="11">AstraZeneca</option>
+                            <option class="vaccine-option-2" value="35">Sinopharm</option>
+                            <option class="vaccine-option-2" value="29">Sinovac</option>
+                            <option class="vaccine-option-2" value="13">Gamaleya</option>
+                        </select>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="compare-table"></tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<section data-anchor="stories">
+    <div class="ctr text-center">
+        <h3 id="news-title">People and Stories</h3>
+        {% for story in stories %}
+            <people-and-stories story-tag="{{story[0]}}" story-title="{{story[1]}}" story-img="{{story[2]}}" story-body="{{story[3]}}"
+                         story-body-text="{{story[4]}}" story-link="{{story[5]}}" story-source="{{story[6]}}" story-category="{{story[7]}}"></people-and-stories>
+        {% endfor %}
+    </div>
+</section>
+
+<section data-anchor="science">
+{#{% include 'vaccine-developing-process.html' %}#}
+    <div class="ctr text-center">
+        <h3 id="news-title">Science Behind Vaccines</h3>
+    {#    <h3 id="news-title">Vaccine Frontline</h3>#}
+        <div class="card-deck">
+            <div class="card science-card">
+                <img class="card-img-top" src="../static/img/vaccine-developing-process.png" alt="Vaccine Developing Process">
+                <div class="card-body">
+                    <h5 class="card-title">The Vaccine Developing Process</h5>
+                    <p class="card-text">Learn about the different stages in the developing process of a COVID-19 vaccine: Pre-Clinical, Phase I, Phase II, Phase III, Limited Use, Approval, and more.</p>
+                    <a href="/vaccine-developing-process" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+            <div class="card science-card">
+                <img class="card-img-top" src="../static/img/mRNA.jpg" alt="Messenger RNA">
+                <div class="card-body">
+                    <h5 class="card-title">Understanding mRNA COVID-19 Vaccines</h5>
+                    <p class="card-text">What are mRNA vaccines? CDC: It is a new approach, but not unknown.</p>
+                    <a href="https://www.cdc.gov/coronavirus/2019-ncov/vaccines/different-vaccines/mrna.html" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+            <div class="card science-card">
+                <img class="card-img-top" src="../static/img/covid19-vaccine-doctor.jpg" alt="COVID-19 Vaccine">
+                <div class="card-body">
+                    <h5 class="card-title">COVID-19 Vaccines: What You Need To Know - Johns Hopkins Medicine</h5>
+                    <p class="card-text">An infographic from Johns Hopkins Medicine telling you the information about different types of vaccines, what to expect, and more.</p>
+                    <a href="https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus/coronavirus-vaccines-infographic" class="stretched-link"></a>
+                </div>
+    {#            <div class="card-footer">#}
+    {#                <small class="text-muted">Last updated 3 mins ago</small>#}
+    {#            </div>#}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{# News Section #}
+{#<section id="news-section" data-anchor="news">#}
+{#</section>#}
+
+
+
+{# Modal Displaying Companies, hidden by default#}
+{#<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>#}
+
+<!-- Display "About this Vaccine" Modal -->
+<div class="modal fade bd-example-modal-xl" id="company-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" id="display-company-header">
+                <h5 class="modal-title" id="display-company-title">About this Vaccine</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+{#                    <span aria-hidden="true"></span>#}
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div id="append-card"></div>
+        </div>
+    </div>
+</div>
+
+
+<!--Filter Data-->
+<section data-anchor="developers">
+    <div class="text-center">
+        <h3 id="news-title">Vaccine Candidates</h3>
+    </div>
+
+    <!-- Mobile Filter Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog" role="document">
+            <div class="modal-content" style="text-align: left">
+    {#                        <div class="modal-header">#}
+    {#                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>#}
+    {#                        </div>#}
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times"></i></span>
+                    </button>
+                    <h6>Select Vaccine Stage</h6>
+                    <div class="btn-group btn-group-1">
+                        <button type="button" class="active btn btn-default btn-mobile-stage mobile-font stages-all" id="stages" value="" style="padding: 0.3rem 0.75rem!important;margin-bottom: 0.75em;">All Stages</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-0-1 mobile-font" id="stages" value="0-1" style="margin-left: 0.3rem; padding: 0.3rem 0.75rem!important;margin-bottom: 0.75em;">Abandoned</button>
+                    </div>
+                    <br>
+                    <div class="btn-group btn-group-1" role="group">
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-0 mobile-font" id="stages" value="0">Pre-Clinical</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-1 mobile-font" id="stages" value="1">Phase I</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-2 mobile-font" id="stages" value="2">Phase II</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-3 mobile-font" id="stages" value="3">Phase III</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-4-1 mobile-font" id="stages" value="4-1">Limited Use</button>
+                        <button type="button" class="btn btn-default btn-mobile-stage mobile-stage-4 mobile-font" id="stages" value="4">Approval</button>
+                    </div>
+                    <h6>Select Country/Region</h6>
+                    <p class="subtag">Popular countries:</p>
+                    <div class="btn-group-2">
+                        <button type="button" class="active btn btn-default btn-mobile-country mobile-font most-viewed country-all" value="" style="padding: 0.3rem 0.75rem!important;min-width: 0;">
+                            <i class="fa fa-globe-americas"></i>&nbsp;Worldwide
+                        </button>
+    {#                            </div>#}
+    {#                            <div class="btn-group btn-group-2" role="group">#}
+                        <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="United States" value="United States">United States</button>
+                        <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="China" value="China">China</button>
+                        <button type="button" class="btn btn-default btn-mobile-country mobile-font most-viewed" id="Russia" value="Russia">Russia</button>
+                    </div>
+                    <p class="subtag">Or select one from the following:</p>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-mobile dropdown-toggle" type="button"
+                            data-toggle="dropdown" style="padding-left: 1.2rem!important; font-size: 0.95rem;">
+                            <span id="mobile-button">All(Default)</span> <i class="fa fa-angle-down vertical-center" style="right: 3%;" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu overflow dropdown-mobile" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-country-mobile">
+                            <button class="active mobile-dropdown-item-ctry mobile-dropdown-item country-worldwide" id="country" value="">
+                                <i style="padding-left: 7px" class="fa fa-globe-americas"></i>&nbsp;<span style="padding-left: 0.5em;">Worldwide</span>
+                            </button>
+                        </div>
+                    </div>
+                    <h6>Select Vaccine Platform</h6>
+                    <div class="btn-group-3">
+                        <button type="button" class="active btn btn-default btn-mobile-type mobile-font type-all" id="type" value="" style="padding: 0.3rem 0.75rem!important;min-width: 0!important;">All Platforms</button>
+    {#                            </div>#}
+    {#                            <div class="btn-group btn-group-3">#}
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="DNA%' or vac_type LIKE '%RNA">Nucleic Acid</button>
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Viral Vector">Viral Vector</button>
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Protein">Subunit</button>
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Virus%' or vac_type LIKE '%Inactivated">Whole-Pathogen</button>
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="VLP">Nanoparticle</button>
+                        <button type="button" class="btn btn-default btn-mobile-type mobile-font" id="type" value="Repurposed">Other Platforms</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 0.9rem; padding: 0.1875rem 0.5rem!important;margin-right: 0.9rem;">Cancel</button>
+                    <button class="btn btn-primary submit-mobile-form" id="submit-form" style="font-size: 0.9rem; padding: 0.1875rem 1rem!important;">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="FilterMenuTop"></div>
+    <div class="filter">
+        <div id="preloader"></div>
+        <div class="mobile-filter">
+            <div class="row">
+                <div class="col" style="text-align: center;">
+                    <div class="column mobile-clear">
+                        <button type="button" class="btn btn-filter" data-toggle="modal" data-target="#exampleModalCenter" style="padding: 0.3rem 1.5rem!important;">
+                          <i class="fa fa-filter"></i>&nbsp;Filter Vaccines
+                        </button>
+                    </div>
+                </div>
+                <div class="col" style="text-align: center">
+                    <div class="column mobile-clear">
+                        <button class="btn btn-clear submit-mobile-form" style="padding: 0.3rem 1.5rem!important;font-size: 0.8rem;">
+                            Clear Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="desktop-filter">
+            <div class="row">
+                <div class="col-2 column filter-text">
+                    <i class="fa fa-filter"></i>&nbsp;<b>Filter Vaccines</b>
+                </div>
+                <!--            Vaccine Stage-->
+                <div class="col column">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdown-desktop-stage" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Vaccine Stage
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-stages">
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-4 all-stages active" id="stages" value="_">All Stages</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-0-1" id="stages" value="0-1">Abandoned</button>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-0" id="stages" value="0">Pre-Clinical</button>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-1" id="stages" value="1">Phase I</button>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-2" id="stages" value="2">Phase II</button>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-3" id="stages" value="3">Phase III</button>
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-4-1" id="stages" value="4-1">Limited Use</button>
+        {#                    <div class="dropdown-divider"></div>#}
+                            <button class="desktop-dropdown dropdown-item-stages dropdown-item-4" id="stages" value="4">Approval</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Country-->
+                <div class="col column">
+                    <!-- country dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdown-desktop-country"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Country / Region
+                        </button>
+                        <div class="dropdown-menu overflow" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-country">
+                            <label>
+                                <input class="form-control search-country" id="myInput" type="text" autocomplete="off" placeholder="Search">
+                                <i style="position:absolute; right:8px;top:12px;" class="fa fa-search"></i>
+                            </label>
+                            <button class="desktop-dropdown dropdown-item-ctry worldwide-countries active" id="country" value="" onclick="desktopClick()">
+                                <i class="fa fa-globe-americas" style="padding-left: 5px;"></i>&nbsp;&nbsp;&nbsp;Worldwide
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vaccine Platforms-->
+                <div class="col column">
+                    <!-- types dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdown-desktop-type"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Vaccine Platform
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="all-dropdown-items-platforms">
+                            <button class="desktop-dropdown dropdown-item-type all-platforms active" id="type" value="">All Platforms</button>
+                            <div class="dropdown-divider"></div>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="DNA%' or vac_type LIKE '%RNA">
+                                Nucleic Acid Vaccines</button>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="Protein">
+                                Subunit Vaccines</button>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="Viral Vector">
+                                Viral Vector Vaccines</button>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="Virus%' or vac_type LIKE '%Inactivated">
+                                Whole-Pathogen Vaccines</button>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="VLP">
+                                Nanoparticle Vaccines</button>
+                            <button class="desktop-dropdown dropdown-item-type" id="type" value="Repurposed">
+                                Other Platforms</button>
+                        </div>
+                    </div>
+                </div>
+
+        {#        <div class="col"></div>#}
+                <div class="col-2"></div>
+                <div class="col column" style="float: right;">
+                    <button class="btn btn-light align-right desktop-dropdown clear-filter" style="border-bottom: 2px solid #d2d1d1"
+                        value="clear">
+                        <b style="color: midnightblue;">Clear Filter</b>
+                    </button>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- list institutions -->
+    <div class="institutions" id="institutions">
+        <div class="initial-cards">
+
+        </div>
+        <div id="card_container">
+            {% include 'institutions.html' %}
+        </div>
+        <div id="mobile_container"></div>
+        <div class="text-center" id="spinner-2"></div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-outline-primary" id="developer-show-more">Show More</button>
+    </div>
+</section>
+
+{% endblock %}
