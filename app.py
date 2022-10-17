@@ -1,6 +1,7 @@
 import random
 import string
 import os
+from tkinter import E
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session
 from sqlalchemy.engine.url import make_url
 from flask_mail import Mail, Message
@@ -47,16 +48,16 @@ app.config.update(dict(
 mail = Mail(app)
 
 
-
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://postgres:UnGLmPBC1juiC0p9EKbw@containers-us-west-46.railway.app:5662/railway').replace('postgres://', 'postgresql://')
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL', 'postgres://tony:OgDmaJ92JWEkU6bnIWDdejY8JvLNCib9@dpg-cd6n8gkgqg4ek622ta00-a.oregon-postgres.render.com/panelixirdb').replace('postgres://', 'postgresql://')
 db_url = make_url(DATABASE_URL)
-print(db_url.port)
+# print(db_url.host)
 
-conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} port={db_url.port} 
+conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
                     user={db_url.username} password={db_url.password}''')
-conn2 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} port={db_url.port} 
+conn2 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
                     user={db_url.username} password={db_url.password}''')
-conn3 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} port={db_url.port} 
+conn3 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
                     user={db_url.username} password={db_url.password}''')
 
 
@@ -68,6 +69,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 Db.init_app(app)
+
 cur = conn.cursor()
 cur2 = conn2.cursor()
 cur3 = conn3.cursor()
@@ -118,6 +120,7 @@ def processEmailQuestion():
 def index():
     # if google_auth.is_logged_in():
     #     user_info = google_auth.get_user_info()
+
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
                 "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
@@ -127,26 +130,31 @@ def index():
                 "LIMIT 10")
 
     data = cur.fetchall()
+
     vaccines = []
     for v in data:
         v = list(v)
         if v[0] == 28:
-            v[3] = v[3].replace("Researchers at China's Sinopharm have created a protein-based vaccine that uses a genetically engineered spike protein to help the body produce antibodies. Sinopharm started a Phase I/II trial on April 24.<br><br>", "")
+            v[3] = v[3].replace(
+                "Researchers at China's Sinopharm have created a protein-based vaccine that uses a genetically engineered spike protein to help the body produce antibodies. Sinopharm started a Phase I/II trial on April 24.<br><br>", "")
         vaccines.append(v)
 
     cur.execute("rollback")
-    # call function match_logo([data], [position of company in data]) - insert logo at index 3
+       # call function match_logo([data], [position of company in data]) - insert logo at index 3
     match_logo(vaccines, 8)
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
                 "WHERE category = 'S' AND (CURRENT_DATE - date <= 30 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
+                    "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 30")
+
     news_data = cur.fetchall()
+
     cur.execute("rollback")
 
     cur.execute("SELECT vac_id, tag, company, news_text, TO_CHAR(date, 'Month FMDD'), source, category, link FROM news "
                 "WHERE category = 'G' AND (CURRENT_DATE - date <= 4 OR tag='Top') "
-                "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 45")
+                    "ORDER BY CASE WHEN tag='Top' THEN tag END, date DESC, key DESC LIMIT 45")
+
     general_news = cur.fetchall()
     for i in range(len(general_news)):
         news = list(general_news[i])
@@ -154,21 +162,27 @@ def index():
             if news[j] is None:
                 news[j] = "None"
         general_news[i] = news
+
     cur.execute("rollback")
 
     cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "
                 # "WHERE category = 'H' "
-                "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
-                "CASE WHEN tag='New' THEN tag END, "
-                "date DESC LIMIT 1")
+                    "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
+                    "CASE WHEN tag='New' THEN tag END, "
+                    "date DESC LIMIT 1")
+
     top_headlines = cur.fetchall()
+       # print(top_headlines)
+
     cur.execute("rollback")
 
     cur.execute("SELECT tag, title, image, body, body_text, link, source, category FROM stories "
                 "ORDER BY CASE WHEN tag='Featured' THEN tag END, "
-                "CASE WHEN tag='New' THEN tag END, "
-                "date DESC")
+                    "CASE WHEN tag='New' THEN tag END, "
+                    "date DESC")
+
     stories = cur.fetchall()
+
     cur.execute("rollback")
 
     return render_template("index.html", data=vaccines, news_data=news_data, top_headlines=top_headlines,
@@ -192,8 +206,10 @@ def desktopForm():
         filter_limit = "AND NOT abandoned"
 
     print(desktop_type)
+
+
     cur.execute(
-        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+    "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
@@ -204,9 +220,11 @@ def desktopForm():
         "" + filter_limit + " "
         "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company",
         (f"%{desktop_stages}%", f"%{desktop_country}%")
-    )
+)
+
 
     data = cur.fetchall()
+
     cur.execute("rollback")
     total_rows = len(data)
     # if total_rows > 11:
@@ -224,8 +242,9 @@ def card():
     limit = int(request.args.get('limit'))
     count = int(request.args.get('count'))
 
+
     cur.execute(
-        "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
+    "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
         "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
         "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
         "side_effects, trial_size, age_group"
@@ -239,9 +258,11 @@ def card():
         " FETCH FIRST %s ROWS ONLY",
         (f"%{desktop_stages}%", f"%{desktop_country}%", str((count + 1) * limit)))
 
+
     data = cur.fetchall()
+
     cur.execute("rollback")
-    # call function match_logo([data], [position of company in data])
+   # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
 
     # if data:
@@ -264,20 +285,23 @@ def mobileForm():
     else:
         filter_limit = "AND NOT abandoned"
 
+
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news,  "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size, age_group"
-        " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
-        " AND country LIKE %s "
-        " AND (vac_type LIKE '%" + mobile_type + "%') "
-        "" + filter_limit + " "
-        "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company",
-        (f"%{mobile_stages}%", f"%{mobile_country}%"))
+            "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+            "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
+            "side_effects, trial_size, age_group"
+            " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
+            " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+            " AND country LIKE %s "
+            " AND (vac_type LIKE '%" + mobile_type + "%') "
+            "" + filter_limit + " "
+            "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company",
+            (f"%{mobile_stages}%", f"%{mobile_country}%"))
+
 
     data = cur.fetchall()
+
     cur.execute("rollback")
     total_rows = len(data)
     data = data[:10]
@@ -293,22 +317,26 @@ def mobileAppendCards():
     mobile_type = str(request.args.get('mobile_type'))
     count = int(request.args.get('mobile_count'))
     limit = int(request.args.get('limit'))
+
+
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size, age_group"
-        " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
-        " AND country LIKE %s "
-        " AND (vac_type LIKE '%" + mobile_type + "%') "
-        "" + filter_limit + " "
-        " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company"
-        # " OFFSET " + str(count * limit) + " ROWS"
-        " FETCH FIRST %s ROWS ONLY",
-        (f"%{mobile_stages}%", f"%{mobile_country}%", str((count + 1) * limit)))
+            "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+            "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
+            "side_effects, trial_size, age_group"
+            " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
+            " WHERE CAST(stage AS VARCHAR(1)) LIKE %s "
+            " AND country LIKE %s "
+            " AND (vac_type LIKE '%" + mobile_type + "%') "
+            "" + filter_limit + " "
+            " ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company"
+            # " OFFSET " + str(count * limit) + " ROWS"
+            " FETCH FIRST %s ROWS ONLY",
+            (f"%{mobile_stages}%", f"%{mobile_country}%", str((count + 1) * limit)))
+
 
     data = cur.fetchall()
+
     cur.execute("rollback")
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
@@ -318,15 +346,19 @@ def mobileAppendCards():
 @app.route("/display-company", methods=['GET'])
 def displayCompany():
     companyID = str(request.args.get('company_id'))
+
+
     cur.execute(
         "SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
-        "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
-        "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
-        "side_effects, trial_size, age_group"
-        " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
-        " WHERE info.vac_id = %s ",
-        (companyID,))
+            "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
+            "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
+            "side_effects, trial_size, age_group"
+            " FROM info INNER JOIN companies ON info.vac_id = companies.vac_id "
+            " WHERE info.vac_id = %s ",
+            (companyID,))
+
     data = cur.fetchall()
+
     cur.execute("rollback")
     # call function match_logo([data], [position of company in data])
     match_logo(data, 8)
@@ -360,21 +392,28 @@ def vaccineVirusVariants():
 @app.route("/bay-area-vaccination")
 def getSFBayAreaVaccination():
     session_submit = False
+
+
     cur.execute("SELECT l.county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
-                "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, population, "
-                "l.administered_1, l.administered_2 "
-                # ", (SELECT address, time_window FROM facilities WHERE l.id = cid LIMIT 1) "
-                "FROM local_vaccinations l "
-                # "LEFT OUTER JOIN facilities f ON l.id = f.cid "
-                "ORDER BY l.id ")
+                    "TO_CHAR(date, 'Month FMDDth, YYYY'), notification_website, population, "
+                    "l.administered_1, l.administered_2 "
+                    # ", (SELECT address, time_window FROM facilities WHERE l.id = cid LIMIT 1) "
+                    "FROM local_vaccinations l "
+                    # "LEFT OUTER JOIN facilities f ON l.id = f.cid "
+                    "ORDER BY l.id ")
+
     local_data = cur.fetchall()
     # print(local_data)
+
     cur.execute("rollback")
 
+
     cur.execute('''SELECT title, content, url, image_url, source, author, tag
-               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC LIMIT 15''')
+                FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC LIMIT 15''')
+
     local_news = cur.fetchall()
+
     cur.execute("rollback")
 
     if 'submit' in session:
@@ -389,28 +428,38 @@ def getSFBayAreaVaccination():
 def getBayAreaNews():
     limit = int(request.args.get('limit'))
     count = int(request.args.get('count'))
+
+
     cur.execute('''SELECT title, content, url, image_url, source, author, tag
-               FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC 
-               OFFSET %s ROWS FETCH FIRST %s ROW ONLY''',
+                FROM "newsAPI" ORDER BY CASE WHEN tag = 'Top' THEN tag END, time DESC 
+                OFFSET %s ROWS FETCH FIRST %s ROW ONLY''',
                 (str(count * limit), str(limit)))
+
     local_news = cur.fetchall()
+
     cur.execute("rollback")
     return render_template("bay-area-news.html", local_news=local_news)
 
 
 @app.route("/get_update_time", methods=['GET'])
 def getUpdateTime():
+
     # cur.execute("SELECT TO_CHAR(update_date, 'Month FMDDth, YYYY') FROM "
     #             "(SELECT update_date FROM info "
     #             "WHERE update_date IS NOT NULL "
     #             "UNION "
     #             "SELECT date AS update_date FROM news "
     #             "ORDER BY update_date DESC LIMIT 1) AS date")
+
     # update_time = cur.fetchone()[0]
+
     # cur.execute("rollback")
 
+
     cur.execute("SELECT COUNT(*) FROM info")
+
     total_rows = cur.fetchone()[0]
+
     cur.execute("rollback")
     return json.dumps({'update_time': None, 'total_rows': total_rows})
 
@@ -419,8 +468,10 @@ def getUpdateTime():
 def getLocalData():
     cur.execute("SELECT county, area, phase, info_website, appointment_website, doses_administered, "
                 "doses_available, eligibility_text, body_text, additional_info, "
-                "TO_CHAR(date, 'Month FMDDth, YYYY') FROM local_vaccinations")
+                    "TO_CHAR(date, 'Month FMDDth, YYYY') FROM local_vaccinations")
+
     local_data = cur.fetchone()[0]
+
     cur.execute("rollback")
     return render_template("san-francisco-bay-area-info.html", local_data=local_data)
 
@@ -432,22 +483,26 @@ def getBarsData():
         continent = ""
 
     # interactive bars
+
+
     cur.execute("SELECT json_agg(json_build_object('company', company,"
                 " 'stage', stage,"
-                " 'country', country,"
-                " 'vac_id', info.vac_id, "
-                " 'company', company)) "
-                " FROM info "
-                " INNER JOIN companies ON info.vac_id = companies.vac_id "
-                " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
-                " GROUP BY stage, progress, phase3_start_date, company, efficacy"
-                " ORDER BY stage DESC, progress DESC NULLS LAST,"
-                " phase3_start_date NULLS LAST, company LIMIT 5;",
-                (f"%{continent}%",))
+                    " 'country', country,"
+                    " 'vac_id', info.vac_id, "
+                    " 'company', company)) "
+                    " FROM info "
+                    " INNER JOIN companies ON info.vac_id = companies.vac_id "
+                    " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
+                    " GROUP BY stage, progress, phase3_start_date, company, efficacy"
+                    " ORDER BY stage DESC, progress DESC NULLS LAST,"
+                    " phase3_start_date NULLS LAST, company LIMIT 5;",
+                    (f"%{continent}%",))
+
     bars_data = cur.fetchall()
+
     cur.execute("rollback")
 
-    # Add 'flag' to JSON - replace column 'flag' in database
+   # Add 'flag' to JSON - replace column 'flag' in database
     for data in bars_data:
         country_array = data[0][0]['country'].replace(', ', ',').split(',')
         flag_array = []
@@ -461,23 +516,29 @@ def getBarsData():
         data[0][0]['flag'] = flag_array
 
     # progress bar
+
     cur.execute("SELECT stage, COUNT(stage) as count "
                 " FROM info "
-                " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
-                " GROUP BY stage ORDER BY stage",
-                (f"%{continent}%", ))
+                    " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
+                    " GROUP BY stage ORDER BY stage",
+                    (f"%{continent}%", ))
+
     continent_data = np.array(cur.fetchall(), dtype=object)
+
     cur.execute("rollback")
 
-    # cur.execute("SELECT COUNT(early_approval) as count "
-    #             " FROM info "
-    #             " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
-    #             " AND early_approval",
-    #             # " GROUP BY early_approval",
-    #             ("%" + continent + "%",))
-    # limited_count = cur.fetchall()[0][0]
-    # print(limited_count)
-    # cur.execute("rollback")
+
+# cur.execute("SELECT COUNT(early_approval) as count "
+   #             " FROM info "
+   #             " WHERE continent LIKE %s AND (abandoned = false OR abandoned IS NULL)"
+   #             " AND early_approval",
+   #             # " GROUP BY early_approval",
+   #             ("%" + continent + "%",))
+
+# limited_count = cur.fetchall()[0][0]
+   # print(limited_count)
+
+# cur.execute("rollback")
 
     data_arr = []
     for i in range(5):
@@ -511,10 +572,14 @@ def load_data():
 
 @app.route('/get_vaccine_countries', methods=['GET'])
 def get_vaccine_countries():
+
+
     cur.execute("SELECT country FROM info WHERE stage >= 3 "
                 "ORDER BY stage DESC, progress DESC NULLS LAST, phase3_start_date NULLS LAST, company "
-                "LIMIT 5")
+                    "LIMIT 5")
+
     top_countries = cur.fetchall()
+
     cur.execute("rollback")
     top_countries_array = ["United States", "United Kingdom", "China", "Russia"]
     for country in top_countries:
@@ -523,8 +588,11 @@ def get_vaccine_countries():
             if each_country not in top_countries_array:
                 top_countries_array.append(each_country)
 
+
     cur.execute("SELECT country FROM info")
+
     world_countries = cur.fetchall()
+
     cur.execute("rollback")
 
     world_countries_array = []
@@ -552,19 +620,21 @@ def get_compare_info():
     categories = ['type', 'efficacy', 'trial_size', 'dose', 'injection_type', 'storage', 'side_effects',
                   'candidate_name', 'age_group']
 
+
     cur.execute("SELECT json_agg(json_build_object("
                 "'type', vac_type, "
-                "'efficacy', efficacy, "
-                "'trial_size', trial_size, "
-                "'dose', dose, "
-                "'injection_type', injection_type, "
-                "'storage', storage, "
-                "'age_group', age_group, "
-                "'side_effects', side_effects, "
-                "'approved', approved_countries, "
-                "'limited', limited_countries, "
-                "'candidate_name', candidate_name)) "
-                "FROM info WHERE vac_id = %s", (vaccine1,))
+                    "'efficacy', efficacy, "
+                    "'trial_size', trial_size, "
+                    "'dose', dose, "
+                    "'injection_type', injection_type, "
+                    "'storage', storage, "
+                    "'age_group', age_group, "
+                    "'side_effects', side_effects, "
+                    "'approved', approved_countries, "
+                    "'limited', limited_countries, "
+                    "'candidate_name', candidate_name)) "
+                    "FROM info WHERE vac_id = %s", (vaccine1,))
+
     summary1 = cur.fetchall()[0][0][0]
     status1 = ""
     if summary1['approved'] is not None and summary1['approved'] != "":
@@ -582,19 +652,21 @@ def get_compare_info():
 
     summary1['status'] = status1
 
+
     cur.execute("SELECT json_agg(json_build_object("
                 "'type', vac_type, "
-                "'efficacy', efficacy, "
-                "'trial_size', trial_size, "
-                "'dose', dose, "
-                "'injection_type', injection_type, "
-                "'storage', storage, "
-                "'age_group', age_group, "
-                "'side_effects', side_effects, "
-                "'approved', approved_countries, "
-                "'limited', limited_countries, "
-                "'candidate_name', candidate_name)) "
-                "FROM info WHERE vac_id = %s", (vaccine2,))
+                    "'efficacy', efficacy, "
+                    "'trial_size', trial_size, "
+                    "'dose', dose, "
+                    "'injection_type', injection_type, "
+                    "'storage', storage, "
+                    "'age_group', age_group, "
+                    "'side_effects', side_effects, "
+                    "'approved', approved_countries, "
+                    "'limited', limited_countries, "
+                    "'candidate_name', candidate_name)) "
+                    "FROM info WHERE vac_id = %s", (vaccine2,))
+
     summary2 = cur.fetchall()[0][0][0]
     status2 = ""
     if summary2['approved'] is not None and summary2['approved'] != "":
@@ -716,7 +788,3 @@ def page_not_found(e):
 if __name__ == '__main__':
     Db.create_all()
     app.run(debug=True)
-
-
-# cur.close()
-# conn.close()
