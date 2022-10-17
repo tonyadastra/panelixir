@@ -87,22 +87,7 @@ setInterval(function() {
     </div>
 </nav>
 
-<div class="top-news-wrapper">
-{#    <div class="today-headlines">#}
-{#        <h3 id="news-title">Today's Headlines</h3>#}
-{#        {% for story in top_headlines %}#}
-{#            <people-and-stories story-tag="{{story[0]}}" story-title="{{story[1]}}" story-img="{{story[2]}}" story-body="{{story[3]}}"#}
-{#                         story-body-text="{{story[4]}}" story-link="{{story[5]}}" story-source="{{story[6]}}" story-category="{{story[7]}}"></people-and-stories>#}
-{#        {% endfor %}#}
-{#    </div>#}
-    <div class="text-center position-relative mb-2" id="top-news"><b class="darkblue">Top News</b>
 
-    </div>
-    <button type="button" class="close top-news-close" aria-label="Close">
-{#                    <span aria-hidden="true"></span>#}
-        <i class="fa fa-times"></i>
-    </button>
-</div>
 
 {% include 'world-vaccination-and-distribution.html' %}
 
@@ -223,6 +208,7 @@ setInterval(function() {
         </div>
 
     </div>
+    {% if news_data |length %}
     <div class="row">
         <div class="news-wrapper">
             <div class="news" style="margin-top: 0.5rem">
@@ -235,6 +221,7 @@ setInterval(function() {
                 </ul>
             </div>
         </div>
+        {% endif %}
 
         <div class="news-wrapper vaccine-and-life" style="display: none;">
             <div class="news">
