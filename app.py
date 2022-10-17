@@ -48,7 +48,7 @@ mail = Mail(app)
 
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://ckefcevsviywuu:400acc850b0ce7d2a645b80069db5de7739d86a2638116a4d3fada7f116b3723@ec2-34-233-115-14.compute-1.amazonaws.com:5432/d8352gom6hp5ij').replace('postgres://', 'postgresql://')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://postgres:UnGLmPBC1juiC0p9EKbw@containers-us-west-46.railway.app:5662/railway').replace('postgres://', 'postgresql://')
 db_url = make_url(DATABASE_URL)
 
 conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database} 
