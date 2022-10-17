@@ -51,7 +51,6 @@ mail = Mail(app)
 DATABASE_URL = os.environ.get(
     'DATABASE_URL', 'postgres://tony:OgDmaJ92JWEkU6bnIWDdejY8JvLNCib9@dpg-cd6n8gkgqg4ek622ta00-a.oregon-postgres.render.com/panelixirdb').replace('postgres://', 'postgresql://')
 db_url = make_url(DATABASE_URL)
-# print(db_url.host)
 
 conn = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
                     user={db_url.username} password={db_url.password}''')
