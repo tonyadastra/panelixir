@@ -74,8 +74,8 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Play with following options:
-app.config['SQLALCHEMY_POOL_SIZE'] = 10
-app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+# app.config['SQLALCHEMY_POOL_SIZE'] = 10
+# app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
 Db.init_app(app)
@@ -130,7 +130,7 @@ def processEmailQuestion():
 def index():
     # if google_auth.is_logged_in():
     #     user_info = google_auth.get_user_info()
-
+    
     cur.execute("SELECT info.vac_id, stage, website, intro, country, vac_type, latest_news, "
                 "TO_CHAR(update_date, 'Month FMDD'), company, early_approval, candidate_name, efficacy, "
                 "dose, injection_type, storage, abandoned, approved_countries, paused, limited_countries, "
