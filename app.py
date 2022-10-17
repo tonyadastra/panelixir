@@ -1,7 +1,6 @@
 import random
 import string
 import os
-from tkinter import E
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, session
 from sqlalchemy.engine.url import make_url
 from flask_mail import Mail, Message
@@ -32,6 +31,13 @@ application = app = Flask(__name__)
 #                  view_func=app.send_static_file)
 #
 # app.config['SERVER_NAME'] = 'localhost:7000'
+
+keepalive_kwargs = {
+    "keepalives": 1,
+    "keepalives_idle": 30,
+    "keepalives_interval": 5,
+    "keepalives_count": 5,
+}
 
 app.secret_key = ''.join(random.choice(string.printable)
                          for _ in range(20))
