@@ -69,9 +69,14 @@ conn3 = psycopg2.connect(f'''host={db_url.host} dbname={db_url.database}
 app.config['SQLALCHEMY_BINDS'] = {
     'vaccinedb': DATABASE_URL,
 }
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Play with following options:
+app.config['SQLALCHEMY_POOL_SIZE'] = 10
+app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
 Db.init_app(app)
 
