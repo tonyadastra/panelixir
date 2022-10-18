@@ -15,12 +15,12 @@ data.pdf
 update.py
 updates.csv
 .flaskenv
+.env
 who-scrape.py
 google.py
 t.py
 dump/test-list.html
 news-api.py
-.env
 forum.py
 gapi.py
 
