@@ -9,7 +9,7 @@ With appreciation,
 
 Tony
 
-## ** Sections & Internal Links**
+## **Sections & Internal Links**
 + ### [Auto-Update NYTimes](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
 + ### [Auto-Update Google](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
 + ### [Auto-Update USA Distribution](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
