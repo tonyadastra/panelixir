@@ -1,10 +1,19 @@
-# PanElixir - Global COVID-19 Vaccine Tracker
+# Project PanElixir: Global COVID-19 Vaccine Tracker
 
-## **Divisions and Internal Links**
-+ ### [Auto-Update NYTimes Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
-+ ### [Auto-Update Google Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
-+ ### [Auto-Update USA Distribution Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
-+ ### [Auto-Update World Vaccinations Division](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
+## Update
+Dear PanElixir users, 
+
+Thank you for your support for PanElixir. As of October 2022, information supplied by this site is no longer as relevant as it used to be. Therefore, while the vaccination maps will be updated automatically, the rest of the information will no longer be actively maintained. Thanks again for helping us spread love and positivity ❤️ during the pandemic. 
+
+With appreciation, 
+
+Tony
+
+## ** Sections & Internal Links**
++ ### [Auto-Update NYTimes](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateNYTimes)
++ ### [Auto-Update Google](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateGoogle)
++ ### [Auto-Update USA Distribution](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateUSADistribution)
++ ### [Auto-Update World Vaccinations](https://github.com/tonyliunyc/panelixir/tree/AutoUpdateWorldVaccinations)
 
 
 ## **Recent Updates**
